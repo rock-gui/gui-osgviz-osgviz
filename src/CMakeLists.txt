@@ -1,6 +1,7 @@
 rock_library(osgviz
-    SOURCES Dummy.cpp
-    HEADERS Dummy.hpp)
+    SOURCES OsgViz.cpp
+    HEADERS OsgViz.hpp
+    DEPS_PKGCONFIG lib_manager openscenegraph)
 
 rock_executable(osgviz_bin Main.cpp
     DEPS osgviz)
