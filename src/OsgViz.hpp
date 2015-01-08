@@ -3,9 +3,12 @@
 
 #include <iostream>
 #include <mars/lib_manager/LibManager.h>
-#include <osg/Node>
 #include <osg/Group>
 #include <osgViewer/Viewer>
+
+#include <cxxabi.h>
+
+#include "plugins/Visualizer.h"
 
 namespace osgviz
 {
@@ -13,17 +16,26 @@ namespace osgviz
 	{
 		public: 
 
-		OsgViz();
+		OsgViz(mars::lib_manager::LibManager * manager = NULL);
 
+		~OsgViz();
 
 		void createWindow();
 
-		bool loadPlugin();
+		template <class VIZPLUGIN> VIZPLUGIN* getVizPlugin(std::string classname){
+			return (VIZPLUGIN*)getVizPlugin(classname,classname);
+		}
+
+//		inline Visualizer* getVizPlugin(std::string name){
+//			return getVizPlugin(name,name);
+//		}
+		Visualizer* getVizPlugin(std::string path, std::string name);
 
 
 
 		private:
-		mars::lib_manager::LibManager libmanager;
+		bool createdOwnManager;
+		mars::lib_manager::LibManager *libmanager;
 
 		osg::Group *root;
 

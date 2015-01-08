@@ -5,9 +5,23 @@
 namespace osgviz
 {
 
-OsgViz::OsgViz()
+OsgViz::OsgViz(mars::lib_manager::LibManager * manager)
 {
 	root = new osg::Group();
+
+	if (!manager){
+		createdOwnManager = true;
+		libmanager = new mars::lib_manager::LibManager();
+	}else{
+		createdOwnManager = false;
+	}
+}
+
+OsgViz::~OsgViz(){
+	if (createdOwnManager){
+		delete libmanager;
+	}
+
 }
 
 void OsgViz::createWindow() {
@@ -60,8 +74,15 @@ void OsgViz::createWindow() {
 
 }
 
-bool OsgViz::loadPlugin() {
-	return false;
+Visualizer* OsgViz::getVizPlugin(std::string path, std::string name) {
+
+	if (libmanager->loadLibrary(path) == mars::lib_manager::LibManager::LIBMGR_NO_ERROR){
+		Visualizer* viz = (Visualizer*)libmanager->acquireLibrary(name);
+		viz->setRootNode(root);
+		return viz;
+	}
+
+	return NULL;
 }
 
 }
