@@ -1,11 +1,14 @@
 #include "OsgViz.hpp"
 
+CREATE_LIB(osgviz::OsgViz);
+DESTROY_LIB(osgviz::OsgViz);
 
 
 namespace osgviz
 {
 
-OsgViz::OsgViz(mars::lib_manager::LibManager * manager)
+
+OsgViz::OsgViz(mars::lib_manager::LibManager * manager):LibInterface(manager)
 {
 	root = new osg::Group();
 
@@ -92,6 +95,14 @@ Visualizer* OsgViz::getVizPlugin(std::string path, std::string name) {
 		return viz;
 	}
 	return NULL;
+}
+
+const std::string OsgViz::getLibName() const {
+	return "OsgViz";
+}
+
+int OsgViz::getLibVersion() const{
+	return 1;
 }
 
 }

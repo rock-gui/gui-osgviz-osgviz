@@ -12,13 +12,19 @@
 
 namespace osgviz
 {
-	class OsgViz
+	class OsgViz: public mars::lib_manager::LibInterface
 	{
 		public: 
 
 		OsgViz(mars::lib_manager::LibManager * manager = NULL);
 
 		~OsgViz();
+
+
+		virtual const std::string getLibName() const;
+
+	    virtual int getLibVersion() const;
+
 
 		void createWindow();
 
