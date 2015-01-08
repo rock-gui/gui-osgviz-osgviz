@@ -15,32 +15,53 @@
 
 namespace osgviz {
 
-
-class ModelView : public Visualizer {
+class ModelView{
 public:
-	ModelView(mars::lib_manager::LibManager *theManager);
+	ModelView();
 
 	virtual ~ModelView();
 
 
-	void loadModel(std::string path);
+	virtual void loadModel(std::string path);
 
-	void setPosition(osg::Vec3 pos);
+	virtual void setPosition(osg::Vec3 pos);
 
-	void setAttitude(osg::Quat attitude);
+	virtual void setAttitude(osg::Quat attitude);
 
+protected:
+    friend class ModelViewFactory;
 
-    virtual int getLibVersion() const {return 0;};
-
-    const std::string getLibName() const { return "ModelView"; };
+    inline void setRootNode(osg::Group* node){
+      	root = node;
+    }
 
 private:
+    osg::Group *root;
     osg::Node *object;
     osg::PositionAttitudeTransform *patransform;
 
 };
 
 
+class ModelViewFactory : public Visualizer {
+public:
+	ModelViewFactory(mars::lib_manager::LibManager *theManager);
+	~ModelViewFactory();
+
+	virtual ModelView* createInstance(){
+		ModelView *instance = new ModelView();
+		instance->setRootNode(getRootNode());
+		instances.push_back(instance);
+		return instance;
+	}
+
+	virtual int getLibVersion() const {return 0;};
+
+	const std::string getLibName() const { return "ModelView"; };
+
+private:
+	std::vector<ModelView*> instances;
+};
 
 } /* namespace osgviz */
 

@@ -18,6 +18,11 @@ OsgViz::OsgViz(mars::lib_manager::LibManager * manager)
 }
 
 OsgViz::~OsgViz(){
+
+	for (std::vector< Visualizer* >::iterator it = loaded_plugins.begin();it!=loaded_plugins.end();it++){
+		libmanager->releaseLibrary((*it)->getLibName());
+	}
+
 	if (createdOwnManager){
 		delete libmanager;
 	}
@@ -76,12 +81,16 @@ void OsgViz::createWindow() {
 
 Visualizer* OsgViz::getVizPlugin(std::string path, std::string name) {
 
-	if (libmanager->loadLibrary(path) == mars::lib_manager::LibManager::LIBMGR_NO_ERROR){
+	Visualizer* viz = NULL;
+	viz = (Visualizer*)libmanager->getLibrary(name);
+	if (viz){
+		return viz;
+	}else if (libmanager->loadLibrary(path) == mars::lib_manager::LibManager::LIBMGR_NO_ERROR){
 		Visualizer* viz = (Visualizer*)libmanager->acquireLibrary(name);
 		viz->setRootNode(root);
+		loaded_plugins.push_back(viz);
 		return viz;
 	}
-
 	return NULL;
 }
 

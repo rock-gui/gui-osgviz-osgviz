@@ -14,10 +14,19 @@
 
 namespace osgviz {
 
-VISUALIZER_PLUGIN(ModelView);
+VISUALIZER_PLUGIN(ModelViewFactory);
 
 
-ModelView::ModelView(mars::lib_manager::LibManager *theManager):Visualizer(theManager){
+ModelViewFactory::ModelViewFactory(mars::lib_manager::LibManager *theManager):Visualizer(theManager){
+}
+
+ModelViewFactory::~ModelViewFactory() {
+	for (std::vector<ModelView*>::iterator it = instances.begin();it != instances.end();it++){
+		delete *it;
+	}
+}
+
+ModelView::ModelView(){
 	object = NULL;
 }
 
@@ -28,7 +37,7 @@ ModelView::~ModelView() {
 void ModelView::loadModel(std::string path) {
 	printf("load %s\n",path.c_str());
 	patransform = new osg::PositionAttitudeTransform();
-	getRootNode()->addChild(patransform);
+	root->addChild(patransform);
 	object = osgDB::readNodeFile(path);
 	patransform->addChild(object);
 

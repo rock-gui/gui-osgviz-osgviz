@@ -42,6 +42,11 @@ namespace osgviz
 		osgViewer::Viewer viewer;
 
 
+		private:
+
+		std::vector< Visualizer* >loaded_plugins;
+
+
 	};
 
 } // end namespace osgviz

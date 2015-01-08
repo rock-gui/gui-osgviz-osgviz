@@ -9,5 +9,5 @@ rock_library(ModelView
     DEPS_PKGCONFIG lib_manager openscenegraph)
 
 rock_executable(osgviz_bin Main.cpp
-    DEPS ModelView osgviz)
+    DEPS osgviz)
 

@@ -39,8 +39,6 @@ public:
     	return root;
     };
 
-
-
     inline mars::lib_manager::LibManager* getLibManager(){
     	return libmanager;
     }
