@@ -8,16 +8,14 @@
 #include "ModelView.h"
 
 #include <stdio.h>
-#include <osgDB/ReadFile>
-
 
 
 namespace osgviz {
 
-VISUALIZER_PLUGIN(ModelViewFactory);
+OSGVIZ_PLUGIN(ModelViewFactory);
 
 
-ModelViewFactory::ModelViewFactory(mars::lib_manager::LibManager *theManager):Visualizer(theManager){
+ModelViewFactory::ModelViewFactory(mars::lib_manager::LibManager *theManager):OsgVizVisualizerPlugin(theManager){
 }
 
 ModelViewFactory::~ModelViewFactory() {
@@ -34,13 +32,11 @@ ModelView::~ModelView() {
 	// TODO Auto-generated destructor stub
 }
 
-void ModelView::loadModel(std::string path) {
-	printf("load %s\n",path.c_str());
+void ModelView::setModel(osg::ref_ptr<osg::Node> object) {
+	this->object = object;
 	patransform = new osg::PositionAttitudeTransform();
 	root->addChild(patransform);
-	object = osgDB::readNodeFile(path);
 	patransform->addChild(object);
-
 }
 
 void ModelView::setPosition(osg::Vec3 pos) {

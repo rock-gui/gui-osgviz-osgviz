@@ -6,9 +6,7 @@
 #include <osg/Group>
 #include <osgViewer/Viewer>
 
-#include <cxxabi.h>
-
-#include "plugins/Visualizer.h"
+#include "plugins/OsgVizPlugin.h"
 
 namespace osgviz
 {
@@ -16,7 +14,9 @@ namespace osgviz
 	{
 		public: 
 
-		OsgViz(mars::lib_manager::LibManager * manager = NULL);
+		OsgViz(mars::lib_manager::LibManager * manager);
+
+		OsgViz(int argc, char** argv);
 
 		~OsgViz();
 
@@ -26,32 +26,45 @@ namespace osgviz
 	    virtual int getLibVersion() const;
 
 
+
+	    void init(int argc,char** argv);
+
+
 		void createWindow();
 
-		template <class VIZPLUGIN> VIZPLUGIN* getVizPlugin(std::string classname){
-			return (VIZPLUGIN*)getVizPlugin(classname,classname);
+		template <class VIZPLUGIN> VIZPLUGIN* getVisualizerPlugin(std::string classname){
+			VIZPLUGIN* viz = (VIZPLUGIN*)getVizPlugin(classname,classname);
+			viz->setRootNode(root);
+			return viz;
 		}
 
-//		inline Visualizer* getVizPlugin(std::string name){
-//			return getVizPlugin(name,name);
-//		}
-		Visualizer* getVizPlugin(std::string path, std::string name);
+		template <class VIZPLUGIN> VIZPLUGIN* getDataPlugin(std::string classname){
+			VIZPLUGIN* data = (VIZPLUGIN*)getVizPlugin(classname,classname);
+			data->init(m_argc,m_argv);
+			return data;
+		}
+
 
 
 
 		private:
+
+		OsgVizPlugin* getVizPlugin(std::string path, std::string name);
+
 		bool createdOwnManager;
 		mars::lib_manager::LibManager *libmanager;
 
-		osg::Group *root;
+		osg::ref_ptr<osg::Group> root;
 
 		osgViewer::Viewer viewer;
 
 
 		private:
-
-		std::vector< Visualizer* >loaded_plugins;
-
+		bool initialized;
+		std::vector< OsgVizPlugin* >loadedPlugins;
+		osg::ref_ptr<osgGA::CameraManipulator> cameraManipulator;
+		int m_argc;
+		char** m_argv;
 
 	};
 

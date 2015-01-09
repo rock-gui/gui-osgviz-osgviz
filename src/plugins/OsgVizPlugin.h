@@ -1,32 +1,33 @@
 /*
- * Visualizer.h
+ * OsgVizVisualizerPlugin.h
  *
  *  Created on: 07.01.2015
  *      Author: planthaber
  */
 
-#ifndef SRC_PLUGINS_VISUALIZER_H_
-#define SRC_PLUGINS_VISUALIZER_H_
+#ifndef SRC_PLUGINS_OsgVizPlugin_H_
+#define SRC_PLUGINS_OsgVizPlugin_H_
 
-#include <osg/Group>
 #include <mars/lib_manager/LibManager.h>
 
-namespace osgviz {
-
-#define VISUALIZER_PLUGIN(NAME) \
+#define OSGVIZ_PLUGIN(NAME) \
 	CREATE_LIB(NAME); \
 	DESTROY_LIB(NAME);
 
 
-class Visualizer: public mars::lib_manager::LibInterface  {
+namespace osgviz {
+
+class OsgViz;
+
+class OsgVizPlugin: public mars::lib_manager::LibInterface  {
 public:
 
-	Visualizer(mars::lib_manager::LibManager *theManager):LibInterface(theManager){
-		root = NULL;
+	OsgVizPlugin(mars::lib_manager::LibManager *theManager):LibInterface(theManager){
 		libmanager = theManager;
+		parent=NULL;
 	};
 
-	virtual ~Visualizer(){};
+	virtual ~OsgVizPlugin(){};
 
 	/**
 	 * Return a lib name used to reference the lib via the libmanager
@@ -35,26 +36,25 @@ public:
 
     virtual int getLibVersion() const = 0;
 
-    inline osg::Group* getRootNode(){
-    	return root;
-    };
-
     inline mars::lib_manager::LibManager* getLibManager(){
     	return libmanager;
     }
 
+    inline OsgViz* getParent(){
+    	return parent;
+    }
+
 protected:
     friend class OsgViz;
-
-    inline void setRootNode(osg::Group* node){
-      	root = node;
+    inline void setParent(OsgViz* par){
+    	parent = par;
     }
 
 
 
 private:
 
-    osg::Group *root;
+    OsgViz* parent;
 	mars::lib_manager::LibManager *libmanager;
 
 

@@ -5,7 +5,7 @@
  *      Author: planthaber
  */
 
-#include "Visualizer.h"
+#include "../OsgVizVisualizerPlugin.h"
 
 #include <osg/Node>
 #include <osg/PositionAttitudeTransform>
@@ -22,7 +22,7 @@ public:
 	virtual ~ModelView();
 
 
-	virtual void loadModel(std::string path);
+	virtual void setModel(osg::ref_ptr<osg::Node> object);
 
 	virtual void setPosition(osg::Vec3 pos);
 
@@ -36,14 +36,14 @@ protected:
     }
 
 private:
-    osg::Group *root;
-    osg::Node *object;
-    osg::PositionAttitudeTransform *patransform;
+    osg::ref_ptr<osg::Group> root;
+    osg::ref_ptr<osg::Node> object;
+    osg::ref_ptr<osg::PositionAttitudeTransform> patransform;
 
 };
 
 
-class ModelViewFactory : public Visualizer {
+class ModelViewFactory : public OsgVizVisualizerPlugin {
 public:
 	ModelViewFactory(mars::lib_manager::LibManager *theManager);
 	~ModelViewFactory();
@@ -60,7 +60,7 @@ public:
 	const std::string getLibName() const { return "ModelView"; };
 
 private:
-	std::vector<ModelView*> instances;
+	std::vector< ModelView* > instances;
 };
 
 } /* namespace osgviz */

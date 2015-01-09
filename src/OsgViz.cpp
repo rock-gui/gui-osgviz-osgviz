@@ -1,8 +1,12 @@
 #include "OsgViz.hpp"
 
+
+#include <stdio.h>
+#include <osgGA/TerrainManipulator>
+
+
 CREATE_LIB(osgviz::OsgViz);
 DESTROY_LIB(osgviz::OsgViz);
-
 
 namespace osgviz
 {
@@ -10,19 +14,27 @@ namespace osgviz
 
 OsgViz::OsgViz(mars::lib_manager::LibManager * manager):LibInterface(manager)
 {
-	root = new osg::Group();
+	createdOwnManager = false;
+	init(0,NULL);
+}
 
-	if (!manager){
-		createdOwnManager = true;
-		libmanager = new mars::lib_manager::LibManager();
-	}else{
-		createdOwnManager = false;
-	}
+OsgViz::OsgViz(int argc, char** argv):LibInterface(NULL){
+	createdOwnManager = true;
+	libmanager = new mars::lib_manager::LibManager();
+	init(argc,argv);
+}
+
+
+void OsgViz::init(int argc,char** argv){
+	m_argc = argc;
+	m_argv = argv;
+	root = new osg::Group();
+	cameraManipulator = new osgGA::TerrainManipulator;
 }
 
 OsgViz::~OsgViz(){
 
-	for (std::vector< Visualizer* >::iterator it = loaded_plugins.begin();it!=loaded_plugins.end();it++){
+	for (std::vector< OsgVizPlugin* >::iterator it = loadedPlugins.begin();it!=loadedPlugins.end();it++){
 		libmanager->releaseLibrary((*it)->getLibName());
 	}
 
@@ -33,9 +45,6 @@ OsgViz::~OsgViz(){
 }
 
 void OsgViz::createWindow() {
-
-
-
 	// For now, we can initialize with 'standard settings'
 	// Standard settings include a standard keyboard mouse
 	// interface as well as default drive, fly and trackball
@@ -51,47 +60,28 @@ void OsgViz::createWindow() {
 
 	viewer.setSceneData( root );
 
+
+
+	viewer.setCameraManipulator(cameraManipulator);
+
+
 	// create the windows and start the required threads.
 
 	viewer.run();
 
-	// Enter the simulation loop. viewer.done() returns false
-	// until the user presses the 'esc' key.
-	// (This can be changed by adding your own keyboard/mouse
-	// event handler or by changing the settings of the default
-	// keyboard/mouse event handler)
 
-//	while( !viewer.done() )
-//	{
-//	   // wait for all cull and draw threads to complete.
-//
-//	   //viewer.sync();
-//
-//	   // Initiate scene graph traversal to update nodes.
-//	   // Animation nodes will require update. Additionally,
-//	   // any node for which an 'update' callback has been
-//	   // set up will also be updated. More information on
-//	   // settting up callbacks to follow.
-//
-//	   //viewer.update();
-//
-//	   // initiate the cull and draw traversals of the scene.
-//
-//	   //viewer.frame();
-//	}
 
 }
 
-Visualizer* OsgViz::getVizPlugin(std::string path, std::string name) {
-
-	Visualizer* viz = NULL;
-	viz = (Visualizer*)libmanager->getLibrary(name);
+OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
+	OsgVizPlugin* viz = NULL;
+	viz = (OsgVizPlugin*)libmanager->getLibrary(name);
 	if (viz){
 		return viz;
 	}else if (libmanager->loadLibrary(path) == mars::lib_manager::LibManager::LIBMGR_NO_ERROR){
-		Visualizer* viz = (Visualizer*)libmanager->acquireLibrary(name);
-		viz->setRootNode(root);
-		loaded_plugins.push_back(viz);
+		OsgVizPlugin* viz = (OsgVizPlugin*)libmanager->acquireLibrary(name);
+		viz->setParent(this);
+		loadedPlugins.push_back(viz);
 		return viz;
 	}
 	return NULL;
