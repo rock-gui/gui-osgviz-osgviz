@@ -9,7 +9,7 @@
 #include <osgDB/ReadFile>
 #include <osg/Node>
 
-#include "../../OsgViz.hpp"
+#include "../../../OsgViz.hpp"
 
 
 

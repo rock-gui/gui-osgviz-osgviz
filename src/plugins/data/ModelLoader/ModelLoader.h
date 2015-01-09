@@ -8,8 +8,8 @@
 #ifndef GUI_OSGVIZ_SRC_PLUGINS_DATA_MODELLOADER_H_
 #define GUI_OSGVIZ_SRC_PLUGINS_DATA_MODELLOADER_H_
 
-#include "../OsgVizDataPlugin.h"
-#include "../viz/ModelView.h"
+#include "../../OsgVizDataPlugin.h"
+#include "../../viz/ModelView/ModelView.h"
 
 namespace osgviz {
 

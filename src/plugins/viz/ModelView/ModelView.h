@@ -5,7 +5,7 @@
  *      Author: planthaber
  */
 
-#include "../OsgVizVisualizerPlugin.h"
+#include "../../OsgVizVisualizerPlugin.h"
 
 #include <osg/Node>
 #include <osg/PositionAttitudeTransform>

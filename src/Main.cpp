@@ -1,7 +1,7 @@
 #include <iostream>
 #include "OsgViz.hpp"
 
-#include "plugins/data/ModelLoader.h"
+#include "plugins/data/ModelLoader/ModelLoader.h"
 
 #include <unistd.h>//sleep
 #include <stdio.h>
