@@ -30,7 +30,7 @@ ModelLoader::~ModelLoader() {
 
 void ModelLoader::init(int argc, char** argv){
 
-	modelfactory = getParent()->getVisualizerPlugin<ModelViewFactory>("ModelView");
+	modelfactory = getParent()->getVisualizerPlugin<ModelViewFactory>("ModelViewFactory");
 
 }
 

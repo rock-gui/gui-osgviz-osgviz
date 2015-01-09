@@ -12,18 +12,6 @@
 
 namespace osgviz {
 
-OSGVIZ_PLUGIN(ModelViewFactory);
-
-
-ModelViewFactory::ModelViewFactory(mars::lib_manager::LibManager *theManager):OsgVizVisualizerPlugin(theManager){
-}
-
-ModelViewFactory::~ModelViewFactory() {
-	for (std::vector<ModelView*>::iterator it = instances.begin();it != instances.end();it++){
-		delete *it;
-	}
-}
-
 ModelView::ModelView(){
 	object = NULL;
 }

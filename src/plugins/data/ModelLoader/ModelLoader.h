@@ -9,7 +9,7 @@
 #define GUI_OSGVIZ_SRC_PLUGINS_DATA_MODELLOADER_H_
 
 #include "../../OsgVizDataPlugin.h"
-#include "../../viz/ModelView/ModelView.h"
+#include "../../viz/ModelView/ModelViewFactory.h"
 
 namespace osgviz {
 
