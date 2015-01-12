@@ -21,8 +21,8 @@ int main(int argc, char** argv)
 
 	osgviz::PrimitivesFactory *primitivesfactory = osgViz.getVisualizerPlugin< osgviz::PrimitivesFactory >("PrimitivesFactory");
 
-	osgviz::Primitive* axes = primitivesfactory->createAxes();
-	osgviz::Primitive* grid = primitivesfactory->createGrid();
+	osgviz::Object* axes = primitivesfactory->createAxes();
+	osgviz::Object* grid = primitivesfactory->createGrid();
 
 	osgViz.createWindow();
 

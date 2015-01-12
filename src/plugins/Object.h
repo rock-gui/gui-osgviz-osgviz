@@ -1,5 +1,5 @@
 /*
- * ModelView.h
+ * Object.h
  *
  *  Created on: 08.01.2015
  *      Author: planthaber
@@ -14,14 +14,14 @@
 
 namespace osgviz {
 
-class ModelView{
+class Object{
 public:
-	ModelView();
+	Object();
 
-	virtual ~ModelView();
+	virtual ~Object();
 
 
-	virtual void setModel(osg::ref_ptr<osg::Node> object);
+	virtual void setObject(osg::ref_ptr<osg::Node> object);
 
 	virtual void setPosition(osg::Vec3 pos);
 
@@ -30,9 +30,7 @@ public:
 protected:
     friend class ModelViewFactory;
 
-    inline void setRootNode(osg::Group* node){
-      	root = node;
-    }
+    void setRootNode(osg::Group* node);
 
 private:
     osg::ref_ptr<osg::Group> root;
