@@ -27,10 +27,12 @@ public:
 
 	virtual void setAttitude(osg::Quat attitude);
 
+    virtual void setRootNode(osg::Group* node);
+
 protected:
     friend class ModelViewFactory;
 
-    void setRootNode(osg::Group* node);
+
 
 private:
     osg::ref_ptr<osg::Group> root;

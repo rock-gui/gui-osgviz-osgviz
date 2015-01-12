@@ -5,6 +5,6 @@ rock_library(osgViz
 
 add_subdirectory(plugins)
 
-rock_executable(osgviz_bin Main.cpp
+rock_executable(osgViz_bin Main.cpp
     DEPS osgViz)
 
