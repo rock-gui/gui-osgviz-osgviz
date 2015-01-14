@@ -8,12 +8,11 @@
 #ifndef GUI_OSGVIZ_SRC_PLUGINS_DATA_MODELLOADER_H_
 #define GUI_OSGVIZ_SRC_PLUGINS_DATA_MODELLOADER_H_
 
-#include "../../OsgVizDataPlugin.h"
-#include "../../viz/ModelView/ModelViewFactory.h"
+#include "../../OsgVizVisualizerPlugin.h"
 
 namespace osgviz {
 
-class ModelLoader : public OsgVizDataPlugin{
+class ModelLoader : public OsgVizVisualizerPlugin{
 public:
 	ModelLoader(mars::lib_manager::LibManager *theManager);
 	virtual ~ModelLoader();
@@ -28,7 +27,7 @@ public:
 
 
 private:
-	ModelViewFactory *modelfactory;
+
 };
 
 } /* namespace osgviz */

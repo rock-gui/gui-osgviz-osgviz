@@ -20,21 +20,15 @@ PrimitivesFactory::PrimitivesFactory(mars::lib_manager::LibManager *theManager):
 PrimitivesFactory::~PrimitivesFactory() {}
 
 
-Object* PrimitivesFactory::createObject(osg::Group* root){
-	Object *obj = new Object();
-	obj->setRootNode(root);
-	return obj;
-}
-
 Object* PrimitivesFactory::createAxes(){
-	Object *obj = createObject(getRootNode());
+	Object *obj = createObject();
 	osg::ref_ptr<osg::Node> content = AxesNode::create();
 	obj->setObject(content);
 	return obj;
 }
 
 Object* PrimitivesFactory::createGrid(int rows,int cols,float dx, float dy, bool show_coordinates, const ::osg::Vec4 &color){
-	Object *obj = createObject(getRootNode());
+	Object *obj = createObject();
 	osg::ref_ptr<osg::Node> content = GridNode::create(rows,cols,dx, dy, show_coordinates, color);
 	obj->setObject(content);
 	return obj;

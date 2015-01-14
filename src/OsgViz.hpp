@@ -10,9 +10,43 @@
 
 namespace osgviz
 {
+
+class ViewerFrameThread : public OpenThreads::Thread
+	{
+	    public:
+
+	        ViewerFrameThread(osgViewer::ViewerBase* viewerBase):
+	            _viewerBase(viewerBase){}
+
+	        ~ViewerFrameThread()
+	        {
+	            if (isRunning())
+	            {
+	                cancel();
+	                join();
+	            }
+	        }
+
+	        int cancel()
+	        {
+	            _viewerBase->setDone(true);
+	            return 0;
+	        }
+
+	        void run()
+	        {
+	            int result = _viewerBase->run();
+	        }
+
+	        osg::ref_ptr<osgViewer::ViewerBase> _viewerBase;
+	};
+
+
 	class OsgViz: public mars::lib_manager::LibInterface
 	{
 		public: 
+
+		static OsgViz* getInstance(int argc = 0,char** argv = NULL);
 
 		OsgViz(mars::lib_manager::LibManager * manager);
 
@@ -30,7 +64,7 @@ namespace osgviz
 	    void init(int argc,char** argv);
 
 
-		void createWindow();
+		void createWindow(bool threaded = false);
 
 		template <class VIZPLUGIN> VIZPLUGIN* getVisualizerPlugin(std::string classname){
 			VIZPLUGIN* viz = (VIZPLUGIN*)getVizPlugin(classname,classname);
@@ -57,7 +91,7 @@ namespace osgviz
 		osg::ref_ptr<osg::Group> root;
 
 		osgViewer::Viewer viewer;
-
+		ViewerFrameThread* viewerThread;
 
 		private:
 		bool initialized;
@@ -65,6 +99,8 @@ namespace osgviz
 		osg::ref_ptr<osgGA::CameraManipulator> cameraManipulator;
 		int m_argc;
 		char** m_argv;
+
+		//std::vector<osgViewer::Viewer *> viewers;
 
 	};
 

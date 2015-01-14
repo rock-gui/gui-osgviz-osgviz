@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <osgGA/TerrainManipulator>
-
+#include <X11/Xlib.h>
 
 CREATE_LIB(osgviz::OsgViz);
 DESTROY_LIB(osgviz::OsgViz);
@@ -11,11 +11,20 @@ DESTROY_LIB(osgviz::OsgViz);
 namespace osgviz
 {
 
+OsgViz* instance = NULL;
+
+OsgViz* OsgViz::getInstance(int argc,char** argv){
+	if (!instance){
+		instance = new OsgViz(argc,argv);
+	}
+	return instance;
+}
 
 OsgViz::OsgViz(mars::lib_manager::LibManager * manager):LibInterface(manager)
 {
 	createdOwnManager = false;
 	init(0,NULL);
+	viewerThread = NULL;
 }
 
 OsgViz::OsgViz(int argc, char** argv):LibInterface(NULL){
@@ -30,6 +39,8 @@ void OsgViz::init(int argc,char** argv){
 	m_argv = argv;
 	root = new osg::Group();
 	cameraManipulator = new osgGA::TerrainManipulator;
+	XInitThreads();
+	instance = this;
 }
 
 OsgViz::~OsgViz(){
@@ -42,9 +53,13 @@ OsgViz::~OsgViz(){
 		delete libmanager;
 	}
 
+	if (viewerThread){
+		delete viewerThread;
+	}
+
 }
 
-void OsgViz::createWindow() {
+void OsgViz::createWindow(bool threaded) {
 	// For now, we can initialize with 'standard settings'
 	// Standard settings include a standard keyboard mouse
 	// interface as well as default drive, fly and trackball
@@ -67,7 +82,12 @@ void OsgViz::createWindow() {
 
 	// create the windows and start the required threads.
 
-	viewer.run();
+	if (threaded){
+		viewerThread = new ViewerFrameThread (&viewer);
+		viewerThread->startThread();
+	}else{
+		viewer.run();
+	}
 
 
 

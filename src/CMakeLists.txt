@@ -13,10 +13,6 @@ rock_library(osgVizPlugin
     DEPS_PKGCONFIG lib_manager openscenegraph)
 
 
-rock_library(ModelView
-    SOURCES plugins/viz/ModelView/ModelViewFactory.cpp
-    HEADERS plugins/viz/ModelView/ModelViewFactory.h
-    DEPS osgVizPlugin)
 
 rock_library(PrimitivesFactory
     SOURCES
@@ -28,8 +24,8 @@ rock_library(PrimitivesFactory
 
 
 rock_library(ModelLoader
-    SOURCES plugins/data/ModelLoader/ModelLoader.cpp
-    HEADERS plugins/data/ModelLoader/ModelLoader.h
+    SOURCES plugins/viz/ModelLoader/ModelLoader.cpp
+    HEADERS plugins/viz/ModelLoader/ModelLoader.h
     DEPS osgVizPlugin)
     
 

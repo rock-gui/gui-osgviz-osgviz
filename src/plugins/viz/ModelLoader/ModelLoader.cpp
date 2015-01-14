@@ -17,7 +17,7 @@ namespace osgviz {
 
 OSGVIZ_PLUGIN(ModelLoader);
 
-ModelLoader::ModelLoader(mars::lib_manager::LibManager *theManager):OsgVizDataPlugin(theManager) {
+ModelLoader::ModelLoader(mars::lib_manager::LibManager *theManager):OsgVizVisualizerPlugin(theManager) {
 
 
 
@@ -30,7 +30,7 @@ ModelLoader::~ModelLoader() {
 
 void ModelLoader::init(int argc, char** argv){
 
-	modelfactory = getParent()->getVisualizerPlugin<ModelViewFactory>("ModelViewFactory");
+	//modelfactory = getParent()->getVisualizerPlugin<ModelViewFactory>("ModelViewFactory");
 
 }
 
@@ -38,10 +38,8 @@ void ModelLoader::init(int argc, char** argv){
 void ModelLoader::loadModel(std::string path){
 	printf("load %s\n",path.c_str());
     osg::ref_ptr<osg::Node> object = osgDB::readNodeFile(path);
-
-	Object* model = modelfactory->createInstance();
+	Object* model = createObject();
 	model->setObject(object);
-
 }
 
 

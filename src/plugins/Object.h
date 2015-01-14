@@ -14,20 +14,19 @@
 
 namespace osgviz {
 
-class Object{
+class Object: public osg::PositionAttitudeTransform{
 public:
 	Object();
 
 	virtual ~Object();
 
-
 	virtual void setObject(osg::ref_ptr<osg::Node> object);
 
-	virtual void setPosition(osg::Vec3 pos);
-
-	virtual void setAttitude(osg::Quat attitude);
-
     virtual void setRootNode(osg::Group* node);
+
+    inline void setName(std::string name){
+    	this->name = name;
+    }
 
 protected:
     friend class ModelViewFactory;
@@ -37,7 +36,7 @@ protected:
 private:
     osg::ref_ptr<osg::Group> root;
     osg::ref_ptr<osg::Node> object;
-    osg::ref_ptr<osg::PositionAttitudeTransform> patransform;
+    std::string name;
 
 };
 

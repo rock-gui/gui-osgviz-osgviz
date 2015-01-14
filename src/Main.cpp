@@ -1,7 +1,7 @@
 #include <iostream>
 #include "OsgViz.hpp"
 
-#include "plugins/data/ModelLoader/ModelLoader.h"
+#include "plugins/viz/ModelLoader/ModelLoader.h"
 
 #include "plugins/viz/Primitives/PrimitivesFactory.h"
 
@@ -11,20 +11,23 @@
 
 int main(int argc, char** argv)
 {
-	osgviz::OsgViz osgViz(argc,argv);
+	osgviz::OsgViz *osgViz = new osgviz::OsgViz(argc,argv);
 
-	//osgviz::ModelView *model = (osgviz::ModelView*) osgViz.getVizPlugin("ModelView");
-	//osgviz::ModelLoader *modelloader = osgViz.getDataPlugin< osgviz::ModelLoader >("ModelLoader");
-
-	//printf("laoding model %s\n",argv[1]);
-	//modelloader->loadModel(argv[1]);
-
-	osgviz::PrimitivesFactory *primitivesfactory = osgViz.getVisualizerPlugin< osgviz::PrimitivesFactory >("PrimitivesFactory");
+	osgviz::ModelLoader *modelloader = NULL;
+	if (argc > 1){
+		modelloader = osgViz->getVisualizerPlugin< osgviz::ModelLoader >("ModelLoader");
+		printf("laoding model %s\n",argv[1]);
+		modelloader->loadModel(argv[1]);
+	}
+	osgviz::PrimitivesFactory *primitivesfactory = osgViz->getVisualizerPlugin< osgviz::PrimitivesFactory >("PrimitivesFactory");
 
 	osgviz::Object* axes = primitivesfactory->createAxes();
 	osgviz::Object* grid = primitivesfactory->createGrid();
 
-	osgViz.createWindow();
+	osgViz->createWindow();
+
+
+	delete osgViz;
 
 	return 0;
 }

@@ -8,12 +8,13 @@
 #include "Object.h"
 
 #include <stdio.h>
-
+#include <cxxabi.h>
 
 namespace osgviz {
 
 Object::Object(){
 	object = NULL;
+	name = "";
 }
 
 Object::~Object() {
@@ -22,22 +23,14 @@ Object::~Object() {
 
 void Object::setObject(osg::ref_ptr<osg::Node> object) {
 	this->object = object;
-	patransform = new osg::PositionAttitudeTransform();
-	root->addChild(patransform);
-	patransform->addChild(object);
+	this->addChild(object);
+	root->addChild(this);
 }
 
-void Object::setPosition(osg::Vec3 pos) {
-	patransform->setPosition(pos);
-}
-
-void Object::setAttitude(osg::Quat attitude){
-	patransform->setAttitude(attitude);
-}
 
 void Object::setRootNode(osg::Group* node){
 	root = node;
-	root->addChild(patransform);
+	root->addChild(this);
 }
 
 
