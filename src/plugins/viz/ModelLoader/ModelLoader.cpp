@@ -39,7 +39,7 @@ void ModelLoader::loadModel(std::string path){
 	printf("load %s\n",path.c_str());
     osg::ref_ptr<osg::Node> object = osgDB::readNodeFile(path);
 	Object* model = createObject();
-	model->setObject(object);
+	model->setContent(object);
 }
 
 

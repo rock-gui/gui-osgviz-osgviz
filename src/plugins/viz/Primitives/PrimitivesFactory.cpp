@@ -23,14 +23,14 @@ PrimitivesFactory::~PrimitivesFactory() {}
 Object* PrimitivesFactory::createAxes(){
 	Object *obj = createObject();
 	osg::ref_ptr<osg::Node> content = AxesNode::create();
-	obj->setObject(content);
+	obj->setContent(content);
 	return obj;
 }
 
 Object* PrimitivesFactory::createGrid(int rows,int cols,float dx, float dy, bool show_coordinates, const ::osg::Vec4 &color){
 	Object *obj = createObject();
 	osg::ref_ptr<osg::Node> content = GridNode::create(rows,cols,dx, dy, show_coordinates, color);
-	obj->setObject(content);
+	obj->setContent(content);
 	return obj;
 }
 

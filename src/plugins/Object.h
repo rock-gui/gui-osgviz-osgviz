@@ -20,7 +20,7 @@ public:
 
 	virtual ~Object();
 
-	virtual void setObject(osg::ref_ptr<osg::Node> object);
+	virtual void setContent(osg::ref_ptr<osg::Node> object);
 
     virtual void setRootNode(osg::Group* node);
 

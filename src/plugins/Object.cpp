@@ -21,7 +21,7 @@ Object::~Object() {
 	// TODO Auto-generated destructor stub
 }
 
-void Object::setObject(osg::ref_ptr<osg::Node> object) {
+void Object::setContent(osg::ref_ptr<osg::Node> object) {
 	this->object = object;
 	this->addChild(object);
 	root->addChild(this);
