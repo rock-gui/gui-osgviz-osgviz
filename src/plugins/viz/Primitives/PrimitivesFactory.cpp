@@ -15,7 +15,7 @@ namespace osgviz {
 
 OSGVIZ_PLUGIN(PrimitivesFactory);
 
-PrimitivesFactory::PrimitivesFactory(mars::lib_manager::LibManager *theManager):OsgVizVisualizerPlugin(theManager) {}
+PrimitivesFactory::PrimitivesFactory(lib_manager::LibManager *theManager):OsgVizVisualizerPlugin(theManager) {}
 
 PrimitivesFactory::~PrimitivesFactory() {}
 

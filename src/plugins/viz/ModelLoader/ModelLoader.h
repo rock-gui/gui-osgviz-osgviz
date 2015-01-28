@@ -14,7 +14,7 @@ namespace osgviz {
 
 class ModelLoader : public OsgVizVisualizerPlugin{
 public:
-	ModelLoader(mars::lib_manager::LibManager *theManager);
+	ModelLoader(lib_manager::LibManager *theManager);
 	virtual ~ModelLoader();
 
 	virtual int getLibVersion() const {return 1;};

@@ -15,7 +15,7 @@ namespace osgviz {
 
 class PrimitivesFactory: public OsgVizVisualizerPlugin {
 public:
-	PrimitivesFactory(mars::lib_manager::LibManager *theManager);
+	PrimitivesFactory(lib_manager::LibManager *theManager);
 	virtual ~PrimitivesFactory();
 
 	virtual int getLibVersion() const {return 0;};

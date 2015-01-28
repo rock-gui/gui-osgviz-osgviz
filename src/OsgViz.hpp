@@ -2,7 +2,7 @@
 #define _OSGVIZ_HPP_
 
 #include <iostream>
-#include <mars/lib_manager/LibManager.h>
+#include <lib_manager/LibManager.hpp>
 #include <osg/Group>
 #include <osgViewer/Viewer>
 
@@ -42,13 +42,13 @@ class ViewerFrameThread : public OpenThreads::Thread
 	};
 
 
-	class OsgViz: public mars::lib_manager::LibInterface
+	class OsgViz: public lib_manager::LibInterface
 	{
 		public: 
 
 		static OsgViz* getInstance(int argc = 0,char** argv = NULL);
 
-		OsgViz(mars::lib_manager::LibManager * manager);
+		OsgViz(lib_manager::LibManager * manager);
 
 		OsgViz(int argc, char** argv);
 
@@ -65,6 +65,10 @@ class ViewerFrameThread : public OpenThreads::Thread
 
 
 		void createWindow(bool threaded = false);
+
+		inline int getNumberOfWindows(){
+			return numberOfWindows;
+		}
 
 		template <class VIZPLUGIN> VIZPLUGIN* getVisualizerPlugin(std::string classname){
 			VIZPLUGIN* viz = (VIZPLUGIN*)getVizPlugin(classname,classname);
@@ -86,7 +90,7 @@ class ViewerFrameThread : public OpenThreads::Thread
 		OsgVizPlugin* getVizPlugin(std::string path, std::string name);
 
 		bool createdOwnManager;
-		mars::lib_manager::LibManager *libmanager;
+		lib_manager::LibManager *libmanager;
 
 		osg::ref_ptr<osg::Group> root;
 
@@ -99,6 +103,8 @@ class ViewerFrameThread : public OpenThreads::Thread
 		osg::ref_ptr<osgGA::CameraManipulator> cameraManipulator;
 		int m_argc;
 		char** m_argv;
+
+		int numberOfWindows;
 
 		//std::vector<osgViewer::Viewer *> viewers;
 

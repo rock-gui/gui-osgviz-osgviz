@@ -16,7 +16,7 @@ namespace osgviz {
 class OsgVizDataPlugin: public OsgVizPlugin  {
 public:
 
-	OsgVizDataPlugin(mars::lib_manager::LibManager *theManager):OsgVizPlugin(theManager){};
+	OsgVizDataPlugin(lib_manager::LibManager *theManager):OsgVizPlugin(theManager){};
 
 	virtual ~OsgVizDataPlugin(){};
 

@@ -8,7 +8,7 @@
 #ifndef SRC_PLUGINS_OsgVizPlugin_H_
 #define SRC_PLUGINS_OsgVizPlugin_H_
 
-#include <mars/lib_manager/LibManager.h>
+#include <lib_manager/LibManager.hpp>
 
 #define OSGVIZ_PLUGIN(NAME) \
 	CREATE_LIB(NAME); \
@@ -19,10 +19,10 @@ namespace osgviz {
 
 class OsgViz;
 
-class OsgVizPlugin: public mars::lib_manager::LibInterface  {
+class OsgVizPlugin: public lib_manager::LibInterface  {
 public:
 
-	OsgVizPlugin(mars::lib_manager::LibManager *theManager):LibInterface(theManager){
+	OsgVizPlugin(lib_manager::LibManager *theManager):LibInterface(theManager){
 		libmanager = theManager;
 		parent=NULL;
 	};
@@ -36,7 +36,7 @@ public:
 
     virtual int getLibVersion() const = 0;
 
-    inline mars::lib_manager::LibManager* getLibManager(){
+    inline lib_manager::LibManager* getLibManager(){
     	return libmanager;
     }
 
@@ -55,7 +55,7 @@ protected:
 private:
 
     OsgViz* parent;
-	mars::lib_manager::LibManager *libmanager;
+	lib_manager::LibManager *libmanager;
 
 
 };

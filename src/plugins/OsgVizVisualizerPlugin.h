@@ -20,7 +20,7 @@ namespace osgviz {
 class OsgVizVisualizerPlugin: public OsgVizPlugin {
 public:
 
-	OsgVizVisualizerPlugin(mars::lib_manager::LibManager *theManager):OsgVizPlugin(theManager){
+	OsgVizVisualizerPlugin(lib_manager::LibManager *theManager):OsgVizPlugin(theManager){
 		root = NULL;
 	};
 

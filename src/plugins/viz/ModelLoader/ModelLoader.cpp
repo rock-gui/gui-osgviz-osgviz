@@ -17,7 +17,7 @@ namespace osgviz {
 
 OSGVIZ_PLUGIN(ModelLoader);
 
-ModelLoader::ModelLoader(mars::lib_manager::LibManager *theManager):OsgVizVisualizerPlugin(theManager) {
+ModelLoader::ModelLoader(lib_manager::LibManager *theManager):OsgVizVisualizerPlugin(theManager) {
 
 
 

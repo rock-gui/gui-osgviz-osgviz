@@ -20,7 +20,7 @@ OsgViz* OsgViz::getInstance(int argc,char** argv){
 	return instance;
 }
 
-OsgViz::OsgViz(mars::lib_manager::LibManager * manager):LibInterface(manager)
+OsgViz::OsgViz(lib_manager::LibManager * manager):LibInterface(manager)
 {
 	createdOwnManager = false;
 	init(0,NULL);
@@ -29,7 +29,7 @@ OsgViz::OsgViz(mars::lib_manager::LibManager * manager):LibInterface(manager)
 
 OsgViz::OsgViz(int argc, char** argv):LibInterface(NULL){
 	createdOwnManager = true;
-	libmanager = new mars::lib_manager::LibManager();
+	libmanager = new lib_manager::LibManager();
 	init(argc,argv);
 }
 
@@ -37,6 +37,7 @@ OsgViz::OsgViz(int argc, char** argv):LibInterface(NULL){
 void OsgViz::init(int argc,char** argv){
 	m_argc = argc;
 	m_argv = argv;
+	numberOfWindows = 0;
 	root = new osg::Group();
 	cameraManipulator = new osgGA::TerrainManipulator;
 	XInitThreads();
@@ -60,6 +61,9 @@ OsgViz::~OsgViz(){
 }
 
 void OsgViz::createWindow(bool threaded) {
+
+	numberOfWindows++;
+
 	// For now, we can initialize with 'standard settings'
 	// Standard settings include a standard keyboard mouse
 	// interface as well as default drive, fly and trackball
@@ -98,7 +102,7 @@ OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
 	viz = (OsgVizPlugin*)libmanager->getLibrary(name);
 	if (viz){
 		return viz;
-	}else if (libmanager->loadLibrary(path) == mars::lib_manager::LibManager::LIBMGR_NO_ERROR){
+	}else if (libmanager->loadLibrary(path) == lib_manager::LibManager::LIBMGR_NO_ERROR){
 		OsgVizPlugin* viz = (OsgVizPlugin*)libmanager->acquireLibrary(name);
 		viz->setParent(this);
 		loadedPlugins.push_back(viz);
