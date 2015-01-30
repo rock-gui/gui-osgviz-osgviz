@@ -104,9 +104,14 @@ OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
 		return viz;
 	}else if (libmanager->loadLibrary(path) == lib_manager::LibManager::LIBMGR_NO_ERROR){
 		OsgVizPlugin* viz = (OsgVizPlugin*)libmanager->acquireLibrary(name);
+		if (!viz){
+			fprintf(stderr,"unable to load lib %s\n",name.c_str());
+			return NULL;
+		}
 		viz->setParent(this);
 		loadedPlugins.push_back(viz);
 		return viz;
+
 	}
 	return NULL;
 }
