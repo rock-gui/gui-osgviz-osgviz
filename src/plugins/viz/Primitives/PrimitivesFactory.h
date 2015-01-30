@@ -9,7 +9,6 @@
 #define GUI_OSGVIZ_SRC_PLUGINS_VIZ_PRIMITIVES_PRIMITIVESFACTORY_H_
 
 #include "../../OsgVizVisualizerPlugin.h"
-#include "../../Object.h"
 
 namespace osgviz {
 
