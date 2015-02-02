@@ -64,7 +64,10 @@ class ViewerFrameThread : public OpenThreads::Thread
 	    void init(int argc,char** argv);
 
 
-		void createWindow(bool threaded = false);
+		int createWindow(bool threaded = true);
+
+		void destroyWindow(int id);
+
 
 		inline int getNumberOfWindows(){
 			return numberOfWindows;
@@ -95,11 +98,12 @@ class ViewerFrameThread : public OpenThreads::Thread
 		osg::ref_ptr<osg::Group> root;
 
 		osgViewer::Viewer viewer;
-		ViewerFrameThread* viewerThread;
 
 		private:
 		bool initialized;
 		std::vector< OsgVizPlugin* >loadedPlugins;
+		std::map< int, ViewerFrameThread* >threads;
+
 		osg::ref_ptr<osgGA::CameraManipulator> cameraManipulator;
 		int m_argc;
 		char** m_argv;

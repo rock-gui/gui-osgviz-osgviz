@@ -24,7 +24,6 @@ OsgViz::OsgViz(lib_manager::LibManager * manager):LibInterface(manager)
 {
 	createdOwnManager = false;
 	init(0,NULL);
-	viewerThread = NULL;
 }
 
 OsgViz::OsgViz(int argc, char** argv):LibInterface(NULL){
@@ -54,13 +53,15 @@ OsgViz::~OsgViz(){
 		delete libmanager;
 	}
 
-	if (viewerThread){
-		delete viewerThread;
+	for (std::map< int, ViewerFrameThread* >::iterator it = threads.begin();it != threads.end();it++){
+		destroyWindow(it->first);
 	}
+
+
 
 }
 
-void OsgViz::createWindow(bool threaded) {
+int OsgViz::createWindow(bool threaded) {
 
 	numberOfWindows++;
 
@@ -87,15 +88,25 @@ void OsgViz::createWindow(bool threaded) {
 	// create the windows and start the required threads.
 
 	if (threaded){
-		viewerThread = new ViewerFrameThread (&viewer);
+		ViewerFrameThread* viewerThread = new ViewerFrameThread (&viewer);
 		viewerThread->startThread();
+		threads[numberOfWindows] = viewerThread;
 	}else{
 		viewer.run();
 	}
 
-
-
+	return numberOfWindows;
 }
+
+void OsgViz::destroyWindow(int id){
+	ViewerFrameThread* thread = threads[id];
+	if (thread){
+		thread->cancel();
+		delete thread;
+		threads[id] = NULL;
+	}
+}
+
 
 OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
 	OsgVizPlugin* viz = NULL;

@@ -24,7 +24,7 @@ int main(int argc, char** argv)
 	osgviz::Object* axes = primitivesfactory->createAxes();
 	osgviz::Object* grid = primitivesfactory->createGrid();
 
-	osgViz->createWindow();
+	osgViz->createWindow(false);
 
 
 	delete osgViz;
