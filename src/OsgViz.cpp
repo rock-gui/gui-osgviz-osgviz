@@ -127,6 +127,20 @@ OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
 	return NULL;
 }
 
+
+void OsgViz::lockWindows(){
+	for (std::map< int, ViewerFrameThread* >::iterator it = threads.begin();it != threads.end();it++){
+		it->second->lock();
+	}
+}
+void OsgViz::unlockWindows(){
+	for (std::map< int, ViewerFrameThread* >::iterator it = threads.begin();it != threads.end();it++){
+		it->second->unlock();
+	}
+}
+
+
+
 const std::string OsgViz::getLibName() const {
 	return "OsgViz";
 }

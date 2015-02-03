@@ -1,6 +1,9 @@
+rock_find_cmake(Boost REQUIRED system)
+
 rock_library(osgViz
     SOURCES OsgViz.cpp
-    HEADERS OsgViz.hpp 
+    HEADERS OsgViz.hpp
+    LIBS ${Boost_SYSTEM_LIBRARY}
     DEPS_PKGCONFIG lib_manager openscenegraph)
 
 rock_library(osgVizPlugin
@@ -28,12 +31,6 @@ rock_library(ModelLoader
     HEADERS plugins/viz/ModelLoader/ModelLoader.h
     DEPS osgVizPlugin)
     
-
-
-
-
-
-
 
 rock_executable(osgViz_bin Main.cpp
     DEPS osgViz)

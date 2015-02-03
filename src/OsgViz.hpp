@@ -5,8 +5,11 @@
 #include <lib_manager/LibManager.hpp>
 #include <osg/Group>
 #include <osgViewer/Viewer>
+#include <boost/thread/mutex.hpp>
 
 #include "plugins/OsgVizPlugin.h"
+
+#include <stdio.h>
 
 namespace osgviz
 {
@@ -16,7 +19,13 @@ class ViewerFrameThread : public OpenThreads::Thread
 	    public:
 
 	        ViewerFrameThread(osgViewer::ViewerBase* viewerBase):
-	            _viewerBase(viewerBase){}
+	            _viewerBase(viewerBase){
+
+	        	if (!_viewerBase->isRealized()){
+	        		_viewerBase->realize();
+	        	}
+
+	        }
 
 	        ~ViewerFrameThread()
 	        {
@@ -35,10 +44,28 @@ class ViewerFrameThread : public OpenThreads::Thread
 
 	        void run()
 	        {
-	            int result = _viewerBase->run();
+
+	        	while (!_viewerBase->done()){
+					mutex.lock();
+					//int result = _viewerBase->run();
+					_viewerBase->frame();
+					mutex.unlock();
+					//give others a chance to lock
+					usleep(10000);
+	        	}
 	        }
 
+	        void lock(){
+	        	mutex.lock();
+	        }
+	        void unlock(){
+	        	 mutex.unlock();
+	        }
+
+	    private:
 	        osg::ref_ptr<osgViewer::ViewerBase> _viewerBase;
+	        OpenThreads::Mutex mutex;
+
 	};
 
 
@@ -67,6 +94,11 @@ class ViewerFrameThread : public OpenThreads::Thread
 		int createWindow(bool threaded = true);
 
 		void destroyWindow(int id);
+
+
+		void lockWindows();
+		void unlockWindows();
+
 
 
 		inline int getNumberOfWindows(){

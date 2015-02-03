@@ -7,6 +7,8 @@
 
 
 #include <osg/Node>
+#include <osgText/Font>
+#include <osgText/Text>
 #include <osg/PositionAttitudeTransform>
 
 #ifndef SRC_PLUGINS_MODELVIEW_H_
@@ -27,6 +29,12 @@ public:
     inline void setName(std::string name){
     	this->name = name;
     }
+
+    inline std::string getName(){
+		return this->name;
+	}
+
+    void displayName();
 
 protected:
     friend class ModelViewFactory;

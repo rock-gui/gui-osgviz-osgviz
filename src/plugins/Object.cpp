@@ -33,6 +33,16 @@ void Object::setRootNode(osg::Group* node){
 	root->addChild(this);
 }
 
+void Object::displayName(){
+	osg::ref_ptr< osg::Geode > geode = new osg::Geode();
+	osg::ref_ptr< osgText::Text > text = new osgText::Text();
+	text->setText(name);
+	text->setCharacterSize(0.1f);
+	geode->addDrawable(text);
+	this->addChild(geode);
+
+}
+
 
 } /* namespace osgviz */
 
