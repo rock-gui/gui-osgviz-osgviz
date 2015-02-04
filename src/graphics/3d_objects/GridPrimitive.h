@@ -30,7 +30,7 @@
 
 #include <osg/Group>
 
-#include "GraphicsWidget.h"
+#include "../GraphicsWindow.h"
 
 namespace mars {
   namespace graphics {
@@ -38,7 +38,7 @@ namespace mars {
     class GridPrimitive : public osg::Group
     {
     public:
-      GridPrimitive(GraphicsWidget *gw);
+      GridPrimitive(GraphicsWindow *gw);
     };
 
   } // end of namespace graphics

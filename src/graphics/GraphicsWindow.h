@@ -58,15 +58,15 @@ namespace mars {
     /**
      * Widget with OpenGL context and event handling.
      */
-    class GraphicsWidget : public osgGA::GUIEventHandler,
+    class GraphicsWindow : public osgGA::GUIEventHandler,
                            public interfaces::GraphicsWindowInterface,
                            public interfaces::GraphicsGuiInterface {
     public:
-      GraphicsWidget(void *parent, osg::Group *scene,
+      GraphicsWindow(void *parent, osg::Group *scene,
                      unsigned long id, bool hasRTTWidget = 0,
                      int f=0, GraphicsManager *gm=0);
-      ~GraphicsWidget();
-      void initializeOSG(void *data = 0, GraphicsWidget* shared = 0,
+      ~GraphicsWindow();
+      void initializeOSG(void *data = 0, GraphicsWindow* shared = 0,
                          int width = 0, int height = 0);
 
       unsigned long getID(void);
@@ -298,7 +298,7 @@ namespace mars {
       virtual void initialize() {};
       virtual osg::ref_ptr<osg::GraphicsContext> createWidgetContext(
                                                                      void* parent, osg::ref_ptr<osg::GraphicsContext::Traits> traits);
-      void createContext(void* parent, GraphicsWidget* shared, int width, int height);
+      void createContext(void* parent, GraphicsWindow* shared, int width, int height);
 
       // implements osgGA::GUIEventHandler::handle
       bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
@@ -325,7 +325,7 @@ namespace mars {
 
       void applyResize();
 
-    }; // end of class GraphicsWidget
+    }; // end of class GraphicsWindow
 
   } // end of namespace graphics 
 } // end of namespace mars

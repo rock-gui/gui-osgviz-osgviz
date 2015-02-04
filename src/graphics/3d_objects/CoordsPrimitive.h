@@ -28,12 +28,11 @@
 #ifndef MARS_GRAPHICS_COORDSPRIMITIVE_H
 #define MARS_GRAPHICS_COORDSPRIMITIVE_H
 
-#include "GraphicsWidget.h"
-
 #include <mars/utils/Vector.h>
 
 #include <string>
 #include <osg/Group>
+#include "../GraphicsWindow.h"
 
 namespace mars {
   namespace graphics {
@@ -48,10 +47,10 @@ namespace mars {
        * @param transformFlag If set false the main coordination frame will be build
        *
        */
-      CoordsPrimitive(GraphicsWidget *gw, const mars::utils::Vector &size,
+      CoordsPrimitive(GraphicsWindow *gw, const mars::utils::Vector &size,
                       std::string object_path, bool transformFlag=true);
 
-      CoordsPrimitive(GraphicsWidget *gw, std::string object_path);
+      CoordsPrimitive(GraphicsWindow *gw, std::string object_path);
     }; // end of class CoordsPrimitive
 
   } // end of namespace graphics

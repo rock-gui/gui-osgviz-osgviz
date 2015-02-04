@@ -50,12 +50,12 @@ namespace mars {
     using mars::utils::Quaternion;
     using mars::utils::Color;
 
-    OSGDrawItem::OSGDrawItem(GraphicsWidget *gw)
+    OSGDrawItem::OSGDrawItem(GraphicsWindow *gw)
       : osg::Group(), gw_(gw), texture_(NULL) {
 
     }
 
-    OSGDrawItem::OSGDrawItem(GraphicsWidget *gw, const draw_item &di,
+    OSGDrawItem::OSGDrawItem(GraphicsWindow *gw, const draw_item &di,
                              std::string fontPath)
       : osg::Group(), type_(di.type), gw_(gw), texture_(NULL) {
 

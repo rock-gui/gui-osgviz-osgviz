@@ -38,7 +38,7 @@ namespace mars {
     using mars::utils::Vector;
     using mars::utils::Color;
 
-    GridPrimitive::GridPrimitive(GraphicsWidget *gw)
+    GridPrimitive::GridPrimitive(GraphicsWindow *gw)
     {
       double x, y;
       Vector start, end;

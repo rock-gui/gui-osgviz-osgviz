@@ -45,7 +45,7 @@
 namespace mars {
   namespace graphics {
 
-    class GraphicsWidget;
+    class GraphicsWindow;
     class GraphicsManager;
 
     /**
@@ -101,7 +101,7 @@ namespace mars {
     public:
       GuiHelper(GraphicsManager *gi);
 
-      //void setGraphicsWidget(GraphicsWidget *widget);
+      //void setGraphicsWidget(GraphicsWindow *widget);
       //bool validateGraphicsWidget(void);
 
       static void clearStates(osg::ref_ptr<osg::Node> node);
@@ -129,7 +129,7 @@ namespace mars {
       osg::Geometry *my_geo;
       osg::ref_ptr<osg::Vec3Array> my_v3;
       GraphicsManager *gi;
-      //GraphicsWidget *gw;
+      //GraphicsWindow *gw;
       //for compatibility
       mars::interfaces::GraphicData gs;
       static std::vector<nodeFileStruct> nodeFiles;

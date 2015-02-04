@@ -28,8 +28,6 @@
 #ifndef MARS_GRAPHICS_OSGDRAWITEM_H
 #define MARS_GRAPHICS_OSGDRAWITEM_H
 
-#include "GraphicsWidget.h"
-
 #include <mars/interfaces/MARSDefs.h>
 #include <mars/utils/Vector.h>
 #include <mars/utils/Color.h>
@@ -39,6 +37,7 @@
 #include <string>
 #include <vector>
 #include <osg/Group>
+#include "../GraphicsWindow.h"
 
 namespace mars {
   namespace graphics {
@@ -52,11 +51,11 @@ namespace mars {
       /**
        * Constructor, does not create geometry.
        */
-      OSGDrawItem(GraphicsWidget *gw);
+      OSGDrawItem(GraphicsWindow *gw);
       /**
        * Constructor, creates geometry from draw_item instance.
        */
-      OSGDrawItem(GraphicsWidget *gw, const interfaces::draw_item &di,
+      OSGDrawItem(GraphicsWindow *gw, const interfaces::draw_item &di,
                   std::string font_path);
 
       /**
@@ -137,13 +136,13 @@ namespace mars {
 
       static void createSphere(OSGDrawItem *di, double rad);
 
-      GraphicsWidget* gw() {
+      GraphicsWindow* gw() {
         return gw_;
       }
 
     private:
       interfaces::DrawType type_;
-      GraphicsWidget *gw_;
+      GraphicsWindow *gw_;
       osg::ref_ptr<osg::Texture2D> texture_;
     }; // end of class OSGDrawItem
 

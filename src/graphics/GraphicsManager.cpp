@@ -55,7 +55,6 @@
 #include "wrapper/OSGDrawItem.h"
 #include "wrapper/OSGHudElementStruct.h"
 
-#include "GraphicsWidget.h"
 #include "GraphicsViewer.h"
 #include "HUD.h"
 
@@ -64,6 +63,7 @@
 #include <iostream>
 #include <cassert>
 #include <stdexcept>
+#include "GraphicsWindow.h"
 
 #define SINGLE_THREADED
 
@@ -129,7 +129,7 @@ namespace mars {
 //
 //      resources_path.propertyType = cfg_manager::stringProperty;
 //      resources_path.propertyIndex = 0;
-      resources_path = ".";
+      resources_path = MARS_GRAPHICS_DEFAULT_RESOURCES_PATH;
 
 //      if(cfg) {
 
@@ -441,7 +441,7 @@ namespace mars {
 
     }
 
-    void GraphicsManager::setWidget(GraphicsWidget *widget) {
+    void GraphicsManager::setWidget(GraphicsWindow *widget) {
       //guiHelper->setGraphicsWidget(widget);
     }
 
@@ -461,7 +461,7 @@ namespace mars {
 
     unsigned long GraphicsManager::new3DWindow(void *myQTWidget, bool rtt,
                                                int width, int height, const std::string &name) {
-      GraphicsWidget *gw;
+      GraphicsWindow *gw;
 
 //      if (graphicsWindows.size() > 0) {
 //        gw = QtOsgMixGraphicsWidget::createInstance(myQTWidget, scene.get(),
@@ -477,7 +477,7 @@ namespace mars {
 //
         // this will open an osg widget without qt wrapping
         
-        gw = new GraphicsWidget(myQTWidget, scene.get(),
+        gw = new GraphicsWindow(myQTWidget, scene.get(),
                                 next_window_id++, 0,
                                                     0, this);
         gw->initializeOSG(myQTWidget, 0, width, height);
@@ -509,7 +509,7 @@ namespace mars {
 
     void* GraphicsManager::getView(unsigned long id){
 
-      GraphicsWidget* gw=getGraphicsWindow(id);
+      GraphicsWindow* gw=getGraphicsWindow(id);
 
       if(gw == NULL){
         return gw;
@@ -519,7 +519,7 @@ namespace mars {
 
     void GraphicsManager::deactivate3DWindow(unsigned long id) {
 
-      GraphicsWidget* gw=getGraphicsWindow(id);
+      GraphicsWindow* gw=getGraphicsWindow(id);
 
       if(gw == NULL){
         return;
@@ -530,7 +530,7 @@ namespace mars {
 
     void GraphicsManager::activate3DWindow(unsigned long id) {
 
-      GraphicsWidget* gw=getGraphicsWindow(id);
+      GraphicsWindow* gw=getGraphicsWindow(id);
 
       if(gw == NULL){
         return;
@@ -539,7 +539,7 @@ namespace mars {
     }
 
     GraphicsWindowInterface* GraphicsManager::get3DWindow(unsigned long id) const {
-      std::vector<GraphicsWidget*>::const_iterator iter;
+      std::vector<GraphicsWindow*>::const_iterator iter;
 
       for(iter=graphicsWindows.begin(); iter!=graphicsWindows.end(); iter++) {
         if((*iter)->getID() == id) {
@@ -550,7 +550,7 @@ namespace mars {
     }
 
     GraphicsWindowInterface* GraphicsManager::get3DWindow(const std::string &name) const {
-      std::vector<GraphicsWidget*>::const_iterator iter;
+      std::vector<GraphicsWindow*>::const_iterator iter;
 
       for(iter=graphicsWindows.begin(); iter!=graphicsWindows.end(); iter++) {
         if((*iter)->getName().compare(name) == 0) {
@@ -562,7 +562,7 @@ namespace mars {
 
 
     void GraphicsManager::remove3DWindow(unsigned long id) {
-      std::vector<GraphicsWidget*>::iterator iter;
+      std::vector<GraphicsWindow*>::iterator iter;
 
       for(iter=graphicsWindows.begin(); iter!=graphicsWindows.end(); iter++) {
         if((*iter)->getID() == id) {
@@ -573,7 +573,7 @@ namespace mars {
     }
 
     void GraphicsManager::removeGraphicsWidget(unsigned long id) {
-      std::vector<GraphicsWidget*>::iterator iter;
+      std::vector<GraphicsWindow*>::iterator iter;
 
       for(iter=graphicsWindows.begin(); iter!=graphicsWindows.end(); iter++) {
         if((*iter)->getID() == id) {
@@ -585,8 +585,8 @@ namespace mars {
     }
 
 
-    GraphicsWidget* GraphicsManager::getGraphicsWindow(unsigned long id) const {
-      std::vector<GraphicsWidget*>::const_iterator iter;
+    GraphicsWindow* GraphicsManager::getGraphicsWindow(unsigned long id) const {
+      std::vector<GraphicsWindow*>::const_iterator iter;
 
       for(iter=graphicsWindows.begin(); iter!=graphicsWindows.end(); iter++) {
         if((*iter)->getID() == id) {
@@ -597,7 +597,7 @@ namespace mars {
     }
 
     void GraphicsManager::getList3DWindowIDs(std::vector<unsigned long> *ids) const {
-      std::vector<GraphicsWidget*>::const_iterator iter;
+      std::vector<GraphicsWindow*>::const_iterator iter;
 
       for(iter=graphicsWindows.begin(); iter!=graphicsWindows.end(); iter++) {
         ids->push_back((*iter)->getID());
@@ -606,7 +606,7 @@ namespace mars {
 
     void GraphicsManager::draw() {
       std::list<interfaces::GraphicsUpdateInterface*>::iterator it;
-      std::vector<GraphicsWidget*>::iterator iter;
+      std::vector<GraphicsWindow*>::iterator iter;
 
       for(it=graphicsUpdateObjects.begin();
           it!=graphicsUpdateObjects.end(); ++it) {
@@ -637,7 +637,7 @@ namespace mars {
     }
 
     void* GraphicsManager::getQTWidget(unsigned long id) const {
-      std::vector<GraphicsWidget*>::const_iterator iter;
+      std::vector<GraphicsWindow*>::const_iterator iter;
 
       for (iter = graphicsWindows.begin(); iter != graphicsWindows.end(); iter++) {
         if ((*iter)->getID() == id) {
@@ -648,7 +648,7 @@ namespace mars {
     }
 
     void GraphicsManager::showQTWidget(unsigned long id) {
-      std::vector<GraphicsWidget*>::iterator iter;
+      std::vector<GraphicsWindow*>::iterator iter;
 
       for(iter=graphicsWindows.begin(); iter!=graphicsWindows.end(); iter++) {
         if((*iter)->getID() == id) {
@@ -660,7 +660,7 @@ namespace mars {
     void GraphicsManager::setGraphicsWindowGeometry(unsigned long id,
                                                     int top, int left,
                                                     int width, int height) {
-      std::vector<GraphicsWidget*>::iterator iter;
+      std::vector<GraphicsWindow*>::iterator iter;
 
       for(iter=graphicsWindows.begin(); iter!=graphicsWindows.end(); iter++) {
         if((*iter)->getID() == id) {
@@ -672,7 +672,7 @@ namespace mars {
     void GraphicsManager::getGraphicsWindowGeometry(unsigned long id,
                                                     int *top, int *left,
                                                     int *width, int *height) const {
-      std::vector<GraphicsWidget*>::const_iterator iter;
+      std::vector<GraphicsWindow*>::const_iterator iter;
 
       for(iter=graphicsWindows.begin(); iter!=graphicsWindows.end(); iter++) {
         if((*iter)->getID() == id) {
@@ -1228,7 +1228,7 @@ namespace mars {
 
       if (elem) {
         hudElements.push_back(elem);
-        for (vector<GraphicsWidget*>::iterator iter = graphicsWindows.begin();
+        for (vector<GraphicsWindow*>::iterator iter = graphicsWindows.begin();
              iter!=graphicsWindows.end(); iter++) {
           (*iter)->addHUDElement(elem->getHUDElement());
         }
@@ -1243,7 +1243,7 @@ namespace mars {
       HUDElement* elem = findHUDElement(id);
 
       if (elem) {
-        for (vector<GraphicsWidget*>::iterator graphicsWidgetIterator = graphicsWindows.begin(); graphicsWidgetIterator!=graphicsWindows.end(); graphicsWidgetIterator++) {
+        for (vector<GraphicsWindow*>::iterator graphicsWidgetIterator = graphicsWindows.begin(); graphicsWidgetIterator!=graphicsWindows.end(); graphicsWidgetIterator++) {
           (*graphicsWidgetIterator)->removeHUDElement(elem);
         }
 
@@ -1266,7 +1266,7 @@ namespace mars {
                                      (osg::Node*)node);
       if (elem) {
         hudElements.push_back(elem);
-        for (vector<GraphicsWidget*>::iterator iter = graphicsWindows.begin();
+        for (vector<GraphicsWindow*>::iterator iter = graphicsWindows.begin();
              iter!=graphicsWindows.end(); iter++) {
           (*iter)->addHUDElement(elem->getHUDElement());
         }
@@ -1321,7 +1321,7 @@ namespace mars {
                                                   unsigned long window_id,
                                                   bool depthComponent) {
       HUDTexture *elem = (HUDTexture*) findHUDElement(id);
-      std::vector<GraphicsWidget*>::iterator jter;
+      std::vector<GraphicsWindow*>::iterator jter;
 
       for(jter=graphicsWindows.begin(); jter!=graphicsWindows.end(); jter++) {
         if((*jter)->getID() == window_id) {
@@ -1442,7 +1442,7 @@ namespace mars {
       if(win_id < 1 || mode == 0) return;
       std::vector<GraphicsEventClient*>::iterator jter;
 
-      GraphicsWidget* gw = getGraphicsWindow(win_id);
+      GraphicsWindow* gw = getGraphicsWindow(win_id);
 
       std::vector<osg::Node*> selectednodes = gw->getPickedObjects();
       if(selectednodes.empty()) return;
@@ -1813,7 +1813,7 @@ namespace mars {
     void*  GraphicsManager::getWindowManager(int id){
 
 
-      GraphicsWidget* gw=getGraphicsWindow(id);
+      GraphicsWindow* gw=getGraphicsWindow(id);
 
       if(gw == NULL){
         std::cerr<<"window does not exist!"<<std::endl;
@@ -1900,5 +1900,3 @@ namespace mars {
   } // end of namespace graphics
 } // end of namespace mars
 
-DESTROY_LIB(mars::graphics::GraphicsManager);
-CREATE_LIB(mars::graphics::GraphicsManager);

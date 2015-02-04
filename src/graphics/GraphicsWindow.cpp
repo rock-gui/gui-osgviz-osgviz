@@ -18,7 +18,6 @@
  *
  */
 
-#include "GraphicsWidget.h"
 #include "HUD.h"
 #include "GraphicsManager.h"
 
@@ -33,6 +32,7 @@
 #include <osgGA/FlightManipulator>
 #include <osgGA/TerrainManipulator>
 #include <osgWidget/Frame>
+#include "GraphicsWindow.h"
 
 #define CULL_LAYER (1 << (widgetID-1))
 
@@ -60,7 +60,7 @@ namespace mars {
     };
 
 
-    GraphicsWidget::GraphicsWidget(void *parent,
+    GraphicsWindow::GraphicsWindow(void *parent,
                                    osg::Group* scene, unsigned long id,
                                    bool isRTTWidget, int f,
                                    GraphicsManager *gm):
@@ -92,7 +92,7 @@ namespace mars {
       view = new osgViewer::View;
     }
 
-    GraphicsWidget::~GraphicsWidget() {
+    GraphicsWindow::~GraphicsWindow() {
       /* if the destructor is called from somewhere else than osg
        * (e.g. from the QWidget) we have to increment the referece counter
        * to prevent osg from calling the destructor one more time.
@@ -103,7 +103,7 @@ namespace mars {
       delete myHUD;
     }
 
-    int GraphicsWidget::addOsgWindow(osgWidget::Window* wnd){
+    int GraphicsWindow::addOsgWindow(osgWidget::Window* wnd){
       this->_osgWidgetWindowCnt++;
       int id= _osgWidgetWindowCnt;
 
@@ -120,7 +120,7 @@ namespace mars {
     }
 
 
-    bool GraphicsWidget::setFont(int id,const std::string &fontname){
+    bool GraphicsWindow::setFont(int id,const std::string &fontname){
       osg::ref_ptr<osgWidget::Widget> wnd = getWidgetById(id);
       if(wnd.valid()){
         osgWidget::Label* label = dynamic_cast<osgWidget::Label*>(wnd.get());
@@ -132,7 +132,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::setFontColor(int id,float r, float g,float b,float a){
+    bool GraphicsWindow::setFontColor(int id,float r, float g,float b,float a){
       osg::ref_ptr<osgWidget::Widget> wnd = getWidgetById(id);
       if(wnd.valid()){
         osgWidget::Label* label = dynamic_cast<osgWidget::Label*>(wnd.get());
@@ -144,7 +144,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::setFontSize(int id,int size){
+    bool GraphicsWindow::setFontSize(int id,int size){
       osg::ref_ptr<osgWidget::Widget> wnd = getWidgetById(id);
       if(wnd.valid()){
         osgWidget::Label* label = dynamic_cast<osgWidget::Label*>(wnd.get());
@@ -156,7 +156,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::createStyle(const std::string& name,const std::string &style){
+    bool GraphicsWindow::createStyle(const std::string& name,const std::string &style){
 
       osg::ref_ptr<osgWidget::WindowManager> wm = getOrCreateWindowManager();
       if(wm.valid()){
@@ -167,7 +167,7 @@ namespace mars {
       return false;
 
     }
-    bool GraphicsWidget::setSize(int id,float x, float y){
+    bool GraphicsWindow::setSize(int id,float x, float y){
       osg::ref_ptr<osgWidget::Window> wnd = getWindowById(id);
       if(!wnd.valid()){
         osg::ref_ptr<osgWidget::Widget> wd = getWidgetById(id);
@@ -184,7 +184,7 @@ namespace mars {
     }
 
 
-    bool GraphicsWidget::setStyle(int id,const std::string &styleName){
+    bool GraphicsWindow::setStyle(int id,const std::string &styleName){
       cerr << " GraphicsWidget::setStyle " << styleName << endl;
       osg::ref_ptr<osgWidget::Window> wnd = getWindowById(id);
       if(!wnd.valid()){
@@ -202,7 +202,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::hideWindow(int wndId){
+    bool GraphicsWindow::hideWindow(int wndId){
       osg::ref_ptr<osgWidget::Window> wnd = getWindowById(wndId);
       osg::ref_ptr<osgWidget::WindowManager> wm = getOrCreateWindowManager();
 
@@ -212,7 +212,7 @@ namespace mars {
 
       return false;
     }
-    bool GraphicsWidget::deleteWidget(int wdgId)
+    bool GraphicsWindow::deleteWidget(int wdgId)
     {
       osg::ref_ptr<osgWidget::Widget> wd = getWidgetById(wdgId);
       if(wd.valid()){
@@ -228,7 +228,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::deleteWindow(int wndId){
+    bool GraphicsWindow::deleteWindow(int wndId){
       osg::ref_ptr<osgWidget::Window> wnd = getWindowById(wndId);
       osg::ref_ptr<osgWidget::WindowManager> wm = getOrCreateWindowManager();
       if(wnd.valid() && wm.valid()){
@@ -251,19 +251,19 @@ namespace mars {
 
       return false;
     }
-    int GraphicsWidget::createInput(const std::string& name, const std::string& text, int count)
+    int GraphicsWindow::createInput(const std::string& name, const std::string& text, int count)
     {
       osg::ref_ptr<osgWidget::Label> widget =   new osgWidget::Input(name,text,count);
       return addOsgWidget(widget);
     }
 
-    int GraphicsWidget::createLabel(const std::string &name,const std::string &text){
+    int GraphicsWindow::createLabel(const std::string &name,const std::string &text){
 
       osg::ref_ptr<osgWidget::Label> widget =   new osgWidget::Label(name,text);
       return addOsgWidget(widget);
     }
 
-    bool GraphicsWidget::setAnchorVertical(int id,int va){
+    bool GraphicsWindow::setAnchorVertical(int id,int va){
       osg::ref_ptr<osgWidget::Window> wnd = getWindowById(id);
       if(wnd.valid()){
         wnd->setAnchorVertical( (osgWidget::Window::VerticalAnchor) (va+1) );
@@ -272,7 +272,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::setAnchorHorizontal(int id,int ha){
+    bool GraphicsWindow::setAnchorHorizontal(int id,int ha){
       osg::ref_ptr<osgWidget::Window> wnd = getWindowById(id);
       if(wnd.valid()){
         wnd->setAnchorHorizontal((osgWidget::Window::HorizontalAnchor) (ha+1));
@@ -281,7 +281,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::setAlignHorizontal(int id,int h){
+    bool GraphicsWindow::setAlignHorizontal(int id,int h){
       osg::ref_ptr<osgWidget::Widget> wd = getWidgetById(id);
       if(wd.valid()){
         wd->setAlignHorizontal((osgWidget::Widget::HorizontalAlignment)h);
@@ -289,7 +289,7 @@ namespace mars {
       }
       return false;
     }
-    bool GraphicsWidget::setAlignVertical(int id, int v){
+    bool GraphicsWindow::setAlignVertical(int id, int v){
 
       osg::ref_ptr<osgWidget::Widget> wd = getWidgetById(id);
       if(wd.valid()){
@@ -298,7 +298,7 @@ namespace mars {
       }
       return false;
     }
-    bool GraphicsWidget::getAlignHorizontal(int id,int &h){
+    bool GraphicsWindow::getAlignHorizontal(int id,int &h){
 
       osg::ref_ptr<osgWidget::Widget> wd = getWidgetById(id);
       if(wd.valid()){
@@ -307,7 +307,7 @@ namespace mars {
       }
       return false;
     }
-    bool GraphicsWidget::getAlignVertical(int id, int &v){
+    bool GraphicsWindow::getAlignVertical(int id, int &v){
 
       osg::ref_ptr<osgWidget::Widget> wd = getWidgetById(id);
       if(wd.valid()){
@@ -317,7 +317,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::getLayer(int id, int& layer)
+    bool GraphicsWindow::getLayer(int id, int& layer)
     {
       osg::ref_ptr<osgWidget::Widget> wd = getWidgetById(id);
       if(wd.valid()){
@@ -326,7 +326,7 @@ namespace mars {
       }
       return false;
     }
-    bool GraphicsWidget::setLayer(int id, int layer, int offset)
+    bool GraphicsWindow::setLayer(int id, int layer, int offset)
     {
       osg::ref_ptr<osgWidget::Widget> wd = getWidgetById(id);
       if(wd.valid()){
@@ -338,7 +338,7 @@ namespace mars {
 
 
 
-    bool GraphicsWidget::addWidgetToWindow(int window, int widget, int x, int y)
+    bool GraphicsWindow::addWidgetToWindow(int window, int widget, int x, int y)
     {
       osg::ref_ptr<osgWidget::Window> wnd = getWindowById(window);
       osg::ref_ptr<osgWidget::Widget> wd = getWidgetById(widget);
@@ -381,7 +381,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::addWidgetToWindow(int window,int widget,float x, float y){
+    bool GraphicsWindow::addWidgetToWindow(int window,int widget,float x, float y){
       osg::ref_ptr<osgWidget::Window> wnd = getWindowById(window);
       osg::ref_ptr<osgWidget::Widget> wd = getWidgetById(widget);
 
@@ -396,7 +396,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::addWidgetToWindow(int window, int widget)
+    bool GraphicsWindow::addWidgetToWindow(int window, int widget)
     {
       osg::ref_ptr<osgWidget::Window> wnd = getWindowById(window);
       osg::ref_ptr<osgWidget::Widget> wd = getWidgetById(widget);
@@ -411,7 +411,7 @@ namespace mars {
       return false;
     }
 
-    int GraphicsWidget::addOsgWidget(osgWidget::Widget *wid){
+    int GraphicsWindow::addOsgWidget(osgWidget::Widget *wid){
       this->_osgWidgetWindowCnt++;
       int id= _osgWidgetWindowCnt;
       osg::ref_ptr<osgWidget::Widget> wnd = getWidgetById(id);
@@ -424,13 +424,13 @@ namespace mars {
       }
       return id;
     }
-    int GraphicsWidget::createWidget(const std::string &name,float sizex,float sizey){
+    int GraphicsWindow::createWidget(const std::string &name,float sizex,float sizey){
       osg::ref_ptr<osgWidget::Widget> widget =   new osgWidget::Widget(name,sizex,sizey);
       return addOsgWidget(widget.get());
 
     }
 
-    bool GraphicsWidget::setColor(int id, float r, float g, float b, float a)
+    bool GraphicsWindow::setColor(int id, float r, float g, float b, float a)
     {
       osg::ref_ptr<osgWidget::Window> wnd = getWindowById(id);
       if(!wnd.valid()){
@@ -446,7 +446,7 @@ namespace mars {
       return false;
     }
 
-    osgWidget::Widget* GraphicsWidget::getWidgetById(int wdId){
+    osgWidget::Widget* GraphicsWindow::getWidgetById(int wdId){
       WidgetIdMapType::iterator iter= _osgWidgetIdMap.find(wdId);
       if(iter != _osgWidgetIdMap.end() ){
         return (*iter).second.get();
@@ -454,7 +454,7 @@ namespace mars {
       return NULL;
     }
 
-    osgWidget::Window* GraphicsWidget::getWindowById(int wndId){
+    osgWidget::Window* GraphicsWindow::getWindowById(int wndId){
       WindowIdMapType::iterator iter= _osgWindowIdMap.find(wndId);
       if(iter != _osgWindowIdMap.end() ){
         return (*iter).second.get();
@@ -463,7 +463,7 @@ namespace mars {
       return NULL;
 
     }
-    bool GraphicsWidget::windowSetPosition(int wndId, float x, float y)
+    bool GraphicsWindow::windowSetPosition(int wndId, float x, float y)
     {
       osg::ref_ptr<osgWidget::Window> wnd = getWindowById(wndId);
       if(wnd.valid()){
@@ -473,7 +473,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::showWindow(int wndId){
+    bool GraphicsWindow::showWindow(int wndId){
       osg::ref_ptr<osgWidget::Window> wnd = getWindowById(wndId);
       osg::ref_ptr<osgWidget::WindowManager> wm = getOrCreateWindowManager();
       if(wnd.valid() && wm.valid()){
@@ -489,7 +489,7 @@ namespace mars {
 
     }
 
-    bool GraphicsWidget::setCanFill(int id, bool state){
+    bool GraphicsWindow::setCanFill(int id, bool state){
       osg::ref_ptr<osgWidget::Widget> wd = getWidgetById(id);
       if(wd.valid()){
         wd->setCanFill(state);
@@ -497,7 +497,7 @@ namespace mars {
       }
       return false;
     }
-    bool GraphicsWidget::setShadow(int id,float intensity){
+    bool GraphicsWindow::setShadow(int id,float intensity){
       osg::ref_ptr<osgWidget::Widget> wd = getWidgetById(id);
       if(wd.valid()){
         osgWidget::Label *label = dynamic_cast<osgWidget::Label*>( wd.get() );
@@ -508,7 +508,7 @@ namespace mars {
       }
       return false;
     }
-    bool GraphicsWidget::addSize(int id, float x, float y){
+    bool GraphicsWindow::addSize(int id, float x, float y){
       osg::ref_ptr<osgWidget::Widget> wd = getWidgetById(id);
       if(wd.valid()){
         wd->addSize(x,y);
@@ -517,7 +517,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::addColor(int id,float r,float g,float b,float a){
+    bool GraphicsWindow::addColor(int id,float r,float g,float b,float a){
       cerr << "in add color" << endl;
 
       osg::ref_ptr<osgWidget::Window> wnd = getWindowById(id);
@@ -535,7 +535,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::setLabel(int id, const std::string& text)
+    bool GraphicsWindow::setLabel(int id, const std::string& text)
     {
       osg::ref_ptr<osgWidget::Widget> wd = getWidgetById(id);
       if(wd.valid()){
@@ -548,7 +548,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::manageClickEvent(osgWidget::Event& event)
+    bool GraphicsWindow::manageClickEvent(osgWidget::Event& event)
     {
 
       cerr << "seaching 4 callback!" << endl;
@@ -575,7 +575,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::setImage(int id, const std::string& path)
+    bool GraphicsWindow::setImage(int id, const std::string& path)
     {
       osg::ref_ptr<osg::Image> image = osgDB::readImageFile(path);
       if(!image.valid()){
@@ -599,7 +599,7 @@ namespace mars {
 
 
 
-    bool GraphicsWidget::addEventToWidget(int id,guiClickCallBack function,guiClickCallBackBind *bindptr, osgWidget::EventType type){
+    bool GraphicsWindow::addEventToWidget(int id,guiClickCallBack function,guiClickCallBackBind *bindptr, osgWidget::EventType type){
       osg::ref_ptr<osgWidget::Window> wnd = getWindowById(id);
       osg::ref_ptr<osgWidget::Widget> wd = getWidgetById(id);
 
@@ -621,12 +621,12 @@ namespace mars {
 #endif
         if(wnd.valid()){
           wnd->setEventMask( wnd->getEventMask()| type);
-          wnd->addCallback( new osgWidget::Callback(&GraphicsWidget::manageClickEvent,this, type,(void*)&wcb->back()));
+          wnd->addCallback( new osgWidget::Callback(&GraphicsWindow::manageClickEvent,this, type,(void*)&wcb->back()));
 
         }else{
           cout << "addCallback to Widget !!" << endl;
           wd->setEventMask(osgWidget::EVENT_ALL);
-          wd->addCallback( new osgWidget::Callback(&GraphicsWidget::manageClickEvent,this, type,(void*)&wcb->back()));
+          wd->addCallback( new osgWidget::Callback(&GraphicsWindow::manageClickEvent,this, type,(void*)&wcb->back()));
 
 
         }
@@ -636,34 +636,34 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::addMousePushEventCallback(int id, guiClickCallBack function,guiClickCallBackBind *bindptr){
+    bool GraphicsWindow::addMousePushEventCallback(int id, guiClickCallBack function,guiClickCallBackBind *bindptr){
       return addEventToWidget(id,function,bindptr,osgWidget::EVENT_MOUSE_PUSH);
     }
-    bool GraphicsWidget::addMouseReleaseEventCallback(int id, guiClickCallBack function,guiClickCallBackBind *bindptr){
+    bool GraphicsWindow::addMouseReleaseEventCallback(int id, guiClickCallBack function,guiClickCallBackBind *bindptr){
       return addEventToWidget(id,function,bindptr,osgWidget::EVENT_MOUSE_RELEASE);
     }
-    bool GraphicsWidget::addMouseEnterEventCallback(int id, GraphicsGuiInterface::guiClickCallBack function, guiClickCallBackBind* bindptr)
+    bool GraphicsWindow::addMouseEnterEventCallback(int id, GraphicsGuiInterface::guiClickCallBack function, guiClickCallBackBind* bindptr)
     {
       return addEventToWidget(id,function,bindptr,osgWidget::EVENT_MOUSE_ENTER);
     }
-    bool GraphicsWidget::addMouseLeaveEventCallback(int id, guiClickCallBack function,guiClickCallBackBind *bindptr){
+    bool GraphicsWindow::addMouseLeaveEventCallback(int id, guiClickCallBack function,guiClickCallBackBind *bindptr){
       return addEventToWidget(id,function,bindptr,osgWidget::EVENT_MOUSE_LEAVE);
     }
 
-    int GraphicsWidget::createCanvas(const std::string& name)
+    int GraphicsWindow::createCanvas(const std::string& name)
     {
       cout << "createCanvas" << endl;
       osg::ref_ptr<osgWidget::Window>  wnd = new osgWidget::Canvas(name);
       return addOsgWindow(wnd);
     }
-    int GraphicsWidget::createTable(const std::string& name, int row, int colums)
+    int GraphicsWindow::createTable(const std::string& name, int row, int colums)
     {
       osg::ref_ptr<osgWidget::Window>  wnd = new osgWidget::Table(name,row,colums);
       return addOsgWindow(wnd);
 
     }
 
-    int GraphicsWidget::createFrame(const std::string& name, float x1, float y1, float x2, float y2)
+    int GraphicsWindow::createFrame(const std::string& name, float x1, float y1, float x2, float y2)
     {
       osg::ref_ptr<osgWidget::Frame> frame = osgWidget::Frame::createSimpleFrame(
                                                                                  name,
@@ -676,14 +676,14 @@ namespace mars {
       return addOsgWindow(frame);
     }
 
-    int GraphicsWidget::createBox(const std::string& name,int type){
+    int GraphicsWindow::createBox(const std::string& name,int type){
 
       cout << "createBox" << endl;
       osg::ref_ptr<osgWidget::Window>  wnd = new osgWidget::Box(name,type);
       return addOsgWindow(wnd);
     }
 
-    osgWidget::WindowManager* GraphicsWidget::getOrCreateWindowManager()
+    osgWidget::WindowManager* GraphicsWindow::getOrCreateWindowManager()
     {
       if(this->_osgWidgetWindowManager){
         return _osgWidgetWindowManager;
@@ -722,7 +722,7 @@ namespace mars {
 
     }
 
-    osg::ref_ptr<osg::GraphicsContext> GraphicsWidget::createWidgetContext(
+    osg::ref_ptr<osg::GraphicsContext> GraphicsWindow::createWidgetContext(
                                                                            void* parent,
                                                                            osg::ref_ptr<osg::GraphicsContext::Traits> traits) {
       //traits->windowDecoration = false;
@@ -753,8 +753,8 @@ namespace mars {
       return gc;
     }
 
-    void GraphicsWidget::initializeOSG(void* data,
-                                       GraphicsWidget* shared, int width, int height) {
+    void GraphicsWindow::initializeOSG(void* data,
+                                       GraphicsWindow* shared, int width, int height) {
       osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> keyswitchManipulator;
 
       if(width > 0) widgetWidth = width;
@@ -788,8 +788,8 @@ namespace mars {
       graphicsCamera->changeCameraTypeToPerspective();
     }
 
-    void GraphicsWidget::createContext(void* parent,
-                                       GraphicsWidget* shared, int g_width, int g_height) {
+    void GraphicsWindow::createContext(void* parent,
+                                       GraphicsWindow* shared, int g_width, int g_height) {
       (void)parent;
       (void)g_width;
       (void)g_height;
@@ -926,15 +926,15 @@ namespace mars {
       graphicsCamera = new GraphicsCamera(osgCamera, widgetWidth, widgetHeight);
     }
 
-    unsigned long GraphicsWidget::getID(void) {
+    unsigned long GraphicsWindow::getID(void) {
       return widgetID;
     }
 
-    osgViewer::View* GraphicsWidget::getView() {
+    osgViewer::View* GraphicsWindow::getView() {
       return view;
     }
 
-    void GraphicsWidget::updateView(void) {
+    void GraphicsWindow::updateView(void) {
       // this hack solves temporary the initial window scaling problem
       static int initialResizeCount = 1;
       if(initialResizeCount > 0) {
@@ -945,22 +945,22 @@ namespace mars {
       graphicsCamera->update();
     }
 
-    osgViewer::GraphicsWindow* GraphicsWidget::getGraphicsWindow() {
+    osgViewer::GraphicsWindow* GraphicsWindow::getGraphicsWindow() {
       return graphicsWindow.get();
     }
-    const osgViewer::GraphicsWindow* GraphicsWidget::getGraphicsWindow() const {
+    const osgViewer::GraphicsWindow* GraphicsWindow::getGraphicsWindow() const {
       return graphicsWindow.get();
     }
 
-    osg::ref_ptr<osg::Camera> GraphicsWidget::getMainCamera(){
+    osg::ref_ptr<osg::Camera> GraphicsWindow::getMainCamera(){
       return graphicsCamera->getOSGCamera();
     }
 
-    mars::utils::Vector GraphicsWidget::getMousePos(){
+    mars::utils::Vector GraphicsWindow::getMousePos(){
       return mars::utils::Vector(mouseX, mouseY, 0.0);
     }
 
-    void GraphicsWidget::setFullscreen(bool val, int display) {
+    void GraphicsWindow::setFullscreen(bool val, int display) {
       if (!isFullscreen && val) {
         osg::GraphicsContext::WindowingSystemInterface *wsi =
           osg::GraphicsContext::getWindowingSystemInterface();
@@ -981,21 +981,21 @@ namespace mars {
       }
     }
 
-    void GraphicsWidget::setGraphicsEventHandler(GraphicsEventInterface* graphicsEventHandler) {
+    void GraphicsWindow::setGraphicsEventHandler(GraphicsEventInterface* graphicsEventHandler) {
       this->graphicsEventHandler.push_back(graphicsEventHandler);
     }
 
-    void GraphicsWidget::addGraphicsEventHandler(GraphicsEventInterface* graphicsEventHandler) {
+    void GraphicsWindow::addGraphicsEventHandler(GraphicsEventInterface* graphicsEventHandler) {
       this->graphicsEventHandler.push_back(graphicsEventHandler);
     }
 
-    GraphicsCameraInterface* GraphicsWidget::getCameraInterface(void) const {
+    GraphicsCameraInterface* GraphicsWindow::getCameraInterface(void) const {
       assert(graphicsCamera);
       return dynamic_cast<GraphicsCameraInterface*>(graphicsCamera);
     }
 
 
-    void GraphicsWidget::setHUD(HUD* theHUD) {
+    void GraphicsWindow::setHUD(HUD* theHUD) {
       myHUD = theHUD;
       theHUD->resize(widgetWidth, widgetHeight);
       theHUD->setCullMask(CULL_LAYER);
@@ -1004,53 +1004,53 @@ namespace mars {
       view->getCamera()->addChild( theHUD->getCamera() );
     }
 
-    void GraphicsWidget::addHUDElement(HUDElement* elem) {
+    void GraphicsWindow::addHUDElement(HUDElement* elem) {
       if(myHUD) myHUD->addHUDElement(elem);
     }
 
-    void GraphicsWidget::removeHUDElement(HUDElement* elem) {
+    void GraphicsWindow::removeHUDElement(HUDElement* elem) {
       if(myHUD) myHUD->removeHUDElement(elem);
     }
 
-    void GraphicsWidget::switchHudElemtVis(int num_element) {
+    void GraphicsWindow::switchHudElemtVis(int num_element) {
       if(myHUD) myHUD->switchElementVis(num_element);
     }
 
 
-    osg::Texture2D* GraphicsWidget::getRTTTexture(void) {
+    osg::Texture2D* GraphicsWindow::getRTTTexture(void) {
       return rttTexture.get();
     }
 
-    osg::Texture2D* GraphicsWidget::getRTTDepthTexture(void) {
+    osg::Texture2D* GraphicsWindow::getRTTDepthTexture(void) {
       return rttDepthTexture.get();
     }
 
-    void GraphicsWidget::clearSelectionVectors() {
+    void GraphicsWindow::clearSelectionVectors() {
       pickedObjects.clear();
     }
 
-    void GraphicsWidget::setGrabFrames(bool grab) {
+    void GraphicsWindow::setGrabFrames(bool grab) {
       if(!isRTTWidget) postDrawCallback->setGrab(grab);
     }
 
-    void GraphicsWidget::setSaveFrames(bool grab) {
+    void GraphicsWindow::setSaveFrames(bool grab) {
       if(!isRTTWidget) postDrawCallback->setSaveGrab(grab);
     }
 
-    std::vector<osg::Node*> GraphicsWidget::getPickedObjects() {
+    std::vector<osg::Node*> GraphicsWindow::getPickedObjects() {
       return pickedObjects;
     }
 
-    void GraphicsWidget::setClearColor(mars::utils::Color color){
+    void GraphicsWindow::setClearColor(mars::utils::Color color){
       graphicsCamera->getOSGCamera()->setClearColor(
                                                     osg::Vec4(color.r, color.g, color.b, color.a));
     }
 
-    void GraphicsWidget::grabFocus() {
+    void GraphicsWindow::grabFocus() {
       getGraphicsWindow()->grabFocus();
     }
 
-    void GraphicsWidget::getImageData(char* buffer, int& width, int& height)
+    void GraphicsWindow::getImageData(char* buffer, int& width, int& height)
     {
       if(isRTTWidget) {
         osg::Image *image = rttImage;
@@ -1068,7 +1068,7 @@ namespace mars {
       }
     }
 
-    void GraphicsWidget::getImageData(void **data, int &width, int &height) {
+    void GraphicsWindow::getImageData(void **data, int &width, int &height) {
       if(isRTTWidget) {
         width = rttImage->s();
         height = rttImage->t();
@@ -1080,7 +1080,7 @@ namespace mars {
       }
     }
 
-    void GraphicsWidget::getRTTDepthData(float* buffer, int& width, int& height)
+    void GraphicsWindow::getRTTDepthData(float* buffer, int& width, int& height)
     {
       if(isRTTWidget) {
         GLuint* data2 = (GLuint *)rttDepthImage->data();
@@ -1108,7 +1108,7 @@ namespace mars {
       }
     }
 
-    void GraphicsWidget::getRTTDepthData(float **data, int &width, int &height) {
+    void GraphicsWindow::getRTTDepthData(float **data, int &width, int &height) {
       if(isRTTWidget) {
         width = rttDepthImage->s();
         height = rttDepthImage->t();
@@ -1119,7 +1119,7 @@ namespace mars {
       }
     }
 
-    bool GraphicsWidget::handle(
+    bool GraphicsWindow::handle(
                                 const osgGA::GUIEventAdapter& ea,
                                 osgGA::GUIActionAdapter& aa)
     {
@@ -1171,7 +1171,7 @@ namespace mars {
       }
     }
 
-    void GraphicsWidget::applyResize() {
+    void GraphicsWindow::applyResize() {
       postDrawCallback->setSize(widgetWidth, widgetHeight);
       graphicsCamera->setViewport(0, 0, widgetWidth, widgetHeight);
       graphicsCamera->changeCameraTypeToPerspective();
@@ -1185,7 +1185,7 @@ namespace mars {
       }
     }
 
-    bool GraphicsWidget::handleResizeEvent(const osgGA::GUIEventAdapter& ea) {
+    bool GraphicsWindow::handleResizeEvent(const osgGA::GUIEventAdapter& ea) {
       widgetWidth = ea.getWindowWidth();
       widgetHeight = ea.getWindowHeight();
       widgetX = ea.getWindowX();
@@ -1194,7 +1194,7 @@ namespace mars {
       return true;
     }
 
-    bool GraphicsWidget::handleReleaseEvent(const osgGA::GUIEventAdapter& ea,
+    bool GraphicsWindow::handleReleaseEvent(const osgGA::GUIEventAdapter& ea,
                                             osgGA::GUIActionAdapter& aa) {
       // *** Picking ***
 
@@ -1240,7 +1240,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::handleKeyDownEvent(const osgGA::GUIEventAdapter &ea) {
+    bool GraphicsWindow::handleKeyDownEvent(const osgGA::GUIEventAdapter &ea) {
       switch (ea.getKey()) {
       case 'f' :
         return true;
@@ -1263,7 +1263,7 @@ namespace mars {
       }
     }
 
-    bool GraphicsWidget::handleKeyUpEvent(const osgGA::GUIEventAdapter &ea) {
+    bool GraphicsWindow::handleKeyUpEvent(const osgGA::GUIEventAdapter &ea) {
       int key = ea.getKey();
 
       switch (key) {
@@ -1334,7 +1334,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::handlePushEvent(const osgGA::GUIEventAdapter& ea) {
+    bool GraphicsWindow::handlePushEvent(const osgGA::GUIEventAdapter& ea) {
 
       mouseX = ea.getX();
       mouseY = ea.getY();
@@ -1363,7 +1363,7 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::handleDragEvent(const osgGA::GUIEventAdapter &ea) {
+    bool GraphicsWindow::handleDragEvent(const osgGA::GUIEventAdapter &ea) {
       for(unsigned int i=0; i<graphicsEventHandler.size(); ++i) {
         graphicsEventHandler[i]->mouseMove(ea.getX(), ea.getY());
       }
@@ -1376,14 +1376,14 @@ namespace mars {
       return false;
     }
 
-    bool GraphicsWidget::handleMoveEvent(const osgGA::GUIEventAdapter &ea) {
+    bool GraphicsWindow::handleMoveEvent(const osgGA::GUIEventAdapter &ea) {
       for(unsigned int i=0; i<graphicsEventHandler.size(); ++i) {
         graphicsEventHandler[i]->mouseMove(ea.getX(), ea.getY());
       }
       return false;
     }
 
-    bool GraphicsWidget::handleScrollEvent(const osgGA::GUIEventAdapter& ea)
+    bool GraphicsWindow::handleScrollEvent(const osgGA::GUIEventAdapter& ea)
     {
       if(ea.getScrollingMotion()==osgGA::GUIEventAdapter::SCROLL_UP){
         graphicsCamera->zoom(1);
@@ -1393,7 +1393,7 @@ namespace mars {
       return false;
     }
 
-    void GraphicsWidget::sendKeyUpEvent(const osgGA::GUIEventAdapter &ea) {
+    void GraphicsWindow::sendKeyUpEvent(const osgGA::GUIEventAdapter &ea) {
       if (graphicsEventHandler.size() > 0) {
         int key = ea.getKey();
         unsigned int modKey = ea.getModKeyMask();
@@ -1426,7 +1426,7 @@ namespace mars {
       }
     }
 
-    void GraphicsWidget::sendKeyDownEvent(const osgGA::GUIEventAdapter &ea) {
+    void GraphicsWindow::sendKeyDownEvent(const osgGA::GUIEventAdapter &ea) {
       if (graphicsEventHandler.size() > 0) {
         int key = ea.getKey();
         unsigned int modKey = ea.getModKeyMask();
@@ -1459,7 +1459,7 @@ namespace mars {
       }
     }
 
-    void GraphicsWidget::translateKey(int &key, unsigned int &mod) {
+    void GraphicsWindow::translateKey(int &key, unsigned int &mod) {
       switch (key) {
       case osgGA::GUIEventAdapter::KEY_BackSpace :
         key = GuiEventInterface::Key_Backspace;
@@ -1682,7 +1682,7 @@ namespace mars {
       }
     }
 
-    bool GraphicsWidget::pick(const double x, const double y) {
+    bool GraphicsWindow::pick(const double x, const double y) {
       osgUtil::LineSegmentIntersector::Intersections intersections;
       osgUtil::LineSegmentIntersector::Intersections::iterator hitr;
       osg::PositionAttitudeTransform* posTransform;
@@ -1718,7 +1718,7 @@ namespace mars {
       return false;
     }
 
-    void GraphicsWidget::setHUDViewOffsets(double x1, double y1,
+    void GraphicsWindow::setHUDViewOffsets(double x1, double y1,
                                            double x2, double y2) {
       if(myHUD) {
         myHUD->setViewOffsets(x1, x2, y1, y2);

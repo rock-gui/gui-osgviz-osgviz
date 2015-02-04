@@ -58,7 +58,6 @@ pkg_check_modules(PKGCONFIG REQUIRED
 			    opencv
 			    lib_manager
 			    mars_interfaces
-			    cfg_manager
 )
 
 include_directories(${PKGCONFIG_INCLUDE_DIRS})
@@ -69,7 +68,7 @@ set(HEADERS
            GraphicsCamera.h
            GraphicsManager.h
            GraphicsViewer.h
-           GraphicsWidget.h
+           GraphicsWindow.h
            gui_helper_functions.h
            HUD.h
            PostDrawCallback.h
@@ -124,7 +123,7 @@ set(SOURCES
            GraphicsCamera.cpp
            GraphicsManager.cpp
            GraphicsViewer.cpp
-           GraphicsWidget.cpp
+           GraphicsWindow.cpp
            gui_helper_functions.cpp
            HUD.cpp
            PostDrawCallback.cpp

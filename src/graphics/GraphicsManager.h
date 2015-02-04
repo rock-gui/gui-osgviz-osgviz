@@ -47,7 +47,7 @@
 //#include <osgShadow/SoftShadowMap>
 //#include <osgShadow/ShadowMap>
 
-#include "ShadowMap.h"
+#include "shadow/ShadowMap.h"
 
 #include <osgParticle/PrecipitationEffect>
 
@@ -60,8 +60,9 @@
 #include <mars/interfaces/GraphicData.h>
 #include <mars/interfaces/LightData.h>
 #include <mars/interfaces/MaterialData.h>
-#include <mars/interfaces/cameraStruct.h>
 
+#include "interfaces/GraphicsWindowInterface.h"
+#include "interfaces/GraphicsEventInterface.h"
 
 #include "gui_helper_functions.h"
 
@@ -74,7 +75,7 @@
 namespace mars {
   namespace graphics {
 
-    class GraphicsWidget;
+    class GraphicsWindow;
     class GraphicsViewer;
     class DrawObject;
     class OSGNodeStruct;
@@ -103,13 +104,12 @@ namespace mars {
     typedef std::list< osg::ref_ptr<OSGNodeStruct> > DrawObjectList;
     typedef std::list< osg::ref_ptr<OSGHudElementStruct> > HUDElements;
 
-    class GraphicsManager : public lib_manager::LibInterface  {
+    class GraphicsManager : public lib_manager::LibInterface,
+							public interfaces::GraphicsEventInterface{
 
     public:
       GraphicsManager(lib_manager::LibManager *theManager, void *QTWidget = 0);
       ~GraphicsManager();
-
-      CREATE_MODULE_INFO();
 
       virtual void initializeOSG(void *data, bool createWindow=true);
 
@@ -210,12 +210,13 @@ namespace mars {
       virtual void update(); //< updates graphics
       virtual void draw();
 
-      void setWidget(GraphicsWidget *widget);
+      void setWidget(GraphicsWindow *widget);
       virtual void* getQTWidget(unsigned long id) const;
       virtual void showQTWidget(unsigned long id);
 
       virtual unsigned long new3DWindow(void *myQTWidget = 0, bool rtt = 0,
                                         int width = 0, int height = 0, const std::string &name=std::string(""));
+
       virtual interfaces::GraphicsWindowInterface* get3DWindow(unsigned long id) const;
       virtual void remove3DWindow(unsigned long id);
 
@@ -232,7 +233,7 @@ namespace mars {
                                              int *top, int *left,
                                              int *width, int *height) const;
       virtual void setActiveWindow(unsigned long win_id);
-      GraphicsWidget* getGraphicsWindow(unsigned long id) const;
+      GraphicsWindow* getGraphicsWindow(unsigned long id) const;
 
       GraphicsViewer* getGraphicsViewer(void) const {return viewer;}
 
@@ -301,7 +302,7 @@ namespace mars {
       mars::interfaces::GraphicData graphicOptions;
 
       //pointer to outer space
-      GraphicsWidget *osgWidget; //pointer to the QT OSG Widget
+      GraphicsWindow *osgWidget; //pointer to the QT OSG Widget
       //GuiHelper *guiHelper;
 
       unsigned long next_hud_id;
@@ -364,7 +365,7 @@ namespace mars {
 
       // mapper vectors
       std::vector<drawMapper> draws; //drawStructs
-      std::vector<GraphicsWidget*> graphicsWindows;
+      std::vector<GraphicsWindow*> graphicsWindows;
 
       osg::ref_ptr<ShadowMap> shadowMap;
 

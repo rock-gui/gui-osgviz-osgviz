@@ -7,7 +7,9 @@
 #include <osgViewer/Viewer>
 #include <boost/thread/mutex.hpp>
 
+
 #include "plugins/OsgVizPlugin.h"
+#include "graphics/GraphicsManager.h"
 
 #include <stdio.h>
 
@@ -69,9 +71,12 @@ class ViewerFrameThread : public OpenThreads::Thread
 	};
 
 
-	class OsgViz: public lib_manager::LibInterface
+	class OsgViz: public mars::graphics::GraphicsManager
 	{
+
 		public: 
+
+	    CREATE_MODULE_INFO();
 
 		static OsgViz* getInstance(int argc = 0,char** argv = NULL);
 
@@ -141,6 +146,7 @@ class ViewerFrameThread : public OpenThreads::Thread
 		char** m_argv;
 
 		int numberOfWindows;
+
 
 		//std::vector<osgViewer::Viewer *> viewers;
 

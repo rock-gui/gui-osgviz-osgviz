@@ -35,7 +35,7 @@ namespace mars {
     using namespace std;
     using mars::utils::Vector;
 
-    CoordsPrimitive::CoordsPrimitive(GraphicsWidget *gw, const Vector &size,
+    CoordsPrimitive::CoordsPrimitive(GraphicsWindow *gw, const Vector &size,
                                      std::string resPath,
                                      bool transformFlag) {
 
@@ -85,7 +85,7 @@ namespace mars {
       }
     }
 
-    CoordsPrimitive::CoordsPrimitive(GraphicsWidget *gw,
+    CoordsPrimitive::CoordsPrimitive(GraphicsWindow *gw,
                                      std::string resPath) {
 
       string objPath = resPath;

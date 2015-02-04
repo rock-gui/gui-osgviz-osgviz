@@ -3,10 +3,10 @@ exec_prefix=@CMAKE_INSTALL_PREFIX@
 libdir=${prefix}/lib
 includedir=${prefix}/include
 
-Name: @TARGET_NAME@
+Name: @PROJECT_NAME@
 Description: @PROJECT_DESCRIPTION@
 Version: @PROJECT_VERSION@
-Requires: @PKGCONFIG_REQUIRES@
-Libs: -L${libdir} -l@TARGET_NAME@ @PKGCONFIG_LIBS@ @Boost_SYSTEM_LIBRARY@
+Requires: @PKGCONFIG_REQUIRES@ mars_interfaces opencv lib_manager cfg_manager
+Libs: -L${libdir} -l@PROJECT_NAME@ @PKGCONFIG_LIBS@ @Boost_SYSTEM_LIBRARY@
 Cflags: -I${includedir} @PKGCONFIG_CFLAGS@
 

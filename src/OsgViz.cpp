@@ -5,6 +5,8 @@
 #include <osgGA/TerrainManipulator>
 #include <X11/Xlib.h>
 
+
+
 CREATE_LIB(osgviz::OsgViz);
 DESTROY_LIB(osgviz::OsgViz);
 
@@ -20,13 +22,13 @@ OsgViz* OsgViz::getInstance(int argc,char** argv){
 	return instance;
 }
 
-OsgViz::OsgViz(lib_manager::LibManager * manager):LibInterface(manager)
+OsgViz::OsgViz(lib_manager::LibManager * manager): mars::graphics::GraphicsManager(manager)
 {
 	createdOwnManager = false;
 	init(0,NULL);
 }
 
-OsgViz::OsgViz(int argc, char** argv):LibInterface(NULL){
+OsgViz::OsgViz(int argc, char** argv): mars::graphics::GraphicsManager(NULL){
 	createdOwnManager = true;
 	libmanager = new lib_manager::LibManager();
 	init(argc,argv);
@@ -41,6 +43,8 @@ void OsgViz::init(int argc,char** argv){
 	cameraManipulator = new osgGA::TerrainManipulator;
 	XInitThreads();
 	instance = this;
+	this->initializeOSG(NULL,true);
+	this->addOSGNode(root);
 }
 
 OsgViz::~OsgViz(){
@@ -63,37 +67,18 @@ OsgViz::~OsgViz(){
 
 int OsgViz::createWindow(bool threaded) {
 
-	numberOfWindows++;
-
-	// For now, we can initialize with 'standard settings'
-	// Standard settings include a standard keyboard mouse
-	// interface as well as default drive, fly and trackball
-	// motion models for updating the scene.
-
-	viewer.setUpViewInWindow(0,0,640,480);
 
 
-	//viewer.setUpViewer(osgViewer::Viewer::STANDARD_SETTINGS);
+	//int id = this->new3DWindow();
 
-	// Next we will need to assign the scene graph we created
-	// above to this viewer:
+	mars::interfaces::GraphicsWindowInterface* window = this->get3DWindow(1);
 
-	viewer.setSceneData( root );
+	while(true){
 
-
-
-	viewer.setCameraManipulator(cameraManipulator);
-
-
-	// create the windows and start the required threads.
-
-	if (threaded){
-		ViewerFrameThread* viewerThread = new ViewerFrameThread (&viewer);
-		viewerThread->startThread();
-		threads[numberOfWindows] = viewerThread;
-	}else{
-		viewer.run();
+		this->draw();
+		usleep(100000);
 	}
+
 
 	return numberOfWindows;
 }
