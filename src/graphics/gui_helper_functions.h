@@ -46,6 +46,7 @@ namespace mars {
   namespace graphics {
 
     class GraphicsWidget;
+    class GraphicsManager;
 
     /**
      * internal struct for GraphicManager.h connecting the node indices
@@ -96,17 +97,16 @@ namespace mars {
     }; // end of class GeodeVisitor
 
 
-    class GuiHelper : public interfaces::LoadMeshInterface,
-                      public interfaces::LoadHeightmapInterface {
+    class GuiHelper {
     public:
-      GuiHelper(interfaces::GraphicsManagerInterface *gi);
+      GuiHelper(GraphicsManager *gi);
 
       //void setGraphicsWidget(GraphicsWidget *widget);
       //bool validateGraphicsWidget(void);
 
       static void clearStates(osg::ref_ptr<osg::Node> node);
       /** \brief converts the mesh of an osgNode to the snmesh struct */
-      static mars::interfaces::snmesh convertOsgNodeToSnMesh(osg::Node *node, 
+      static mars::interfaces::snmesh convertOsgNodeToSnMesh(osg::Node *node,
                                                        double scaleX,
                                                        double scaleY,
                                                        double scaleZ,
@@ -128,7 +128,7 @@ namespace mars {
     private:
       osg::Geometry *my_geo;
       osg::ref_ptr<osg::Vec3Array> my_v3;
-      interfaces::GraphicsManagerInterface *gi;
+      GraphicsManager *gi;
       //GraphicsWidget *gw;
       //for compatibility
       mars::interfaces::GraphicData gs;

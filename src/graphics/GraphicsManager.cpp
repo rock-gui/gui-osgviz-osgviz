@@ -80,10 +80,8 @@ namespace mars {
 
 
     GraphicsManager::GraphicsManager(lib_manager::LibManager *theManager,
-                                     void *myQTWidget)
-      : GraphicsManagerInterface(theManager),
+                                     void *myQTWidget):LibInterface(theManager),
         osgWidget(NULL),
-        guiHelper(new GuiHelper(this)),
         next_hud_id(1),
         next_draw_object_id(1),
         next_window_id(1),
@@ -100,7 +98,6 @@ namespace mars {
         useFog(true),
         useNoise(false),
         drawLineLaser(false),
-        cfg(0),
         ignore_next_resize(0),
         set_window_prop(0)
 
@@ -114,79 +111,45 @@ namespace mars {
     }
 
     GraphicsManager::~GraphicsManager() {
-      if(cfg) {
-        string saveFile = configPath.sValue;
-        saveFile.append("/mars_Graphics.yaml");
-        cfg->writeConfig(saveFile.c_str(), "Graphics");
-        libManager->releaseLibrary("cfg_manager");
-      }
+//      if(cfg) {
+//        string saveFile = configPath.sValue;
+//        saveFile.append("/mars_Graphics.yaml");
+//        cfg->writeConfig(saveFile.c_str(), "Graphics");
+//        libManager->releaseLibrary("cfg_manager");
+//      }
       fprintf(stderr, "Delete mars_graphics\n");
     }
 
     void GraphicsManager::initializeOSG(void *data, bool createWindow) {
-      cfg = libManager->getLibraryAs<cfg_manager::CFGManagerInterface>("cfg_manager");
-      if(!cfg) {
-        fprintf(stderr, "******* mars_graphics: couldn't find cfg_manager\n");
-        return;
-      }
+//      cfg = libManager->getLibraryAs<cfg_manager::CFGManagerInterface>("cfg_manager");
+//      if(!cfg) {
+//        fprintf(stderr, "******* mars_graphics: couldn't find cfg_manager\n");
+//        return;
+//      }
+//
+//      resources_path.propertyType = cfg_manager::stringProperty;
+//      resources_path.propertyIndex = 0;
+      resources_path = ".";
 
-      resources_path.propertyType = cfg_manager::stringProperty;
-      resources_path.propertyIndex = 0;
-      resources_path.sValue = ".";
+//      if(cfg) {
 
-      if(cfg) {
-        configPath = cfg->getOrCreateProperty("Config", "config_path",
-                                              string("."));
-
-        string loadFile = configPath.sValue;
-        loadFile.append("/mars_Graphics.yaml");
-        cfg->loadConfig(loadFile.c_str());
 
         // have to handle multisampling here
-        multisamples.propertyType = cfg_manager::intProperty;
-        multisamples.propertyIndex = 0;
-        multisamples.iValue = 0;
-        if(cfg->getPropertyValue("Graphics", "num multisamples", "value",
-                                 &multisamples.iValue)) {
-          multisamples.paramId = cfg->getParamId("Graphics", "num multisamples");
-        }
-        else {
-          multisamples.paramId = cfg->createParam(string("Graphics"),
-                                                  string("num multisamples"),
-                                                  cfg_manager::intParam);
-          cfg->setProperty(multisamples);
-        }
-        cfg->registerToParam(multisamples.paramId,
-                             dynamic_cast<cfg_manager::CFGClient*>(this));
-        setMultisampling(multisamples.iValue);
 
-        resources_path = cfg->getOrCreateProperty("Graphics", "resources_path",
-                                                  string(MARS_GRAPHICS_DEFAULT_RESOURCES_PATH),
-                                                  dynamic_cast<cfg_manager::CFGClient*>(this));
+        multisamples = 0;
+        setMultisampling(multisamples);
 
-        noiseProp = cfg->getOrCreateProperty("Graphics", "useNoise",
-                                             true, this);
-        useNoise = noiseProp.bValue;
+        useNoise = true;
 
-        drawLineLaserProp = cfg->getOrCreateProperty("Graphics", "drawLineLaser",
-                                                     false, this);
-        drawLineLaser = drawLineLaserProp.bValue;
+        drawLineLaser = false;
 
-        hudWidthProp = cfg->getOrCreateProperty("Graphics", "hudWidth",
-                                                1920, this);
-        hudWidth = hudWidthProp.iValue;
+        hudWidth = 1920;
 
-        hudHeightProp = cfg->getOrCreateProperty("Graphics", "hudHeight",
-                                                1080, this);
-        hudHeight = hudHeightProp.iValue;
+        hudHeight = 1080;
 
-        marsShadow = cfg->getOrCreateProperty("Graphics", "marsShadow",
-                                              false, this);
-      }
-      else {
-        marsShadow.bValue = false;
-      }
-      globalStateset->setGlobalDefaults();
+        marsShadow = false;
+
+        globalStateset->setGlobalDefaults();
 
       // with backface culling backfaces are not processed,
       // else front and back faces are always processed.
@@ -281,7 +244,7 @@ namespace mars {
 
         shadowedScene->setShadowTechnique(pssm.get());
 #endif
-        if(marsShadow.bValue) {
+        if(marsShadow) {
           shadowMap = new ShadowMap;
           shadowedScene->setShadowTechnique(shadowMap.get());
           //shadowMap->setTextureSize(osg::Vec2s(4096,4096));
@@ -290,7 +253,7 @@ namespace mars {
           //shadowMap->setAmbientBias(osg::Vec2(0.5f,0.5f));
           //shadowMap->setPolygonOffset(osg::Vec2(-1.2,-1.2));
         }
-      }
+//      }
 
       // TODO: check this out:
       //   i guess fire.rgb is a 1D texture
@@ -320,13 +283,14 @@ namespace mars {
       }
 
       //guiHelper->setGraphicsWidget(graphicsWindows[0]);
-      setupCFG();
+      //setupCFG();
 
-      if(backfaceCulling.bValue)
+      if(backfaceCulling)
         globalStateset->setAttributeAndModes(cull, osg::StateAttribute::ON);
       else
         globalStateset->setAttributeAndModes(cull, osg::StateAttribute::OFF);
     }
+}
 
     /**\brief resets scene */
     void GraphicsManager::reset(){
@@ -405,7 +369,7 @@ namespace mars {
             scene->removeChild(draw.nodes[j]);
           }
           else if (di.draw_state == DRAW_STATE_CREATE) {
-            std::string font_path = resources_path.sValue;
+            std::string font_path = resources_path;
             font_path.append("/Fonts");
             osg::ref_ptr<osg::Group> osgNode = new OSGDrawItem(osgWidget, di,
                                                                font_path);
@@ -744,7 +708,7 @@ namespace mars {
 
       getLights(&lightList);
       if(lightList.size() == 0) lightList.push_back(&defaultLight.lStruct);
-      osg::ref_ptr<OSGNodeStruct> drawObject = new OSGNodeStruct(lightList, snode, false, id, marsShader.bValue, useFog, useNoise, drawLineLaser, marsShadow.bValue);
+      osg::ref_ptr<OSGNodeStruct> drawObject = new OSGNodeStruct(lightList, snode, false, id, marsShader, useFog, useNoise, drawLineLaser, marsShadow);
       osg::PositionAttitudeTransform *transform = drawObject->object()->getPosTransform();
 
       DrawCoreIds.insert(pair<unsigned long int, unsigned long int>(id, snode.index));
@@ -1100,7 +1064,7 @@ namespace mars {
 
       hideCoords(pos);
 
-      string resPath = resources_path.sValue;
+      string resPath = resources_path;
 
       positionedCoords = new CoordsPrimitive(osgWidget, size, resPath, true);
       transformCoords = new osg::PositionAttitudeTransform();
@@ -1116,7 +1080,7 @@ namespace mars {
 
     /** adds a local coordination frame to the scene */
     void GraphicsManager::showCoords(){
-      string resPath = resources_path.sValue;
+      string resPath = resources_path;
 
       coords = new CoordsPrimitive(osgWidget, resPath);
       scene->addChild(coords.get());
@@ -1163,7 +1127,7 @@ namespace mars {
 
     void GraphicsManager::showClouds() {
       if(!showClouds_) {
-        string tex_path = resources_path.sValue;
+        string tex_path = resources_path;
         tex_path.append("/Textures");
         clouds_ = new Clouds(tex_path);
         scene->addChild(clouds_.get());
@@ -1187,7 +1151,7 @@ namespace mars {
 
       if (allNodes[0].filename=="PRIMITIVE") {
         osg::ref_ptr<OSGNodeStruct> drawObject = new OSGNodeStruct(lightList,
-                                                                   allNodes[0], true, nextPreviewID, marsShader.bValue, useFog, useNoise, drawLineLaser, marsShadow.bValue);
+                                                                   allNodes[0], true, nextPreviewID, marsShader, useFog, useNoise, drawLineLaser, marsShadow);
         previewNodes_[nextPreviewID] = drawObject;
         scene->addChild(drawObject->object()->getPosTransform());
       } else {
@@ -1195,7 +1159,7 @@ namespace mars {
         for(DrawObjects::iterator it = previewNodes_.begin();
             it != previewNodes_.end(); ++it) {
           osg::ref_ptr<OSGNodeStruct> drawObject = new OSGNodeStruct(lightList,
-                                                                     allNodes[++i], true, nextPreviewID, marsShader.bValue, useFog, useNoise, drawLineLaser, marsShadow.bValue);
+                                                                     allNodes[++i], true, nextPreviewID, marsShader, useFog, useNoise, drawLineLaser, marsShadow);
           previewNodes_[nextPreviewID] = drawObject;
           scene->addChild(drawObject->object()->getPosTransform());
         }
@@ -1260,7 +1224,7 @@ namespace mars {
 
     unsigned long GraphicsManager::addHUDElement(hudElementStruct *he) {
       unsigned long id = next_hud_id++;
-      osg::ref_ptr<OSGHudElementStruct> elem = new OSGHudElementStruct(*he, resources_path.sValue, id);
+      osg::ref_ptr<OSGHudElementStruct> elem = new OSGHudElementStruct(*he, resources_path, id);
 
       if (elem) {
         hudElements.push_back(elem);
@@ -1298,7 +1262,7 @@ namespace mars {
 
       hudElementStruct he;
       he.type = HUD_ELEMENT_OSGNODE;
-      elem = new OSGHudElementStruct(he, resources_path.sValue, id,
+      elem = new OSGHudElementStruct(he, resources_path, id,
                                      (osg::Node*)node);
       if (elem) {
         hudElements.push_back(elem);
@@ -1610,191 +1574,191 @@ namespace mars {
       }
     }
 
-    void GraphicsManager::setupCFG(void) {
-      cfg_manager::CFGClient* cfgClient = dynamic_cast<cfg_manager::CFGClient*>(this);
-      cfgW_top = cfg->getOrCreateProperty("Graphics", "window1Top", (int)40,
-                                          cfgClient);
+//    void GraphicsManager::setupCFG(void) {
+//      cfg_manager::CFGClient* cfgClient = dynamic_cast<cfg_manager::CFGClient*>(this);
+//      cfgW_top = cfg->getOrCreateProperty("Graphics", "window1Top", (int)40,
+//                                          cfgClient);
+//
+//      cfgW_left = cfg->getOrCreateProperty("Graphics", "window1Left", (int)700,
+//                                           cfgClient);
+//
+//      cfgW_width = cfg->getOrCreateProperty("Graphics", "window1Width", (int)720,
+//                                            cfgClient);
+//
+//      cfgW_height = cfg->getOrCreateProperty("Graphics", "window1Height", (int)405,
+//                                             cfgClient);
+//
+//      draw_normals = cfg->getOrCreateProperty("Graphics", "draw normals", false,
+//                                              cfgClient);
+//
+//      brightness = cfg->getOrCreateProperty("Graphics", "brightness", 1.0,
+//                                            cfgClient);
+//
+//      grab_frames = cfg->getOrCreateProperty("Graphics", "make movie", false,
+//                                             cfgClient);
+//
+//      marsShader = cfg->getOrCreateProperty("Graphics", "marsShader", true,
+//                                            cfgClient);
+//
+//      drawRain = cfg->getOrCreateProperty("Graphics", "drawRain", false,
+//                                          cfgClient);
+//
+//      drawSnow = cfg->getOrCreateProperty("Graphics", "drawSnow", false,
+//                                          cfgClient);
+//
+//      drawMainCamera = cfg->getOrCreateProperty("Graphics", "drawMainCamera", true,
+//                                          cfgClient);
+//
+//      backfaceCulling = cfg->getOrCreateProperty("Graphics", "backfaceCulling",
+//                                                 true, cfgClient);
+//
+//      setGraphicsWindowGeometry(1, cfgW_top.iValue, cfgW_left.iValue,
+//                                cfgW_width.iValue, cfgW_height.iValue);
+//      if(drawRain.bValue) showRain(true);
+//      if(drawSnow.bValue) showSnow(true);
+//      if(!drawMainCamera.bValue){
+//            deactivate3DWindow(1);
+//      }
+//
+//    }
 
-      cfgW_left = cfg->getOrCreateProperty("Graphics", "window1Left", (int)700,
-                                           cfgClient);
+//    void GraphicsManager::cfgUpdateProperty(cfg_manager::cfgPropertyStruct _property) {
+//      bool change_view = 0;
+//
+//      if(set_window_prop) return;
+//
+//      if(_property.paramId == cfgW_top.paramId) {
+//        cfgW_top.iValue = _property.iValue;
+//        change_view = 1;
+//      }
+//
+//      else if(_property.paramId == cfgW_left.paramId) {
+//        cfgW_left.iValue = _property.iValue;
+//        change_view = 1;
+//      }
+//
+//      else if(_property.paramId == cfgW_width.paramId) {
+//        cfgW_width.iValue = _property.iValue;
+//        change_view = 1;
+//      }
+//
+//      else if(_property.paramId == cfgW_height.paramId) {
+//        cfgW_height.iValue = _property.iValue;
+//        change_view = 1;
+//      }
+//
+//      if(change_view) {
+//        // we get four callback on the resize that we want to ignore
+//#ifdef QT_OSG_MIX
+//        ignore_next_resize += 1;
+//#else
+//        ignore_next_resize += 4;
+//#endif
+//        setGraphicsWindowGeometry(1, cfgW_top.iValue, cfgW_left.iValue,
+//                                  cfgW_width.iValue, cfgW_height.iValue);
+//        return;
+//      }
+//
+//      if(_property.paramId == draw_normals.paramId) {
+//        showNormals(_property.bValue);
+//        return;
+//      }
+//
+//      if(_property.paramId == drawRain.paramId) {
+//        showRain(_property.bValue);
+//        return;
+//      }
+//
+//      if(_property.paramId == drawSnow.paramId) {
+//        showSnow(_property.bValue);
+//        return;
+//      }
+//
+//      if(_property.paramId == drawMainCamera.paramId) {
+//          drawMainCamera.bValue = _property.bValue;
+//        if(drawMainCamera.bValue){
+//            activate3DWindow(1);
+//        }else{
+//            deactivate3DWindow(1);
+//        }
+//        return;
+//      }
+//
+//      if(_property.paramId == multisamples.paramId) {
+//        setMultisampling(_property.iValue);
+//        return;
+//      }
+//
+//      if(_property.paramId == noiseProp.paramId) {
+//        useNoise = noiseProp.bValue = _property.bValue;
+//        return;
+//      }
+//
+//      if(_property.paramId == drawLineLaserProp.paramId) {
+//        drawLineLaser = drawLineLaserProp.bValue = _property.bValue;
+//        return;
+//      }
+//
+//      if(_property.paramId == brightness.paramId) {
+//        setBrightness(_property.dValue);
+//        return;
+//      }
+//
+//      if(_property.paramId == marsShader.paramId) {
+//        setUseShader(_property.bValue);
+//        return;
+//      }
+//
+//      if(_property.paramId == backfaceCulling.paramId) {
+//        if((backfaceCulling.bValue = _property.bValue))
+//          globalStateset->setAttributeAndModes(cull, osg::StateAttribute::ON);
+//        else
+//          globalStateset->setAttributeAndModes(cull, osg::StateAttribute::OFF);
+//        return;
+//      }
+//
+//      if(_property.paramId == grab_frames.paramId) {
+//        setGrabFrames(_property.bValue);
+//        return;
+//      }
+//    }
 
-      cfgW_width = cfg->getOrCreateProperty("Graphics", "window1Width", (int)720,
-                                            cfgClient);
-
-      cfgW_height = cfg->getOrCreateProperty("Graphics", "window1Height", (int)405,
-                                             cfgClient);
-
-      draw_normals = cfg->getOrCreateProperty("Graphics", "draw normals", false,
-                                              cfgClient);
-
-      brightness = cfg->getOrCreateProperty("Graphics", "brightness", 1.0,
-                                            cfgClient);
-
-      grab_frames = cfg->getOrCreateProperty("Graphics", "make movie", false,
-                                             cfgClient);
-
-      marsShader = cfg->getOrCreateProperty("Graphics", "marsShader", true,
-                                            cfgClient);
-
-      drawRain = cfg->getOrCreateProperty("Graphics", "drawRain", false,
-                                          cfgClient);
-
-      drawSnow = cfg->getOrCreateProperty("Graphics", "drawSnow", false,
-                                          cfgClient);
-
-      drawMainCamera = cfg->getOrCreateProperty("Graphics", "drawMainCamera", true,
-                                          cfgClient);
-
-      backfaceCulling = cfg->getOrCreateProperty("Graphics", "backfaceCulling",
-                                                 true, cfgClient);
-
-      setGraphicsWindowGeometry(1, cfgW_top.iValue, cfgW_left.iValue,
-                                cfgW_width.iValue, cfgW_height.iValue);
-      if(drawRain.bValue) showRain(true);
-      if(drawSnow.bValue) showSnow(true);
-      if(!drawMainCamera.bValue){
-            deactivate3DWindow(1);
-      }
-
-    }
-
-    void GraphicsManager::cfgUpdateProperty(cfg_manager::cfgPropertyStruct _property) {
-      bool change_view = 0;
-
-      if(set_window_prop) return;
-
-      if(_property.paramId == cfgW_top.paramId) {
-        cfgW_top.iValue = _property.iValue;
-        change_view = 1;
-      }
-
-      else if(_property.paramId == cfgW_left.paramId) {
-        cfgW_left.iValue = _property.iValue;
-        change_view = 1;
-      }
-
-      else if(_property.paramId == cfgW_width.paramId) {
-        cfgW_width.iValue = _property.iValue;
-        change_view = 1;
-      }
-
-      else if(_property.paramId == cfgW_height.paramId) {
-        cfgW_height.iValue = _property.iValue;
-        change_view = 1;
-      }
-
-      if(change_view) {
-        // we get four callback on the resize that we want to ignore
-#ifdef QT_OSG_MIX
-        ignore_next_resize += 1;
-#else
-        ignore_next_resize += 4;
-#endif
-        setGraphicsWindowGeometry(1, cfgW_top.iValue, cfgW_left.iValue,
-                                  cfgW_width.iValue, cfgW_height.iValue);
-        return;
-      }
-
-      if(_property.paramId == draw_normals.paramId) {
-        showNormals(_property.bValue);
-        return;
-      }
-
-      if(_property.paramId == drawRain.paramId) {
-        showRain(_property.bValue);
-        return;
-      }
-
-      if(_property.paramId == drawSnow.paramId) {
-        showSnow(_property.bValue);
-        return;
-      }
-
-      if(_property.paramId == drawMainCamera.paramId) {
-          drawMainCamera.bValue = _property.bValue;
-        if(drawMainCamera.bValue){
-            activate3DWindow(1);
-        }else{
-            deactivate3DWindow(1);
-        }
-        return;
-      }
-
-      if(_property.paramId == multisamples.paramId) {
-        setMultisampling(_property.iValue);
-        return;
-      }
-
-      if(_property.paramId == noiseProp.paramId) {
-        useNoise = noiseProp.bValue = _property.bValue;
-        return;
-      }
-
-      if(_property.paramId == drawLineLaserProp.paramId) {
-        drawLineLaser = drawLineLaserProp.bValue = _property.bValue;
-        return;
-      }
-
-      if(_property.paramId == brightness.paramId) {
-        setBrightness(_property.dValue);
-        return;
-      }
-
-      if(_property.paramId == marsShader.paramId) {
-        setUseShader(_property.bValue);
-        return;
-      }
-
-      if(_property.paramId == backfaceCulling.paramId) {
-        if((backfaceCulling.bValue = _property.bValue))
-          globalStateset->setAttributeAndModes(cull, osg::StateAttribute::ON);
-        else
-          globalStateset->setAttributeAndModes(cull, osg::StateAttribute::OFF);
-        return;
-      }
-
-      if(_property.paramId == grab_frames.paramId) {
-        setGrabFrames(_property.bValue);
-        return;
-      }
-    }
-
-    void GraphicsManager::emitGeometryChange(unsigned long win_id, int left,
-                                             int top, int width, int height) {
-
-      bool update_cfg = false;
-      if(win_id==1) {
-        if(ignore_next_resize>0) {
-          --ignore_next_resize;
-          return;
-        }
-
-        if(top != cfgW_top.iValue) {
-          cfgW_top.iValue = top;
-          update_cfg = true;
-        }
-        if(left != cfgW_left.iValue) {
-          cfgW_left.iValue = left;
-          update_cfg = true;
-        }
-        if(width != cfgW_width.iValue) {
-          cfgW_width.iValue = width;
-          update_cfg = true;
-        }
-        if(height != cfgW_height.iValue) {
-          cfgW_height.iValue = height;
-          update_cfg = true;
-        }
-        if(update_cfg && cfg) {
-          set_window_prop = true;
-          cfg->setProperty(cfgW_top);
-          cfg->setProperty(cfgW_left);
-          cfg->setProperty(cfgW_width);
-          cfg->setProperty(cfgW_height);
-          set_window_prop = false;
-        }
-      }
-    }
+//    void GraphicsManager::emitGeometryChange(unsigned long win_id, int left,
+//                                             int top, int width, int height) {
+//
+//      bool update_cfg = false;
+//      if(win_id==1) {
+//        if(ignore_next_resize>0) {
+//          --ignore_next_resize;
+//          return;
+//        }
+//
+//        if(top != cfgW_top.iValue) {
+//          cfgW_top.iValue = top;
+//          update_cfg = true;
+//        }
+//        if(left != cfgW_left.iValue) {
+//          cfgW_left.iValue = left;
+//          update_cfg = true;
+//        }
+//        if(width != cfgW_width.iValue) {
+//          cfgW_width.iValue = width;
+//          update_cfg = true;
+//        }
+//        if(height != cfgW_height.iValue) {
+//          cfgW_height.iValue = height;
+//          update_cfg = true;
+//        }
+//        if(update_cfg && cfg) {
+//          set_window_prop = true;
+//          cfg->setProperty(cfgW_top);
+//          cfg->setProperty(cfgW_left);
+//          cfg->setProperty(cfgW_width);
+//          cfg->setProperty(cfgW_height);
+//          set_window_prop = false;
+//        }
+//      }
+//    }
 
     void GraphicsManager::setMultisampling(int num_samples) {
       //Antialiasing
@@ -1893,13 +1857,13 @@ namespace mars {
       return ns->object()->getQuaternion();
     }
 
-    interfaces::LoadMeshInterface* GraphicsManager::getLoadMeshInterface(void) {
-      return guiHelper;
-    }
-
-    interfaces::LoadHeightmapInterface* GraphicsManager::getLoadHeightmapInterface(void) {
-      return guiHelper;
-    }
+//    interfaces::LoadMeshInterface* GraphicsManager::getLoadMeshInterface(void) {
+//      return guiHelper;
+//    }
+//
+//    interfaces::LoadHeightmapInterface* GraphicsManager::getLoadHeightmapInterface(void) {
+//      return guiHelper;
+//    }
 
     void GraphicsManager::makeChild(unsigned long parentId,
                                     unsigned long childId) {

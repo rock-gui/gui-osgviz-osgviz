@@ -51,6 +51,8 @@
 
 #include <osgParticle/PrecipitationEffect>
 
+#include <lib_manager/LibInterface.hpp>
+
 #include <mars/interfaces/MARSDefs.h>
 #include <mars/utils/Vector.h>
 #include <mars/utils/Quaternion.h>
@@ -59,9 +61,7 @@
 #include <mars/interfaces/LightData.h>
 #include <mars/interfaces/MaterialData.h>
 #include <mars/interfaces/cameraStruct.h>
-#include <mars/interfaces/graphics/GraphicsEventInterface.h>
-#include <mars/cfg_manager/CFGManagerInterface.h>
-#include <mars/cfg_manager/CFGClient.h>
+
 
 #include "gui_helper_functions.h"
 
@@ -103,9 +103,7 @@ namespace mars {
     typedef std::list< osg::ref_ptr<OSGNodeStruct> > DrawObjectList;
     typedef std::list< osg::ref_ptr<OSGHudElementStruct> > HUDElements;
 
-    class GraphicsManager : public interfaces::GraphicsManagerInterface,
-                            public interfaces::GraphicsEventInterface,
-                            public cfg_manager::CFGClient {
+    class GraphicsManager : public lib_manager::LibInterface  {
 
     public:
       GraphicsManager(lib_manager::LibManager *theManager, void *QTWidget = 0);
@@ -266,8 +264,10 @@ namespace mars {
       virtual void showNormals(bool val);
       virtual void showRain(bool val);
       virtual void showSnow(bool val);
-      virtual void cfgUpdateProperty(cfg_manager::cfgPropertyStruct _property);
-      virtual void emitGeometryChange(unsigned long win_id, int left, int top, int width, int height);
+
+      //virtual void cfgUpdateProperty(cfg_manager::cfgPropertyStruct _property);
+      //virtual void emitGeometryChange(unsigned long win_id, int left, int top, int width, int height);
+
       // return the view of a window
       virtual  void* getView(unsigned long id=1);
       virtual void collideSphere(unsigned long id, mars::utils::Vector pos,
@@ -275,8 +275,8 @@ namespace mars {
       virtual const mars::utils::Vector& getDrawObjectPosition(unsigned long id=0);
       virtual const mars::utils::Quaternion& getDrawObjectQuaternion(unsigned long id=0);
 
-      virtual mars::interfaces::LoadMeshInterface* getLoadMeshInterface(void);
-      virtual mars::interfaces::LoadHeightmapInterface* getLoadHeightmapInterface(void);
+//      virtual mars::interfaces::LoadMeshInterface* getLoadMeshInterface(void);
+//      virtual mars::interfaces::LoadHeightmapInterface* getLoadHeightmapInterface(void);
 
       virtual void makeChild(unsigned long parentId, unsigned long childId);
 
@@ -302,7 +302,7 @@ namespace mars {
 
       //pointer to outer space
       GraphicsWidget *osgWidget; //pointer to the QT OSG Widget
-      GuiHelper *guiHelper;
+      //GuiHelper *guiHelper;
 
       unsigned long next_hud_id;
       unsigned long next_draw_object_id;
@@ -375,21 +375,25 @@ namespace mars {
       HUDElement* findHUDElement(unsigned long id) const;
 
       // config stuff
-      cfg_manager::CFGManagerInterface *cfg;
-      cfg_manager::cfgPropertyStruct cfgW_top, cfgW_left, cfgW_height, cfgW_width;
-      cfg_manager::cfgPropertyStruct draw_normals, drawRain, drawSnow,
-        multisamples, noiseProp, brightness, marsShader, backfaceCulling,
-        drawLineLaserProp, drawMainCamera, marsShadow, hudWidthProp,
-        hudHeightProp;
-      cfg_manager::cfgPropertyStruct grab_frames;
-      cfg_manager::cfgPropertyStruct resources_path;
-      cfg_manager::cfgPropertyStruct configPath;
+//      cfg_manager::CFGManagerInterface *cfg;
+//      cfg_manager::cfgPropertyStruct cfgW_top, cfgW_left, cfgW_height, cfgW_width;
+//      cfg_manager::cfgPropertyStruct draw_normals, drawRain, drawSnow,
+//        multisamples, noiseProp, brightness, marsShader, backfaceCulling,
+//        drawLineLaserProp, drawMainCamera, marsShadow, hudWidthProp,
+//        hudHeightProp;
+      int draw_normals, drawRain, drawSnow,
+           multisamples, brightness, marsShader, backfaceCulling,
+           drawMainCamera, marsShadow;
+//      cfg_manager::cfgPropertyStruct grab_frames;
+//      cfg_manager::cfgPropertyStruct resources_path;
+      std::string resources_path;
+//      cfg_manager::cfgPropertyStruct configPath;
       int ignore_next_resize;
       bool set_window_prop;
       osg::ref_ptr<osg::CullFace> cull;
 
 
-      void setupCFG(void);
+      //void setupCFG(void);
 
       unsigned long findCoreObject(unsigned long draw_id) const;
       void setMultisampling(int num_samples);
@@ -397,6 +401,14 @@ namespace mars {
       void setUseShader(bool val);
 
       void initDefaultLight();
+
+
+
+      int getLibVersion() const
+      { return 2; }
+      const std::string getLibName() const
+      { return std::string("osgviz_graphics"); }
+
 
     }; // end of class GraphicsManager
 

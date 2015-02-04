@@ -123,7 +123,7 @@ namespace mars {
 
     ///////////////////
 
-    GuiHelper::GuiHelper(interfaces::GraphicsManagerInterface *gi) {
+    GuiHelper::GuiHelper(GraphicsManager *gi) {
       this->gi = gi;
     }
 
