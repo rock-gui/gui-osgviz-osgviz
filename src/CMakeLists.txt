@@ -6,16 +6,6 @@ include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS})
 link_directories(${OPENSCENEGRAPH_LIBRARY_DIRS})
 
 
-
-include_directories(
-      graphics 
-      graphics/interfaces
-      graphics/hud_elements
-      graphics/draw_objects
-      graphics/glsl
-      graphics/shadow
-      graphics/3d_objects
-)
 include(CheckIncludeFileCXX)
 
 set (CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} ${OPENSCENEGRAPH_INCLUDE_DIRS})
@@ -145,6 +135,11 @@ rock_library(osgViz
            graphics/wrapper/OSGLightStruct.h
            graphics/wrapper/OSGMaterialStruct.h
            graphics/wrapper/OSGNodeStruct.h
+           graphics/interfaces/cameraStruct.h
+		   graphics/interfaces/GraphicsCameraInterface.h
+			graphics/interfaces/GraphicsEventInterface.h
+			graphics/interfaces/GraphicsWindowInterface.h
+			graphics/interfaces/GuiEventInterface.h
            
     LIBS ${Boost_SYSTEM_LIBRARY}
     DEPS_PKGCONFIG opencv lib_manager mars_interfaces openscenegraph eigen3 )

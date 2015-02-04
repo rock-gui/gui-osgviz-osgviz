@@ -21,7 +21,7 @@
 
 #include "pixellight.h"
 
-#include "GraphicsManager.h"
+#include "../GraphicsManager.h"
 
 #include <sstream>
 #include <iostream>

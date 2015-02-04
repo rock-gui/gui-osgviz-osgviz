@@ -27,7 +27,7 @@
 
 #include "OSGMaterialStruct.h"
 
-#include "gui_helper_functions.h"
+#include "../gui_helper_functions.h"
 
 namespace mars {
   namespace graphics {

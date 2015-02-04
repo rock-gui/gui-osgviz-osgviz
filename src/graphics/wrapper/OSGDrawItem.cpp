@@ -26,7 +26,7 @@
  */
 
 #include "OSGDrawItem.h"
-#include "gui_helper_functions.h"
+#include "../gui_helper_functions.h"
 
 #include <cstring>
 #include <cstdio>

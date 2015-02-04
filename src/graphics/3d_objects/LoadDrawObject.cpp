@@ -26,7 +26,7 @@
  */
 
 #include "LoadDrawObject.h"
-#include "gui_helper_functions.h"
+#include "../gui_helper_functions.h"
 
 #include <osg/ComputeBoundsVisitor>
 #include <osg/CullFace>

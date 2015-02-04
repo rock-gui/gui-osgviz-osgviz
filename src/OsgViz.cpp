@@ -38,9 +38,7 @@ OsgViz::OsgViz(int argc, char** argv): mars::graphics::GraphicsManager(NULL){
 void OsgViz::init(int argc,char** argv){
 	m_argc = argc;
 	m_argv = argv;
-	numberOfWindows = 0;
 	root = new osg::Group();
-	cameraManipulator = new osgGA::TerrainManipulator;
 	XInitThreads();
 	instance = this;
 	this->initializeOSG(NULL,true);
@@ -57,39 +55,18 @@ OsgViz::~OsgViz(){
 		delete libmanager;
 	}
 
-	for (std::map< int, ViewerFrameThread* >::iterator it = threads.begin();it != threads.end();it++){
-		destroyWindow(it->first);
-	}
-
-
-
 }
 
 int OsgViz::createWindow(bool threaded) {
 
+	int id = this->new3DWindow();
+	//mars::interfaces::GraphicsWindowInterface* window = this->get3DWindow(1);
 
-
-	//int id = this->new3DWindow();
-
-	mars::interfaces::GraphicsWindowInterface* window = this->get3DWindow(1);
-
-	while(true){
-
-		this->draw();
-		usleep(100000);
-	}
-
-
-	return numberOfWindows;
+	return id;
 }
 
 void OsgViz::destroyWindow(int id){
-	ViewerFrameThread* thread = threads[id];
-	if (thread){
-		thread->cancel();
-		delete thread;
-		threads[id] = NULL;
-	}
+		this->destroyWindow(id);
 }
 
 
@@ -113,17 +90,10 @@ OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
 }
 
 
-void OsgViz::lockWindows(){
-	for (std::map< int, ViewerFrameThread* >::iterator it = threads.begin();it != threads.end();it++){
-		it->second->lock();
-	}
-}
-void OsgViz::unlockWindows(){
-	for (std::map< int, ViewerFrameThread* >::iterator it = threads.begin();it != threads.end();it++){
-		it->second->unlock();
-	}
-}
 
+void OsgViz::updateContent(){
+	this->draw();
+}
 
 
 const std::string OsgViz::getLibName() const {

@@ -22,7 +22,7 @@
 #define MARS_GRAPHICS_GL_NORMAL_MAPPING_H
 
 #include "shader-function.h"
-#include "GraphicsManager.h"
+#include "../GraphicsManager.h"
 
 #include <mars/interfaces/LightData.h>
 

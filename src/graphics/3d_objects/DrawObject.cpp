@@ -26,7 +26,7 @@
  */
 
 #include "DrawObject.h"
-#include "gui_helper_functions.h"
+#include "../gui_helper_functions.h"
 #include "../wrapper/OSGMaterialStruct.h"
 #include "../shader/shader-generator.h"
 #include "../shader/shader-function.h"

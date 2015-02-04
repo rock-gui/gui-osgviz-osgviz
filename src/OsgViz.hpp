@@ -4,7 +4,6 @@
 #include <iostream>
 #include <lib_manager/LibManager.hpp>
 #include <osg/Group>
-#include <osgViewer/Viewer>
 #include <boost/thread/mutex.hpp>
 
 
@@ -15,61 +14,6 @@
 
 namespace osgviz
 {
-
-class ViewerFrameThread : public OpenThreads::Thread
-	{
-	    public:
-
-	        ViewerFrameThread(osgViewer::ViewerBase* viewerBase):
-	            _viewerBase(viewerBase){
-
-	        	if (!_viewerBase->isRealized()){
-	        		_viewerBase->realize();
-	        	}
-
-	        }
-
-	        ~ViewerFrameThread()
-	        {
-	            if (isRunning())
-	            {
-	                cancel();
-	                join();
-	            }
-	        }
-
-	        int cancel()
-	        {
-	            _viewerBase->setDone(true);
-	            return 0;
-	        }
-
-	        void run()
-	        {
-
-	        	while (!_viewerBase->done()){
-					mutex.lock();
-					//int result = _viewerBase->run();
-					_viewerBase->frame();
-					mutex.unlock();
-					//give others a chance to lock
-					usleep(10000);
-	        	}
-	        }
-
-	        void lock(){
-	        	mutex.lock();
-	        }
-	        void unlock(){
-	        	 mutex.unlock();
-	        }
-
-	    private:
-	        osg::ref_ptr<osgViewer::ViewerBase> _viewerBase;
-	        OpenThreads::Mutex mutex;
-
-	};
-
 
 	class OsgViz: public mars::graphics::GraphicsManager
 	{
@@ -96,19 +40,10 @@ class ViewerFrameThread : public OpenThreads::Thread
 	    void init(int argc,char** argv);
 
 
+		void updateContent();
+
 		int createWindow(bool threaded = true);
-
 		void destroyWindow(int id);
-
-
-		void lockWindows();
-		void unlockWindows();
-
-
-
-		inline int getNumberOfWindows(){
-			return numberOfWindows;
-		}
 
 		template <class VIZPLUGIN> VIZPLUGIN* getVisualizerPlugin(std::string classname){
 			VIZPLUGIN* viz = (VIZPLUGIN*)getVizPlugin(classname,classname);
@@ -139,13 +74,10 @@ class ViewerFrameThread : public OpenThreads::Thread
 		private:
 		bool initialized;
 		std::vector< OsgVizPlugin* >loadedPlugins;
-		std::map< int, ViewerFrameThread* >threads;
 
-		osg::ref_ptr<osgGA::CameraManipulator> cameraManipulator;
 		int m_argc;
 		char** m_argv;
 
-		int numberOfWindows;
 
 
 		//std::vector<osgViewer::Viewer *> viewers;

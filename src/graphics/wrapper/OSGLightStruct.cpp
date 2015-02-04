@@ -26,7 +26,7 @@
  */
 
 #include "OSGLightStruct.h"
-#include "gui_helper_functions.h"
+#include "../gui_helper_functions.h"
 
 #define CREATE_LIGHT_MARKER
 

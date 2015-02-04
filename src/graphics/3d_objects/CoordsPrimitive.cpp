@@ -26,7 +26,7 @@
  */
 
 #include "CoordsPrimitive.h"
-#include "gui_helper_functions.h"
+#include "../gui_helper_functions.h"
 #include "../wrapper/OSGDrawItem.h"
 
 namespace mars {
