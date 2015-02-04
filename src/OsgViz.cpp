@@ -1,5 +1,6 @@
 #include "OsgViz.hpp"
 
+#include "graphics/GraphicsManager.h"
 
 #include <stdio.h>
 #include <osgGA/TerrainManipulator>
@@ -22,14 +23,41 @@ OsgViz* OsgViz::getInstance(int argc,char** argv){
 	return instance;
 }
 
-OsgViz::OsgViz(lib_manager::LibManager * manager): mars::graphics::GraphicsManager(manager)
+
+
+
+void FrameUpdateThread::run()
+{
+	mutex.lock();
+	running = true;
+	mutex.unlock();
+
+	while (running){
+		mutex.unlock();
+		usleep(10000);
+		mutex.lock();
+		//int result = _viewerBase->run();
+		osgviz->draw();
+		mutex.unlock();
+		//give others a chance to lock
+		usleep(10000);
+		mutex.lock();
+	}
+}
+
+
+
+
+
+OsgViz::OsgViz(lib_manager::LibManager * manager): lib_manager::LibInterface(manager)
 {
 	createdOwnManager = false;
+	libmanager = manager;
 	init(0,NULL);
 
 }
 
-OsgViz::OsgViz(int argc, char** argv): mars::graphics::GraphicsManager(NULL){
+OsgViz::OsgViz(int argc, char** argv): lib_manager::LibInterface(NULL){
 	createdOwnManager = true;
 	libmanager = new lib_manager::LibManager();
 	init(argc,argv);
@@ -37,14 +65,16 @@ OsgViz::OsgViz(int argc, char** argv): mars::graphics::GraphicsManager(NULL){
 
 
 void OsgViz::init(int argc,char** argv){
+	graphicsManager = new mars::graphics::GraphicsManager(libmanager);
+
 	thread = NULL;
 	m_argc = argc;
 	m_argv = argv;
 	root = new osg::Group();
 	XInitThreads();
 	instance = this;
-	this->initializeOSG(NULL,true);
-	this->addOSGNode(root);
+	graphicsManager->initializeOSG(NULL,true);
+	graphicsManager->addOSGNode(root);
 }
 
 OsgViz::~OsgViz(){
@@ -57,18 +87,22 @@ OsgViz::~OsgViz(){
 		delete libmanager;
 	}
 
+	if (graphicsManager){
+		delete graphicsManager;
+	}
+
 }
 
 int OsgViz::createWindow(bool threaded) {
 
-	int id = this->new3DWindow();
+	int id = graphicsManager->new3DWindow();
 	//mars::interfaces::GraphicsWindowInterface* window = this->get3DWindow(1);
 
 	return id;
 }
 
 void OsgViz::destroyWindow(int id){
-		this->destroyWindow(id);
+	graphicsManager->remove3DWindow(id);
 }
 
 
@@ -94,12 +128,12 @@ OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
 
 
 void OsgViz::updateContent(){
-	this->draw();
+	graphicsManager->draw();
 }
 
 void OsgViz::startThread(){
 	if (!thread){
-		thread = new FrameUpdateThread(this);
+		thread = new FrameUpdateThread(graphicsManager);
 		thread->startThread();
 	}else{
 		fprintf(stderr,"thread already running\n");

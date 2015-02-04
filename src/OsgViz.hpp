@@ -4,11 +4,16 @@
 #include <iostream>
 #include <lib_manager/LibManager.hpp>
 #include <osg/Group>
-#include <boost/thread/mutex.hpp>
+#include <OpenThreads/Thread>
 
-
+#include <mars/interfaces/graphics/GraphicsManagerInterface.h>
 #include "plugins/OsgVizPlugin.h"
-#include "graphics/GraphicsManager.h"
+
+namespace mars {
+	namespace graphics{
+		class GraphicsManager;
+	}
+}
 
 #include <stdio.h>
 
@@ -43,24 +48,7 @@ class FrameUpdateThread : public OpenThreads::Thread
 	            return 0;
 	        }
 
-	        void run()
-	        {
-	        	mutex.lock();
-	        	running = true;
-	        	mutex.unlock();
-
-	        	while (running){
-	        		mutex.unlock();
-	        		usleep(10000);
-					mutex.lock();
-					//int result = _viewerBase->run();
-					osgviz->draw();
-					mutex.unlock();
-					//give others a chance to lock
-					usleep(10000);
-					mutex.lock();
-	        	}
-	        }
+	        void run();
 
 	        void lock(){
 	        	mutex.lock();
@@ -77,7 +65,7 @@ class FrameUpdateThread : public OpenThreads::Thread
 	};
 
 
-	class OsgViz: public mars::graphics::GraphicsManager
+	class OsgViz: public lib_manager::LibInterface
 	{
 
 		public: 
@@ -116,6 +104,10 @@ class FrameUpdateThread : public OpenThreads::Thread
 		int createWindow(bool threaded = true);
 		void destroyWindow(int id);
 
+		inline mars::interfaces::GraphicsManagerInterface* getGraphicsManager(){
+			return (mars::interfaces::GraphicsManagerInterface*)graphicsManager;
+		}
+
 		template <class VIZPLUGIN> VIZPLUGIN* getVisualizerPlugin(std::string classname){
 			VIZPLUGIN* viz = (VIZPLUGIN*)getVizPlugin(classname,classname);
 			viz->setRootNode(root);
@@ -130,7 +122,6 @@ class FrameUpdateThread : public OpenThreads::Thread
 
 
 
-
 		private:
 
 		OsgVizPlugin* getVizPlugin(std::string path, std::string name);
@@ -140,7 +131,6 @@ class FrameUpdateThread : public OpenThreads::Thread
 
 		osg::ref_ptr<osg::Group> root;
 
-		osgViewer::Viewer viewer;
 
 		private:
 		bool initialized;
@@ -151,6 +141,7 @@ class FrameUpdateThread : public OpenThreads::Thread
 
 
 		FrameUpdateThread* thread;
+		mars::graphics::GraphicsManager* graphicsManager;
 
 		//std::vector<osgViewer::Viewer *> viewers;
 
