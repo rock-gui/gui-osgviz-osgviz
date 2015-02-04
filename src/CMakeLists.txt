@@ -88,6 +88,11 @@ rock_library(osgViz
            graphics/shader/texgen.cpp
 
            graphics/shadow/ShadowMap.cpp
+           
+           graphics/interfaces/data/GraphicData.cpp
+			graphics/interfaces/data/LightData.cpp
+			graphics/interfaces/data/MaterialData.cpp
+           
     HEADERS OsgViz.hpp
            graphics/GraphicsCamera.h
            graphics/GraphicsManager.h
@@ -140,6 +145,11 @@ rock_library(osgViz
 			graphics/interfaces/GraphicsEventInterface.h
 			graphics/interfaces/GraphicsWindowInterface.h
 			graphics/interfaces/GuiEventInterface.h
+			
+			graphics/interfaces/data/GraphicData.h
+			graphics/interfaces/data/LightData.h
+			graphics/interfaces/data/MaterialData.h
+			graphics/interfaces/OsgVizDefs.h
            
     LIBS ${Boost_SYSTEM_LIBRARY}
     DEPS_PKGCONFIG opencv lib_manager mars_interfaces openscenegraph eigen3 )

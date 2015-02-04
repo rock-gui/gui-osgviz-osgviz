@@ -28,7 +28,7 @@
 #define MARS_GRAPHICS_VIEWER_H
 
 #include <osgViewer/CompositeViewer>
-#include <mars/interfaces/graphics/GuiEventInterface.h>
+#include "interfaces/GuiEventInterface.h"
 
 namespace mars {
   namespace graphics {

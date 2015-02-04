@@ -57,9 +57,10 @@
 #include <mars/utils/Vector.h>
 #include <mars/utils/Quaternion.h>
 #include <mars/interfaces/core_objects_exchange.h>
-#include <mars/interfaces/GraphicData.h>
-#include <mars/interfaces/LightData.h>
-#include <mars/interfaces/MaterialData.h>
+
+#include "interfaces/data/GraphicData.h"
+#include "interfaces/data/LightData.h"
+#include "interfaces/data/MaterialData.h"
 
 #include "interfaces/GraphicsWindowInterface.h"
 #include "interfaces/GraphicsEventInterface.h"
