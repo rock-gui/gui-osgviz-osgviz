@@ -18,7 +18,6 @@
  *
  */
 
-#include "QtOsgMixGraphicsWidget.h"
 #include "GraphicsWidget.h"
 #include "HUD.h"
 #include "GraphicsManager.h"

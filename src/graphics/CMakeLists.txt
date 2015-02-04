@@ -53,25 +53,6 @@ if(${HAVE_OSG_VERSION_H})
     ADD_DEFINITIONS(-DHAVE_OSG_VERSION_H)
 endif()
 
-#find_package(Qt5Widgets)
-#if (${Qt5Widgets_FOUND})
-#  set(USE_QT5 1)
-#  find_package(Qt5Widgets REQUIRED)
-#  #find_package(Qt5MacExtras REQUIRED)
-#  include_directories(${Qt5Widgets_INCLUDES})
-#  add_definitions(-DUSE_QT5)
-#  add_definitions(${Qt5Widgets_DEFINITIONS})
-#  set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
-#
-#else (${Qt5Widgets_FOUND})
-  find_package(Qt4 REQUIRED)
-  include(${QT_USE_FILE})
-  include_directories(${QT_INCLUDE_DIR})
-  link_directories(${QT_LIBRARY_DIR})
-  add_definitions("-D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED")
-  remove_definitions(-DQT_DLL)
-
-#endif (${Qt5Widgets_FOUND})
 
 pkg_check_modules(PKGCONFIG REQUIRED
 			    opencv
@@ -92,8 +73,6 @@ set(HEADERS
            gui_helper_functions.h
            HUD.h
            PostDrawCallback.h
-           QtOsgMixGraphicsWidget.h
-           
            3d_objects/AxisPrimitive.h
            3d_objects/CapsuleDrawObject.h
            3d_objects/Clouds.h
@@ -141,10 +120,6 @@ set(HEADERS_WRAPPER
            wrapper/OSGNodeStruct.h
 )
 
-set(QT_MOC_HEADERS
-           QtOsgMixGraphicsWidget.h
-)
-
 set(SOURCES 
            GraphicsCamera.cpp
            GraphicsManager.cpp
@@ -152,7 +127,6 @@ set(SOURCES
            GraphicsWidget.cpp
            gui_helper_functions.cpp
            HUD.cpp
-           QtOsgMixGraphicsWidget.cpp
            PostDrawCallback.cpp
            
            wrapper/OSGDrawItem.cpp
@@ -194,11 +168,6 @@ set(SOURCES
            shadow/ShadowMap.cpp
 )
 
-if (${USE_QT5})
-qt5_wrap_cpp( QT_MOC_HEADER_SRC ${QT_MOC_HEADERS})
-else (${USE_QT5})
-qt4_wrap_cpp( QT_MOC_HEADER_SRC ${QT_MOC_HEADERS})
-endif (${USE_QT5})
 
 #cmake variables
 configure_file(${CMAKE_SOURCE_DIR}/src/graphics/configuration/config.h.in ${CMAKE_SOURCE_DIR}/src/graphics/config.h @ONLY)
@@ -206,10 +175,6 @@ include_directories("${CMAKE_BINARY_DIR}")
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES} ${QT_MOC_HEADER_SRC} config.h)
 
-if (${USE_QT5})
-qt5_use_modules(${PROJECT_NAME} Widgets)
-#qt5_use_modules(${PROJECT_NAME} MacExtras)
-endif (${USE_QT5})
 
 if(APPLE)
  FIND_LIBRARY(OPENGL_LIBRARY OpenGL)

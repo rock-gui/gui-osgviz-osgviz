@@ -60,7 +60,6 @@
 #include "HUD.h"
 
 #include "wrapper/OSGNodeStruct.h"
-#include "QtOsgMixGraphicsWidget.h"
 
 #include <iostream>
 #include <cassert>
@@ -500,26 +499,25 @@ namespace mars {
                                                int width, int height, const std::string &name) {
       GraphicsWidget *gw;
 
-      if (graphicsWindows.size() > 0) {
-        gw = QtOsgMixGraphicsWidget::createInstance(myQTWidget, scene.get(),
-                                                    next_window_id++, rtt,
-                                                    0, this);
-        gw->initializeOSG(myQTWidget, graphicsWindows[0], width, height);
-      }
-      else {
-        
-        gw = QtOsgMixGraphicsWidget::createInstance(myQTWidget, scene.get(),
-                                                    next_window_id++, 0,
-                                                    0, this);
-        
+//      if (graphicsWindows.size() > 0) {
+//        gw = QtOsgMixGraphicsWidget::createInstance(myQTWidget, scene.get(),
+//                                                    next_window_id++, rtt,
+//                                                    0, this);
+//        gw->initializeOSG(myQTWidget, graphicsWindows[0], width, height);
+//      }
+//      else {
+//
+//        gw = QtOsgMixGraphicsWidget::createInstance(myQTWidget, scene.get(),
+//                                                    next_window_id++, 0,
+//                                                    0, this);
+//
         // this will open an osg widget without qt wrapping
-        /*
+        
         gw = new GraphicsWidget(myQTWidget, scene.get(),
                                 next_window_id++, 0,
                                                     0, this);
-        */
         gw->initializeOSG(myQTWidget, 0, width, height);
-      }
+//      }
 
       gw->setName(name);
       gw->setClearColor(graphicOptions.clearColor);
