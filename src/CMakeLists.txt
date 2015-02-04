@@ -1,5 +1,6 @@
 rock_find_cmake(Boost REQUIRED system)
 
+
 rock_library(osgViz
     SOURCES OsgViz.cpp
     HEADERS OsgViz.hpp
@@ -35,3 +36,6 @@ rock_library(ModelLoader
 rock_executable(osgViz_bin Main.cpp
     DEPS osgViz)
 
+
+
+add_subdirectory(graphics)
