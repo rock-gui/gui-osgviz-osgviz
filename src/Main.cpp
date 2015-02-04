@@ -25,9 +25,13 @@ int main(int argc, char** argv)
 	osgviz::Object* grid = primitivesfactory->createGrid();
 
 
+	osgViz->startThread();
+
 	while (true){
-		osgViz->updateContent();
+		sleep(1);
 	}
+
+
 
 
 	delete osgViz;

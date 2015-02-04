@@ -26,6 +26,7 @@ OsgViz::OsgViz(lib_manager::LibManager * manager): mars::graphics::GraphicsManag
 {
 	createdOwnManager = false;
 	init(0,NULL);
+
 }
 
 OsgViz::OsgViz(int argc, char** argv): mars::graphics::GraphicsManager(NULL){
@@ -36,6 +37,7 @@ OsgViz::OsgViz(int argc, char** argv): mars::graphics::GraphicsManager(NULL){
 
 
 void OsgViz::init(int argc,char** argv){
+	thread = NULL;
 	m_argc = argc;
 	m_argv = argv;
 	root = new osg::Group();
@@ -95,6 +97,34 @@ void OsgViz::updateContent(){
 	this->draw();
 }
 
+void OsgViz::startThread(){
+	if (!thread){
+		thread = new FrameUpdateThread(this);
+		thread->startThread();
+	}else{
+		fprintf(stderr,"thread already running\n");
+	}
+}
+
+void OsgViz::stopThread(){
+	if (thread){
+		thread->cancel();
+		delete thread;
+	}
+}
+
+
+void OsgViz::lockThread(){
+	if (thread){
+		thread->lock();
+	}
+}
+
+void OsgViz::unlockThread(){
+	if (thread){
+		thread->unlock();
+	}
+}
 
 const std::string OsgViz::getLibName() const {
 	return "OsgViz";

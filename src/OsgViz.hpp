@@ -15,6 +15,68 @@
 namespace osgviz
 {
 
+class OsgViz;
+
+class FrameUpdateThread : public OpenThreads::Thread
+	{
+	    public:
+
+	FrameUpdateThread(mars::graphics::GraphicsManager* osgviz):
+	        	osgviz(osgviz){
+	        	running = false;
+	        }
+
+	        ~FrameUpdateThread()
+	        {
+	            if (isRunning())
+	            {
+	                cancel();
+	                join();
+	            }
+	        }
+
+	        int cancel()
+	        {
+	        	mutex.lock();
+	        	running = false;
+	        	mutex.unlock();
+	            return 0;
+	        }
+
+	        void run()
+	        {
+	        	mutex.lock();
+	        	running = true;
+	        	mutex.unlock();
+
+	        	while (running){
+	        		mutex.unlock();
+	        		usleep(10000);
+					mutex.lock();
+					//int result = _viewerBase->run();
+					osgviz->draw();
+					mutex.unlock();
+					//give others a chance to lock
+					usleep(10000);
+					mutex.lock();
+	        	}
+	        }
+
+	        void lock(){
+	        	mutex.lock();
+	        }
+	        void unlock(){
+	        	mutex.unlock();
+	        }
+
+	    private:
+	        bool running;
+	        mars::graphics::GraphicsManager* osgviz;
+	        OpenThreads::Mutex mutex;
+
+	};
+
+
 	class OsgViz: public mars::graphics::GraphicsManager
 	{
 
@@ -38,6 +100,15 @@ namespace osgviz
 
 
 	    void init(int argc,char** argv);
+
+	    /**
+	     * starts a thread calling updateContent
+	     */
+	    void startThread();
+	    void stopThread();
+
+	    void lockThread();
+	    void unlockThread();
 
 
 		void updateContent();
@@ -79,6 +150,7 @@ namespace osgviz
 		char** m_argv;
 
 
+		FrameUpdateThread* thread;
 
 		//std::vector<osgViewer::Viewer *> viewers;
 
