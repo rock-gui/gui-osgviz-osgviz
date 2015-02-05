@@ -60,11 +60,6 @@ namespace osgviz {
     using interfaces::LightData;
     using interfaces::MaterialData;
 
-    using mars::utils::Vector;
-    using mars::utils::Quaternion;
-
-    using mars::utils::Color;
-
     static osg::Material* makeSelectionMaterial()
     {
       // create selection material, will be used if object is selected

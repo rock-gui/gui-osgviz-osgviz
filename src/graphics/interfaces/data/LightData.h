@@ -21,8 +21,7 @@
 #ifndef OSGVIZ_INTERFACES_LIGHT_DATA_H
 #define OSGVIZ_INTERFACES_LIGHT_DATA_H
 
-#include <mars/utils/Color.h>
-#include <mars/utils/Vector.h>
+#include "../OsgVizDefs.h"
 
 #include <string>
 
@@ -41,11 +40,11 @@ namespace osgviz {
 
       unsigned int index;
       std::string name; //light name
-      mars::utils::Vector pos; //light position
-      mars::utils::Vector lookAt; //light direction
-      mars::utils::Color ambient; //color of the ambient part of the light
-      mars::utils::Color diffuse; //color of the diffuse part of the light
-      mars::utils::Color specular; //specular color of the light
+      Vector pos; //light position
+      Vector lookAt; //light direction
+      Color ambient; //color of the ambient part of the light
+      Color diffuse; //color of the diffuse part of the light
+      Color specular; //specular color of the light
       double constantAttenuation;
       double linearAttenuation;
       double quadraticAttenuation;

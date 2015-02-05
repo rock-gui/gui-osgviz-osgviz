@@ -56,8 +56,8 @@ namespace osgviz {
       osg::ref_ptr<osg::MatrixTransform> matrix;
       unsigned long index;
       std::string name;
-      mars::utils::Vector offset;
-      mars::utils::Quaternion r_off;
+      Vector offset;
+      Quaternion r_off;
       //interfaces::NodeData snode;
     }; // end of struct nodemanager
 
@@ -76,8 +76,8 @@ namespace osgviz {
       osg::ref_ptr<osg::Image> image;
     }; // end of struct imageFileStruct
 
-    osg::Vec4 toOSGVec4(const mars::utils::Color &col);
-    osg::Vec4 toOSGVec4(const mars::utils::Vector &v, float w);
+
+    osg::Vec4 toOSGVec4(const Vector &v, float w);
 
     /** \brief used to get a geode from a nodegroup */
     class GeodeVisitor: public osg::NodeVisitor{
@@ -112,7 +112,7 @@ namespace osgviz {
 //                                                       double pivotY,
 //                                                       double pivotZ);
 
-      mars::utils::Vector getExtend(osg::Group* oGroup);
+      Vector getExtend(osg::Group* oGroup);
       void initGraphics();
 
      // virtual void getPhysicsFromOBJ(mars::interfaces::NodeData *node);

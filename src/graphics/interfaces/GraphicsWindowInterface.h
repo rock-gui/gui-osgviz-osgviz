@@ -34,7 +34,7 @@
 
 #include "GraphicsCameraInterface.h"
 #include "GraphicsEventInterface.h"
-#include <mars/utils/Color.h>
+#include "OsgVizDefs.h"
 
 namespace osg{
     class Group;
@@ -49,7 +49,7 @@ namespace osgviz {
       virtual ~GraphicsWindowInterface() {}
       virtual GraphicsCameraInterface* getCameraInterface() const = 0;
       virtual void grabFocus() = 0;
-      virtual void setClearColor(mars::utils::Color color) = 0;
+      virtual void setClearColor(Color color) = 0;
       virtual void switchHudElemtVis(int num_element) = 0;
       virtual void setFullscreen(bool val, int display = 1) = 0;
       virtual void setGrabFrames(bool grab) = 0;

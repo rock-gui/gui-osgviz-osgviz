@@ -22,8 +22,6 @@
 #define MARS_INTERFACES_CORE_OBJECTS_EXCHANGE_H
 
 #include "../OsgVizDefs.h"
-#include <mars/utils/Vector.h>
-#include <mars/utils/Quaternion.h>
 
 #include <string>
 
@@ -59,22 +57,22 @@ namespace osgviz {
       /**
        * The position of the object.
        */
-      mars::utils::Vector pos;
+      Vector pos;
 
       /**
        * The orientation of the object. \sa Quaternion
        */
-      mars::utils::Quaternion rot;
+      Quaternion rot;
 
       /**
        * The offset position of the visual representation.
        */
-      mars::utils::Vector visOffsetPos;
+      Vector visOffsetPos;
 
       /**
        * The offset orientation of the visual representation. \sa Quaternion
        */
-      mars::utils::Quaternion visOffsetRot;
+      Quaternion visOffsetRot;
 
       /**
        * The unique id of the object. A joint and a node can have the same id,

@@ -21,8 +21,8 @@
 #ifndef OSGVIZ_INTERFACES_MATERIAL_STRUCT_H
 #define OSGVIZ_INTERFACES_MATERIAL_STRUCT_H
 
-#include <mars/utils/Color.h>
-#include <mars/utils/ConfigData.h>
+#include "../OsgVizDefs.h"
+#include <string>
 
 namespace osgviz {
   namespace interfaces {
@@ -67,14 +67,14 @@ namespace osgviz {
       bool operator==(const MaterialData& other) const;
 
       bool exists; // used for import mesh
-      mars::utils::Color ambientFront;  // ambient color
-      mars::utils::Color diffuseFront;  // diffuse color
-      mars::utils::Color specularFront; // specular color
-      mars::utils::Color emissionFront; // emission color
-      mars::utils::Color ambientBack;   // ambient color
-      mars::utils::Color diffuseBack;   // diffuse color
-      mars::utils::Color specularBack;  // specular color
-      mars::utils::Color emissionBack;  // emission color
+      Color ambientFront;  // ambient color
+      Color diffuseFront;  // diffuse color
+      Color specularFront; // specular color
+      Color emissionFront; // emission color
+      Color ambientBack;   // ambient color
+      Color diffuseBack;   // diffuse color
+      Color specularBack;  // specular color
+      Color emissionBack;  // emission color
       double transparency;
       double shininess;
       std::string texturename; // the filename of the texture of the node

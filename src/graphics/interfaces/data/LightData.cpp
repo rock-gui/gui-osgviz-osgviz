@@ -19,7 +19,6 @@
  */
 
 #include "LightData.h"
-#include <mars/utils/mathUtils.h>
 #include "../OsgVizDefs.h"
 
 #define GET_VALUE(str, val, type)                    \
@@ -39,8 +38,6 @@
 
 namespace osgviz {
   namespace interfaces {
-
-    using namespace mars::utils;
 
 
   } // end of namespace interfaces

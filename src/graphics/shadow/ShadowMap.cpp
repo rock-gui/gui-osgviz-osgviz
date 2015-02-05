@@ -246,7 +246,7 @@ namespace osgviz {
           if (lightpos[3]!=0.0) {   // point Light
             if(centerObject) {
               osg::Vec3 position(lightpos.x(), lightpos.y(), lightpos.z());
-              mars::utils::Vector v = centerObject->getPosition();
+              Vector v = centerObject->getPosition();
               osg::Vec3 centerPos(v.x(), v.y(), v.z());
               float centerDistance = (position-centerPos).length();
               float znear = centerDistance-radius;

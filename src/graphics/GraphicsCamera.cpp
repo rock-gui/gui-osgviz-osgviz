@@ -39,9 +39,6 @@
 namespace osgviz {
   namespace graphics {
 
-    //using mars::interfaces::cameraStruct;
-    using mars::utils::Vector;
-    using mars::utils::Quaternion;
 
     GraphicsCamera::GraphicsCamera(osg::ref_ptr<osg::Camera> _camera,
                                    int g_width, int g_height) {

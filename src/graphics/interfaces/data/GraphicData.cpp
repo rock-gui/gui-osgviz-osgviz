@@ -20,8 +20,6 @@
 
 #include "GraphicData.h"
 
-#include <mars/utils/mathUtils.h>
-
 #define GET_VALUE(str, val, type)                    \
   if((it = config->find(str)) != config->end())      \
     val = it->second[0].get##type()
@@ -32,23 +30,21 @@
 namespace osgviz {
   namespace interfaces {
 
-    using namespace mars::utils;
-
     GraphicData::GraphicData() {
-      clearColor.r = 0.25;
-      clearColor.g = 0.27;
-      clearColor.b = 0.48;
-      clearColor.a = 1.0;
+      clearColor.r() = 0.25;
+      clearColor.g() = 0.27;
+      clearColor.b() = 0.48;
+      clearColor.a() = 1.0;
 
       fogEnabled = false;
       fogDensity = 0.35;
       fogStart = 10.0;
       fogEnd = 30.0;
 
-      fogColor.r = 0.2;
-      fogColor.g = 0.2;
-      fogColor.b = 0.2;
-      fogColor.a = 1.0;
+      fogColor.r() = 0.2;
+      fogColor.g() = 0.2;
+      fogColor.b() = 0.2;
+      fogColor.a() = 1.0;
     }
 
 

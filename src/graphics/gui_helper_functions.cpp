@@ -40,16 +40,11 @@
 #include "3d_objects/MarsVBOGeom.h"
 #endif
 
-#include <mars/utils/mathUtils.h>
 
 namespace osgviz {
   namespace graphics {
 
     using namespace std;
-    using mars::utils::Color;
-    using mars::utils::Vector;
-    using mars::utils::Quaternion;
-    //using mars::interfaces::snmesh;
 
     vector<nodeFileStruct> GuiHelper::nodeFiles;
     vector<textureFileStruct> GuiHelper::textureFiles;
@@ -57,10 +52,6 @@ namespace osgviz {
 
     /////////////
 
-    osg::Vec4 toOSGVec4(const Color &col)
-    {
-      return osg::Vec4(col.r, col.g, col.b, col.a);
-    }
     osg::Vec4 toOSGVec4(const Vector &v, float w)
     {
       return osg::Vec4(v.x(), v.y(), v.z(), w);

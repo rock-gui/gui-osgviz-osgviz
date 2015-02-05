@@ -55,9 +55,6 @@
 
 #include "interfaces/OsgVizDefs.h"
 
-#include <mars/utils/Vector.h>
-#include <mars/utils/Quaternion.h>
-
 #include "interfaces/data/core_objects_exchange.h"
 #include "interfaces/data/GraphicData.h"
 #include "interfaces/data/LightData.h"

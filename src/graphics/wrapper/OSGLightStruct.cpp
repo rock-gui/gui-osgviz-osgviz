@@ -55,9 +55,9 @@ namespace osgviz {
       light_->setLightNum(ls.index);
 
       //set colors
-      light_->setAmbient(toOSGVec4(ls.ambient));
-      light_->setDiffuse(toOSGVec4(ls.diffuse));
-      light_->setSpecular(toOSGVec4(ls.specular));
+      light_->setAmbient(ls.ambient);
+      light_->setDiffuse(ls.diffuse);
+      light_->setSpecular(ls.specular);
 
       //set spotlight parameters
       if (ls.type == SPOTLIGHT) {
@@ -105,9 +105,9 @@ namespace osgviz {
         addChild(lightMarkerGeode.get());
       }
       //set colors
-      light_->setAmbient(toOSGVec4(ls.ambient));
-      light_->setDiffuse(toOSGVec4(ls.diffuse));
-      light_->setSpecular(toOSGVec4(ls.specular));
+      light_->setAmbient(ls.ambient);
+      light_->setDiffuse(ls.diffuse);
+      light_->setSpecular(ls.specular);
 
       //set spotlight parameters
       if (ls.type == SPOTLIGHT){

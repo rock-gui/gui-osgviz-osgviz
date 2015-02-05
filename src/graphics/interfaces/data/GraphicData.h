@@ -21,7 +21,7 @@
 #ifndef OSGVIZ_INTERFACES_GRAPHIC_DATA_H
 #define OSGVIZ_INTERFACES_GRAPHIC_DATA_H
 
-#include <mars/utils/Color.h>
+
 #include "../OsgVizDefs.h"
 
 namespace osgviz {
@@ -34,12 +34,12 @@ namespace osgviz {
     public:
       GraphicData();
 
-      mars::utils::Color clearColor;
+      Color clearColor;
       bool fogEnabled;
       sReal fogDensity;
       sReal fogStart;
       sReal fogEnd;
-      mars::utils::Color fogColor;
+      Color fogColor;
     };
 
   } // end of namespace interfaces

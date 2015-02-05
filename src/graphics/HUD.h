@@ -35,9 +35,8 @@
 #include <osgViewer/GraphicsWindow>
 
 #include "interfaces/OsgVizDefs.h"
-#include <mars/utils/Vector.h>
-#include <mars/utils/Quaternion.h>
-#include <mars/utils/Color.h>
+
+
 
 #include "HUDElement.h"
 
@@ -58,7 +57,7 @@ namespace osgviz {
       osg::ref_ptr<osg::Camera> getCamera(void);
       void getSize(sReal &width, sReal &height);
       void setViewSize(double width, double height);
-      void getOffset(mars::utils::Vector &offset);
+      void getOffset(Vector &offset);
       void resize(double width, double height);
       void setCullMask(unsigned int cull_mask);
       void addHUDElement(HUDElement *elem);
@@ -75,8 +74,8 @@ namespace osgviz {
       sReal swidth;
       sReal sheight;
       unsigned long id;
-      mars::utils::Color myColor;
-      mars::utils::Vector myoff;
+      Color myColor;
+      Vector myoff;
       unsigned int width, height;
       double view_width, view_height;
       double x1, x2, y1, y2;

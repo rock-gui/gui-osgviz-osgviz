@@ -82,7 +82,7 @@ namespace osgviz {
       virtual int getCamera(void) const;
       osg::ref_ptr<osg::Camera> getOSGCamera();
       /**\brief sets the camera view */
-      mars::utils::Vector getCameraPosition();
+      Vector getCameraPosition();
       /* returns vector with current camera position */
       void setCameraView(cameraStruct cs);
       /**\brief returns the cameraStruct */

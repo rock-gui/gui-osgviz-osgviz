@@ -21,8 +21,7 @@
 #ifndef OSGVIZ_CAMERA_STRUCT_H
 #define OSGVIZ_CAMERA_STRUCT_H
 
-#include <mars/utils/Vector.h>
-#include <mars/utils/Quaternion.h>
+#include "OsgVizDefs.h"
 
 namespace osgviz {
 
@@ -31,8 +30,8 @@ namespace osgviz {
      * which can be accessed through the sensor interface.
      */
     struct cameraStruct {
-      mars::utils::Vector pos;
-      mars::utils::Quaternion rot; //rotation
+      Vector pos;
+      Quaternion rot; //rotation
 
       /** 
        * camera intrinsic parameters

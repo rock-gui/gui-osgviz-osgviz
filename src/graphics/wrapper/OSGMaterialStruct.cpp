@@ -35,14 +35,14 @@ namespace osgviz {
     OSGMaterialStruct::OSGMaterialStruct(const osgviz::interfaces::MaterialData &mat)
     {
       setColorMode(osg::Material::OFF);
-      setAmbient(osg::Material::FRONT, toOSGVec4(mat.ambientFront));
-      setAmbient(osg::Material::BACK, toOSGVec4(mat.ambientBack));
-      setSpecular(osg::Material::FRONT, toOSGVec4(mat.specularFront));
-      setSpecular(osg::Material::BACK, toOSGVec4(mat.specularBack));
-      setDiffuse(osg::Material::FRONT, toOSGVec4(mat.diffuseFront));
-      setDiffuse(osg::Material::BACK, toOSGVec4(mat.diffuseBack));
-      setEmission(osg::Material::FRONT, toOSGVec4(mat.emissionFront));
-      setEmission(osg::Material::BACK, toOSGVec4(mat.emissionBack));
+      setAmbient(osg::Material::FRONT, mat.ambientFront);
+      setAmbient(osg::Material::BACK, mat.ambientBack);
+      setSpecular(osg::Material::FRONT, mat.specularFront);
+      setSpecular(osg::Material::BACK, mat.specularBack);
+      setDiffuse(osg::Material::FRONT, mat.diffuseFront);
+      setDiffuse(osg::Material::BACK, mat.diffuseBack);
+      setEmission(osg::Material::FRONT, mat.emissionFront);
+      setEmission(osg::Material::BACK, mat.emissionBack);
       setShininess(osg::Material::FRONT_AND_BACK, mat.shininess);
       setTransparency(osg::Material::FRONT_AND_BACK, mat.transparency);
     }

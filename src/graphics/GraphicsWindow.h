@@ -33,9 +33,6 @@
 #include "interfaces/GraphicsEventInterface.h"
 #include "interfaces/GraphicsGuiInterface.h"
 
-#include <mars/utils/Vector.h>
-
-
 
 #include <osgViewer/Viewer>
 #include <osgWidget/WindowManager>
@@ -75,7 +72,7 @@ namespace osgviz {
       unsigned long getID(void);
 
       /**\brief returns actual mouse position */
-      mars::utils::Vector getMousePos();
+      Vector getMousePos();
 
       virtual void setWGeometry(int top, int left, int width, int height) {};
       virtual void getWGeometry(int *top, int *left,
@@ -106,7 +103,7 @@ namespace osgviz {
       void switchHudElemtVis(int num_element);
 
       /**\brief sets the clear color */
-      void setClearColor(mars::utils::Color color);
+      void setClearColor(Color color);
 
       void setGrabFrames(bool grab);
       void setSaveFrames(bool grab);

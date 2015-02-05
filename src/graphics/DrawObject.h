@@ -33,8 +33,6 @@
 #endif
 
 #include "interfaces/OsgVizDefs.h"
-#include <mars/utils/Vector.h>
-#include <mars/utils/Quaternion.h>
 #include "interfaces/data/LightData.h"
 #include "interfaces/data/MaterialData.h"
 
@@ -68,8 +66,7 @@ namespace osgviz {
       DrawObject();
       virtual ~DrawObject();
 
-      void createObject(unsigned long id,
-                        const mars::utils::Vector &_pivot);
+      void createObject(unsigned long id, const Vector &_pivot);
 
       void setStateFilename(const std::string &filename, int create);
       void exportState(void);
@@ -85,8 +82,7 @@ namespace osgviz {
       virtual void setNormalMap(const std::string &normalMap);
       virtual void setBumpMap(const std::string &bumpMap);
       virtual void setBlending(bool mode);
-      virtual void collideSphere(mars::utils::Vector pos, 
-                                 sReal radius);
+      virtual void collideSphere(Vector pos, sReal radius);
 
       typedef std::map<ShaderType, std::string> foo;
 
@@ -94,15 +90,15 @@ namespace osgviz {
                         bool reload=false,
                         const foo &shaderSource=foo());
 
-      virtual void setPosition(const mars::utils::Vector &_pos);
-      virtual void setQuaternion(const mars::utils::Quaternion &_q);
-      virtual const mars::utils::Vector& getPosition()
+      virtual void setPosition(const Vector &_pos);
+      virtual void setQuaternion(const Quaternion &_q);
+      virtual const Vector& getPosition()
       { return position_; }
-      virtual const mars::utils::Quaternion& getQuaternion()
+      virtual const Quaternion& getQuaternion()
       { return quaternion_; }
 
-      virtual void setScaledSize(const mars::utils::Vector &scaledSize);
-      void setScale(const mars::utils::Vector &scale);
+      virtual void setScaledSize(const Vector &scaledSize);
+      void setScale(const Vector &scale);
       virtual void generateTangents();
 
       void removeBits(unsigned int bits);
@@ -183,14 +179,14 @@ namespace osgviz {
       osg::ref_ptr<osg::Uniform> lineLaserDirection;
       osg::ref_ptr<osg::Uniform> lineLaserOpeningAngle;
   
-      mars::utils::Vector position_, pivot_, geometrySize_, scaledSize_;
-      mars::utils::Quaternion quaternion_;
+      Vector position_, pivot_, geometrySize_, scaledSize_;
+      Quaternion quaternion_;
 
       bool hasShaderSources;
       bool useMARSShader;
       bool drawLineLaser;
       bool marsShadow;
-      mars::utils::Vector lineLasePos, lineLaserNormal;
+      Vector lineLasePos, lineLaserNormal;
 
       std::vector<interfaces::LightData*> lastLights;
 

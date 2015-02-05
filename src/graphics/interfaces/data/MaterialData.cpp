@@ -19,14 +19,9 @@
  */
 
 #include "MaterialData.h"
-//#include "utils.h"
-
-#include <mars/utils/misc.h>
 
 namespace osgviz {
   namespace interfaces {
-
-    using namespace mars::utils;
     
     bool MaterialData::operator==(const MaterialData& other) const {
       return (exists == other.exists) &&

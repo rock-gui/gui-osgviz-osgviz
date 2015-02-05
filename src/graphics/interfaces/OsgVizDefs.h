@@ -33,6 +33,10 @@
 
 #define CPP_UNUSED(a) (void)a
 
+#include <osg/Vec4>
+#include <Eigen/Core>
+#include <Eigen/Geometry>
+
 #ifndef M_PI
 #define M_PI (3.1415926535897932384626433832795)
 #endif
@@ -54,6 +58,34 @@ namespace osgviz {
 
     const sReal DTR =  0.017453292519943295769236907685;     // Radian To Degree
     const sReal RTD = 57.295779513082320876798154814105;     // Degree To Radian
+
+
+
+    typedef Eigen::Matrix<double, 3, 1, Eigen::DontAlign> Vector;
+    typedef Eigen::Quaternion<double, Eigen::DontAlign> Quaternion;
+
+    struct Color : public osg::Vec4{
+
+    	Color(){};
+
+    	Color(float r, float g, float b, float a){
+    		x() = r;
+    		y() = g;
+    		z() = b;
+    		w() = a;
+    	};
+
+    	inline void setZero(){
+    		set(0,0,0,0);
+    	}
+
+    	inline float &r(){return x();}
+    	inline float &g(){return y();}
+    	inline float &b(){return z();}
+    	inline float &a(){return w();}
+
+    };
+
 
     // Definition of the node types
     enum NodeType {

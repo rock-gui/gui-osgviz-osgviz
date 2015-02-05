@@ -29,10 +29,10 @@
 #include "GraphicsWindowInterface.h"
 #include "GuiEventInterface.h"
 
+#include "OsgVizDefs.h"
 
 #include <lib_manager/LibInterface.hpp>
-#include <mars/utils/Vector.h>
-#include <mars/utils/Quaternion.h>
+
 
 #include <vector>
 #include <string>

@@ -62,8 +62,7 @@ namespace osgviz {
   namespace graphics {
 
     using namespace std;
-    using mars::utils::Vector;
-    using mars::utils::Quaternion;
+
     using namespace interfaces;
 
     static int ReceivesShadowTraversalMask = 0xffff;
@@ -163,10 +162,10 @@ namespace osgviz {
       }
 
       // background color for the scene
-      graphicOptions.clearColor = mars::utils::Color(0.55, 0.67, 0.88, 1.0);
+      graphicOptions.clearColor = Color(0.55, 0.67, 0.88, 1.0);
 
       { // setup FOG
-        graphicOptions.fogColor = mars::utils::Color(0.2, 0.2, 0.2, 1.0);
+        graphicOptions.fogColor = Color(0.2, 0.2, 0.2, 1.0);
         graphicOptions.fogEnabled = true;
         graphicOptions.fogDensity = 0.35;
         graphicOptions.fogStart = 10.0;
@@ -174,7 +173,7 @@ namespace osgviz {
 
         osg::ref_ptr<osg::Fog> myFog = new osg::Fog;
         myFog->setMode(osg::Fog::LINEAR);
-        myFog->setColor(toOSGVec4(graphicOptions.fogColor));
+        myFog->setColor(graphicOptions.fogColor);
         myFog->setStart(graphicOptions.fogStart);
         myFog->setEnd(graphicOptions.fogEnd);
         myFog->setDensity(graphicOptions.fogDensity);
@@ -387,9 +386,7 @@ namespace osgviz {
 //
         // this will open an osg widget without qt wrapping
         
-        gw = new GraphicsWindow(myQTWidget, scene.get(),
-                                next_window_id++, 0,
-                                                    0, this);
+        gw = new GraphicsWindow(myQTWidget, scene.get(),next_window_id++, 0, 0, this);
         gw->initializeOSG(myQTWidget, 0, width, height);
 //      }
 
@@ -1028,9 +1025,9 @@ namespace osgviz {
 
     void GraphicsManager::initDefaultLight() {
       defaultLight.lStruct.pos = Vector(0.0, 0.0, 10.0);
-      defaultLight.lStruct.ambient = mars::utils::Color(0.0, 0.0, 0.0, 1.0);
-      defaultLight.lStruct.diffuse = mars::utils::Color(1.0, 1.0, 1.0, 1.0);
-      defaultLight.lStruct.specular = mars::utils::Color(1.0, 1.0, 1.0, 1.0);
+      defaultLight.lStruct.ambient = Color(0.0, 0.0, 0.0, 1.0);
+      defaultLight.lStruct.diffuse = Color(1.0, 1.0, 1.0, 1.0);
+      defaultLight.lStruct.specular = Color(1.0, 1.0, 1.0, 1.0);
       defaultLight.lStruct.constantAttenuation = 0.0;
       defaultLight.lStruct.linearAttenuation = 0.0;
       defaultLight.lStruct.quadraticAttenuation = 0.00001;

@@ -21,25 +21,10 @@ else(${USE_TR1})
     ADD_DEFINITIONS(-DNO_TR1)
 endif()
 
-OPTION(DEPTH_IMAGES "Compile with Depth image support, might not work on all machines" true)
-if(DEPTH_IMAGES)
-    ADD_DEFINITIONS(-DDEPTH_IMAGES)
-endif()
-
-set(USE_VERTEX_BUFFER 0)
-if(USE_VERTEX_BUFFER)
-    ADD_DEFINITIONS(-DUSE_VERTEX_BUFFER)
-endif()
-
 set(USE_MARS_VBO 0)
 if(USE_MARS_VBO)
     ADD_DEFINITIONS(-DUSE_MARS_VBO)
 endif()
-
-
-#cmake variables
-#configure_file(${CMAKE_SOURCE_DIR}/src/graphics/configuration/config.h.in ${CMAKE_SOURCE_DIR}/src/graphics/config.h @ONLY)
-
 
 rock_library(osgViz
     SOURCES OsgViz.cpp

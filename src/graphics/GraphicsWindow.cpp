@@ -21,8 +21,6 @@
 #include "HUD.h"
 #include "GraphicsManager.h"
 
-#include <mars/utils/Color.h>
-
 #include <iostream>
 #include <string>
 
@@ -32,6 +30,10 @@
 #include <osgGA/FlightManipulator>
 #include <osgGA/TerrainManipulator>
 #include <osgWidget/Frame>
+
+
+#include <stdexcept>
+
 #include "GraphicsWindow.h"
 
 #define CULL_LAYER (1 << (widgetID-1))
@@ -956,8 +958,8 @@ namespace osgviz {
       return graphicsCamera->getOSGCamera();
     }
 
-    mars::utils::Vector GraphicsWindow::getMousePos(){
-      return mars::utils::Vector(mouseX, mouseY, 0.0);
+    Vector GraphicsWindow::getMousePos(){
+      return Vector(mouseX, mouseY, 0.0);
     }
 
     void GraphicsWindow::setFullscreen(bool val, int display) {
@@ -1041,9 +1043,8 @@ namespace osgviz {
       return pickedObjects;
     }
 
-    void GraphicsWindow::setClearColor(mars::utils::Color color){
-      graphicsCamera->getOSGCamera()->setClearColor(
-                                                    osg::Vec4(color.r, color.g, color.b, color.a));
+    void GraphicsWindow::setClearColor(Color color){
+      graphicsCamera->getOSGCamera()->setClearColor(color);
     }
 
     void GraphicsWindow::grabFocus() {
