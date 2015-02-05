@@ -25,8 +25,8 @@
  *  Created by Roemmermann on 20.10.09.
  */
 
-#ifndef MARS_GRAPHICS_CAMERA_OBJECT_H
-#define MARS_GRAPHICS_CAMERA_OBJECT_H
+#ifndef OSGVIZ_GRAPHICS_CAMERA_OBJECT_H
+#define OSGVIZ_GRAPHICS_CAMERA_OBJECT_H
 
 #ifdef _PRINT_HEADER_
   #warning "GraphicsCamera.h"
@@ -34,15 +34,15 @@
 
 #include <osg/Camera>
 #include <osgGA/KeySwitchMatrixManipulator>
-#include <mars/interfaces/graphics/GraphicsCameraInterface.h>
+#include "interfaces/GraphicsCameraInterface.h"
 
 #define MY_ZNEAR    0.01
 #define MY_ZFAR  1000.0
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
-    class GraphicsCamera : public interfaces::GraphicsCameraInterface {
+    class GraphicsCamera : public GraphicsCameraInterface {
       //Q_OBJECT
 
     public:
@@ -82,11 +82,11 @@ namespace mars {
       virtual int getCamera(void) const;
       osg::ref_ptr<osg::Camera> getOSGCamera();
       /**\brief sets the camera view */
-      utils::Vector getCameraPosition();
+      mars::utils::Vector getCameraPosition();
       /* returns vector with current camera position */
-      void setCameraView(interfaces::cameraStruct cs);
+      void setCameraView(cameraStruct cs);
       /**\brief returns the cameraStruct */
-      virtual void getCameraInfo(interfaces::cameraStruct *s);
+      virtual void getCameraInfo(cameraStruct *s);
       void update(void);
       void setViewport(int x, int y, int width, int height);
       void eventStartPos(int x, int y);
@@ -125,7 +125,7 @@ namespace mars {
     private:
       void calcEyeSep(void);
       // for vibot we need some extensions
-      interfaces::local_settings *l_settings;
+      local_settings *l_settings;
 
       osg::ref_ptr<osg::Camera> mainCamera;
       osg::ref_ptr<osg::Camera> hudCamera;

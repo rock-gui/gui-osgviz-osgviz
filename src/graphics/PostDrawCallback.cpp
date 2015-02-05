@@ -32,7 +32,7 @@
 #include "PostDrawCallback.h"
 
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     PostDrawCallback::PostDrawCallback(osg::Image* image) {

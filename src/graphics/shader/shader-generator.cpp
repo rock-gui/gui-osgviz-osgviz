@@ -26,11 +26,10 @@
 #include <string>
 #include <vector>
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     using namespace std;
-    using mars::interfaces::ShaderType;
 
     void ShaderGenerator::addShaderFunction(ShaderFunc *func, ShaderType shaderType)
     {
@@ -71,7 +70,7 @@ namespace mars {
 
       switch(shaderType)
         {
-        case mars::interfaces::SHADER_TYPE_VERTEX:
+        case SHADER_TYPE_VERTEX:
           for(set<GLSLVarying>::iterator it = u->getVaryings().begin();
               it != u->getVaryings().end(); ++it)
             code << "varying " << *it << ";" << endl;
@@ -79,7 +78,7 @@ namespace mars {
               it != u->getAttributes().end(); ++it)
             code << "attribute " << *it << ";" << endl;
           break;
-        case mars::interfaces::SHADER_TYPE_FRAGMENT:
+        case SHADER_TYPE_FRAGMENT:
           for(set<GLSLVarying>::iterator it = u->getVaryings().begin();
               it != u->getVaryings().end(); ++it)
             code << "varying " << *it << ";" << endl;
@@ -132,21 +131,21 @@ namespace mars {
     {
       osg::Program *prog = new osg::Program();
 
-      if(functions.find(mars::interfaces::SHADER_TYPE_GEOMETRY) != functions.end()) {
+      if(functions.find(SHADER_TYPE_GEOMETRY) != functions.end()) {
         osg::Shader *shader = new osg::Shader(osg::Shader::GEOMETRY);
         prog->addShader(shader);
-        shader->setShaderSource( generateSource(mars::interfaces::SHADER_TYPE_GEOMETRY) );
+        shader->setShaderSource( generateSource(SHADER_TYPE_GEOMETRY) );
       }
-      if(functions.find(mars::interfaces::SHADER_TYPE_VERTEX) != functions.end()) {
+      if(functions.find(SHADER_TYPE_VERTEX) != functions.end()) {
         osg::Shader *shader = new osg::Shader(osg::Shader::VERTEX);
         prog->addShader(shader);
-        shader->setShaderSource( generateSource(mars::interfaces::SHADER_TYPE_VERTEX) );
+        shader->setShaderSource( generateSource(SHADER_TYPE_VERTEX) );
         //printSource( shader->getShaderSource() );
       }
-      if(functions.find(mars::interfaces::SHADER_TYPE_FRAGMENT) != functions.end()) {
+      if(functions.find(SHADER_TYPE_FRAGMENT) != functions.end()) {
         osg::Shader *shader = new osg::Shader(osg::Shader::FRAGMENT);
         prog->addShader(shader);
-        shader->setShaderSource( generateSource(mars::interfaces::SHADER_TYPE_FRAGMENT) );
+        shader->setShaderSource( generateSource(SHADER_TYPE_FRAGMENT) );
         //printSource( shader->getShaderSource() );
       }
 

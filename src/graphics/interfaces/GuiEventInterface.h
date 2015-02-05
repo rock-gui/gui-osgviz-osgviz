@@ -19,15 +19,14 @@
  */
 
 
-#ifndef MARS_INTERFACES_GRAPHICS_GUI_EVENT_INTERFACE_H
-#define MARS_INTERFACES_GRAPHICS_GUI_EVENT_INTERFACE_H
+#ifndef OSGVIZ_GRAPHICS_GUI_EVENT_INTERFACE_H
+#define OSGVIZ_GRAPHICS_GUI_EVENT_INTERFACE_H
 
 #ifdef _PRINT_HEADER_
   #warning "GuiEventInterface.h"
 #endif
 
-namespace mars {
-  namespace interfaces {
+namespace osgviz {
 
     class GuiEventInterface {
     public:
@@ -98,7 +97,6 @@ namespace mars {
 
     }; // end of class GuiEventInterface
 
-  } // end of namespace interfaces
 } // end of namespace mars
 
 #endif  /* MARS_INTERFACES_GRAPHICS_GUI_EVENT_INTERFACE_H */

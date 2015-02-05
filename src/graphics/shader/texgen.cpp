@@ -29,7 +29,7 @@
 
 #include <sstream>
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     EyeLinearTexgen::EyeLinearTexgen(std::vector<std::string> &args,

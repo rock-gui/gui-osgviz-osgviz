@@ -29,13 +29,13 @@
 
 #include <cstdio>
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
     
     using mars::utils::Vector;
     using mars::utils::Quaternion;
     using mars::utils::Color;
-    using mars::interfaces::sReal;
+
 
     HUD::HUD(unsigned long id) {
       this->id = id;

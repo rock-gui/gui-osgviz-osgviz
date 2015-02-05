@@ -6,10 +6,10 @@
 #include <osg/Group>
 #include <OpenThreads/Thread>
 
-#include <mars/interfaces/graphics/GraphicsManagerInterface.h>
+#include "graphics/interfaces/GraphicsManagerInterface.h"
 #include "plugins/OsgVizPlugin.h"
 
-namespace mars {
+namespace osgviz {
 	namespace graphics{
 		class GraphicsManager;
 	}
@@ -26,7 +26,7 @@ class FrameUpdateThread : public OpenThreads::Thread
 	{
 	    public:
 
-	FrameUpdateThread(mars::graphics::GraphicsManager* osgviz):
+	FrameUpdateThread(graphics::GraphicsManager* osgviz):
 	        	osgviz(osgviz){
 	        	running = false;
 	        }
@@ -59,7 +59,7 @@ class FrameUpdateThread : public OpenThreads::Thread
 
 	    private:
 	        bool running;
-	        mars::graphics::GraphicsManager* osgviz;
+	        graphics::GraphicsManager* osgviz;
 	        OpenThreads::Mutex mutex;
 
 	};
@@ -104,8 +104,8 @@ class FrameUpdateThread : public OpenThreads::Thread
 		int createWindow(bool threaded = true);
 		void destroyWindow(int id);
 
-		inline mars::interfaces::GraphicsManagerInterface* getGraphicsManager(){
-			return (mars::interfaces::GraphicsManagerInterface*)graphicsManager;
+		inline GraphicsManagerInterface* getGraphicsManager(){
+			return (GraphicsManagerInterface*)graphicsManager;
 		}
 
 		template <class VIZPLUGIN> VIZPLUGIN* getVisualizerPlugin(std::string classname){
@@ -141,7 +141,7 @@ class FrameUpdateThread : public OpenThreads::Thread
 
 
 		FrameUpdateThread* thread;
-		mars::graphics::GraphicsManager* graphicsManager;
+		graphics::GraphicsManager* graphicsManager;
 
 		//std::vector<osgViewer::Viewer *> viewers;
 

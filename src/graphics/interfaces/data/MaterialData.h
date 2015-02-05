@@ -18,13 +18,13 @@
  *
  */
 
-#ifndef MARS_INTERFACES_MATERIAL_STRUCT_H
-#define MARS_INTERFACES_MATERIAL_STRUCT_H
+#ifndef OSGVIZ_INTERFACES_MATERIAL_STRUCT_H
+#define OSGVIZ_INTERFACES_MATERIAL_STRUCT_H
 
 #include <mars/utils/Color.h>
 #include <mars/utils/ConfigData.h>
 
-namespace mars {
+namespace osgviz {
   namespace interfaces {
 
     /**
@@ -62,24 +62,19 @@ namespace mars {
         cullMask = 0xffffffff;
       }
 
-      // todo: handle filenames
-      bool fromConfigMap(utils::ConfigMap *config, std::string filenamePrefix);
-      void toConfigMap(utils::ConfigMap *config,
-                       bool skipFilenamePrefix = false);
-      void getFilesToSave(std::vector<std::string> *fileList);
 
       /** Compare with other material (usually compared with default material) */
       bool operator==(const MaterialData& other) const;
 
       bool exists; // used for import mesh
-      utils::Color ambientFront;  // ambient color
-      utils::Color diffuseFront;  // diffuse color
-      utils::Color specularFront; // specular color
-      utils::Color emissionFront; // emission color
-      utils::Color ambientBack;   // ambient color
-      utils::Color diffuseBack;   // diffuse color
-      utils::Color specularBack;  // specular color
-      utils::Color emissionBack;  // emission color
+      mars::utils::Color ambientFront;  // ambient color
+      mars::utils::Color diffuseFront;  // diffuse color
+      mars::utils::Color specularFront; // specular color
+      mars::utils::Color emissionFront; // emission color
+      mars::utils::Color ambientBack;   // ambient color
+      mars::utils::Color diffuseBack;   // diffuse color
+      mars::utils::Color specularBack;  // specular color
+      mars::utils::Color emissionBack;  // emission color
       double transparency;
       double shininess;
       std::string texturename; // the filename of the texture of the node

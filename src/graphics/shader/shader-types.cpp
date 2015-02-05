@@ -21,7 +21,7 @@
 
 #include "shader-types.h"
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     using namespace std;

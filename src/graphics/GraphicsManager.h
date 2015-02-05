@@ -25,8 +25,8 @@
  *  Created by borchers on 27.05.08.
  */
 
-#ifndef MARS_GRAPHICS_MANAGER_H
-#define MARS_GRAPHICS_MANAGER_H
+#ifndef OSGVIZ_GRAPHICS_MANAGER_H
+#define OSGVIZ_GRAPHICS_MANAGER_H
 
 #ifdef _PRINT_HEADER_
   #warning "GraphicsManager.h"
@@ -53,17 +53,20 @@
 
 #include <lib_manager/LibInterface.hpp>
 
-#include <mars/interfaces/MARSDefs.h>
+#include "interfaces/OsgVizDefs.h"
+
 #include <mars/utils/Vector.h>
 #include <mars/utils/Quaternion.h>
-#include <mars/interfaces/core_objects_exchange.h>
 
+#include "interfaces/data/core_objects_exchange.h"
 #include "interfaces/data/GraphicData.h"
 #include "interfaces/data/LightData.h"
 #include "interfaces/data/MaterialData.h"
 
 #include "interfaces/GraphicsWindowInterface.h"
 #include "interfaces/GraphicsEventInterface.h"
+#include "interfaces/GraphicsUpdateInterface.h"
+#include "interfaces/GraphicsEventClient.h"
 
 #include "gui_helper_functions.h"
 
@@ -73,23 +76,23 @@
 #define NUM_PSSM_SPLITS 3
 
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     class GraphicsWindow;
     class GraphicsViewer;
     class DrawObject;
-    class OSGNodeStruct;
-    class OSGHudElementStruct;
     class HUDElement;
 
 
 
+
+
     //mapping and control structs
-    struct drawMapper {
-      interfaces::drawStruct ds;
-      std::vector<osg::Node*> nodes;
-    };
+//    struct drawMapper {
+//      interfaces::drawStruct ds;
+//      std::vector<osg::Node*> nodes;
+//    };
 
     /**
      * internal struct to manage lights
@@ -97,16 +100,26 @@ namespace mars {
     struct lightmanager {
       osg::ref_ptr<osg::LightSource> lightSource;
       osg::ref_ptr<osg::Light> light;
-      mars::interfaces::LightData lStruct;
+      interfaces::LightData lStruct;
       bool free;
     };
 
-    typedef std::map< unsigned long, osg::ref_ptr<OSGNodeStruct> > DrawObjects;
-    typedef std::list< osg::ref_ptr<OSGNodeStruct> > DrawObjectList;
-    typedef std::list< osg::ref_ptr<OSGHudElementStruct> > HUDElements;
+    struct hudElementStruct {
+      int id;
+      int type;
+      int width, height, texture_width, texture_height;
+      double posx, posy;
+      double background_color[4];
+      double border_color[4];
+      double border_width;
+      double padding[4];
+      int font_size;
+      int direction;
+    }; // end of struct hudElementStruct
+
 
     class GraphicsManager : public lib_manager::LibInterface,
-							public interfaces::GraphicsEventInterface{
+							public GraphicsEventInterface{
 
     public:
       GraphicsManager(lib_manager::LibManager *theManager, void *QTWidget = 0);
@@ -116,55 +129,22 @@ namespace mars {
 
       virtual void* getWindowManager(int id=1); // get osgWidget WindowManager*
 
-      virtual void reset(); ///< Resets scene.
+//      virtual void reset(); ///< Resets scene.
 
-      virtual void addGraphicsUpdateInterface(interfaces::GraphicsUpdateInterface *g);
-      virtual void removeGraphicsUpdateInterface(interfaces::GraphicsUpdateInterface *g);
+//      virtual void addGraphicsUpdateInterface(interfaces::GraphicsUpdateInterface *g);
+//      virtual void removeGraphicsUpdateInterface(interfaces::GraphicsUpdateInterface *g);
 
-      virtual const mars::interfaces::GraphicData getGraphicOptions(void) const;
-      virtual void setGraphicOptions(const mars::interfaces::GraphicData &options);
+      virtual const interfaces::GraphicData getGraphicOptions(void) const;
+      //virtual void setGraphicOptions(const mars::interfaces::GraphicData &options);
 
-      virtual void addDrawItems(interfaces::drawStruct *draw); ///< Adds drawStruct items to the graphics scene.
-      virtual void removeDrawItems(interfaces::DrawInterface *iface);
-      virtual void clearDrawItems(void);
 
-      virtual void addLight(mars::interfaces::LightData &ls); ///< adds a light to the scene
-      virtual void removeLight(unsigned int index); ///< removes a light from the scene
-      virtual void updateLight(unsigned int index, bool recompileShader=false);
-      virtual void getLights(std::vector<mars::interfaces::LightData*> *lightList);
-      virtual void getLights(std::vector<mars::interfaces::LightData> *lightList) const;
-      virtual int getLightCount(void) const;
 
-      virtual unsigned long addDrawObject(const mars::interfaces::NodeData &snode,
-                                          bool activated = true);
-      virtual void removeLayerFromDrawObjects(unsigned long window_id);
-      virtual void removeDrawObject(unsigned long id);
-      virtual void setDrawObjectPos(unsigned long id, const mars::utils::Vector &pos);
-      virtual void setDrawObjectRot(unsigned long id, const mars::utils::Quaternion &q);
-      virtual void setDrawObjectScale(unsigned long id, const mars::utils::Vector &ext);
-      virtual void setDrawObjectMaterial(unsigned long id,
-                                         const mars::interfaces::MaterialData &material);
-      virtual void setDrawObjectNodeMask(unsigned long id, unsigned int bits);
-      virtual void setBlending(unsigned long id, bool mode);
-      virtual void setBumpMap(unsigned long id, const std::string &bumpMap);
-      virtual void setDrawObjectSelected(unsigned long id, bool val);
-      virtual void setDrawObjectShow(unsigned long id, bool val);
-      virtual void setDrawObjectRBN(unsigned long id, int val);
-      virtual void setSelectable(unsigned long id, bool val);
-      virtual void exportDrawObject(unsigned long id,
-                                    const std::string &name) const;
       virtual void deactivate3DWindow(unsigned long id);
       virtual void activate3DWindow(unsigned long id);
-      /** \brief creates a preview node */
-      void preview(int action, bool resize, const std::vector<mars::interfaces::NodeData> &allNodes,
-                   unsigned int num = 0, const mars::interfaces::MaterialData *mat = 0);
-      /**\brief removes a preview node */
-      void removePreviewNode(unsigned long id);
 
-      virtual void setTexture(unsigned long id, const std::string &filename);
 
       /**\brief returns acutal camera information */
-      virtual void getCameraInfo(mars::interfaces::cameraStruct *cs) const;
+      virtual void getCameraInfo(cameraStruct *cs) const;
       /**\brief sets the camera type */
       virtual void setCamera(int type);
 
@@ -178,37 +158,37 @@ namespace mars {
       /**\brief returns the global state set */
       void* getStateSet() const;
 
-      /**\brief close existing joint axis  */
-      void closeAxis();
-      /**\brief draws 2 axis from first to second to third and 2 joint axis
-         in the widget */
-      void drawAxis(const mars::utils::Vector &first,
-                    const mars::utils::Vector &second,
-                    const mars::utils::Vector &third,
-                    const mars::utils::Vector &axis1,
-                    const mars::utils::Vector &axis2);
+//      /**\brief close existing joint axis  */
+//      void closeAxis();
+//      /**\brief draws 2 axis from first to second to third and 2 joint axis
+//         in the widget */
+//      void drawAxis(const mars::utils::Vector &first,
+//                    const mars::utils::Vector &second,
+//                    const mars::utils::Vector &third,
+//                    const mars::utils::Vector &axis1,
+//                    const mars::utils::Vector &axis2);
+//
+//      /**\brief adds the main coordination frame to the scene */
+//      void showCoords();
+//      /**\brief adds a local coordination frame to the scene */
+//      void showCoords(const mars::utils::Vector &pos,
+//                      const mars::utils::Quaternion &rot,
+//                      const mars::utils::Vector &size);
+//      /**\brief removes the main coordination frame from the scene */
+//      void hideCoords();
+//      /**\brief removes actual coordination frame from the scene*/
+//      void hideCoords(const mars::utils::Vector &pos);
+//      bool coordsVisible(void) const;
+//
+//      void showGrid();
+//      void hideGrid();
+//      bool gridVisible(void) const;
+//
+//      void showClouds();
+//      void hideClouds();
+//      bool cloudsVisible(void) const;
 
-      /**\brief adds the main coordination frame to the scene */
-      void showCoords();
-      /**\brief adds a local coordination frame to the scene */
-      void showCoords(const mars::utils::Vector &pos,
-                      const mars::utils::Quaternion &rot,
-                      const mars::utils::Vector &size);
-      /**\brief removes the main coordination frame from the scene */
-      void hideCoords();
-      /**\brief removes actual coordination frame from the scene*/
-      void hideCoords(const mars::utils::Vector &pos);
-      bool coordsVisible(void) const;
-
-      void showGrid();
-      void hideGrid();
-      bool gridVisible(void) const;
-
-      void showClouds();
-      void hideClouds();
-      bool cloudsVisible(void) const;
-
-      virtual void update(); //< updates graphics
+      //virtual void update(); //< updates graphics
       virtual void draw();
 
       void setWidget(GraphicsWindow *widget);
@@ -218,13 +198,13 @@ namespace mars {
       virtual unsigned long new3DWindow(void *myQTWidget = 0, bool rtt = 0,
                                         int width = 0, int height = 0, const std::string &name=std::string(""));
 
-      virtual interfaces::GraphicsWindowInterface* get3DWindow(unsigned long id) const;
+      virtual GraphicsWindowInterface* get3DWindow(unsigned long id) const;
       virtual void remove3DWindow(unsigned long id);
 
       /**
        * Return the first matching 3D windows with the given name, 0 otherwise
        */
-      virtual interfaces::GraphicsWindowInterface* get3DWindow(const std::string &name) const;
+      virtual GraphicsWindowInterface* get3DWindow(const std::string &name) const;
 
       virtual void getList3DWindowIDs(std::vector<unsigned long> *ids) const;
       virtual void setGrabFrames(bool value);
@@ -239,31 +219,32 @@ namespace mars {
       GraphicsViewer* getGraphicsViewer(void) const {return viewer;}
 
       // HUD Interface:
-      virtual unsigned long addHUDElement(interfaces::hudElementStruct *new_hud_element);
-      void removeHUDElement(unsigned long id);
-      virtual void switchHUDElementVis(unsigned long id);
-      virtual void setHUDElementPos(unsigned long id, double x, double y);
-      virtual void setHUDElementTexture(unsigned long id,
-                                        std::string texturename);
-      virtual void setHUDElementTextureData(unsigned long id, void* data);
-      virtual void setHUDElementTextureRTT(unsigned long id,
-                                           unsigned long window_id,
-                                           bool depthComponent = false);
-      virtual void setHUDElementLabel(unsigned long id, std::string text,
-                                      double text_color[4]);
-      virtual void setHUDElementLines(unsigned long id, std::vector<double> *v,
-                                      double color[4]);
-
-      virtual void addEventClient(interfaces::GraphicsEventClient* theClient);
-      virtual void removeEventClient(interfaces::GraphicsEventClient* theClient);
-      virtual void addGuiEventHandler(interfaces::GuiEventInterface *_guiEventHandler);
-      virtual void removeGuiEventHandler(interfaces::GuiEventInterface *_guiEventHandler);
+//      virtual unsigned long addHUDElement(hudElementStruct *new_hud_element);
+//      void removeHUDElement(unsigned long id);
+//      virtual void switchHUDElementVis(unsigned long id);
+//      virtual void setHUDElementPos(unsigned long id, double x, double y);
+//      virtual void setHUDElementTexture(unsigned long id,
+//                                        std::string texturename);
+//      virtual void setHUDElementTextureData(unsigned long id, void* data);
+//      virtual void setHUDElementTextureRTT(unsigned long id,
+//                                           unsigned long window_id,
+//                                           bool depthComponent = false);
+//      virtual void setHUDElementLabel(unsigned long id, std::string text,
+//                                      double text_color[4]);
+//      virtual void setHUDElementLines(unsigned long id, std::vector<double> *v,
+//                                      double color[4]);
+//
+      virtual void addEventClient(GraphicsEventClient* theClient);
+      virtual void removeEventClient(GraphicsEventClient* theClient);
+      virtual void addGuiEventHandler(GuiEventInterface *_guiEventHandler);
+      virtual void removeGuiEventHandler(GuiEventInterface *_guiEventHandler);
       virtual void emitKeyDownEvent(int key, unsigned int modKey, unsigned long win_id);
       virtual void emitKeyUpEvent(int key, unsigned int modKey, unsigned long win_id);
       virtual void emitQuitEvent(unsigned long win_id);
       virtual void emitSetAppActive(unsigned long win_id);
-      virtual void emitNodeSelectionChange(unsigned long win_id, int mode);
-      virtual void showNormals(bool val);
+//      virtual void emitNodeSelectionChange(unsigned long win_id, int mode);
+
+      //virtual void showNormals(bool val);
       virtual void showRain(bool val);
       virtual void showSnow(bool val);
 
@@ -272,35 +253,25 @@ namespace mars {
 
       // return the view of a window
       virtual  void* getView(unsigned long id=1);
-      virtual void collideSphere(unsigned long id, mars::utils::Vector pos,
-                                 mars::interfaces::sReal radius);
-      virtual const mars::utils::Vector& getDrawObjectPosition(unsigned long id=0);
-      virtual const mars::utils::Quaternion& getDrawObjectQuaternion(unsigned long id=0);
+//      virtual void collideSphere(unsigned long id, mars::utils::Vector pos,
+//                                 sReal radius);
+//      virtual const mars::utils::Vector& getDrawObjectPosition(unsigned long id=0);
+//      virtual const mars::utils::Quaternion& getDrawObjectQuaternion(unsigned long id=0);
 
 //      virtual mars::interfaces::LoadMeshInterface* getLoadMeshInterface(void);
 //      virtual mars::interfaces::LoadHeightmapInterface* getLoadHeightmapInterface(void);
 
-      virtual void makeChild(unsigned long parentId, unsigned long childId);
-
-      /**
-       * Sets the line laser
-       * @pos: position of the laser
-       * @normal: normalvector of the laser-plane
-       * @color: color of the laser in RGB
-       * @laser: Angle of the laser, as an direction-vector
-       * @openingAngle: Opening angle of the laser; for complete laserLine, choose PI
-       */
-      virtual void setExperimentalLineLaser(utils::Vector pos, utils::Vector normal, utils::Vector color, utils::Vector laserAngle, float openingAngle);
+//      virtual void makeChild(unsigned long parentId, unsigned long childId);
 
       virtual void addOSGNode(void* node);
       virtual void removeOSGNode(void* node);
-      virtual unsigned long addHUDOSGNode(void* node);
+      //virtual unsigned long addHUDOSGNode(void* node);
 
       void removeGraphicsWidget(unsigned long id);
 
     private:
 
-      mars::interfaces::GraphicData graphicOptions;
+      interfaces::GraphicData graphicOptions;
 
       //pointer to outer space
       GraphicsWindow *osgWidget; //pointer to the QT OSG Widget
@@ -331,11 +302,11 @@ namespace mars {
 
       osg::ref_ptr<osgParticle::PrecipitationEffect> snow, rain;
 
-      osg::ref_ptr<osg::Group> grid;
-      bool show_grid;
-      osg::ref_ptr<osg::Group> clouds_;
-      bool showClouds_;
-      bool show_coords;
+//      osg::ref_ptr<osg::Group> grid;
+//      bool show_grid;
+//      osg::ref_ptr<osg::Group> clouds_;
+//      bool showClouds_;
+//      bool show_coords;
 
       lightmanager defaultLight;
 
@@ -348,33 +319,28 @@ namespace mars {
       bool useFog, useNoise, drawLineLaser;
       int hudWidth, hudHeight;
 
-      std::vector<interfaces::GuiEventInterface*> guiHandlerList;
-      std::vector<interfaces::GraphicsEventClient*> graphicsEventClientList;
+      std::vector<GuiEventInterface*> guiHandlerList;
+      std::vector<GraphicsEventClient*> graphicsEventClientList;
       osg::ref_ptr<osg::Camera> hudCamera;
 
       std::map<unsigned long int, unsigned long int> DrawCoreIds;
 
       std::vector<nodemanager> myNodes;
-      DrawObjects previewNodes_;
-      DrawObjects drawObjects_;
-      // object selection
-      DrawObjectList selectedObjects_;
-      std::list<interfaces::GraphicsUpdateInterface*> graphicsUpdateObjects;
-      HUDElements hudElements;
+      std::list<GraphicsUpdateInterface*> graphicsUpdateObjects;
 
-      mars::interfaces::core_objects_exchange myNode; //for updating
+      interfaces::core_objects_exchange myNode; //for updating
 
       // mapper vectors
-      std::vector<drawMapper> draws; //drawStructs
+//      std::vector<drawMapper> draws; //drawStructs
       std::vector<GraphicsWindow*> graphicsWindows;
 
       osg::ref_ptr<ShadowMap> shadowMap;
 
       /**\brief adds a preview node to the scene */
-      int createPreviewNode(const std::vector<mars::interfaces::NodeData> &allNodes);
+//      int createPreviewNode(const std::vector<mars::interfaces::NodeData> &allNodes);
 
-      OSGNodeStruct* findDrawObject(unsigned long id) const;
-      HUDElement* findHUDElement(unsigned long id) const;
+//      OSGNodeStruct* findDrawObject(unsigned long id) const;
+//      HUDElement* findHUDElement(unsigned long id) const;
 
       // config stuff
 //      cfg_manager::CFGManagerInterface *cfg;
@@ -388,7 +354,7 @@ namespace mars {
            drawMainCamera, marsShadow;
 //      cfg_manager::cfgPropertyStruct grab_frames;
 //      cfg_manager::cfgPropertyStruct resources_path;
-      std::string resources_path;
+//      std::string resources_path;
 //      cfg_manager::cfgPropertyStruct configPath;
       int ignore_next_resize;
       bool set_window_prop;

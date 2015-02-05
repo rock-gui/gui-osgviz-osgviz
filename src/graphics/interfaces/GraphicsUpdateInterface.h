@@ -18,38 +18,34 @@
  *
  */
 
-/*
- *  PlaneDrawObject.h
- *  General PlaneDrawObject to inherit from.
+/**
+ * \file GraphicsUpdateInterface.h
+ * \author Malte Roemmermann
+ * \brief "GraphicsUpdateInterface"
  *
- *  Created by Roemmermann on 21.10.09.
  */
 
-#ifndef MARS_GRAPHICS_PLANE_DRAW_OBJECT_H
-#define MARS_GRAPHICS_PLANE_DRAW_OBJECT_H
+#ifndef OSGVIZ_GRAPHICS_UPDATE_INTERFACE_H
+#define OSGVIZ_GRAPHICS_UPDATE_INTERFACE_H
 
-#include "DrawObject.h"
+#ifdef _PRINT_HEADER_
+  #warning "GraphicsUpdateInterface.h"
+#endif
 
-#include <mars/utils/Vector.h>
+namespace osgviz {
 
-#include <list>
-
-namespace mars {
-  namespace graphics {
-
-    class PlaneDrawObject : public DrawObject {
-
+    /**
+     * The Interface to load controller dynamically into the simulation
+     *
+     */
+    class GraphicsUpdateInterface {
     public:
-      PlaneDrawObject(const mars::utils::Vector &ext);
-      virtual void setScaledSize(const mars::utils::Vector &scaledSize);
+      GraphicsUpdateInterface(void) {}
+      virtual ~GraphicsUpdateInterface(void) {}
+      virtual void preGraphicsUpdate(void) {}
+      virtual void postGraphicsUpdate(void) {}
+    }; // end of class GraphicsUpdateInterface
 
-    private:
-      mars::utils::Vector extent_;
-
-      virtual std::list< osg::ref_ptr< osg::Geode > > createGeometry();
-    }; // end of class PlaneDrawObject
-
-  } // end of namespace graphics
 } // end of namespace mars
 
-#endif /* MARS_GRAPHICS_PLANE_DRAW_OBJECT_H */
+#endif  /* MARS_INTERFACES_GRAPHICS_UPDATE_INTERFACE_H */

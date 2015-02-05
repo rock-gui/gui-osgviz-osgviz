@@ -18,15 +18,15 @@
  *
  */
 
-#ifndef MARS_GRAPHICS_POSTDRAWCALLBACK_H
-#define MARS_GRAPHICS_POSTDRAWCALLBACK_H
+#ifndef OSGVIZ_GRAPHICS_POSTDRAWCALLBACK_H
+#define OSGVIZ_GRAPHICS_POSTDRAWCALLBACK_H
 
 #include <osgViewer/Viewer>
 
 #include <pthread.h>
 
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     class PostDrawCallback : public osg::Camera::Camera::DrawCallback {

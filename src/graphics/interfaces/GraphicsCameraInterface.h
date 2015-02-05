@@ -19,8 +19,8 @@
  */
 
 
-#ifndef MARS_INTERFACES_GRAPHICS_CAMERA_INTERFACE_H
-#define MARS_INTERFACES_GRAPHICS_CAMERA_INTERFACE_H
+#ifndef OSGVIZ_GRAPHICS_CAMERA_INTERFACE_H
+#define OSGVIZ_GRAPHICS_CAMERA_INTERFACE_H
 
 #ifdef _PRINT_HEADER_
 #warning "GraphicsCameraInterface.h"
@@ -36,8 +36,7 @@
 #define MICHA_CAM 3
 #define ISO_CAM 4
 
-namespace mars {
-  namespace interfaces {
+namespace osgviz {
 
     struct local_settings {
       double left, right, bottom, top;
@@ -106,7 +105,6 @@ namespace mars {
 
     }; // end of class GraphicsCameraInterface
 
-  } // end of namespace interfaces
-} // end of namespace mars
+} // end of namespace osgviz
 
 #endif /* MARS_INTERFACES_GRAPHICS_CAMERA_INTERFACE_H */

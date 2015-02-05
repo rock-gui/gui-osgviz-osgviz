@@ -38,7 +38,7 @@ endif()
 
 
 #cmake variables
-configure_file(${CMAKE_SOURCE_DIR}/src/graphics/configuration/config.h.in ${CMAKE_SOURCE_DIR}/src/graphics/config.h @ONLY)
+#configure_file(${CMAKE_SOURCE_DIR}/src/graphics/configuration/config.h.in ${CMAKE_SOURCE_DIR}/src/graphics/config.h @ONLY)
 
 
 rock_library(osgViz
@@ -51,34 +51,36 @@ rock_library(osgViz
            graphics/HUD.cpp
            graphics/PostDrawCallback.cpp
            
-           graphics/wrapper/OSGDrawItem.cpp
-           graphics/wrapper/OSGHudElementStruct.cpp
+#           objects/wrapper/OSGDrawItem.cpp
+#           objects/wrapper/OSGHudElementStruct.cpp
+#           objects/wrapper/OSGNodeStruct.cpp
+#           
            graphics/wrapper/OSGLightStruct.cpp
            graphics/wrapper/OSGMaterialStruct.cpp
-           graphics/wrapper/OSGNodeStruct.cpp
            
-           graphics/3d_objects/AxisPrimitive.cpp
-           graphics/3d_objects/CapsuleDrawObject.cpp
-           graphics/3d_objects/CoordsPrimitive.cpp
-           graphics/3d_objects/Clouds.cpp
-           graphics/3d_objects/CubeDrawObject.cpp
-           graphics/3d_objects/CylinderDrawObject.cpp
-           graphics/3d_objects/DrawObject.cpp
-           graphics/3d_objects/GridPrimitive.cpp
-           graphics/3d_objects/LoadDrawObject.cpp
-           graphics/3d_objects/OceanDrawObject.cpp
-           graphics/3d_objects/PlaneDrawObject.cpp
-           graphics/3d_objects/SphereDrawObject.cpp
-           graphics/3d_objects/TerrainDrawObject.cpp
-           graphics/3d_objects/VertexBufferTerrain.cpp
-           graphics/3d_objects/MarsVBOGeom.cpp
-           graphics/3d_objects/MultiResHeightMapRenderer.cpp
-           graphics/2d_objects/HUDNode.cpp
-           graphics/2d_objects/HUDLabel.cpp
-           graphics/2d_objects/HUDTerminal.cpp
-           graphics/2d_objects/HUDTexture.cpp
-           graphics/2d_objects/HUDLines.cpp
-           graphics/2d_objects/HUDOSGNode.cpp
+           
+           graphics/DrawObject.cpp
+#           objects/3d_objects/AxisPrimitive.cpp
+#           objects/3d_objects/CapsuleDrawObject.cpp
+#           objects/3d_objects/CoordsPrimitive.cpp
+#           objects/3d_objects/Clouds.cpp
+#           objects/3d_objects/CubeDrawObject.cpp
+#           objects/3d_objects/CylinderDrawObject.cpp
+#           objects/3d_objects/GridPrimitive.cpp
+#           objects/3d_objects/LoadDrawObject.cpp
+#           objects/3d_objects/OceanDrawObject.cpp
+#           objects/3d_objects/PlaneDrawObject.cpp
+#           objects/3d_objects/SphereDrawObject.cpp
+#           objects/3d_objects/TerrainDrawObject.cpp
+#           objects/3d_objects/VertexBufferTerrain.cpp
+#           objects/3d_objects/MarsVBOGeom.cpp
+#           objects/3d_objects/MultiResHeightMapRenderer.cpp
+#           objects/2d_objects/HUDNode.cpp
+#           objects/2d_objects/HUDLabel.cpp
+#           objects/2d_objects/HUDTerminal.cpp
+#           objects/2d_objects/HUDTexture.cpp
+#           objects/2d_objects/HUDLines.cpp
+#           objects/2d_objects/HUDOSGNode.cpp
            
            graphics/shader/bumpmapping.cpp
            graphics/shader/pixellight.cpp
@@ -101,23 +103,23 @@ rock_library(osgViz
            graphics/gui_helper_functions.h
            graphics/HUD.h
            graphics/PostDrawCallback.h
-           graphics/3d_objects/AxisPrimitive.h
-           graphics/3d_objects/CapsuleDrawObject.h
-           graphics/3d_objects/Clouds.h
-           graphics/3d_objects/CoordsPrimitive.h
-           graphics/3d_objects/CubeDrawObject.h
-           graphics/3d_objects/CylinderDrawObject.h
-           graphics/3d_objects/DrawObject.h
-           graphics/3d_objects/GridPrimitive.h
-           graphics/3d_objects/LoadDrawObject.h
-           graphics/3d_objects/OceanDrawObject.h
-           graphics/3d_objects/PlaneDrawObject.h
-           graphics/3d_objects/SphereDrawObject.h
-           graphics/3d_objects/TerrainDrawObject.h
-           graphics/3d_objects/VertexBufferTerrain.h
-           graphics/3d_objects/MarsVBOGeom.h
-
-           graphics/3d_objects/MultiResHeightMapRenderer.h
+           
+           graphics/DrawObject.h
+#           objects/3d_objects/AxisPrimitive.h
+#           objects/3d_objects/CapsuleDrawObject.h
+#           objects/3d_objects/Clouds.h
+#           objects/3d_objects/CoordsPrimitive.h
+#           objects/3d_objects/CubeDrawObject.h
+#           objects/3d_objects/CylinderDrawObject.h
+#           objects/3d_objects/GridPrimitive.h
+#           objects/3d_objects/LoadDrawObject.h
+#           objects/3d_objects/OceanDrawObject.h
+#           objects/3d_objects/PlaneDrawObject.h
+#           objects/3d_objects/SphereDrawObject.h
+#           objects/3d_objects/TerrainDrawObject.h
+#           objects/3d_objects/VertexBufferTerrain.h
+#           objects/3d_objects/MarsVBOGeom.h
+#           objects/3d_objects/MultiResHeightMapRenderer.h
 
            graphics/shader/bumpmapping.h
            graphics/shader/pixellight.h
@@ -126,24 +128,30 @@ rock_library(osgViz
            graphics/shader/shader-types.h
            graphics/shader/texgen.h
 
-           graphics/shadow/ShadowMap.h
-           graphics/2d_objects/HUDElement.h
-           graphics/2d_objects/HUDNode.h
-           graphics/2d_objects/HUDLabel.h
-           graphics/2d_objects/HUDLines.h
-           graphics/2d_objects/HUDTerminal.h
-           graphics/2d_objects/HUDTexture.h
-           graphics/2d_objects/HUDOSGNode.h
            
-           graphics/wrapper/OSGDrawItem.h
-           graphics/wrapper/OSGHudElementStruct.h
+           graphics/HUDElement.h
+           graphics/shadow/ShadowMap.h
+           
+#           objects/2d_objects/HUDNode.h
+#           objects/2d_objects/HUDLabel.h
+#           objects/2d_objects/HUDLines.h
+#           objects/2d_objects/HUDTerminal.h
+#           objects/2d_objects/HUDTexture.h
+#           objects/2d_objects/HUDOSGNode.h
+#           
+#           objects/wrapper/OSGDrawItem.h
+#           objects/wrapper/OSGHudElementStruct.h
+#           objects/wrapper/OSGNodeStruct.h
+#           
            graphics/wrapper/OSGLightStruct.h
            graphics/wrapper/OSGMaterialStruct.h
-           graphics/wrapper/OSGNodeStruct.h
+           
+           
            graphics/interfaces/cameraStruct.h
 		   graphics/interfaces/GraphicsCameraInterface.h
 			graphics/interfaces/GraphicsEventInterface.h
 			graphics/interfaces/GraphicsWindowInterface.h
+			graphics/interfaces/GraphicsManagerInterface.h
 			graphics/interfaces/GuiEventInterface.h
 			
 			graphics/interfaces/data/GraphicData.h
@@ -152,7 +160,7 @@ rock_library(osgViz
 			graphics/interfaces/OsgVizDefs.h
            
     LIBS ${Boost_SYSTEM_LIBRARY}
-    DEPS_PKGCONFIG opencv lib_manager mars_interfaces openscenegraph eigen3 )
+    DEPS_PKGCONFIG opencv lib_manager openscenegraph eigen3 )
 
 rock_library(osgVizPlugin
     SOURCES plugins/Object.cpp

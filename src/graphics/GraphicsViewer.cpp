@@ -20,12 +20,12 @@
 
 #include "GraphicsViewer.h"
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     using namespace osgViewer;
 
-    GraphicsViewer::GraphicsViewer(interfaces::GuiEventInterface *_guiEventHandler) {
+    GraphicsViewer::GraphicsViewer(GuiEventInterface *_guiEventHandler) {
       guiEventHandler = _guiEventHandler;
     }
 

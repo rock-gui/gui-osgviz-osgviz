@@ -25,7 +25,7 @@
 #include <string>
 #include <ostream>
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     typedef struct {

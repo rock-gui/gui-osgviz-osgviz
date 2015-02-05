@@ -25,8 +25,8 @@
  *
  */
 
-#ifndef MARS_INTERFACES_GRAPHICS_WINDOW_INTERFACE_H
-#define MARS_INTERFACES_GRAPHICS_WINDOW_INTERFACE_H
+#ifndef OSGVIZ_GRAPHICS_WINDOW_INTERFACE_H
+#define OSGVIZ_GRAPHICS_WINDOW_INTERFACE_H
 
 #ifdef _PRINT_HEADER_
   #warning "GraphicsWindowInterface.h"
@@ -40,8 +40,7 @@ namespace osg{
     class Group;
 }
 
-namespace mars {
-  namespace interfaces {
+namespace osgviz {
 
     class GraphicsWindowInterface {
 
@@ -87,7 +86,6 @@ namespace mars {
 
     }; // end of class GraphicsWindowInterface
 
-  } // end of namespace interfaces
-} // end of namespace mars
+} // end of namespace osgviz
 
 #endif  /* MARS_INTERFACES_GRAPHICS_WINDOW_INTERFACE_H */

@@ -18,23 +18,21 @@
  *
  */
 
-#ifndef MARS_INTERFACES_CAMERA_STRUCT_H
-#define MARS_INTERFACES_CAMERA_STRUCT_H
+#ifndef OSGVIZ_CAMERA_STRUCT_H
+#define OSGVIZ_CAMERA_STRUCT_H
 
 #include <mars/utils/Vector.h>
 #include <mars/utils/Quaternion.h>
 
-namespace mars {
-
-  namespace interfaces {
+namespace osgviz {
 
     /** 
      * this struct seems to be used to get information about a camera
      * which can be accessed through the sensor interface.
      */
     struct cameraStruct {
-      utils::Vector pos;
-      utils::Quaternion rot; //rotation
+      mars::utils::Vector pos;
+      mars::utils::Quaternion rot; //rotation
 
       /** 
        * camera intrinsic parameters
@@ -49,8 +47,6 @@ namespace mars {
       double scale_x, scale_y;
     }; // end of struct cameraStruct
 
-
-  } // end of namespace interfaces
 
 } // end of namespace mars
 

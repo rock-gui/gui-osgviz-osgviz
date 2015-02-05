@@ -25,14 +25,14 @@
  *      Author: daniel
  */
 
-#ifndef MARS_GRAPHICS_OSGMATERIALSTRUCT_H
-#define MARS_GRAPHICS_OSGMATERIALSTRUCT_H
+#ifndef OSGVIZ_GRAPHICS_OSGMATERIALSTRUCT_H
+#define OSGVIZ_GRAPHICS_OSGMATERIALSTRUCT_H
 
 #include <osg/Material>
 
-#include <mars/interfaces/MaterialData.h>
+#include "../interfaces/data/MaterialData.h"
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     /**
@@ -41,7 +41,7 @@ namespace mars {
     class OSGMaterialStruct : public osg::Material
     {
     public:
-      OSGMaterialStruct(const mars::interfaces::MaterialData &mat);
+      OSGMaterialStruct(const osgviz::interfaces::MaterialData &mat);
     }; // end of class OSGMaterialStruct
 
   } // end of namespace graphics

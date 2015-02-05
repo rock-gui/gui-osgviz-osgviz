@@ -33,7 +33,7 @@
 #include <vector>
 #include <string>
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     /**

@@ -22,7 +22,7 @@
 #include "shader-function.h"
 #include <sstream>
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     using namespace std;

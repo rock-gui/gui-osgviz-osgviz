@@ -35,14 +35,12 @@
 #include <vector>
 #include <sstream>
 
-#include <mars/interfaces/sim_common.h>
-#include <mars/interfaces/terrainStruct.h>
-#include <mars/interfaces/sim/LoadCenter.h>
 
-#include <mars/interfaces/graphics/GraphicsManagerInterface.h>
+#include "interfaces/data/GraphicData.h"
+#include "interfaces/GraphicsManagerInterface.h"
 
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     class GraphicsWindow;
@@ -60,7 +58,7 @@ namespace mars {
       std::string name;
       mars::utils::Vector offset;
       mars::utils::Quaternion r_off;
-      mars::interfaces::NodeData snode;
+      //interfaces::NodeData snode;
     }; // end of struct nodemanager
 
     struct nodeFileStruct {
@@ -106,19 +104,19 @@ namespace mars {
 
       static void clearStates(osg::ref_ptr<osg::Node> node);
       /** \brief converts the mesh of an osgNode to the snmesh struct */
-      static mars::interfaces::snmesh convertOsgNodeToSnMesh(osg::Node *node,
-                                                       double scaleX,
-                                                       double scaleY,
-                                                       double scaleZ,
-                                                       double pivotX,
-                                                       double pivotY,
-                                                       double pivotZ);
+//      static mars::interfaces::snmesh convertOsgNodeToSnMesh(osg::Node *node,
+//                                                       double scaleX,
+//                                                       double scaleY,
+//                                                       double scaleZ,
+//                                                       double pivotX,
+//                                                       double pivotY,
+//                                                       double pivotZ);
 
       mars::utils::Vector getExtend(osg::Group* oGroup);
       void initGraphics();
 
-      virtual void getPhysicsFromOBJ(mars::interfaces::NodeData *node);
-      virtual void readPixelData(mars::interfaces::terrainStruct *terrain);
+     // virtual void getPhysicsFromOBJ(mars::interfaces::NodeData *node);
+     //virtual void readPixelData(mars::interfaces::terrainStruct *terrain);
 
       static osg::ref_ptr<osg::Node> readNodeFromFile(std::string fileName);
       static osg::ref_ptr<osg::Node> readBobjFromFile(const std::string &filename);
@@ -131,7 +129,7 @@ namespace mars {
       GraphicsManager *gi;
       //GraphicsWindow *gw;
       //for compatibility
-      mars::interfaces::GraphicData gs;
+      interfaces::GraphicData gs;
       static std::vector<nodeFileStruct> nodeFiles;
       // vector to prevent double load of textures
       static std::vector<textureFileStruct> textureFiles;

@@ -42,14 +42,14 @@
 
 #include <mars/utils/mathUtils.h>
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     using namespace std;
     using mars::utils::Color;
     using mars::utils::Vector;
     using mars::utils::Quaternion;
-    using mars::interfaces::snmesh;
+    //using mars::interfaces::snmesh;
 
     vector<nodeFileStruct> GuiHelper::nodeFiles;
     vector<textureFileStruct> GuiHelper::textureFiles;
@@ -110,7 +110,7 @@ namespace mars {
       // (transformed by 'transformMatrix') in a 'std::vector'.
       void operator() (const osg::Vec3& v1, const osg::Vec3& v2,
                        const osg::Vec3& v3, bool treatVertexDataAsTemporary) {
-        treatVertexDataAsTemporary = treatVertexDataAsTemporary;
+//        treatVertexDataAsTemporary = treatVertexDataAsTemporary;
         vertices.push_back (v1 * transformMatrix);
         vertices.push_back (v2 * transformMatrix);
         vertices.push_back (v3 * transformMatrix);
@@ -148,76 +148,76 @@ namespace mars {
       }
     }
 
-    /**
-     * converts the mesh of an osgNode to the snmesh struct
-     */
-    snmesh GuiHelper::convertOsgNodeToSnMesh(osg::Node* node, double scaleX,
-                                             double scaleY, double scaleZ,
-                                             double pivotX, double pivotY,
-                                             double pivotZ) {
-      vector<int> indices;
-      vector<osg::Vec3> OSGvertices;
-      snmesh mesh;
-      //visitor for getting drawables inside node
-      GeodeVisitor* visitor=new GeodeVisitor("PLACEHOLDER");
-      osg::Geode* geode;
-      osg::Node* tmpNode;
-      osg::ref_ptr<osg::Group> osgGroupFromRead = NULL;
-      if ((osgGroupFromRead = node->asGroup()) == 0)
-        fprintf(stderr, "error\n");
-
-      //get geometries of node
-      int indexcounter = 0;
-      for (size_t m = 0; m < osgGroupFromRead->getNumChildren(); m++) {
-        tmpNode = osgGroupFromRead->getChild(m);
-        tmpNode->accept(*visitor);
-        geode = visitor->getNode();
-        for (size_t j = 0; j<geode->getNumDrawables(); j++) {
-          //initialize functors for getting the drawables
-          osg::TriangleFunctor<GetVerticesFunctor> triangleFunctor_;
-          geode->getDrawable(j)->accept(triangleFunctor_);
-
-          //Here we get the triangles
-          vector<osg::Vec3>& OSGverticestemp = triangleFunctor_.getVertices();
-          for (unsigned int i = 0; i < OSGverticestemp.size(); i++) {
-            OSGvertices.push_back(OSGverticestemp[i]);
-            indices.push_back(indexcounter);
-            indexcounter++;
-          }
-        }
-      }
-
-      //store vertices in a mydVector3 structure
-      mars::interfaces::mydVector3 *vertices = 0;
-      if(OSGvertices.size() > 0){
-        vertices = new mars::interfaces::mydVector3[OSGvertices.size()];
-      }
-      //  dVector3 *normals = new dVector3[normals_x.size()];
-      int *indexarray = 0;
-      if(indices.size() > 0){
-        indexarray = new int[indices.size()];
-      }
-
-      //convert osg vertice vector to standard array
-      for (size_t i = 0; i < OSGvertices.size(); i++) {
-        vertices[i][0] = (OSGvertices[i][0] - pivotX) * scaleX;
-        vertices[i][1] = (OSGvertices[i][1] - pivotY) * scaleY;
-        vertices[i][2] = (OSGvertices[i][2] - pivotZ) * scaleZ;
-      }
-
-      //construct an appropriate index array
-      for (int i = 0; i < indexcounter; i++) {
-        indexarray[i] = indices[i];
-      }
-
-      mesh.vertices = vertices;
-      mesh.vertexcount = OSGvertices.size();
-      //  mesh.normals = normals;
-      mesh.indices = indexarray;
-      mesh.indexcount = indexcounter;
-      delete visitor;
-      return mesh;
-    }
+//    /**
+//     * converts the mesh of an osgNode to the snmesh struct
+//     */
+//    snmesh GuiHelper::convertOsgNodeToSnMesh(osg::Node* node, double scaleX,
+//                                             double scaleY, double scaleZ,
+//                                             double pivotX, double pivotY,
+//                                             double pivotZ) {
+//      vector<int> indices;
+//      vector<osg::Vec3> OSGvertices;
+//      snmesh mesh;
+//      //visitor for getting drawables inside node
+//      GeodeVisitor* visitor=new GeodeVisitor("PLACEHOLDER");
+//      osg::Geode* geode;
+//      osg::Node* tmpNode;
+//      osg::ref_ptr<osg::Group> osgGroupFromRead = NULL;
+//      if ((osgGroupFromRead = node->asGroup()) == 0)
+//        fprintf(stderr, "error\n");
+//
+//      //get geometries of node
+//      int indexcounter = 0;
+//      for (size_t m = 0; m < osgGroupFromRead->getNumChildren(); m++) {
+//        tmpNode = osgGroupFromRead->getChild(m);
+//        tmpNode->accept(*visitor);
+//        geode = visitor->getNode();
+//        for (size_t j = 0; j<geode->getNumDrawables(); j++) {
+//          //initialize functors for getting the drawables
+//          osg::TriangleFunctor<GetVerticesFunctor> triangleFunctor_;
+//          geode->getDrawable(j)->accept(triangleFunctor_);
+//
+//          //Here we get the triangles
+//          vector<osg::Vec3>& OSGverticestemp = triangleFunctor_.getVertices();
+//          for (unsigned int i = 0; i < OSGverticestemp.size(); i++) {
+//            OSGvertices.push_back(OSGverticestemp[i]);
+//            indices.push_back(indexcounter);
+//            indexcounter++;
+//          }
+//        }
+//      }
+//
+//      //store vertices in a mydVector3 structure
+//      mars::interfaces::mydVector3 *vertices = 0;
+//      if(OSGvertices.size() > 0){
+//        vertices = new mars::interfaces::mydVector3[OSGvertices.size()];
+//      }
+//      //  dVector3 *normals = new dVector3[normals_x.size()];
+//      int *indexarray = 0;
+//      if(indices.size() > 0){
+//        indexarray = new int[indices.size()];
+//      }
+//
+//      //convert osg vertice vector to standard array
+//      for (size_t i = 0; i < OSGvertices.size(); i++) {
+//        vertices[i][0] = (OSGvertices[i][0] - pivotX) * scaleX;
+//        vertices[i][1] = (OSGvertices[i][1] - pivotY) * scaleY;
+//        vertices[i][2] = (OSGvertices[i][2] - pivotZ) * scaleZ;
+//      }
+//
+//      //construct an appropriate index array
+//      for (int i = 0; i < indexcounter; i++) {
+//        indexarray[i] = indices[i];
+//      }
+//
+//      mesh.vertices = vertices;
+//      mesh.vertexcount = OSGvertices.size();
+//      //  mesh.normals = normals;
+//      mesh.indices = indexarray;
+//      mesh.indexcount = indexcounter;
+//      delete visitor;
+//      return mesh;
+//    }
 
     Vector GuiHelper::getExtend(osg::Group *oGroup){
       osg::ComputeBoundsVisitor cbbv;
@@ -235,102 +235,102 @@ namespace mars {
       return ex;
     }
 
-    void GuiHelper::getPhysicsFromOBJ(mars::interfaces::NodeData* node) {
-      osg::ref_ptr<osg::Node> completeNode;
-      osg::ref_ptr<osg::Group> myCreatedGroup;
-      osg::ref_ptr<osg::Group> myGroupFromRead;
-      osg::ref_ptr<osg::Geode> myGeodeFromRead;
-      nodemanager tempnode;
-      bool found = false;
-
-      completeNode  = GuiHelper::readNodeFromFile(node->filename);
-
-      // check whether it is a osg::Group (.obj file)
-      if((myGroupFromRead = completeNode->asGroup()) != 0){
-        //go through the read node group and combine the parts of the actually
-        //handled node
-        myCreatedGroup = new osg::Group();
-        osg::ref_ptr<osg::StateSet> stateset = myCreatedGroup->getOrCreateStateSet();
-        for (unsigned int i = 0; i < myGroupFromRead->getNumChildren(); i ++) {
-          osg::ref_ptr<osg::Node> myTestingNode = myGroupFromRead->getChild(i);
-          if (myTestingNode == 0) {
-            return;
-          }
-          if (myTestingNode->getName() == node->origName) {
-            myTestingNode->setStateSet(stateset.get());
-            myCreatedGroup->addChild(myTestingNode.get());
-            found = true;
-          } else {
-            if (found) {
-              break;
-              found = false;
-            }
-          }
-        }
-      }
-      // or if it is a osg::Geode (.stl file)
-      else if((myGeodeFromRead = completeNode->asGeode()) != 0) {
-        //if the node was read from a .stl-file it read as geode not as group
-        myCreatedGroup = new osg::Group();
-        osg::ref_ptr<osg::StateSet> stateset = myCreatedGroup->getOrCreateStateSet();
-        completeNode->setStateSet(stateset.get());
-        myCreatedGroup->addChild(completeNode.get());
-      }
-
-      osg::ComputeBoundsVisitor cbbv;
-      myCreatedGroup.get()->accept(cbbv);
-      osg::BoundingBox bb = cbbv.getBoundingBox();
-      Vector ex;
-      // compute bounding box has to be done in this way
-      (fabs(bb.xMax()) > fabs(bb.xMin())) ? ex.x() = fabs(bb.xMax() - bb.xMin())
-        : ex.x() = fabs(bb.xMin() - bb.xMax());
-      (fabs(bb.yMax()) > fabs(bb.yMin())) ? ex.y() = fabs(bb.yMax() - bb.yMin())
-        : ex.y() = fabs(bb.yMin() - bb.yMax());
-      (fabs(bb.zMax()) > fabs(bb.zMin())) ? ex.z() = fabs(bb.zMax() - bb.zMin())
-        : ex.z() = fabs(bb.zMin() - bb.zMax());
-
-      //compute scale factor
-      double scaleX = 1, scaleY = 1, scaleZ = 1;
-      if (ex.x() != 0) scaleX = node->visual_size.x() / ex.x();
-      if (ex.y() != 0) scaleY = node->visual_size.y() / ex.y();
-      if (ex.z() != 0) scaleZ = node->visual_size.z() / ex.z();
-
-      // create transform and group Node for the actual node
-      osg::ref_ptr<osg::PositionAttitudeTransform> transform;
-      osg::ref_ptr<osg::MatrixTransform> tx;
-
-      transform = new osg::PositionAttitudeTransform();
-      tx = new osg::MatrixTransform;
-      tx->setMatrix(osg::Matrix::scale(scaleX, scaleY, scaleZ));
-      tx->setDataVariance(osg::Node::STATIC);
-      tx->addChild(myCreatedGroup.get());
-
-      //add the node to a transformation to make him movable
-      transform->addChild(tx.get());
-      transform->setPivotPoint(osg::Vec3(node->pivot.x()*scaleX,
-                                         node->pivot.y()*scaleY,
-                                         node->pivot.z()*scaleZ));
-      transform->setPosition(osg::Vec3(node->pos.x() + node->visual_offset_pos.x(),
-                                       node->pos.y() + node->visual_offset_pos.y(),
-                                       node->pos.z() + node->visual_offset_pos.z()));
-      //set rotation
-      osg::Quat oquat;
-      Quaternion qrot = node->rot * node->visual_offset_rot;
-      oquat.set(qrot.x(), qrot.y(), qrot.z(), qrot.w());
-      transform->setAttitude(oquat);
-
-      tempnode.transform = transform.get();
-      tempnode.node = myCreatedGroup.get();
-      tempnode.matrix = tx.get();
-      tempnode.offset = node->visual_offset_pos;
-      tempnode.r_off = node->visual_offset_rot;
-
-      node->mesh = GuiHelper::convertOsgNodeToSnMesh(tempnode.node.get(),
-                                                     scaleX, scaleY, scaleZ,
-                                                     node->pivot.x(),
-                                                     node->pivot.y(),
-                                                     node->pivot.z());
-    }
+//    void GuiHelper::getPhysicsFromOBJ(mars::interfaces::NodeData* node) {
+//      osg::ref_ptr<osg::Node> completeNode;
+//      osg::ref_ptr<osg::Group> myCreatedGroup;
+//      osg::ref_ptr<osg::Group> myGroupFromRead;
+//      osg::ref_ptr<osg::Geode> myGeodeFromRead;
+//      nodemanager tempnode;
+//      bool found = false;
+//
+//      completeNode  = GuiHelper::readNodeFromFile(node->filename);
+//
+//      // check whether it is a osg::Group (.obj file)
+//      if((myGroupFromRead = completeNode->asGroup()) != 0){
+//        //go through the read node group and combine the parts of the actually
+//        //handled node
+//        myCreatedGroup = new osg::Group();
+//        osg::ref_ptr<osg::StateSet> stateset = myCreatedGroup->getOrCreateStateSet();
+//        for (unsigned int i = 0; i < myGroupFromRead->getNumChildren(); i ++) {
+//          osg::ref_ptr<osg::Node> myTestingNode = myGroupFromRead->getChild(i);
+//          if (myTestingNode == 0) {
+//            return;
+//          }
+//          if (myTestingNode->getName() == node->origName) {
+//            myTestingNode->setStateSet(stateset.get());
+//            myCreatedGroup->addChild(myTestingNode.get());
+//            found = true;
+//          } else {
+//            if (found) {
+//              break;
+//              found = false;
+//            }
+//          }
+//        }
+//      }
+//      // or if it is a osg::Geode (.stl file)
+//      else if((myGeodeFromRead = completeNode->asGeode()) != 0) {
+//        //if the node was read from a .stl-file it read as geode not as group
+//        myCreatedGroup = new osg::Group();
+//        osg::ref_ptr<osg::StateSet> stateset = myCreatedGroup->getOrCreateStateSet();
+//        completeNode->setStateSet(stateset.get());
+//        myCreatedGroup->addChild(completeNode.get());
+//      }
+//
+//      osg::ComputeBoundsVisitor cbbv;
+//      myCreatedGroup.get()->accept(cbbv);
+//      osg::BoundingBox bb = cbbv.getBoundingBox();
+//      Vector ex;
+//      // compute bounding box has to be done in this way
+//      (fabs(bb.xMax()) > fabs(bb.xMin())) ? ex.x() = fabs(bb.xMax() - bb.xMin())
+//        : ex.x() = fabs(bb.xMin() - bb.xMax());
+//      (fabs(bb.yMax()) > fabs(bb.yMin())) ? ex.y() = fabs(bb.yMax() - bb.yMin())
+//        : ex.y() = fabs(bb.yMin() - bb.yMax());
+//      (fabs(bb.zMax()) > fabs(bb.zMin())) ? ex.z() = fabs(bb.zMax() - bb.zMin())
+//        : ex.z() = fabs(bb.zMin() - bb.zMax());
+//
+//      //compute scale factor
+//      double scaleX = 1, scaleY = 1, scaleZ = 1;
+//      if (ex.x() != 0) scaleX = node->visual_size.x() / ex.x();
+//      if (ex.y() != 0) scaleY = node->visual_size.y() / ex.y();
+//      if (ex.z() != 0) scaleZ = node->visual_size.z() / ex.z();
+//
+//      // create transform and group Node for the actual node
+//      osg::ref_ptr<osg::PositionAttitudeTransform> transform;
+//      osg::ref_ptr<osg::MatrixTransform> tx;
+//
+//      transform = new osg::PositionAttitudeTransform();
+//      tx = new osg::MatrixTransform;
+//      tx->setMatrix(osg::Matrix::scale(scaleX, scaleY, scaleZ));
+//      tx->setDataVariance(osg::Node::STATIC);
+//      tx->addChild(myCreatedGroup.get());
+//
+//      //add the node to a transformation to make him movable
+//      transform->addChild(tx.get());
+//      transform->setPivotPoint(osg::Vec3(node->pivot.x()*scaleX,
+//                                         node->pivot.y()*scaleY,
+//                                         node->pivot.z()*scaleZ));
+//      transform->setPosition(osg::Vec3(node->pos.x() + node->visual_offset_pos.x(),
+//                                       node->pos.y() + node->visual_offset_pos.y(),
+//                                       node->pos.z() + node->visual_offset_pos.z()));
+//      //set rotation
+//      osg::Quat oquat;
+//      Quaternion qrot = node->rot * node->visual_offset_rot;
+//      oquat.set(qrot.x(), qrot.y(), qrot.z(), qrot.w());
+//      transform->setAttitude(oquat);
+//
+//      tempnode.transform = transform.get();
+//      tempnode.node = myCreatedGroup.get();
+//      tempnode.matrix = tx.get();
+//      tempnode.offset = node->visual_offset_pos;
+//      tempnode.r_off = node->visual_offset_rot;
+//
+//      node->mesh = GuiHelper::convertOsgNodeToSnMesh(tempnode.node.get(),
+//                                                     scaleX, scaleY, scaleZ,
+//                                                     node->pivot.x(),
+//                                                     node->pivot.y(),
+//                                                     node->pivot.z());
+//    }
 
     osg::ref_ptr<osg::Node> GuiHelper::readNodeFromFile(string fileName) {
       std::vector<nodeFileStruct>::iterator iter;
@@ -486,85 +486,85 @@ namespace mars {
     // TODO: should not be in graphics!
     // physics without graphics would need this too.
     // maybe move to NodeFactory ??
-    void GuiHelper::readPixelData(mars::interfaces::terrainStruct *terrain) {
-
-#if !defined (WIN32) && !defined (__linux__)
-      IplImage* img=0;
-
-      img=cvLoadImage(terrain->srcname.data(), -1);
-      if(img) {
-        terrain->width = img->width;
-        terrain->height = img->height;
-        fprintf(stderr, "w h = %d %d\n", img->width, img->height);
-        terrain->pixelData = (double*)calloc((terrain->width*
-                                              terrain->height),
-                                             sizeof(double));
-
-
-       CvScalar s;
-        int count = 0;
-        double imageMaxValue = pow(2., img->depth);
-        //for(int y=0; y<terrain->height; y++) {
-        //for(int x=terrain->width-1; x>=0; x--) {
-        for(int y=terrain->height-1; y>=0; y--) {
-          for(int x=0; x<terrain->width; x++) {
-
-            s=cvGet2D(img,y,x);
-            terrain->pixelData[count++] = ((double)s.val[0])/imageMaxValue;
-            if(y==0 || y == terrain->height-1 ||
-               x==0 || x == terrain->width-1)
-              terrain->pixelData[count-1] -= 0.002;
-            if(terrain->pixelData[count-1] <= 0.0)
-              terrain->pixelData[count-1] = 0.001;
-
-          }
-        }
-        cvReleaseImage(&img);
-      }
-
-#else
-      //QImage image(QString::fromStdString(snode->filename));
-#ifdef __linux__
-
-      std::string absolutePathIndicator = terrain->srcname.substr(0,1);
-      if( absolutePathIndicator != "/") {
-        fprintf(stderr, "Terrain file needs to be provided by using an absolute path: currently given \"%s\"\n", terrain->srcname.c_str());
-        // exit(0);
-      }
-#endif
-
-      osg::Image* image = osgDB::readImageFile(terrain->srcname);
-
-      if(image) {
-        terrain->width = image->s();
-        terrain->height = image->t();
-        //if(terrain->pixelData) free(terrain->pixelData);
-
-        terrain->pixelData = (double*)calloc((terrain->width*
-                                              terrain->height),
-                                             sizeof(double));
-        //image->setPixelFormat(GL_RGB);
-        //image->setDataType(GL_UNSIGNED_SHORT);
-        //osgDB::writeImageFile(*image, std::string("test.jpg"));
-        float r = 0;
-	//float g = 0, b = 0;
-        int count = 0;
-        osg::Vec4 pixel;
-        for (int y = terrain->height; y >= 1; --y){
-          for (int x = terrain->width; x >= 1; --x){
-            pixel = image->getColor(osg::Vec2(x, y));
-            r = pixel[0];
-            //g = pixel[1];
-            //b = pixel[2];
-            //QColor converter(image.pixel(x, y));
-            //converter.getRgb(&r, &g, &b);
-            //convert to greyscale by common used scale
-            terrain->pixelData[count++] = r;//((r*0.3+g*0.59+b*0.11));
-          }
-        }
-      }
-#endif
-    }
+//    void GuiHelper::readPixelData(mars::interfaces::terrainStruct *terrain) {
+//
+//#if !defined (WIN32) && !defined (__linux__)
+//      IplImage* img=0;
+//
+//      img=cvLoadImage(terrain->srcname.data(), -1);
+//      if(img) {
+//        terrain->width = img->width;
+//        terrain->height = img->height;
+//        fprintf(stderr, "w h = %d %d\n", img->width, img->height);
+//        terrain->pixelData = (double*)calloc((terrain->width*
+//                                              terrain->height),
+//                                             sizeof(double));
+//
+//
+//       CvScalar s;
+//        int count = 0;
+//        double imageMaxValue = pow(2., img->depth);
+//        //for(int y=0; y<terrain->height; y++) {
+//        //for(int x=terrain->width-1; x>=0; x--) {
+//        for(int y=terrain->height-1; y>=0; y--) {
+//          for(int x=0; x<terrain->width; x++) {
+//
+//            s=cvGet2D(img,y,x);
+//            terrain->pixelData[count++] = ((double)s.val[0])/imageMaxValue;
+//            if(y==0 || y == terrain->height-1 ||
+//               x==0 || x == terrain->width-1)
+//              terrain->pixelData[count-1] -= 0.002;
+//            if(terrain->pixelData[count-1] <= 0.0)
+//              terrain->pixelData[count-1] = 0.001;
+//
+//          }
+//        }
+//        cvReleaseImage(&img);
+//      }
+//
+//#else
+//      //QImage image(QString::fromStdString(snode->filename));
+//#ifdef __linux__
+//
+//      std::string absolutePathIndicator = terrain->srcname.substr(0,1);
+//      if( absolutePathIndicator != "/") {
+//        fprintf(stderr, "Terrain file needs to be provided by using an absolute path: currently given \"%s\"\n", terrain->srcname.c_str());
+//        // exit(0);
+//      }
+//#endif
+//
+//      osg::Image* image = osgDB::readImageFile(terrain->srcname);
+//
+//      if(image) {
+//        terrain->width = image->s();
+//        terrain->height = image->t();
+//        //if(terrain->pixelData) free(terrain->pixelData);
+//
+//        terrain->pixelData = (double*)calloc((terrain->width*
+//                                              terrain->height),
+//                                             sizeof(double));
+//        //image->setPixelFormat(GL_RGB);
+//        //image->setDataType(GL_UNSIGNED_SHORT);
+//        //osgDB::writeImageFile(*image, std::string("test.jpg"));
+//        float r = 0;
+//	//float g = 0, b = 0;
+//        int count = 0;
+//        osg::Vec4 pixel;
+//        for (int y = terrain->height; y >= 1; --y){
+//          for (int x = terrain->width; x >= 1; --x){
+//            pixel = image->getColor(osg::Vec2(x, y));
+//            r = pixel[0];
+//            //g = pixel[1];
+//            //b = pixel[2];
+//            //QColor converter(image.pixel(x, y));
+//            //converter.getRgb(&r, &g, &b);
+//            //convert to greyscale by common used scale
+//            terrain->pixelData[count++] = r;//((r*0.3+g*0.59+b*0.11));
+//          }
+//        }
+//      }
+//#endif
+//    }
 
     osg::ref_ptr<osg::Texture2D> GuiHelper::loadTexture(string filename) {
       std::vector<textureFileStruct>::iterator iter;

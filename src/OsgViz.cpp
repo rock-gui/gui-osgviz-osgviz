@@ -65,7 +65,7 @@ OsgViz::OsgViz(int argc, char** argv): lib_manager::LibInterface(NULL){
 
 
 void OsgViz::init(int argc,char** argv){
-	graphicsManager = new mars::graphics::GraphicsManager(libmanager);
+	graphicsManager = new graphics::GraphicsManager(libmanager);
 
 	thread = NULL;
 	m_argc = argc;

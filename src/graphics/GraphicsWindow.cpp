@@ -37,7 +37,7 @@
 #define CULL_LAYER (1 << (widgetID-1))
 
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     using namespace std;
@@ -1419,7 +1419,7 @@ namespace mars {
         if (modKey & osgGA::GUIEventAdapter::MODKEY_META) {
           mod |= GuiEventInterface::MetaModifier;
         }
-        std::vector<interfaces::GraphicsEventInterface *>::iterator it;
+        std::vector<GraphicsEventInterface *>::iterator it;
         for(it=graphicsEventHandler.begin(); it!=graphicsEventHandler.end();
             ++it)
           (*it)->emitKeyUpEvent(key, mod, widgetID);
@@ -1452,7 +1452,7 @@ namespace mars {
         if (modKey & osgGA::GUIEventAdapter::MODKEY_META) {
           mod |= GuiEventInterface::MetaModifier;
         }
-        std::vector<interfaces::GraphicsEventInterface *>::iterator it;
+        std::vector<GraphicsEventInterface *>::iterator it;
         for(it=graphicsEventHandler.begin(); it!=graphicsEventHandler.end();
             ++it)
           (*it)->emitKeyDownEvent(key, mod, widgetID);

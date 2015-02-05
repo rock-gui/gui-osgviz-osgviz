@@ -37,73 +37,11 @@
     (*config)[str][0] = ConfigItem(std::string());                      \
     type##ToConfigItem(&(*config)[str][0], &val);
 
-namespace mars {
+namespace osgviz {
   namespace interfaces {
 
     using namespace mars::utils;
 
-    bool LightData::fromConfigMap(utils::ConfigMap *config,
-                                  std::string filenamePrefix,
-                                  LoadCenter *loadCenter) {
-      CPP_UNUSED(filenamePrefix);
-      CPP_UNUSED(loadCenter);
-      ConfigMap::iterator it;
-
-      GET_VALUE("name", name, String);
-      GET_OBJECT("position", pos, vector);
-      GET_OBJECT("lookat", lookAt, vector);
-      if((it = config->find("ambient")) != config->end())
-        ambient.fromConfigItem(&it->second[0]);
-      if((it = config->find("diffuse")) != config->end())
-        diffuse.fromConfigItem(&it->second[0]);
-      if((it = config->find("specular")) != config->end())
-        specular.fromConfigItem(&it->second[0]);
-      GET_VALUE("constantAttenuation", constantAttenuation, Double);
-      GET_VALUE("linearAttenuation", linearAttenuation, Double);
-      GET_VALUE("quadraticAttenuation", quadraticAttenuation, Double);
-      GET_VALUE("type", type, Int);
-      GET_VALUE("angle", angle, Double);
-      GET_VALUE("exponent", exponent, Double);
-      GET_VALUE("directional", directional, Bool);
-
-      return true;
-    }
-
-    void LightData::toConfigMap(utils::ConfigMap *config,
-                                bool skipFilenamePrefix) {
-      CPP_UNUSED(skipFilenamePrefix);
-      LightData defaultLight;
-
-      SET_VALUE("name", name);
-      SET_OBJECT("position", pos, vector);
-      SET_OBJECT("lookat", lookAt, vector);
-
-      if(ambient != defaultLight.ambient) {
-        (*config)["ambient"][0] = ConfigItem(std::string());
-        ambient.toConfigItem(&(*config)["ambient"][0]);
-      }
-
-      if(diffuse != defaultLight.diffuse) {
-        (*config)["diffuse"][0] = ConfigItem(std::string());
-        diffuse.toConfigItem(&(*config)["diffuse"][0]);
-      }
-
-      if(specular != defaultLight.specular) {
-        (*config)["specular"][0] = ConfigItem(std::string());
-        specular.toConfigItem(&(*config)["specular"][0]);
-      }
-
-      SET_VALUE("constantAttenuation", constantAttenuation);
-      SET_VALUE("linearAttenuation", linearAttenuation);
-      SET_VALUE("quadraticAttenuation", quadraticAttenuation);
-      SET_VALUE("type", type);
-      SET_VALUE("angle", angle);
-      SET_VALUE("exponent", exponent);
-      SET_VALUE("directional", directional);
-    }
-
-    void LightData::getFilesToSave(std::vector<std::string> *fileList) {
-    }
 
   } // end of namespace interfaces
 } // end of namespace mars

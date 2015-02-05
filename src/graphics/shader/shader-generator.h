@@ -34,10 +34,10 @@
 #include <string>
 #include <map>
 
-#include <mars/interfaces/MARSDefs.h>
+#include "../interfaces/OsgVizDefs.h"
 
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     class ShaderGenerator {
@@ -45,14 +45,14 @@ namespace mars {
       ShaderGenerator() {};
 
       void addShaderFunction(ShaderFunc *func,
-                             mars::interfaces::ShaderType shaderType);
+                             ShaderType shaderType);
 
-      std::string generateSource(mars::interfaces::ShaderType shaderType);
+      std::string generateSource(ShaderType shaderType);
 
       osg::Program* generate();
 
     private:
-      std::map< mars::interfaces::ShaderType, ShaderFunc* > functions;
+      std::map< ShaderType, ShaderFunc* > functions;
     }; // end of class ShaderGenerator
 
   } // end of namespace graphics

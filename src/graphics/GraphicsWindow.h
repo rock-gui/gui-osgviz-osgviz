@@ -18,8 +18,8 @@
  *
  */
 
-#ifndef MARS_GRAPHICS_WIDGET_H
-#define MARS_GRAPHICS_WIDGET_H
+#ifndef OSGVIZ_GRAPHICS_WIDGET_H
+#define OSGVIZ_GRAPHICS_WIDGET_H
 
 #ifdef _PRINT_HEADER_
   #warning "GraphicsWidget.h"
@@ -29,10 +29,13 @@
 #include "GraphicsCamera.h"
 #include "PostDrawCallback.h"
 
-#include <mars/interfaces/MARSDefs.h>
+#include "interfaces/OsgVizDefs.h"
+#include "interfaces/GraphicsEventInterface.h"
+#include "interfaces/GraphicsGuiInterface.h"
+
 #include <mars/utils/Vector.h>
-#include <mars/interfaces/graphics/GraphicsEventInterface.h>
-#include <mars/interfaces/graphics/GraphicsGuiInterface.h>
+
+
 
 #include <osgViewer/Viewer>
 #include <osgWidget/WindowManager>
@@ -47,7 +50,7 @@
 #include <tr1/memory>
 #endif
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     class GraphicsManager;
@@ -59,8 +62,8 @@ namespace mars {
      * Widget with OpenGL context and event handling.
      */
     class GraphicsWindow : public osgGA::GUIEventHandler,
-                           public interfaces::GraphicsWindowInterface,
-                           public interfaces::GraphicsGuiInterface {
+                           public GraphicsWindowInterface,
+                           public GraphicsGuiInterface {
     public:
       GraphicsWindow(void *parent, osg::Group *scene,
                      unsigned long id, bool hasRTTWidget = 0,
@@ -81,7 +84,7 @@ namespace mars {
 
       osgViewer::View* getView(void);
 
-      interfaces::GraphicsCameraInterface* getCameraInterface(void) const;
+      GraphicsCameraInterface* getCameraInterface(void) const;
       osg::ref_ptr<osg::Camera> getMainCamera();
 
       osgViewer::GraphicsWindow* getGraphicsWindow();
@@ -93,8 +96,8 @@ namespace mars {
       std::vector<osg::Node*> getPickedObjects();
       void clearSelectionVectors(void);
 
-      void setGraphicsEventHandler(interfaces::GraphicsEventInterface *graphicsEventHandler);
-      void addGraphicsEventHandler(interfaces::GraphicsEventInterface *graphicsEventHandler);
+      void setGraphicsEventHandler(GraphicsEventInterface *graphicsEventHandler);
+      void addGraphicsEventHandler(GraphicsEventInterface *graphicsEventHandler);
 
       virtual osgWidget::WindowManager* getOrCreateWindowManager();
       void setHUD(HUD *theHUD);
@@ -249,7 +252,7 @@ namespace mars {
       // the OpenGL/OSG camera
       GraphicsCamera* graphicsCamera;
       // handles some events
-      std::vector<interfaces::GraphicsEventInterface *> graphicsEventHandler;
+      std::vector<GraphicsEventInterface *> graphicsEventHandler;
 
       // 2D display on top of the scene
       HUD *myHUD;

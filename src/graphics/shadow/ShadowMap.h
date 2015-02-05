@@ -36,9 +36,9 @@
 
 #include <osgShadow/ShadowTechnique>
 
-#include "../3d_objects/DrawObject.h"
+#include "../DrawObject.h"
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     class ShadowMap  : public osgShadow::ShadowTechnique {

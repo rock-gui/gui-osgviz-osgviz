@@ -18,16 +18,15 @@
  *
  */
 
-#ifndef MARS_INTERFACES_LIGHT_DATA_H
-#define MARS_INTERFACES_LIGHT_DATA_H
+#ifndef OSGVIZ_INTERFACES_LIGHT_DATA_H
+#define OSGVIZ_INTERFACES_LIGHT_DATA_H
 
 #include <mars/utils/Color.h>
-#include <mars/utils/ConfigData.h>
 #include <mars/utils/Vector.h>
 
 #include <string>
 
-namespace mars {
+namespace osgviz {
   namespace interfaces {
 
     // forward declaration
@@ -39,19 +38,14 @@ namespace mars {
      */
     class LightData {
     public:
-      bool fromConfigMap(utils::ConfigMap *config, std::string filenamePrefix,
-                         LoadCenter *loadCenter = 0);
-      void toConfigMap(utils::ConfigMap *config,
-                       bool skipFilenamePrefix = false);
-      void getFilesToSave(std::vector<std::string> *fileList);
 
       unsigned int index;
       std::string name; //light name
-      utils::Vector pos; //light position
-      utils::Vector lookAt; //light direction
-      utils::Color ambient; //color of the ambient part of the light
-      utils::Color diffuse; //color of the diffuse part of the light
-      utils::Color specular; //specular color of the light
+      mars::utils::Vector pos; //light position
+      mars::utils::Vector lookAt; //light direction
+      mars::utils::Color ambient; //color of the ambient part of the light
+      mars::utils::Color diffuse; //color of the diffuse part of the light
+      mars::utils::Color specular; //specular color of the light
       double constantAttenuation;
       double linearAttenuation;
       double quadraticAttenuation;

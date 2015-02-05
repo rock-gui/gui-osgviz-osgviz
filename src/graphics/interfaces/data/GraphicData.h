@@ -18,14 +18,13 @@
  *
  */
 
-#ifndef MARS_INTERFACES_GRAPHIC_DATA_H
-#define MARS_INTERFACES_GRAPHIC_DATA_H
+#ifndef OSGVIZ_INTERFACES_GRAPHIC_DATA_H
+#define OSGVIZ_INTERFACES_GRAPHIC_DATA_H
 
 #include <mars/utils/Color.h>
-#include <mars/utils/ConfigData.h>
 #include "../OsgVizDefs.h"
 
-namespace mars {
+namespace osgviz {
   namespace interfaces {
 
     // forward declaration
@@ -35,18 +34,12 @@ namespace mars {
     public:
       GraphicData();
 
-      bool fromConfigMap(utils::ConfigMap *config, std::string filenamePrefix,
-                         LoadCenter *loadCenter = 0);
-      void toConfigMap(utils::ConfigMap *config,
-                       bool skipFilenamePrefix = false);
-      void getFilesToSave(std::vector<std::string> *fileList);
-
-      utils::Color clearColor;
+      mars::utils::Color clearColor;
       bool fogEnabled;
       sReal fogDensity;
       sReal fogStart;
       sReal fogEnd;
-      utils::Color fogColor;
+      mars::utils::Color fogColor;
     };
 
   } // end of namespace interfaces

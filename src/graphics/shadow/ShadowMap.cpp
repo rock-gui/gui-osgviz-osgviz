@@ -47,7 +47,7 @@ using namespace osgShadow;
 #include <osgDB/ReadFile>
 #include <osgText/Text>
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     ShadowMap::ShadowMap() {

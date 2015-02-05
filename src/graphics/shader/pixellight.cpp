@@ -26,11 +26,11 @@
 #include <sstream>
 #include <iostream>
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     using namespace std;
-    using mars::interfaces::LightData;
+    using osgviz::interfaces::LightData;
 
 #ifndef max
 #define max(x,y) (x>y ? x : y)
@@ -319,7 +319,7 @@ namespace mars {
         //s << "    attenuation = attenFacs[" << lightIndex << "];" << endl;
 
         s << "    // add diffuse and specular light" << endl;
-        if((*it)->type == interfaces::SPOTLIGHT) {
+        if((*it)->type == SPOTLIGHT) {
           s << "        float spotEffect = dot( normalize( spotDir[" << (*it)->index <<
             "] ), normalize( -lightVec[" << lightIndex << "]  ) );" << endl;
           s << "        float spot = (spotEffect > gl_LightSource[" << (*it)->index << "].spotCosCutoff) ? 1.0 : 0.0;" << endl;

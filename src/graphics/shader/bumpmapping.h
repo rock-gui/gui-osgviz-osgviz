@@ -24,12 +24,12 @@
 #include "shader-function.h"
 #include "../GraphicsManager.h"
 
-#include <mars/interfaces/LightData.h>
+#include "../interfaces/data/LightData.h"
 
 #include <vector>
 #include <string>
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     class BumpMapFrag : public ShaderFunc {
@@ -41,10 +41,10 @@ namespace mars {
     class BumpMapVert : public ShaderFunc {
     public:
       BumpMapVert(std::vector<std::string> &args,
-                  std::vector<mars::interfaces::LightData*> &lightList);
+                  std::vector<osgviz::interfaces::LightData*> &lightList);
       std::string code() const;
     private:
-      std::vector<mars::interfaces::LightData*> lightList;
+      std::vector<osgviz::interfaces::LightData*> lightList;
     }; // end of class BumpMapVert
 
   } // end of namespace graphics

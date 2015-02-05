@@ -18,11 +18,11 @@
  *
  */
 
-#ifndef MARS_INTERFACES_MARSDEFS_H
-#define MARS_INTERFACES_MARSDEFS_H
+#ifndef OSGVIZ_OSGVIZDEFS_H
+#define OSGVIZ_OSGVIZDEFS_H
 
 #ifdef _PRINT_HEADER_
-  #warning "MARSDefs.h"
+  #warning "OsgvizDefs.h"
 #endif
 
 #if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
@@ -39,8 +39,7 @@
 
 #define INVALID_ID    0
 
-namespace mars {
-  namespace interfaces {
+namespace osgviz {
 
     typedef unsigned long NodeId;
     typedef unsigned long JointId;
@@ -240,7 +239,6 @@ namespace mars {
       SHADER_TYPE_FFP
     };
 
-  } // end of namespace interfaces
 } // end of namespace mars
 
 #endif // MARS_INTERFACES_MARSDEFS_H

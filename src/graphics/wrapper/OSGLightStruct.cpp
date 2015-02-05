@@ -30,10 +30,10 @@
 
 #define CREATE_LIGHT_MARKER
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
-    using mars::interfaces::LightData;
+    using osgviz::interfaces::LightData;
 
     static osg::ref_ptr<osg::Geode> createLightMarker(const LightData &ls) {
 #ifdef CREATE_LIGHT_MARKER
@@ -60,7 +60,7 @@ namespace mars {
       light_->setSpecular(toOSGVec4(ls.specular));
 
       //set spotlight parameters
-      if (ls.type == mars::interfaces::SPOTLIGHT) {
+      if (ls.type == SPOTLIGHT) {
         osg::Vec3 pos = osg::Vec3(ls.pos.x(), ls.pos.y(), ls.pos.z());
         osg::Vec3 lookPos = osg::Vec3(ls.lookAt.x(), ls.lookAt.y(),
                                       ls.lookAt.z());
@@ -110,7 +110,7 @@ namespace mars {
       light_->setSpecular(toOSGVec4(ls.specular));
 
       //set spotlight parameters
-      if (ls.type == mars::interfaces::SPOTLIGHT){
+      if (ls.type == SPOTLIGHT){
         osg::Vec3 pos = osg::Vec3(ls.pos.x(), ls.pos.y(), ls.pos.z());
         osg::Vec3 lookPos = osg::Vec3(ls.lookAt.x(), ls.lookAt.y(), ls.lookAt.z());
 

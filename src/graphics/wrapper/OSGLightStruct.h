@@ -28,12 +28,12 @@
 #ifndef MARS_GRAPHICS_OSGLIGHTSTRUCT_H
 #define MARS_GRAPHICS_OSGLIGHTSTRUCT_H
 
-#include <mars/interfaces/LightData.h>
+#include "../interfaces/data/LightData.h"
 
 #include <osg/LightSource>
 #include <osg/ShapeDrawable>
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     /**
@@ -45,8 +45,8 @@ namespace mars {
       /**
        * Constructor creates osg::LightSource from lightStruct.
        */
-      OSGLightStruct(const mars::interfaces::LightData &ls);
-      void update(const mars::interfaces::LightData &ls);
+      OSGLightStruct(const osgviz::interfaces::LightData &ls);
+      void update(const osgviz::interfaces::LightData &ls);
     private:
       osg::ref_ptr<osg::Light> light_;
       osg::ref_ptr<osg::Geode> lightMarkerGeode;

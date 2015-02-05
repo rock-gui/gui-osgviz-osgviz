@@ -25,18 +25,18 @@
  *  Created by Roemmermann on 20.10.09.
  */
 
-#ifndef MARS_GRAPHICS_DRAW_OBJECT_H
-#define MARS_GRAPHICS_DRAW_OBJECT_H
+#ifndef OSGVIZ_GRAPHICS_DRAW_OBJECT_H
+#define OSGVIZ_GRAPHICS_DRAW_OBJECT_H
 
 #ifdef _PRINT_HEADER_
   #warning "DrawObject.h"
 #endif
 
-#include <mars/interfaces/MARSDefs.h>
+#include "interfaces/OsgVizDefs.h"
 #include <mars/utils/Vector.h>
 #include <mars/utils/Quaternion.h>
-#include <mars/interfaces/LightData.h>
-#include <mars/interfaces/MaterialData.h>
+#include "interfaces/data/LightData.h"
+#include "interfaces/data/MaterialData.h"
 
 #include <string>
 #include <vector>
@@ -58,7 +58,7 @@
 #define TANGENT_UNIT 7
 #define DEFAULT_UV_UNIT 0
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     class DrawObject {
@@ -76,7 +76,7 @@ namespace mars {
       void exportModel(const std::string &filename);
 
       // the material struct can also contain a static texture (texture file)
-      virtual void setMaterial(const mars::interfaces::MaterialData &mStruct,
+      virtual void setMaterial(const interfaces::MaterialData &mStruct,
                                bool useFog = false, bool useNoise = false,
                                bool drawLineLaser = false,
                                bool marsShadow = false);
@@ -86,11 +86,11 @@ namespace mars {
       virtual void setBumpMap(const std::string &bumpMap);
       virtual void setBlending(bool mode);
       virtual void collideSphere(mars::utils::Vector pos, 
-                                 mars::interfaces::sReal radius);
+                                 sReal radius);
 
-      typedef std::map<mars::interfaces::ShaderType, std::string> foo;
+      typedef std::map<ShaderType, std::string> foo;
 
-      void updateShader(std::vector<mars::interfaces::LightData*> &lightList,
+      void updateShader(std::vector<osgviz::interfaces::LightData*> &lightList,
                         bool reload=false,
                         const foo &shaderSource=foo());
 
@@ -151,19 +151,6 @@ namespace mars {
       void setUseFog(bool val);
       void setUseNoise(bool val);
 
-        /**
-       * Sets the line laser
-       * @pos: position of the laser
-       * @normal: normalvector of the laser-plane
-       * @color: color of the laser in RGB
-       * @laser: Angle of the laser, as an direction-vector
-       * @openingAngle: Opening angle of the laser; for complete laserLine, choose PI
-       */
-      void setExperimentalLineLaser(utils::Vector lineLasePos,
-                                    utils::Vector lineLaserNormal,
-                                    utils::Vector lineLaserColor,
-                                    utils::Vector LaserAngle,
-                                    float openingAngle);
 
     protected:
       unsigned long id_;
@@ -203,9 +190,9 @@ namespace mars {
       bool useMARSShader;
       bool drawLineLaser;
       bool marsShadow;
-      utils::Vector lineLasePos, lineLaserNormal;
+      mars::utils::Vector lineLasePos, lineLaserNormal;
 
-      std::vector<mars::interfaces::LightData*> lastLights;
+      std::vector<interfaces::LightData*> lastLights;
 
       virtual std::list< osg::ref_ptr< osg::Geode > > createGeometry() = 0;
     }; // end of class DrawObject

@@ -24,25 +24,25 @@
  * \brief The "GraphicsViewer" 
  */
 
-#ifndef MARS_GRAPHICS_VIEWER_H
-#define MARS_GRAPHICS_VIEWER_H
+#ifndef OSGVIZ_GRAPHICS_VIEWER_H
+#define OSGVIZ_GRAPHICS_VIEWER_H
 
 #include <osgViewer/CompositeViewer>
 #include "interfaces/GuiEventInterface.h"
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     class GraphicsViewer : public osgViewer::CompositeViewer {
 
     public:
-      GraphicsViewer(interfaces::GuiEventInterface *_guiEventHandler);
+      GraphicsViewer(GuiEventInterface *_guiEventHandler);
       ~GraphicsViewer(void);
 
       void eventTraversal();
 
     private:
-      interfaces::GuiEventInterface *guiEventHandler;
+      GuiEventInterface *guiEventHandler;
     }; // end of class GraphicsViewer
 
   } // end of namespace graphics

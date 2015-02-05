@@ -26,12 +26,12 @@
  */
 
 #include "DrawObject.h"
-#include "../gui_helper_functions.h"
-#include "../wrapper/OSGMaterialStruct.h"
-#include "../shader/shader-generator.h"
-#include "../shader/shader-function.h"
-#include "../shader/bumpmapping.h"
-#include "../shader/pixellight.h"
+#include "gui_helper_functions.h"
+#include "wrapper/OSGMaterialStruct.h"
+#include "shader/shader-generator.h"
+#include "shader/shader-function.h"
+#include "shader/bumpmapping.h"
+#include "shader/pixellight.h"
 
 #include <iostream>
 
@@ -52,15 +52,17 @@
   #include <osg/Export>
 #endif
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     using namespace std;
-    using mars::interfaces::sReal;
+    //using mars::interfaces::sReal;
+    using interfaces::LightData;
+    using interfaces::MaterialData;
+
     using mars::utils::Vector;
     using mars::utils::Quaternion;
-    using mars::interfaces::LightData;
-    using mars::interfaces::MaterialData;
+
     using mars::utils::Color;
 
     static osg::Material* makeSelectionMaterial()
@@ -464,9 +466,9 @@ namespace mars {
     }
 
     void DrawObject::updateShader(
-                                  vector<mars::interfaces::LightData*> &lightList,
+                                  vector<interfaces::LightData*> &lightList,
                                   bool reload,
-                                  const std::map<mars::interfaces::ShaderType, std::string> &shaderSources) {
+                                  const std::map<ShaderType, std::string> &shaderSources) {
 
       //return;
       if(!useMARSShader || !getLight) return;
@@ -498,7 +500,7 @@ namespace mars {
             vertexShader->addExport( (GLSLExport)
                                      { "gl_TexCoord[0].xy", "gl_MultiTexCoord0.xy" });
           }
-          shaderGenerator.addShaderFunction(vertexShader, mars::interfaces::SHADER_TYPE_VERTEX);
+          shaderGenerator.addShaderFunction(vertexShader, SHADER_TYPE_VERTEX);
         }
 
         {
@@ -528,7 +530,7 @@ namespace mars {
                                         { "vec4", "col", "vec4(1.0)" });
           }
           fragmentShader->addExport( (GLSLExport) {"gl_FragColor", "col"} );
-          shaderGenerator.addShaderFunction(fragmentShader, mars::interfaces::SHADER_TYPE_FRAGMENT);
+          shaderGenerator.addShaderFunction(fragmentShader, SHADER_TYPE_FRAGMENT);
         }
 
         args.clear();
@@ -540,20 +542,20 @@ namespace mars {
                                { "normalVarying", "normalize( gl_NormalMatrix * gl_Normal )" } );
         plightVert->addVarying( (GLSLVarying)
                                 { "vec3", "normalVarying" } );
-        shaderGenerator.addShaderFunction(plightVert, mars::interfaces::SHADER_TYPE_VERTEX);
+        shaderGenerator.addShaderFunction(plightVert, SHADER_TYPE_VERTEX);
 
         if(normalMap_.valid()) {
           args.clear();
           args.push_back("gl_NormalMatrix * gl_Normal");
           BumpMapVert *bumpVert = new BumpMapVert(args, lightList);
-          shaderGenerator.addShaderFunction(bumpVert, mars::interfaces::SHADER_TYPE_VERTEX);
+          shaderGenerator.addShaderFunction(bumpVert, SHADER_TYPE_VERTEX);
 
           args.clear();
           args.push_back("texture2D( NormalMap, texCoord )");
           args.push_back("n");
           BumpMapFrag *bumpFrag = new BumpMapFrag(args);
           bumpFrag->addUniform( (GLSLUniform) { "sampler2D", "NormalMap" } );
-          shaderGenerator.addShaderFunction(bumpFrag, mars::interfaces::SHADER_TYPE_FRAGMENT);
+          shaderGenerator.addShaderFunction(bumpFrag, SHADER_TYPE_FRAGMENT);
         }
 
         args.clear();
@@ -571,7 +573,7 @@ namespace mars {
                                 { "vec3", "n", "normalize( gl_FrontFacing ? normalVarying : -normalVarying )"} );
         plightFrag->addVarying( (GLSLVarying)
                                 { "vec3", "normalVarying" } );
-        shaderGenerator.addShaderFunction(plightFrag, mars::interfaces::SHADER_TYPE_FRAGMENT);
+        shaderGenerator.addShaderFunction(plightFrag, SHADER_TYPE_FRAGMENT);
 
         osg::StateSet* stateSet = getObject()->getOrCreateStateSet();
         osg::Program *glslProgram = shaderGenerator.generate();
@@ -626,28 +628,28 @@ namespace mars {
         stateSet->setAttributeAndModes(glslProgram, osg::StateAttribute::ON);
         lastProgram = glslProgram;
 
-      } else if(shaderSources.count(mars::interfaces::SHADER_TYPE_FFP)>0) {
+      } else if(shaderSources.count(SHADER_TYPE_FFP)>0) {
         // nothing to do, this node uses fixed function pipeline
 
       } else { // GLSL code specified in NodeData
         osg::Program* glslProgram = new osg::Program;
-        for(std::map<mars::interfaces::ShaderType, std::string>::const_iterator it = shaderSources.begin();
+        for(std::map<ShaderType, std::string>::const_iterator it = shaderSources.begin();
             it != shaderSources.end(); ++it)
           {
             osg::Shader* shaderStage;
             switch(it->first) {
-            case mars::interfaces::SHADER_TYPE_FFP: break;
-            case mars::interfaces::SHADER_TYPE_FRAGMENT:
+            case SHADER_TYPE_FFP: break;
+            case SHADER_TYPE_FRAGMENT:
               shaderStage = new osg::Shader( osg::Shader::FRAGMENT );
               shaderStage->setShaderSource(it->second);
               glslProgram->addShader( shaderStage );
               break;
-            case mars::interfaces::SHADER_TYPE_VERTEX:
+            case SHADER_TYPE_VERTEX:
               shaderStage = new osg::Shader( osg::Shader::VERTEX );
               shaderStage->setShaderSource(it->second);
               glslProgram->addShader( shaderStage );
               break;
-            case mars::interfaces::SHADER_TYPE_GEOMETRY:
+            case SHADER_TYPE_GEOMETRY:
               shaderStage = new osg::Shader( osg::Shader::GEOMETRY );
               shaderStage->setShaderSource(it->second);
               glslProgram->addShader( shaderStage );
@@ -699,17 +701,17 @@ namespace mars {
     void DrawObject::collideSphere(Vector pos, sReal radius) {
     }
 
-    void DrawObject::setExperimentalLineLaser(Vector pos, Vector n,
-                                              Vector color, Vector laserAngle,
-                                              float openingAngle) {
-      if(drawLineLaser) {
-        lineLaserPosUniform->set(osg::Vec3f(pos.x(), pos.y(), pos.z()));
-        lineLaserNormalUniform->set(osg::Vec3f(n.x(), n.y(), n.z()));
-        lineLaserColor->set(osg::Vec4f(color.x(), color.y(), color.z(), 1.0f ) );
-        lineLaserDirection->set(osg::Vec3f(laserAngle.x(), laserAngle.y(), laserAngle.z()));
-        lineLaserOpeningAngle->set( openingAngle);
-      }
-    }
+//    void DrawObject::setExperimentalLineLaser(Vector pos, Vector n,
+//                                              Vector color, Vector laserAngle,
+//                                              float openingAngle) {
+//      if(drawLineLaser) {
+//        lineLaserPosUniform->set(osg::Vec3f(pos.x(), pos.y(), pos.z()));
+//        lineLaserNormalUniform->set(osg::Vec3f(n.x(), n.y(), n.z()));
+//        lineLaserColor->set(osg::Vec4f(color.x(), color.y(), color.z(), 1.0f ) );
+//        lineLaserDirection->set(osg::Vec3f(laserAngle.x(), laserAngle.y(), laserAngle.z()));
+//        lineLaserOpeningAngle->set( openingAngle);
+//      }
+//    }
 
   } // end of namespace graphics
 } // end of namespace mars

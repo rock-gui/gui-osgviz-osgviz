@@ -24,23 +24,23 @@
 
 #include "shader-function.h"
 
-#include <mars/interfaces/LightData.h>
+#include "../interfaces/data/LightData.h"
 
 #include <vector>
 #include <string>
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     class PixelLightVert : public ShaderFunc {
     public:
       PixelLightVert(std::vector<std::string> &args,
-                     std::vector<mars::interfaces::LightData*> &lightList,
+                     std::vector<osgviz::interfaces::LightData*> &lightList,
                      bool drawLineLaser = false, bool marsShadow = false);
       std::string code() const;
     private:
       bool drawLineLaser, marsShadow;
-      std::vector<mars::interfaces::LightData*> lightList;
+      std::vector<osgviz::interfaces::LightData*> lightList;
     };
 
     class PixelLightFrag : public ShaderFunc {
@@ -48,12 +48,12 @@ namespace mars {
       PixelLightFrag(std::vector<std::string> &args, bool useFog,
                      bool useNoise, bool drawLineLaser,
                      bool marsShadow,
-                     std::vector<mars::interfaces::LightData*> &lightList);
+                     std::vector<osgviz::interfaces::LightData*> &lightList);
       std::string code() const;
 
     private:
       bool useFog, useNoise, drawLineLaser, marsShadow;
-      std::vector<mars::interfaces::LightData*> lightList;
+      std::vector<osgviz::interfaces::LightData*> lightList;
     };
 
   } // end of namespace graphics

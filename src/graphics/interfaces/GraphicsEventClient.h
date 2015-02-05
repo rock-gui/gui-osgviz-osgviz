@@ -18,36 +18,21 @@
  *
  */
 
-/*
- *  CubeDrawObject.h
- *  General CubeDrawObject to inherit from.
- *
- *  Created by Roemmermann on 21.10.09.
- */
+#ifndef OSGVIZ_INTERFACES_GRAPHICS_EVENT_CLIENT_H
+#define OSGVIZ_INTERFACES_GRAPHICS_EVENT_CLIENT_H
 
-#ifndef MARS_GRAPHICS_CUBE_DRAW_OBJECT_H
-#define MARS_GRAPHICS_CUBE_DRAW_OBJECT_H
+#ifdef _PRINT_HEADER_
+  #warning "GraphicsEventClient.h"
+#endif
 
-#include "DrawObject.h"
+namespace osgviz {
 
-#include <mars/utils/Vector.h>
-
-#include <list>
-
-namespace mars {
-  namespace graphics {
-
-    class CubeDrawObject : public DrawObject {
+    class GraphicsEventClient {
     public:
-      CubeDrawObject(const mars::utils::Vector &ext);
+      virtual ~GraphicsEventClient() {}
+      virtual void selectEvent(unsigned long id, bool mode) = 0;
+    }; // end of class GraphicsEventClient
 
-    protected:
-      mars::utils::Vector extend_;
-
-      virtual std::list< osg::ref_ptr< osg::Geode > > createGeometry();
-    };
-
-  } // end of namespace graphics
 } // end of namespace mars
 
-#endif /* MARS_GRAPHICS_CUBE_DRAW_OBJECT_H */
+#endif  /* MARS_INTERFACES_GRAPHICS_EVENT_CLIENT_H */

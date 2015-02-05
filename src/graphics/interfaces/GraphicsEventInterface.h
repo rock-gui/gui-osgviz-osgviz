@@ -19,8 +19,8 @@
  */
 
 
-#ifndef MARS_INTERFACES_GRAPHICS_EVENT_INTERFACE_H
-#define MARS_INTERFACES_GRAPHICS_EVENT_INTERFACE_H
+#ifndef OSGVIZ_GRAPHICS_EVENT_INTERFACE_H
+#define OSGVIZ_GRAPHICS_EVENT_INTERFACE_H
 
 #ifdef _PRINT_HEADER_
   #warning "GraphicsEventInterface.h"
@@ -28,8 +28,7 @@
 
 #include "GuiEventInterface.h"
 
-namespace mars {
-  namespace interfaces {
+namespace osgviz {
 
     class GraphicsEventInterface {
     public:
@@ -51,7 +50,6 @@ namespace mars {
 
     }; // end of class GraphicsEventInterface
 
-  } // end of namespace interfaces
-} // end of namespace mars
+} // end of namespace osgviz
 
 #endif  /* MARS_INTERFACES_GRAPHICS_EVENT_INTERFACE_H */

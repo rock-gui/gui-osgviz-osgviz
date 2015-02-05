@@ -24,11 +24,11 @@
 
 #include <sstream>
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     using namespace std;
-    using mars::interfaces::LightData;
+    using osgviz::interfaces::LightData;
 
     /**
      * normal mapping fragment shader.

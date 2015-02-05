@@ -29,10 +29,10 @@
 
 #include "../gui_helper_functions.h"
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
-    OSGMaterialStruct::OSGMaterialStruct(const mars::interfaces::MaterialData &mat)
+    OSGMaterialStruct::OSGMaterialStruct(const osgviz::interfaces::MaterialData &mat)
     {
       setColorMode(osg::Material::OFF);
       setAmbient(osg::Material::FRONT, toOSGVec4(mat.ambientFront));

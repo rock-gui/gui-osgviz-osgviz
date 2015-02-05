@@ -25,8 +25,8 @@
  * data into a texture.
  */
 
-#ifndef MARS_GRAPHICS_HUD_H
-#define MARS_GRAPHICS_HUD_H
+#ifndef OSGVIZ_GRAPHICS_HUD_H
+#define OSGVIZ_GRAPHICS_HUD_H
 
 #include <osg/Texture2D>
 #include <osg/Camera>
@@ -34,15 +34,15 @@
 #include <osg/MatrixTransform>
 #include <osgViewer/GraphicsWindow>
 
-#include <mars/interfaces/MARSDefs.h>
+#include "interfaces/OsgVizDefs.h"
 #include <mars/utils/Vector.h>
 #include <mars/utils/Quaternion.h>
 #include <mars/utils/Color.h>
 
-#include "2d_objects/HUDElement.h"
+#include "HUDElement.h"
 
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
     class HUD {
@@ -52,11 +52,11 @@ namespace mars {
       ~HUD(void);
   
       void init(osgViewer::GraphicsWindow *gw);
-      void init(mars::interfaces::sReal width, mars::interfaces::sReal height);
+      void init(sReal width, sReal height);
 
       osg::ref_ptr<osg::Texture2D> getTexture(void);
       osg::ref_ptr<osg::Camera> getCamera(void);
-      void getSize(mars::interfaces::sReal &width, mars::interfaces::sReal &height);
+      void getSize(sReal &width, sReal &height);
       void setViewSize(double width, double height);
       void getOffset(mars::utils::Vector &offset);
       void resize(double width, double height);
@@ -72,8 +72,8 @@ namespace mars {
       osg::ref_ptr<osg::Group> hudTerminalList;
       osg::ref_ptr<osg::MatrixTransform> scaleTransform;
       std::vector<HUDElement*> elements;
-      mars::interfaces::sReal swidth;
-      mars::interfaces::sReal sheight;
+      sReal swidth;
+      sReal sheight;
       unsigned long id;
       mars::utils::Color myColor;
       mars::utils::Vector myoff;

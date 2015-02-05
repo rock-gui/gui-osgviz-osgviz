@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011, 2012, DFKI GmbH Robotics Innovation Center
+ *  Copyright 2011, 2012, 2013, DFKI GmbH Robotics Innovation Center
  *
  *  This file is part of the MARS simulation framework.
  *
@@ -18,31 +18,43 @@
  *
  */
 
-/*
- * Clouds.h
- *
- *  Created on: 19.04.2011
- *      Author: daniel
+ /**
+ * \file HUDElement.h
+ * \author Malte Langosz
+ * \brief The "HUDElement" 
  */
 
-#ifndef MARS_GRAPHICS_CLOUDS_H
-#define MARS_GRAPHICS_CLOUDS_H
+#ifndef OSGVIZ_GRAPHICS_HUDELEMENT_H
+#define OSGVIZ_GRAPHICS_HUDELEMENT_H
 
-#include <string>
 #include <osg/Group>
-#include <osg/TexMat>
+#include <string>
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
-    class Clouds : public osg::Group {
+    class HUDElement {
+
     public:
-      Clouds(const std::string &texture_path);
+      HUDElement(void) {}
+      virtual ~HUDElement(void) {}
+      virtual osg::Group* getNode(void) = 0;
+      virtual void switchCullMask() = 0;
+      virtual void xorCullMask(unsigned int mask) = 0;
+      virtual void setID(unsigned long id) {this->id = id;}
+      virtual unsigned long getID(void) {return id;}
+      virtual void setConfigPath(std::string path) {config_path = path;}
+      virtual void setPos(double x, double y) = 0;
+
+      static int elemCount;
+
+    private:
+      unsigned long id;
     protected:
-      osg::ref_ptr<osg::TexMat> texmat;
-    }; // end of class Clouds
+      std::string config_path;
+    };
 
   } // end of namespace graphics
 } // end of namespace mars
 
-#endif /* MARS_GRAPHICS_CLOUDS_H */
+#endif /* MARS_GRAPHICS_HUDELEMENT_H */

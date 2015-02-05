@@ -36,10 +36,10 @@
 #define MMB osgGA::GUIEventAdapter::MIDDLE_MOUSE_BUTTON
 #define RMB osgGA::GUIEventAdapter::RIGHT_MOUSE_BUTTON
 
-namespace mars {
+namespace osgviz {
   namespace graphics {
 
-    using mars::interfaces::cameraStruct;
+    //using mars::interfaces::cameraStruct;
     using mars::utils::Vector;
     using mars::utils::Quaternion;
 
@@ -313,7 +313,7 @@ namespace mars {
       }
     }
 
-    void GraphicsCamera::getCameraInfo(cameraStruct *s) {
+    void GraphicsCamera::getCameraInfo(osgviz::cameraStruct *s) {
       if (!s) return;
       osg::Quat q = myCameraMatrix.getRotate();
       s->rot.x() = q.x();
@@ -345,7 +345,7 @@ namespace mars {
       s->scale_x = width / (2.0 * aspectRatio * tan( fovy_rad / 2.0 ) );
     }
 
-    void GraphicsCamera::setCameraView(cameraStruct cs) {
+    void GraphicsCamera::setCameraView(osgviz::cameraStruct cs) {
       myCameraMatrix.setRotate(osg::Quat(cs.rot.x() ,cs.rot.y(), cs.rot.z(), cs.rot.w()));
       myCameraMatrix.setTrans(cs.pos.x() ,cs.pos.y(), cs.pos.z());
     }
