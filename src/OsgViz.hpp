@@ -104,7 +104,7 @@ class FrameUpdateThread : public OpenThreads::Thread
 		int createWindow(bool threaded = true);
 		void destroyWindow(int id);
 
-		inline GraphicsManagerInterface* getGraphicsManager(){
+		inline GraphicsManagerInterface* getGraphicsManagerInterface(){
 			return (GraphicsManagerInterface*)graphicsManager;
 		}
 

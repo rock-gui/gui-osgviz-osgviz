@@ -75,6 +75,7 @@ void OsgViz::init(int argc,char** argv){
 	instance = this;
 	graphicsManager->initializeOSG(NULL,true);
 	graphicsManager->addOSGNode(root);
+
 }
 
 OsgViz::~OsgViz(){

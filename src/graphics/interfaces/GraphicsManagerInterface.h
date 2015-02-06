@@ -147,7 +147,7 @@ namespace osgviz {
       virtual GraphicsWindowInterface* get3DWindow(const std::string &name) const=0;
       virtual void remove3DWindow(unsigned long id) = 0;
       virtual void getList3DWindowIDs(std::vector<unsigned long> *ids) const = 0;
-      virtual void removeLayerFromDrawObjects(unsigned long window_id) = 0;
+     // virtual void removeLayerFromDrawObjects(unsigned long window_id) = 0;
       
       // HUD Interface:
 //      virtual unsigned long addHUDElement(hudElementStruct *new_hud_element) = 0;
@@ -214,7 +214,11 @@ namespace osgviz {
       // be carful with this method, only add a valid pointer osg::Node*
       virtual void addOSGNode(void* node) = 0;
       virtual void removeOSGNode(void* node) = 0;
-      virtual unsigned long addHUDOSGNode(void* node) = 0;
+
+
+      virtual void showRain(bool val = true) = 0;
+      virtual void showSnow(bool val = true) = 0;
+
 
     }; // end of class GraphicsManagerInterface
 

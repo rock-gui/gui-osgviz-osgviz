@@ -70,7 +70,7 @@ namespace osgviz {
 
 
     GraphicsManager::GraphicsManager(lib_manager::LibManager *theManager,
-                                     void *myQTWidget):LibInterface(theManager),
+                                     void *myQTWidget):GraphicsManagerInterface(theManager),
         osgWidget(NULL),
         next_hud_id(1),
         next_draw_object_id(1),
@@ -265,7 +265,8 @@ namespace osgviz {
 #else
         viewer->setThreadingModel(osgViewer::CompositeViewer::DrawThreadPerContext);
 #endif
-        new3DWindow(data);
+        int id = new3DWindow(data);
+        osgWidget = (GraphicsWindow*)get3DWindow(id);
       }
 
       //guiHelper->setGraphicsWidget(graphicsWindows[0]);
@@ -1081,6 +1082,8 @@ namespace osgviz {
     void GraphicsManager::removeOSGNode(void* node) {
       scene->removeChild((osg::Node*)node);
     }
+
+
   } // end of namespace graphics
 } // end of namespace mars
 

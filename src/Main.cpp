@@ -25,6 +25,14 @@ int main(int argc, char** argv)
 	osgviz::Object* grid = primitivesfactory->createGrid();
 
 
+
+
+
+	osgviz::GraphicsManagerInterface* manager = osgViz->getGraphicsManagerInterface();
+	//manager->setCamera(2);
+	manager->showSnow(true);
+	//manager->showRain(true);
+
 	osgViz->startThread();
 
 	while (true){

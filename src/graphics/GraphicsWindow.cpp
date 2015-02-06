@@ -770,14 +770,12 @@ namespace osgviz {
         graphicsWindow->setWindowName("3D Environment");
 
         keyswitchManipulator = new osgGA::KeySwitchMatrixManipulator;
-        keyswitchManipulator->addMatrixManipulator('1',"Trackball",
-                                                   new osgGA::TrackballManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '2', "Flight",
-                                                    new osgGA::FlightManipulator() );
+
+        keyswitchManipulator->addMatrixManipulator( '1', "Terrain", new osgGA::TerrainManipulator() );
+        keyswitchManipulator->addMatrixManipulator( '2', "Trackball", new osgGA::TrackballManipulator() );
+        keyswitchManipulator->addMatrixManipulator( '3', "Flight", new osgGA::FlightManipulator() );
         //keyswitchManipulator->addMatrixManipulator( '3', "Drive",
         //    new osgGA::DriveManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '4', "Terrain",
-                                                    new osgGA::TerrainManipulator() );
 
         initialize();
         view->addEventHandler(this);

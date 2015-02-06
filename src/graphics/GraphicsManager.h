@@ -82,15 +82,6 @@ namespace osgviz {
     class HUDElement;
 
 
-
-
-
-    //mapping and control structs
-//    struct drawMapper {
-//      interfaces::drawStruct ds;
-//      std::vector<osg::Node*> nodes;
-//    };
-
     /**
      * internal struct to manage lights
      */
@@ -115,7 +106,7 @@ namespace osgviz {
     }; // end of struct hudElementStruct
 
 
-    class GraphicsManager : public lib_manager::LibInterface,
+    class GraphicsManager : public GraphicsManagerInterface,
 							public GraphicsEventInterface{
 
     public:
@@ -262,7 +253,6 @@ namespace osgviz {
 
       virtual void addOSGNode(void* node);
       virtual void removeOSGNode(void* node);
-      //virtual unsigned long addHUDOSGNode(void* node);
 
       void removeGraphicsWidget(unsigned long id);
 
