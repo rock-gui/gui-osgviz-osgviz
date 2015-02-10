@@ -33,7 +33,6 @@ rock_library(osgViz
            graphics/GraphicsViewer.cpp
            graphics/GraphicsWindow.cpp
            graphics/gui_helper_functions.cpp
-           graphics/HUD.cpp
            graphics/PostDrawCallback.cpp
            
 #           objects/wrapper/OSGDrawItem.cpp
@@ -59,13 +58,7 @@ rock_library(osgViz
 #           objects/3d_objects/TerrainDrawObject.cpp
 #           objects/3d_objects/VertexBufferTerrain.cpp
 #           objects/3d_objects/MarsVBOGeom.cpp
-#           objects/3d_objects/MultiResHeightMapRenderer.cpp
-#           objects/2d_objects/HUDNode.cpp
-#           objects/2d_objects/HUDLabel.cpp
-#           objects/2d_objects/HUDTerminal.cpp
-#           objects/2d_objects/HUDTexture.cpp
-#           objects/2d_objects/HUDLines.cpp
-#           objects/2d_objects/HUDOSGNode.cpp
+
            
            graphics/shader/bumpmapping.cpp
            graphics/shader/pixellight.cpp
@@ -86,7 +79,6 @@ rock_library(osgViz
            graphics/GraphicsViewer.h
            graphics/GraphicsWindow.h
            graphics/gui_helper_functions.h
-           graphics/HUD.h
            graphics/PostDrawCallback.h
            
            graphics/DrawObject.h
@@ -114,15 +106,9 @@ rock_library(osgViz
            graphics/shader/texgen.h
 
            
-           graphics/HUDElement.h
            graphics/shadow/ShadowMap.h
            
-#           objects/2d_objects/HUDNode.h
-#           objects/2d_objects/HUDLabel.h
-#           objects/2d_objects/HUDLines.h
-#           objects/2d_objects/HUDTerminal.h
-#           objects/2d_objects/HUDTexture.h
-#           objects/2d_objects/HUDOSGNode.h
+
 #           
 #           objects/wrapper/OSGDrawItem.h
 #           objects/wrapper/OSGHudElementStruct.h
@@ -137,6 +123,7 @@ rock_library(osgViz
 			graphics/interfaces/GraphicsEventInterface.h
 			graphics/interfaces/GraphicsWindowInterface.h
 			graphics/interfaces/GraphicsManagerInterface.h
+			graphics/interfaces/GraphicsGuiInterface.h
 			graphics/interfaces/GuiEventInterface.h
 			
 			graphics/interfaces/data/GraphicData.h
@@ -148,13 +135,14 @@ rock_library(osgViz
     DEPS_PKGCONFIG opencv lib_manager openscenegraph eigen3 )
 
 rock_library(osgVizPlugin
-    SOURCES plugins/Object.cpp
+    SOURCES
+    plugins/Object.cpp
     HEADERS 
     plugins/Object.h
     plugins/OsgVizPlugin.h 
     plugins/OsgVizVisualizerPlugin.h 
     plugins/OsgVizDataPlugin.h 
-    DEPS_PKGCONFIG lib_manager openscenegraph)
+    DEPS_PKGCONFIG lib_manager openscenegraph eigen3)
 
 
 

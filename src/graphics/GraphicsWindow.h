@@ -51,8 +51,8 @@ namespace osgviz {
   namespace graphics {
 
     class GraphicsManager;
-    class HUD;
-    class HUDElement;
+    //class HUD;
+    //class HUDElement;
     const unsigned int MASK_2D = 0xF0000000;
     
     /**
@@ -76,7 +76,14 @@ namespace osgviz {
 
       virtual void setWGeometry(int top, int left, int width, int height) {};
       virtual void getWGeometry(int *top, int *left,
-                                int *width, int *height) const {};
+                                int *width, int *height) const {
+
+    	  *width = widgetWidth;
+    	  *height = widgetHeight;
+    	  *left = widgetX;
+    	  *top = widgetY;
+
+      };
       void setFullscreen(bool val, int display = 1);
 
       osgViewer::View* getView(void);
@@ -97,10 +104,10 @@ namespace osgviz {
       void addGraphicsEventHandler(GraphicsEventInterface *graphicsEventHandler);
 
       virtual osgWidget::WindowManager* getOrCreateWindowManager();
-      void setHUD(HUD *theHUD);
-      void addHUDElement(HUDElement *elem);
-      void removeHUDElement(HUDElement* elem);
-      void switchHudElemtVis(int num_element);
+//      void setHUD(HUD *theHUD);
+//      void addHUDElement(HUDElement *elem);
+//      void removeHUDElement(HUDElement* elem);
+//      void switchHudElemtVis(int num_element);
 
       /**\brief sets the clear color */
       void setClearColor(Color color);
@@ -200,8 +207,6 @@ namespace osgviz {
         scene = s;
       }
 
-      virtual void setHUDViewOffsets(double x1, double y1,
-                                     double x2, double y2);
     
     protected:
       // the widget size
@@ -252,9 +257,9 @@ namespace osgviz {
       std::vector<GraphicsEventInterface *> graphicsEventHandler;
 
       // 2D display on top of the scene
-      HUD *myHUD;
+      //HUD *myHUD;
       // camera for the 2D display
-      osg::ref_ptr<osg::Camera> hudCamera;
+      //osg::ref_ptr<osg::Camera> hudCamera;
 
       // called post drawing
       PostDrawCallback *postDrawCallback;

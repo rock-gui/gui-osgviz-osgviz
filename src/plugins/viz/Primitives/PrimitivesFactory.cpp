@@ -20,9 +20,9 @@ PrimitivesFactory::PrimitivesFactory(lib_manager::LibManager *theManager):OsgViz
 PrimitivesFactory::~PrimitivesFactory() {}
 
 
-Object* PrimitivesFactory::createAxes(){
+Object* PrimitivesFactory::createAxes(float scale,bool blabels){
 	Object *obj = createObject();
-	osg::ref_ptr<osg::Node> content = AxesNode::create();
+	osg::ref_ptr<osg::Node> content = AxesNode::create(scale,blabels);
 	obj->setContent(content);
 	return obj;
 }

@@ -47,7 +47,7 @@
 //#include "wrapper/OSGNodeStruct.h"
 
 #include "GraphicsViewer.h"
-#include "HUD.h"
+//#include "HUD.h"
 
 
 
@@ -91,6 +91,25 @@ namespace osgviz {
       //osg::setNotifyLevel( osg::WARN );
 
       // first check if we have the cfg_manager lib
+
+    	//      cfgW_top = cfg->getOrCreateProperty("Graphics", "window1Top", (int)40,
+    	//                                          cfgClient);
+    	//
+    	//      cfgW_left = cfg->getOrCreateProperty("Graphics", "window1Left", (int)700,
+    	//                                           cfgClient);
+    	//
+    	//      cfgW_width = cfg->getOrCreateProperty("Graphics", "window1Width", (int)720,
+    	//                                            cfgClient);
+    	//
+    	//      cfgW_height = cfg->getOrCreateProperty("Graphics", "window1Height", (int)405,
+    	//                                             cfgClient);
+    	//
+    	      draw_normals = false;
+    	      drawRain = false;
+    	      drawSnow = false;
+    	      drawMainCamera = true;
+    	      backfaceCulling = true;
+
 
       if(libManager == NULL) return;
 
@@ -399,11 +418,6 @@ namespace osgviz {
       if(!rtt) {
         gw->setGraphicsEventHandler((GraphicsEventInterface*)this);
 
-        HUD *myHUD = new HUD(next_window_id);
-        myHUD->init(gw->getGraphicsWindow());
-        myHUD->setViewSize(hudWidth, hudHeight);
-
-        gw->setHUD(myHUD);
 
         // iterator over hudElements
 

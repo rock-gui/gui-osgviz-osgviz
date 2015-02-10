@@ -121,6 +121,10 @@ class FrameUpdateThread : public OpenThreads::Thread
 		}
 
 
+		inline osg::ref_ptr<osg::Group> getRootNode(){
+			return root;
+		}
+
 
 		private:
 

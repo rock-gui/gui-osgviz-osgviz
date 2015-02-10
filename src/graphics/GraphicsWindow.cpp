@@ -18,7 +18,7 @@
  *
  */
 
-#include "HUD.h"
+//#include "HUD.h"
 #include "GraphicsManager.h"
 
 #include <iostream>
@@ -82,8 +82,8 @@ namespace osgviz {
       widgetHeight = 405;
 
       graphicsWindow = 0;
-      myHUD = 0;
-      hudCamera = 0;
+//      myHUD = 0;
+//      hudCamera = 0;
       graphicsCamera = 0;
 
       cameraEyeSeparation = 0.1;
@@ -102,7 +102,7 @@ namespace osgviz {
       this->ref();
       if(gm) gm->removeGraphicsWidget(widgetID);
       delete graphicsCamera;
-      delete myHUD;
+
     }
 
     int GraphicsWindow::addOsgWindow(osgWidget::Window* wnd){
@@ -995,26 +995,26 @@ namespace osgviz {
     }
 
 
-    void GraphicsWindow::setHUD(HUD* theHUD) {
-      myHUD = theHUD;
-      theHUD->resize(widgetWidth, widgetHeight);
-      theHUD->setCullMask(CULL_LAYER);
-      theHUD->getCamera()->setFinalDrawCallback(postDrawCallback);
-      //view->addSlave(theHUD->getCamera(), false);
-      view->getCamera()->addChild( theHUD->getCamera() );
-    }
-
-    void GraphicsWindow::addHUDElement(HUDElement* elem) {
-      if(myHUD) myHUD->addHUDElement(elem);
-    }
-
-    void GraphicsWindow::removeHUDElement(HUDElement* elem) {
-      if(myHUD) myHUD->removeHUDElement(elem);
-    }
-
-    void GraphicsWindow::switchHudElemtVis(int num_element) {
-      if(myHUD) myHUD->switchElementVis(num_element);
-    }
+//    void GraphicsWindow::setHUD(HUD* theHUD) {
+//      myHUD = theHUD;
+//      theHUD->resize(widgetWidth, widgetHeight);
+//      theHUD->setCullMask(CULL_LAYER);
+//      theHUD->getCamera()->setFinalDrawCallback(postDrawCallback);
+//      //view->addSlave(theHUD->getCamera(), false);
+//      view->getCamera()->addChild( theHUD->getCamera() );
+//    }
+//
+//    void GraphicsWindow::addHUDElement(HUDElement* elem) {
+//      if(myHUD) myHUD->addHUDElement(elem);
+//    }
+//
+//    void GraphicsWindow::removeHUDElement(HUDElement* elem) {
+//      if(myHUD) myHUD->removeHUDElement(elem);
+//    }
+//
+//    void GraphicsWindow::switchHudElemtVis(int num_element) {
+//      if(myHUD) myHUD->switchElementVis(num_element);
+//    }
 
 
     osg::Texture2D* GraphicsWindow::getRTTTexture(void) {
@@ -1174,8 +1174,8 @@ namespace osgviz {
       postDrawCallback->setSize(widgetWidth, widgetHeight);
       graphicsCamera->setViewport(0, 0, widgetWidth, widgetHeight);
       graphicsCamera->changeCameraTypeToPerspective();
-      if (hudCamera) hudCamera->setViewport(0, 0, widgetWidth, widgetHeight);
-      if (myHUD) myHUD->resize(widgetWidth, widgetHeight);
+//      if (hudCamera) hudCamera->setViewport(0, 0, widgetWidth, widgetHeight);
+//      if (myHUD) myHUD->resize(widgetWidth, widgetHeight);
 
       if(graphicsEventHandler.size() > 0) {
         graphicsEventHandler[0]->emitGeometryChange(widgetID,
@@ -1272,16 +1272,16 @@ namespace osgviz {
       case 'f' :
         setFullscreen(!isFullscreen);
         break;
-      case 'h' :
-        if (!isHUDShown) {
-          isHUDShown = 1;
-          if (myHUD) myHUD->setCullMask(CULL_LAYER);
-        }
-        else {
-          isHUDShown = 0;
-          if (myHUD) myHUD->setCullMask(0x0);
-        }
-        break;
+//      case 'h' :
+//        if (!isHUDShown) {
+//          isHUDShown = 1;
+//          if (myHUD) myHUD->setCullMask(CULL_LAYER);
+//        }
+//        else {
+//          isHUDShown = 0;
+//          if (myHUD) myHUD->setCullMask(0x0);
+//        }
+//        break;
       case osgGA::GUIEventAdapter::KEY_Up:
         graphicsCamera->move(false, GraphicsCamera::FORWARD);
         return true;
@@ -1303,7 +1303,7 @@ namespace osgviz {
       case '7' :
       case '8' :
       case '9' :
-        if (myHUD) myHUD->switchCullElement(key);
+//        if (myHUD) myHUD->switchCullElement(key);
         break;
       case '.' :
         graphicsCamera->toggleStereoMode();
@@ -1717,12 +1717,12 @@ namespace osgviz {
       return false;
     }
 
-    void GraphicsWindow::setHUDViewOffsets(double x1, double y1,
-                                           double x2, double y2) {
-      if(myHUD) {
-        myHUD->setViewOffsets(x1, x2, y1, y2);
-      }
-    }
+//    void GraphicsWindow::setHUDViewOffsets(double x1, double y1,
+//                                           double x2, double y2) {
+//      if(myHUD) {
+//        myHUD->setViewOffsets(x1, x2, y1, y2);
+//      }
+//    }
 
   } // end of namespace graphics
 } // end of namespace mars

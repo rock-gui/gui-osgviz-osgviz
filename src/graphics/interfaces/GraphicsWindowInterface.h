@@ -50,7 +50,7 @@ namespace osgviz {
       virtual GraphicsCameraInterface* getCameraInterface() const = 0;
       virtual void grabFocus() = 0;
       virtual void setClearColor(Color color) = 0;
-      virtual void switchHudElemtVis(int num_element) = 0;
+      //virtual void switchHudElemtVis(int num_element) = 0;
       virtual void setFullscreen(bool val, int display = 1) = 0;
       virtual void setGrabFrames(bool grab) = 0;
       virtual void setSaveFrames(bool grab) = 0;
@@ -81,8 +81,7 @@ namespace osgviz {
       virtual void setScene(osg::Group *scene) = 0;
       virtual void addGraphicsEventHandler(GraphicsEventInterface *graphicsEventHandler) = 0;
 
-      virtual void setHUDViewOffsets(double x1, double y1,
-                                     double x2, double y2) = 0;
+      //virtual void setHUDViewOffsets(double x1, double y1, double x2, double y2) = 0;
 
     }; // end of class GraphicsWindowInterface
 
