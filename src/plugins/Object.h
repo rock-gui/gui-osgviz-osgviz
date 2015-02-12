@@ -33,7 +33,7 @@ public:
 
 	virtual void setContent(osg::ref_ptr<osg::Node> object);
 
-    virtual void setRootNode(osg::Group* node);
+    //virtual void setRootNode(osg::Group* node);
 
 
 	void setScale(float x, float y, float z);
@@ -58,7 +58,7 @@ protected:
     unsigned int cull_mask;
     bool visible;
 
-    osg::ref_ptr<osg::Group> root;
+    //osg::ref_ptr<osg::Group> root;
     osg::ref_ptr<osg::Node> object;
 
     osg::ref_ptr<osg::MatrixTransform> scaleTransform;
