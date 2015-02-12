@@ -134,7 +134,7 @@ void OsgViz::updateContent(){
 
 void OsgViz::startThread(){
 	if (!thread){
-		thread = new FrameUpdateThread(graphicsManager);
+		thread = new FrameUpdateThread(this);
 		thread->startThread();
 	}else{
 		fprintf(stderr,"thread already running\n");
