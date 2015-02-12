@@ -32,9 +32,6 @@ void Object::setContent(osg::ref_ptr<osg::Node> object) {
 //	root->addChild(this);
 //}
 
-void Object::setScale(float x, float y, float z){
-	scaleTransform->setMatrix(osg::Matrix::scale(x, y, z));
-}
 
 void Object::displayName(float font_size){
 	textgeode = new osg::Geode();

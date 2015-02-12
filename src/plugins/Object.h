@@ -36,7 +36,7 @@ public:
     //virtual void setRootNode(osg::Group* node);
 
 
-	void setScale(float x, float y, float z);
+
 
     inline void setName(std::string name){
     	this->name = name;
@@ -46,6 +46,10 @@ public:
 		return this->name;
 	}
 
+
+	inline void setScale(const float &x, const float &y, const float &z){
+		scaleTransform->setMatrix(osg::Matrix::scale(x, y, z));
+	}
 
     inline void setPosition(const double &x, const double &y, const double &z){
     	PositionAttitudeTransform::setPosition(osg::Vec3d(x,y,z));
