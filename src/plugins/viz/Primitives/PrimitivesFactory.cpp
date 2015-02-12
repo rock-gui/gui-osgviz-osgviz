@@ -20,15 +20,15 @@ PrimitivesFactory::PrimitivesFactory(lib_manager::LibManager *theManager):OsgViz
 PrimitivesFactory::~PrimitivesFactory() {}
 
 
-Object* PrimitivesFactory::createAxes(float scale,bool blabels){
-	Object *obj = createObject();
+osg::ref_ptr<Object> PrimitivesFactory::createAxes(float scale,bool blabels){
+	osg::ref_ptr<Object> obj = createObject();
 	osg::ref_ptr<osg::Node> content = AxesNode::create(scale,blabels);
 	obj->setContent(content);
 	return obj;
 }
 
-Object* PrimitivesFactory::createGrid(int rows,int cols,float dx, float dy, bool show_coordinates, const ::osg::Vec4 &color){
-	Object *obj = createObject();
+osg::ref_ptr<Object> PrimitivesFactory::createGrid(int rows,int cols,float dx, float dy, bool show_coordinates, const ::osg::Vec4 &color){
+	osg::ref_ptr<Object> obj = createObject();
 	osg::ref_ptr<osg::Node> content = GridNode::create(rows,cols,dx, dy, show_coordinates, color);
 	obj->setContent(content);
 	return obj;

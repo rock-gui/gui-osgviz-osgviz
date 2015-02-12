@@ -33,10 +33,8 @@ protected:
     	return root;
     };
 
-    inline Object* createObject(){
-    	Object *obj = new Object();
-    	obj->setRootNode(root);
-    	objects.push_back(obj);
+    inline osg::ref_ptr<Object> createObject(){
+    	osg::ref_ptr<Object> obj (new Object());
     	return obj;
     }
 
@@ -49,7 +47,6 @@ protected:
 
 private:
     osg::ref_ptr<osg::Group> root;
-	std::vector< osg::ref_ptr<Object> > objects;
 };
 
 } /* namespace osgviz */

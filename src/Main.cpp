@@ -11,19 +11,22 @@
 
 int main(int argc, char** argv)
 {
-	osgviz::OsgViz *osgViz = new osgviz::OsgViz(argc,argv);
+	osgviz::OsgViz *osgViz = osgviz::OsgViz::getInstance();
 
 	osgviz::ModelLoader *modelloader = NULL;
 	if (argc > 1){
 		modelloader = osgViz->getVisualizerPlugin< osgviz::ModelLoader >("ModelLoader");
 		printf("laoding model %s\n",argv[1]);
-		modelloader->loadModel(argv[1]);
+		osgviz::Object* model = modelloader->loadModel(argv[1]);
+		osgViz->addChild(model);
 	}
 	osgviz::PrimitivesFactory *primitivesfactory = osgViz->getVisualizerPlugin< osgviz::PrimitivesFactory >("PrimitivesFactory");
 
-	osgviz::Object* axes = primitivesfactory->createAxes();
-	osgviz::Object* grid = primitivesfactory->createGrid();
+	osg::ref_ptr<osgviz::Object> axes = primitivesfactory->createAxes();
+	osgViz->addChild(axes);
 
+	osg::ref_ptr<osgviz::Object> grid = primitivesfactory->createGrid();
+	osgViz->addChild(grid);
 
 
 
@@ -33,7 +36,10 @@ int main(int argc, char** argv)
 	manager->showSnow(true);
 	//manager->showRain(true);
 
+
 	osgViz->startThread();
+
+
 
 	while (true){
 		sleep(1);

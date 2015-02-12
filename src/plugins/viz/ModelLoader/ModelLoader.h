@@ -23,7 +23,7 @@ public:
 
 	virtual void init(int argc, char** argv);
 
-	virtual void loadModel(std::string path);
+	virtual osg::ref_ptr<Object> loadModel(std::string path);
 
 
 private:

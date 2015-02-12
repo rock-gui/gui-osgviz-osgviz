@@ -22,8 +22,8 @@ public:
 	virtual const std::string getLibName() const { return "PrimitivesFactory"; };
 
 
-	virtual Object* createAxes(float scale=1.0,bool blabels=true);
-	virtual Object* createGrid(int rows = 20,int cols = 20,float dx =1, float dy=1, bool show_coordinates=false, const ::osg::Vec4 &color = ::osg::Vec4(120,120,120,255));
+	virtual osg::ref_ptr<Object> createAxes(float scale=1.0,bool blabels=true);
+	virtual osg::ref_ptr<Object> createGrid(int rows = 20,int cols = 20,float dx =1, float dy=1, bool show_coordinates=false, const ::osg::Vec4 &color = ::osg::Vec4(120,120,120,255));
 
 
 
