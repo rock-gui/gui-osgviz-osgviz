@@ -20,49 +20,8 @@ namespace osgviz {
 namespace osgviz
 {
 
-class OsgViz;
 
-class FrameUpdateThread : public OpenThreads::Thread
-	{
-	    public:
-
-	FrameUpdateThread(graphics::GraphicsManager* osgviz):
-	        	osgviz(osgviz){
-	        	running = false;
-	        }
-
-	        ~FrameUpdateThread()
-	        {
-	            if (isRunning())
-	            {
-	                cancel();
-	                join();
-	            }
-	        }
-
-	        int cancel()
-	        {
-	        	mutex.lock();
-	        	running = false;
-	        	mutex.unlock();
-	            return 0;
-	        }
-
-	        void run();
-
-	        void lock(){
-	        	mutex.lock();
-	        }
-	        void unlock(){
-	        	mutex.unlock();
-	        }
-
-	    private:
-	        bool running;
-	        graphics::GraphicsManager* osgviz;
-	        OpenThreads::Mutex mutex;
-
-	};
+	class FrameUpdateThread;
 
 
 	class OsgViz: public lib_manager::LibInterface
@@ -150,6 +109,49 @@ class FrameUpdateThread : public OpenThreads::Thread
 		//std::vector<osgViewer::Viewer *> viewers;
 
 	};
+
+	class FrameUpdateThread : public OpenThreads::Thread
+		{
+		    public:
+
+		FrameUpdateThread(OsgViz* osgviz):
+		        	osgviz(osgviz){
+		        	running = false;
+		        }
+
+		        ~FrameUpdateThread()
+		        {
+		            if (isRunning())
+		            {
+		                cancel();
+		                join();
+		            }
+		        }
+
+		        int cancel()
+		        {
+		        	mutex.lock();
+		        	running = false;
+		        	mutex.unlock();
+		            return 0;
+		        }
+
+		        void run();
+
+		        void lock(){
+		        	mutex.lock();
+		        }
+		        void unlock(){
+		        	mutex.unlock();
+		        }
+
+		    private:
+		        bool running;
+		        OsgViz* osgviz;
+		        OpenThreads::Mutex mutex;
+
+		};
+
 
 } // end namespace osgviz
 

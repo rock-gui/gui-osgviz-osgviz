@@ -37,7 +37,7 @@ void FrameUpdateThread::run()
 		usleep(10000);
 		mutex.lock();
 		//int result = _viewerBase->run();
-		osgviz->draw();
+		osgviz->updateContent();
 		mutex.unlock();
 		//give others a chance to lock
 		usleep(10000);
