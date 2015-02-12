@@ -85,6 +85,10 @@ namespace osgviz
 		}
 
 
+		inline void addChild(osg::Node * node){
+			root->addChild(node);
+		}
+
 		private:
 
 		OsgVizPlugin* getVizPlugin(std::string path, std::string name);
