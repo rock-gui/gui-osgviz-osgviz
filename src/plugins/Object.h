@@ -47,6 +47,22 @@ public:
 	}
 
 
+    inline void setPosition(const double &x, const double &y, const double &z){
+    	PositionAttitudeTransform::setPosition(osg::Vec3d(x,y,z));
+    }
+
+    inline void setPosition(const osg::Vec3d& vec){
+    	PositionAttitudeTransform::setPosition(vec);
+    }
+
+    inline void setOrientation(const double &x,const double &y,const double &z,const double &w){
+    	setAttitude( osg::Quat (x,y,z,w));
+    }
+
+    inline void setOrientation(const osg::Quat &quat){
+    	PositionAttitudeTransform::setAttitude( quat );
+    }
+
     void switchCullMask();
     void xorCullMask(unsigned int mask);
 
