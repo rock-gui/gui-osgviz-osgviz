@@ -67,6 +67,12 @@ public:
     	PositionAttitudeTransform::setAttitude( quat );
     }
 
+    inline void setOrientation(const double &angle, const osg::Vec3d &vec){
+    	PositionAttitudeTransform::setAttitude( osg::Quat(angle, vec) );
+    }
+
+
+
     void switchCullMask();
     void xorCullMask(unsigned int mask);
 
