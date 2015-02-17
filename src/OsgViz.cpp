@@ -6,6 +6,7 @@
 #include <osgGA/TerrainManipulator>
 #include <X11/Xlib.h>
 
+#include "windows/WindowManager.h"
 
 
 CREATE_LIB(osgviz::OsgViz);
@@ -73,6 +74,15 @@ void OsgViz::init(int argc,char** argv){
 	root = new osg::Group();
 	XInitThreads();
 	instance = this;
+
+	Window* wnd = windows.createWindow(0,0,640,480,root);
+	wnd->showRain();
+
+//	viewer.setUpViewInWindow(0,0,640,480);
+//	viewer.setSceneData(root);
+//	viewer.setCameraManipulator( new osgGA::TerrainManipulator() );
+//	viewer.realize();
+
 	graphicsManager->initializeOSG(NULL,true);
 	graphicsManager->addOSGNode(root);
 
@@ -130,6 +140,18 @@ OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
 
 void OsgViz::updateContent(){
 	graphicsManager->draw();
+//	viewer.frame();
+
+	windows.frame();
+	//graphicsManager->get3DWindow();
+
+//	osgViewer::ViewerBase::Views views;
+//	viewer.getViews(views);
+//	int num = views[0]->getEventHandlers().size();
+//
+//	printf("event handlers %i\n ",num);
+
+
 }
 
 void OsgViz::startThread(){

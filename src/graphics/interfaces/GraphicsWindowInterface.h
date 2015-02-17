@@ -35,6 +35,7 @@
 #include "GraphicsCameraInterface.h"
 #include "GraphicsEventInterface.h"
 #include "OsgVizDefs.h"
+#include <osgViewer/Viewer>
 
 namespace osg{
     class Group;
@@ -80,6 +81,8 @@ namespace osgviz {
       virtual osg::Group* getScene() = 0;
       virtual void setScene(osg::Group *scene) = 0;
       virtual void addGraphicsEventHandler(GraphicsEventInterface *graphicsEventHandler) = 0;
+
+      virtual osgViewer::View* getView(void) = 0;
 
       //virtual void setHUDViewOffsets(double x1, double y1, double x2, double y2) = 0;
 

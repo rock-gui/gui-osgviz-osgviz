@@ -4,10 +4,14 @@
 #include <iostream>
 #include <lib_manager/LibManager.hpp>
 #include <osg/Group>
+#include <osgViewer/Viewer>
+#include <osgDB/WriteFile>
 #include <OpenThreads/Thread>
 
 #include "graphics/interfaces/GraphicsManagerInterface.h"
 #include "plugins/OsgVizPlugin.h"
+#include "windows/WindowManager.h"
+
 
 namespace osgviz {
 	namespace graphics{
@@ -89,6 +93,11 @@ namespace osgviz
 			root->addChild(node);
 		}
 
+		inline void write(const char* name){
+			osgDB::writeNodeFile(*root, name);
+		}
+
+
 		private:
 
 		OsgVizPlugin* getVizPlugin(std::string path, std::string name);
@@ -109,8 +118,11 @@ namespace osgviz
 
 		FrameUpdateThread* thread;
 		graphics::GraphicsManager* graphicsManager;
-
+		//osgViewer::Viewer viewer;
 		//std::vector<osgViewer::Viewer *> viewers;
+
+		WindowManager windows;
+
 
 	};
 
@@ -155,6 +167,7 @@ namespace osgviz
 		        OpenThreads::Mutex mutex;
 
 		};
+
 
 
 } // end namespace osgviz

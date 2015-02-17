@@ -28,6 +28,8 @@ endif()
 
 rock_library(osgViz
     SOURCES OsgViz.cpp
+           windows/Window.cpp
+           windows/WindowManager.cpp
            graphics/GraphicsCamera.cpp
            graphics/GraphicsManager.cpp
            graphics/GraphicsViewer.cpp
@@ -74,6 +76,9 @@ rock_library(osgViz
 			graphics/interfaces/data/MaterialData.cpp
            
     HEADERS OsgViz.hpp
+           windows/Window.h
+           windows/WindowManager.h
+    
            graphics/GraphicsCamera.h
            graphics/GraphicsManager.h
            graphics/GraphicsViewer.h
