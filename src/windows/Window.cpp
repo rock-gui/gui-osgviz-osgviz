@@ -19,8 +19,11 @@ Window::Window(int posx,int posy, int width, int height):posx(posx),posy(posy),w
 
 	viewer = new osgViewer::CompositeViewer();
 	mainView = new osgViewer::View;
+
 	mainView->setCameraManipulator(new osgGA::TerrainManipulator());
 	viewer->addView(mainView);
+	views.push_back(mainView);
+
 	mainView->setUpViewInWindow(posx,posy,width, height);
 	viewer->realize();
 	osgViewer::ViewerBase::Windows m_windows;

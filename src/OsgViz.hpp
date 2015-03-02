@@ -71,6 +71,8 @@ namespace osgviz
 			return (GraphicsManagerInterface*)graphicsManager;
 		}
 
+
+
 		template <class VIZPLUGIN> VIZPLUGIN* getVisualizerPlugin(std::string classname){
 			VIZPLUGIN* viz = (VIZPLUGIN*)getVizPlugin(classname,classname);
 			viz->setRootNode(root);
@@ -95,6 +97,10 @@ namespace osgviz
 
 		inline void write(const char* name){
 			osgDB::writeNodeFile(*root, name);
+		}
+
+		inline WindowManager* getWindowManager(){
+			return &windows;
 		}
 
 

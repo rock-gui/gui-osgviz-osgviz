@@ -19,6 +19,13 @@ public:
 
 	Window* createWindow(int posx,int posy, int width, int height, osg::Group* scene = NULL, std::string name = "Env");
 
+	inline Window* getWindowByID(const unsigned int& id){
+		if (id < windows.size()){
+			return windows[id];
+		}
+		return NULL;
+	}
+
 
 	void frame();
 

@@ -83,8 +83,8 @@ void OsgViz::init(int argc,char** argv){
 //	viewer.setCameraManipulator( new osgGA::TerrainManipulator() );
 //	viewer.realize();
 
-	graphicsManager->initializeOSG(NULL,true);
-	graphicsManager->addOSGNode(root);
+//	graphicsManager->initializeOSG(NULL,true);
+//	graphicsManager->addOSGNode(root);
 
 }
 

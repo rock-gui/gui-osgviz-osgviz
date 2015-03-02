@@ -33,6 +33,12 @@ public:
 
 	virtual void setContent(osg::ref_ptr<osg::Node> object);
 
+	virtual bool clicked(int buttonMask, float x, float y, float z = 0){return false;}
+
+	virtual bool pointerEvent(int buttonMask, int x, int y){return false;}
+
+	virtual bool keyEvent(int key, bool keyDown){return false;}
+
     //virtual void setRootNode(osg::Group* node);
 
 

@@ -45,6 +45,19 @@ public:
 	void showRain(const bool &val = true);
 	void showSnow(const bool &val = true);
 
+
+	inline osgViewer::GraphicsWindow * getGraphicsWindow(){
+		return graphicsWindow;
+	}
+
+	inline osgViewer::View* getView(int index = 0){
+		return views[index];
+	}
+
+	inline osg::ref_ptr<osgViewer::CompositeViewer> getViewer(){
+		return viewer;
+	}
+
 private:
 
 	void initDefaultLight();
