@@ -63,6 +63,10 @@ public:
 		scaleTransform->setMatrix(osg::Matrix::scale(x, y, z));
 	}
 
+	inline osg::Vec3d getScale()const {
+		return scaleTransform->getMatrix().getScale();
+	}
+
     inline void setPosition(const double &x, const double &y, const double &z){
     	PositionAttitudeTransform::setPosition(osg::Vec3d(x,y,z));
     }

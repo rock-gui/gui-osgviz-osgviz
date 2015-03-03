@@ -76,7 +76,7 @@ void OsgViz::init(int argc,char** argv){
 	instance = this;
 
 	Window* wnd = windows.createWindow(0,0,720,405,root);
-	wnd->showRain();
+//	wnd->showRain();
 
 //	viewer.setUpViewInWindow(0,0,640,480);
 //	viewer.setSceneData(root);

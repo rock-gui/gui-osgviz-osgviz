@@ -68,6 +68,7 @@ Window::Window(int posx,int posy, int width, int height):posx(posx),posy(posy),w
       printf("windows %i\n",m_windows.size());
 
       //graphicsWindow->setClearColor(graphicOptions.clearColor);
+      viewer->setCameraWithFocus(mainView->getCamera());
       mainView->getCamera()->setClearColor(graphicOptions.clearColor);
 
       // some fixed function pipeline stuff...
