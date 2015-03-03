@@ -52,6 +52,12 @@ public:
 		return this->name;
 	}
 
+    /**
+     * override osg::PositionAttitudeTransform addChild
+     */
+    inline bool addChild(osg::Node *child){
+    	return scaleTransform->addChild(child);
+    }
 
 	inline void setScale(const float &x, const float &y, const float &z){
 		scaleTransform->setMatrix(osg::Matrix::scale(x, y, z));
