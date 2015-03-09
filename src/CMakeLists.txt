@@ -26,8 +26,14 @@ if(USE_MARS_VBO)
     ADD_DEFINITIONS(-DUSE_MARS_VBO)
 endif()
 
+
+rock_library(osgVizInterfaces
+	HEADERS interfaces/Clickable.h
+)
+
 rock_library(osgViz
     SOURCES OsgViz.cpp
+           windows/ObjectSelector.cpp
            windows/Window.cpp
            windows/WindowManager.cpp
            graphics/GraphicsCamera.cpp
@@ -76,6 +82,7 @@ rock_library(osgViz
 			graphics/interfaces/data/MaterialData.cpp
            
     HEADERS OsgViz.hpp
+    	   windows/ObjectSelector.h
            windows/Window.h
            windows/WindowManager.h
     

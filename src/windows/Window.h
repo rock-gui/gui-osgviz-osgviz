@@ -13,6 +13,7 @@
 
 #include "../graphics/interfaces/data/GraphicData.h"
 #include "../graphics/interfaces/data/LightData.h"
+#include "ObjectSelector.h"
 
 namespace osgviz {
 
@@ -84,6 +85,8 @@ private:
 
     osg::ref_ptr<osgParticle::PrecipitationEffect> snow, rain;
     osg::ref_ptr<osg::Fog> myFog;
+
+    osg::ref_ptr<ObjectSelector> objectSelector;
 
 };
 

@@ -13,6 +13,8 @@
 #include "../graphics/wrapper/OSGLightStruct.h"
 #include <stdio.h>
 
+
+
 namespace osgviz {
 
 Window::Window(int posx,int posy, int width, int height):posx(posx),posy(posy),width(width),height(height) {
@@ -23,6 +25,9 @@ Window::Window(int posx,int posy, int width, int height):posx(posx),posy(posy),w
 	mainView->setCameraManipulator(new osgGA::TerrainManipulator());
 	viewer->addView(mainView);
 	views.push_back(mainView);
+
+	objectSelector = new ObjectSelector(mainView);
+	mainView->addEventHandler(objectSelector);
 
 	mainView->setUpViewInWindow(posx,posy,width, height);
 	viewer->realize();

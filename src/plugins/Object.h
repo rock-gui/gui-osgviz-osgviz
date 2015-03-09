@@ -12,13 +12,16 @@
 #include <osg/MatrixTransform>
 #include <osg/PositionAttitudeTransform>
 
+#include "../interfaces/Clickable.h"
+
+#include <stdio.h>
 
 #ifndef SRC_PLUGINS_MODELVIEW_H_
 #define SRC_PLUGINS_MODELVIEW_H_
 
 namespace osgviz {
 
-class Object: public osg::PositionAttitudeTransform{
+class Object: public osg::PositionAttitudeTransform, public Clickable{
 
 protected:
 	friend class OsgVizVisualizerPlugin;
@@ -33,7 +36,7 @@ public:
 
 	virtual void setContent(osg::ref_ptr<osg::Node> object);
 
-	virtual bool clicked(int buttonMask, float x, float y, float z = 0){return false;}
+	virtual bool clicked(int buttonMask, float x, float y, float z = 0){printf("clicked %.2f,%.2f,%.2f\n",x,y,z);return false;}
 
 	virtual bool pointerEvent(int buttonMask, int x, int y){return false;}
 
