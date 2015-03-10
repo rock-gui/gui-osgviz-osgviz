@@ -45,16 +45,17 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
                    //{
             	   std::cout << ("intersection") << std::endl;
 
-                   //const osg::Vec3 &p = intersection.getLocalIntersectPoint();
-            	   const osg::Vec3 &p = intersection.getGlobalIntersectPoint();
-                   std::cout << "Point: " << p[0] << " " << p[1] << " " << p[2] << std::endl;
+                   const osg::Vec3 &p = intersection.getLocalIntersectPoint();
+            	   const osg::Vec3 &w = intersection.getWorldIntersectPoint();
+                   std::cout << "Local: " << p[0] << " " << p[1] << " " << p[2] << std::endl;
+                   std::cout << "World: " << w[0] << " " << w[1] << " " << w[2] << std::endl;
 
                    int mask = ea.getButtonMask();
 
                    for (osg::NodePath::iterator node = intersection.nodePath.begin(); node != intersection.nodePath.end(); node++){
                 	   Clickable* obj = dynamic_cast<Clickable*>(*node);
                        if (obj){
-                    	   obj->clicked(mask,p[0],p[1],p[2]);
+                    	   obj->clicked(mask,w,p);
                        }
                    };
 

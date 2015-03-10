@@ -13,7 +13,7 @@ namespace osgviz {
 class Clickable {
 public:
 
-	virtual bool clicked(int buttonMask, float x, float y, float z = 0) = 0;
+	virtual bool clicked(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local) = 0;
 
 };
 

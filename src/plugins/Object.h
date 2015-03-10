@@ -36,9 +36,9 @@ public:
 
 	virtual void setContent(osg::ref_ptr<osg::Node> object);
 
-	virtual bool clicked(int buttonMask, float x, float y, float z = 0){printf("clicked %.2f,%.2f,%.2f\n",x,y,z);return false;}
+	virtual bool clicked(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local){printf("clicked %.2f,%.2f,%.2f\n",world.x(),world.y(),world.z());return false;}
 
-	virtual bool pointerEvent(int buttonMask, int x, int y){return false;}
+	virtual bool pointerEvent(int buttonMask, const osg::Vec3d &world, const osg::Vec3d &local){return false;}
 
 	virtual bool keyEvent(int key, bool keyDown){return false;}
 
