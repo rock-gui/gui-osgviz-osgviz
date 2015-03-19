@@ -50,14 +50,9 @@ Window::Window(int posx,int posy, int width, int height):posx(posx),posy(posy),w
     globalStateset->setMode(GL_BLEND,osg::StateAttribute::OFF);
 
     // background color for the scene
-      graphicOptions.clearColor = Color(0.55, 0.67, 0.88, 1.0);
 
       { // setup FOG
-        graphicOptions.fogColor = Color(0.2, 0.2, 0.2, 1.0);
         graphicOptions.fogEnabled = true;
-        graphicOptions.fogDensity = 0.35;
-        graphicOptions.fogStart = 10.0;
-        graphicOptions.fogEnd = 30.0;
 
         myFog = new osg::Fog;
         myFog->setMode(osg::Fog::LINEAR);

@@ -31,9 +31,9 @@ namespace osgviz {
   namespace interfaces {
 
     GraphicData::GraphicData() {
-      clearColor.r() = 0.25;
-      clearColor.g() = 0.27;
-      clearColor.b() = 0.48;
+      clearColor.r() = 0.55;
+      clearColor.g() = 0.67;
+      clearColor.b() = 0.88;
       clearColor.a() = 1.0;
 
       fogEnabled = false;
