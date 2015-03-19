@@ -11,6 +11,10 @@
 #include <osgViewer/CompositeViewer>
 #include <osgParticle/PrecipitationEffect>
 
+#include <osgGA/KeySwitchMatrixManipulator>
+#include <osgGA/TerrainManipulator>
+	#include <osgGA/FlightManipulator>
+
 #include "../graphics/interfaces/data/GraphicData.h"
 #include "../graphics/interfaces/data/LightData.h"
 #include "ObjectSelector.h"
@@ -88,6 +92,7 @@ private:
 
     osg::ref_ptr<ObjectSelector> objectSelector;
 
+    osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> keyswitchManipulator;
 };
 
 } /* namespace osgviz */

@@ -32,7 +32,6 @@
 
 #include <osg/LightSource>
 #include <osg/ShapeDrawable>
-#include <osg/Geode>
 
 namespace osgviz {
   namespace graphics {
@@ -51,11 +50,6 @@ namespace osgviz {
     private:
       osg::ref_ptr<osg::Light> light_;
       osg::ref_ptr<osg::Geode> lightMarkerGeode;
-
-      osg::Vec4 toOSGVec4(const Vector &v, float w)
-      {
-        return osg::Vec4(v.x(), v.y(), v.z(), w);
-      }
     };
 
   } // end of namespace graphics

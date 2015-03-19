@@ -1,6 +1,6 @@
 #include "OsgViz.hpp"
 
-#include "graphics/GraphicsManager.h"
+//#include "graphics/GraphicsManager.h"
 
 #include <stdio.h>
 #include <osgGA/TerrainManipulator>
@@ -66,7 +66,7 @@ OsgViz::OsgViz(int argc, char** argv): lib_manager::LibInterface(NULL){
 
 
 void OsgViz::init(int argc,char** argv){
-	graphicsManager = new graphics::GraphicsManager(libmanager);
+	//graphicsManager = new graphics::GraphicsManager(libmanager);
 
 	thread = NULL;
 	m_argc = argc;
@@ -98,22 +98,23 @@ OsgViz::~OsgViz(){
 		delete libmanager;
 	}
 
-	if (graphicsManager){
-		delete graphicsManager;
-	}
+	//if (graphicsManager){
+	//	delete graphicsManager;
+	//}
 
 }
 
 int OsgViz::createWindow(bool threaded) {
 
-	int id = graphicsManager->new3DWindow();
+	//int id = graphicsManager->new3DWindow();
 	//mars::interfaces::GraphicsWindowInterface* window = this->get3DWindow(1);
 
-	return id;
+	//return id;
+	return 0;
 }
 
 void OsgViz::destroyWindow(int id){
-	graphicsManager->remove3DWindow(id);
+	//graphicsManager->remove3DWindow(id);
 }
 
 
@@ -139,7 +140,7 @@ OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
 
 
 void OsgViz::updateContent(){
-	graphicsManager->draw();
+	//graphicsManager->draw();
 //	viewer.frame();
 
 	windows.frame();

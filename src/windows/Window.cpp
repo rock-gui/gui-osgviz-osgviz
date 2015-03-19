@@ -13,8 +13,6 @@
 #include "../graphics/wrapper/OSGLightStruct.h"
 #include <stdio.h>
 
-
-
 namespace osgviz {
 
 Window::Window(int posx,int posy, int width, int height):posx(posx),posy(posy),width(width),height(height) {
@@ -22,7 +20,7 @@ Window::Window(int posx,int posy, int width, int height):posx(posx),posy(posy),w
 	viewer = new osgViewer::CompositeViewer();
 	mainView = new osgViewer::View;
 
-	mainView->setCameraManipulator(new osgGA::TerrainManipulator());
+
 	viewer->addView(mainView);
 	views.push_back(mainView);
 
@@ -95,7 +93,15 @@ Window::Window(int posx,int posy, int width, int height):posx(posx),posy(posy),w
 			initDefaultLight();
 
 
+    keyswitchManipulator = new osgGA::KeySwitchMatrixManipulator;  
 
+    keyswitchManipulator->addMatrixManipulator( '1', "Trackball", new osgGA::TerrainManipulator() );
+    keyswitchManipulator->addMatrixManipulator( '2', "Flight", new osgGA::FlightManipulator() );
+
+    unsigned int num = keyswitchManipulator->getNumMatrixManipulators();
+    keyswitchManipulator->selectMatrixManipulator(num);
+
+    mainView->setCameraManipulator(keyswitchManipulator);
 }
 
 Window::~Window() {
@@ -106,7 +112,9 @@ Window::~Window() {
 osgViewer::View* Window::addView(std::string name) {
 
 	osgViewer::View* view = new osgViewer::View;
-	view->setCameraManipulator(new osgGA::TerrainManipulator());
+
+  //view->setCameraManipulator(keyswitchManipulator);
+
 	viewer->addView(view);
 	view->setSceneData(scene);
 	//view->setUpViewInWindow(posx,posy,width, height);

@@ -8,16 +8,16 @@
 #include <osgDB/WriteFile>
 #include <OpenThreads/Thread>
 
-#include "graphics/interfaces/GraphicsManagerInterface.h"
+//#include "graphics/interfaces/GraphicsManagerInterface.h"
 #include "plugins/OsgVizPlugin.h"
 #include "windows/WindowManager.h"
 
 
-namespace osgviz {
+/*namespace osgviz {
 	namespace graphics{
 		class GraphicsManager;
 	}
-}
+}*/
 
 #include <stdio.h>
 
@@ -67,9 +67,9 @@ namespace osgviz
 		int createWindow(bool threaded = true);
 		void destroyWindow(int id);
 
-		inline GraphicsManagerInterface* getGraphicsManagerInterface(){
-			return (GraphicsManagerInterface*)graphicsManager;
-		}
+		//inline GraphicsManagerInterface* getGraphicsManagerInterface(){
+		//	return (GraphicsManagerInterface*)graphicsManager;
+		//}
 
 
 
@@ -123,7 +123,7 @@ namespace osgviz
 
 
 		FrameUpdateThread* thread;
-		graphics::GraphicsManager* graphicsManager;
+		//graphics::GraphicsManager* graphicsManager;
 		//osgViewer::Viewer viewer;
 		//std::vector<osgViewer::Viewer *> viewers;
 

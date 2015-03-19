@@ -26,6 +26,7 @@
  */
 
 #include "OSGLightStruct.h"
+#include "../gui_helper_functions.h"
 
 #define CREATE_LIGHT_MARKER
 
@@ -97,9 +98,7 @@ namespace osgviz {
 
     void OSGLightStruct::update(const LightData &ls) {
       //set light position
-      //light_->setPosition(toOSGVec4(ls.pos,1.0f));
-      light_->setPosition(toOSGVec4(ls.pos, 1.0f));
-
+      light_->setPosition(toOSGVec4(ls.pos,1.0f));
       if(lightMarkerGeode.get()) {
         removeChild(lightMarkerGeode.get());
         lightMarkerGeode = createLightMarker(ls);

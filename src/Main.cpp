@@ -31,9 +31,9 @@ int main(int argc, char** argv)
 
 
 
-	osgviz::GraphicsManagerInterface* manager = osgViz->getGraphicsManagerInterface();
+	//osgviz::GraphicsManagerInterface* manager = osgViz->getGraphicsManagerInterface();
 	//manager->setCamera(2);
-	manager->showSnow(true);
+	//manager->showSnow(true);
 	//manager->showRain(true);
 
 
