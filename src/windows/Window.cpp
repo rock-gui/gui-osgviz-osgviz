@@ -139,19 +139,6 @@ void Window::frame() {
 }
 
 void Window::initDefaultLight() {
-  defaultLight.lStruct.pos = Vector(0.0, 0.0, 10.0);
-  defaultLight.lStruct.ambient = Color(0.0, 0.0, 0.0, 1.0);
-  defaultLight.lStruct.diffuse = Color(1.0, 1.0, 1.0, 1.0);
-  defaultLight.lStruct.specular = Color(1.0, 1.0, 1.0, 1.0);
-  defaultLight.lStruct.constantAttenuation = 0.0;
-  defaultLight.lStruct.linearAttenuation = 0.0;
-  defaultLight.lStruct.quadraticAttenuation = 0.00001;
-  defaultLight.lStruct.directional = false;
-  defaultLight.lStruct.type = OMNILIGHT;
-  defaultLight.lStruct.index = 0;
-  defaultLight.lStruct.angle = 0;
-  defaultLight.lStruct.exponent = 0;
-
   osg::ref_ptr<osg::LightSource> myLightSource = new graphics::OSGLightStruct(defaultLight.lStruct);
 
   //add to lightmanager for later editing possibility

@@ -38,6 +38,8 @@ namespace osgviz {
     class LightData {
     public:
 
+      LightData();
+
       unsigned int index;
       std::string name; //light name
       Vector pos; //light position

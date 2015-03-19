@@ -39,6 +39,20 @@
 namespace osgviz {
   namespace interfaces {
 
+	LightData::LightData() {
+		pos = Vector(0.0, 0.0, 10.0);
+		ambient = Color(0.0, 0.0, 0.0, 1.0);
+		diffuse = Color(1.0, 1.0, 1.0, 1.0);
+		specular = Color(1.0, 1.0, 1.0, 1.0);
+		constantAttenuation = 0.0;
+		linearAttenuation = 0.0;
+		quadraticAttenuation = 0.00001;
+		directional = false;
+		type = OMNILIGHT;
+		index = 0;
+		angle = 0;
+		exponent = 0;
+    }
 
   } // end of namespace interfaces
 } // end of namespace mars

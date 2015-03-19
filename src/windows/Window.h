@@ -13,7 +13,7 @@
 
 #include <osgGA/KeySwitchMatrixManipulator>
 #include <osgGA/TerrainManipulator>
-	#include <osgGA/FlightManipulator>
+#include <osgGA/FlightManipulator>
 
 #include "../graphics/interfaces/data/GraphicData.h"
 #include "../graphics/interfaces/data/LightData.h"
