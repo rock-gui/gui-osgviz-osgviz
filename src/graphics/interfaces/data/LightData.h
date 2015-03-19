@@ -28,9 +28,6 @@
 namespace osgviz {
   namespace interfaces {
 
-    // forward declaration
-    class LoadCenter;
-
     /**
      * LightData is a struct to exchange light information between the
      * Dialog_Add_Light, the MainWindow and the osg widget
