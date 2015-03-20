@@ -8,6 +8,8 @@
 #ifndef OSGVIZ_OSGVIZ_SRC_WINDOWS_WINDOWMANAGER_H_
 #define OSGVIZ_OSGVIZ_SRC_WINDOWS_WINDOWMANAGER_H_
 
+#include <stdexcept>
+
 #include "Window.h"
 
 namespace osgviz {

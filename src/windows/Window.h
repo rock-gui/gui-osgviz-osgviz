@@ -8,6 +8,8 @@
 #ifndef OSGVIZ_OSGVIZ_SRC_WINDOWS_WINDOW_H_
 #define OSGVIZ_OSGVIZ_SRC_WINDOWS_WINDOW_H_
 
+#include <iostream>
+
 #include <osgViewer/CompositeViewer>
 #include <osgParticle/PrecipitationEffect>
 
@@ -35,10 +37,13 @@ class Window {
 
 
 public:
-	Window(int posx = 0,int posy = 0, int width = 640, int height = 480);
+	Window(osg::Group *scene, int posx = 0, int posy = 0, int width = 640, int height = 480);
+
 	virtual ~Window();
 
-	void setScene(osg::Group *root);
+	void setScene(osg::Group *scene);
+
+	osg::Group* getScene();
 
 	void setName(const std::string& name);
 

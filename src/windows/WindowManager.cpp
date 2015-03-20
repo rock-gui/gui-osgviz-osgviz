@@ -19,13 +19,16 @@ WindowManager::~WindowManager() {
 }
 
 Window* WindowManager::createWindow(int posx, int posy, int width, int height, osg::Group* scene, std::string name) {
-	Window* wnd = new Window(posx,posy,width,height);
-	if (scene){
-		wnd->setScene(scene);
+	if (scene) {
+		Window* wnd = new Window(scene, posx, posy, width, height);
+		wnd->setName(name);
+		windows.push_back(wnd);
+		return wnd;		
 	}
-	wnd->setName(name);
-	windows.push_back(wnd);
-	return wnd;
+	else {
+		std::runtime_error("WindowManager::createWindow: try to create window, but the scene pointer is not set.");
+		return 0;
+	}
 }
 
 void WindowManager::frame() {

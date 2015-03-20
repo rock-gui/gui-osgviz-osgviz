@@ -15,7 +15,7 @@
 
 namespace osgviz {
 
-Window::Window(int posx,int posy, int width, int height):posx(posx),posy(posy),width(width),height(height) {
+Window::Window(osg::Group *scene, int posx,int posy, int width, int height):posx(posx),posy(posy),width(width),height(height) {
 
 	viewer = new osgViewer::CompositeViewer();
 	mainView = new osgViewer::View;
@@ -97,15 +97,15 @@ Window::Window(int posx,int posy, int width, int height):posx(posx),posy(posy),w
     keyswitchManipulator->selectMatrixManipulator(num);
 
     mainView->setCameraManipulator(keyswitchManipulator);
+
+    setScene(scene);
 }
 
 Window::~Window() {
 
 }
 
-
 osgViewer::View* Window::addView(std::string name) {
-
 	osgViewer::View* view = new osgViewer::View;
 
   //view->setCameraManipulator(keyswitchManipulator);
@@ -117,12 +117,16 @@ osgViewer::View* Window::addView(std::string name) {
 	return view;
 }
 
-void Window::setScene(osg::Group* root) {
-	this->scene = root;
+void Window::setScene(osg::Group* scene) {
+  this->scene = scene;
 	mainView->setSceneData(scene);
-    scene->setStateSet(globalStateset.get());
-    scene->addChild(lightGroup.get());
-    //scene->addChild(shadowedScene.get());
+  scene->setStateSet(globalStateset.get());
+  scene->addChild(lightGroup.get());
+  //scene->addChild(shadowedScene.get());
+}
+
+osg::Group* Window::getScene() {
+  return this->scene;
 }
 
 void Window::setName(const std::string& name) {
