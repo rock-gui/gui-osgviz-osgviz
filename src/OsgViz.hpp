@@ -100,7 +100,7 @@ namespace osgviz
 		}
 
 		inline WindowManager* getWindowManager(){
-			return &windows;
+			return &windowManager;
 		}
 
 
@@ -127,7 +127,7 @@ namespace osgviz
 		//osgViewer::Viewer viewer;
 		//std::vector<osgViewer::Viewer *> viewers;
 
-		WindowManager windows;
+		WindowManager windowManager;
 
 
 	};

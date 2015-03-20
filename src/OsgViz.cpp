@@ -75,7 +75,7 @@ void OsgViz::init(int argc,char** argv){
 	XInitThreads();
 	instance = this;
 
-	Window* wnd = windows.createWindow(0,0,720,405,root);
+	Window* wnd = windowManager.createWindow(0,0,720,405,root);
 //	wnd->showRain();
 
 //	viewer.setUpViewInWindow(0,0,640,480);
@@ -143,7 +143,7 @@ void OsgViz::updateContent(){
 	//graphicsManager->draw();
 //	viewer.frame();
 
-	windows.frame();
+	windowManager.frame();
 	//graphicsManager->get3DWindow();
 
 //	osgViewer::ViewerBase::Views views;
