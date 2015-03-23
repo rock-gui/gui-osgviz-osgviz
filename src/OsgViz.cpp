@@ -31,7 +31,6 @@ void FrameUpdateThread::run()
 {
 	mutex.lock();
 	running = true;
-	mutex.unlock();
 
 	while (running){
 		mutex.unlock();
