@@ -55,7 +55,7 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
                    for (osg::NodePath::iterator node = intersection.nodePath.begin(); node != intersection.nodePath.end(); node++){
                 	   Clickable* obj = dynamic_cast<Clickable*>(*node);
                        if (obj){
-                    	   obj->clicked(mask,w,p);
+                    	   obj->clicked(mask,w,p, obj);
                        }
                    };
 

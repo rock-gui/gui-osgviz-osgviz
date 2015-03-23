@@ -16,8 +16,8 @@
 
 #include <stdio.h>
 
-#ifndef SRC_PLUGINS_MODELVIEW_H_
-#define SRC_PLUGINS_MODELVIEW_H_
+#ifndef SRC_PLUGINS_OBJECT_H_
+#define SRC_PLUGINS_OBJECT_H_
 
 namespace osgviz {
 
@@ -36,7 +36,7 @@ public:
 
 	virtual void setContent(osg::ref_ptr<osg::Node> object);
 
-	virtual bool clicked(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local){printf("clicked %.2f,%.2f,%.2f\n",world.x(),world.y(),world.z());return false;}
+	virtual bool clicked(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object){return false;}
 
 	virtual bool pointerEvent(int buttonMask, const osg::Vec3d &world, const osg::Vec3d &local){return false;}
 

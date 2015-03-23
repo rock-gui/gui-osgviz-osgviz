@@ -20,7 +20,6 @@ Window::Window(osg::Group *scene, int posx,int posy, int width, int height):posx
 	viewer = new osgViewer::CompositeViewer();
 	mainView = new osgViewer::View;
 
-
 	viewer->addView(mainView);
 	views.push_back(mainView);
 
