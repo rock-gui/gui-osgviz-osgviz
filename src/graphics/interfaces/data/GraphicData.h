@@ -34,6 +34,11 @@ namespace osgviz {
     public:
       GraphicData();
 
+      int windowWidth;
+      int windowHeight;
+      int windowPosX;
+      int windowPosY;
+
       Color clearColor;
       bool fogEnabled;
       sReal fogDensity;

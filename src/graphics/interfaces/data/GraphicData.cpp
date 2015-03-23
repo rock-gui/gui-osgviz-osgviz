@@ -31,6 +31,11 @@ namespace osgviz {
   namespace interfaces {
 
     GraphicData::GraphicData() {
+      windowWidth = 720;
+      windowHeight = 405;
+      windowPosX = 0;
+      windowPosY = 0;
+
       clearColor.r() = 0.55;
       clearColor.g() = 0.67;
       clearColor.b() = 0.88;

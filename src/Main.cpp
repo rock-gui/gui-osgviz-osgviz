@@ -13,6 +13,8 @@ int main(int argc, char** argv)
 {
 	osgviz::OsgViz *osgViz = osgviz::OsgViz::getInstance();
 
+	osgViz->createWindow();
+
 	osgviz::ModelLoader *modelloader = NULL;
 	if (argc > 1){
 		modelloader = osgViz->getVisualizerPlugin< osgviz::ModelLoader >("ModelLoader");

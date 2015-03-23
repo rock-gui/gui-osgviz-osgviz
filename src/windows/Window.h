@@ -37,7 +37,7 @@ class Window {
 
 
 public:
-	Window(osg::Group *scene, int posx = 0, int posy = 0, int width = 640, int height = 480);
+	Window(osg::Group *scene, interfaces::GraphicData graphicData);
 
 	virtual ~Window();
 
@@ -54,6 +54,7 @@ public:
 
 	void showRain(const bool &val = true);
 	void showSnow(const bool &val = true);
+	void showFog(const bool &val = true);
 
 
 	inline osgViewer::GraphicsWindow * getGraphicsWindow(){
@@ -77,9 +78,6 @@ private:
 	osgViewer::GraphicsWindow * graphicsWindow;
 
 	osgViewer::View* mainView;
-
-	int posx, posy, width, height;
-
 
 
 	osg::Group *scene;
