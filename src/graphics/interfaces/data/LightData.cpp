@@ -19,7 +19,6 @@
  */
 
 #include "LightData.h"
-#include "../OsgVizDefs.h"
 
 #define GET_VALUE(str, val, type)                    \
   if((it = config->find(str)) != config->end())      \
