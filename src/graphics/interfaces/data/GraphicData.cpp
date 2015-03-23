@@ -38,8 +38,8 @@ namespace osgviz {
 
       fogEnabled = false;
       fogDensity = 0.35;
-      fogStart = 10.0;
-      fogEnd = 30.0;
+      fogStart = 20.0;
+      fogEnd = 500.0;
 
       fogColor.r() = 0.2;
       fogColor.g() = 0.2;
