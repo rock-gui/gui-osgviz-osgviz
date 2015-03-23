@@ -18,9 +18,9 @@ WindowManager::~WindowManager() {
 	// TODO Auto-generated destructor stub
 }
 
-Window* WindowManager::createWindow(int posx, int posy, int width, int height, osg::Group* scene, std::string name) {
+Window* WindowManager::createWindow(interfaces::GraphicData graphicData, osg::Group* scene, std::string name) {
 	if (scene) {
-		Window* wnd = new Window(scene, posx, posy, width, height);
+		Window* wnd = new Window(scene, graphicData);
 		wnd->setName(name);
 		windows.push_back(wnd);
 		return wnd;		

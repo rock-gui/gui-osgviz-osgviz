@@ -10,6 +10,8 @@
 
 #include <stdexcept>
 
+#include "../graphics/interfaces/data/GraphicData.h"
+
 #include "Window.h"
 
 namespace osgviz {
@@ -19,7 +21,7 @@ public:
 	WindowManager();
 	virtual ~WindowManager();
 
-	Window* createWindow(int posx,int posy, int width, int height, osg::Group* scene = NULL, std::string name = "Env");
+	Window* createWindow(interfaces::GraphicData graphicData = interfaces::GraphicData(), osg::Group* scene = NULL, std::string name = "Env");
 
 	inline Window* getWindowByID(const unsigned int& id){
 		if (id < windows.size()){
