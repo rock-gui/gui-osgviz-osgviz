@@ -41,7 +41,7 @@ namespace osgviz {
       clearColor.b() = 0.88;
       clearColor.a() = 1.0;
 
-      fogEnabled = false;
+      fogEnabled = true;
       fogDensity = 0.35;
       fogStart = 20.0;
       fogEnd = 500.0;
