@@ -15,22 +15,38 @@
 
 namespace osgviz {
 
-Window::Window(osg::Group *scene, interfaces::GraphicData graphicData) {
-    viewer = new osgViewer::CompositeViewer();
+Window::Window(osg::Group *scene, interfaces::GraphicData graphicData, std::string name) {
+
+    osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
+    traits->windowName = name;
+    traits->x = graphicData.windowPosX;
+    traits->y = graphicData.windowPosY;
+    traits->width = graphicData.windowWidth;
+    traits->height = graphicData.windowHeight;
+    traits->windowDecoration = true;
+    traits->supportsResize = true;
+    traits->doubleBuffer = true;
+    traits->sharedContext = 0;
+
+    graphicsContext = osg::GraphicsContext::createGraphicsContext( traits.get() );
+
+    //viewer = new osgViewer::CompositeViewer();
     mainView = new osgViewer::View;
 
+    mainView->getCamera()->setGraphicsContext( graphicsContext.get() );
+    mainView->getCamera()->setViewport( new osg::Viewport(0, 0, graphicData.windowWidth, graphicData.windowHeight) );
 
-    viewer->addView(mainView);
+    //viewer->addView(mainView);
     views.push_back(mainView);
 
     objectSelector = new ObjectSelector(mainView);
     mainView->addEventHandler(objectSelector);
 
-    mainView->setUpViewInWindow(graphicData.windowPosX, graphicData.windowPosY, graphicData.windowWidth, graphicData.windowHeight);
-    viewer->realize();
-    osgViewer::ViewerBase::Windows m_windows;
-    viewer->getWindows(m_windows);
-    graphicsWindow = m_windows.front();
+    //mainView->setUpViewInWindow(graphicData.windowPosX, graphicData.windowPosY, graphicData.windowWidth, graphicData.windowHeight);
+    //viewer->realize();
+    //osgViewer::ViewerBase::Windows m_windows;
+    //viewer->getWindows(m_windows);
+    //graphicsWindow = m_windows.front();
 
 
     globalStateset = new osg::StateSet();
@@ -50,7 +66,7 @@ Window::Window(osg::Group *scene, interfaces::GraphicData graphicData) {
 
     // background color for the scene
 
-    printf("windows %i\n",m_windows.size());
+    //printf("windows %i\n",m_windows.size());
 
     //graphicsWindow->setClearColor(graphicOptions.clearColor);
     mainView->getCamera()->setClearColor(graphicOptions.clearColor);
@@ -100,7 +116,7 @@ osgViewer::View* Window::addView(std::string name) {
 
     //view->setCameraManipulator(keyswitchManipulator);
 
-    viewer->addView(view);
+    //viewer->addView(view);
     view->setSceneData(scene);
     //view->setUpViewInWindow(posx,posy,width, height);
     views.push_back(view);
@@ -120,12 +136,12 @@ osg::Group* Window::getScene() {
 }
 
 void Window::setName(const std::string& name) {
-    graphicsWindow->setWindowName(name);
+    //graphicsWindow->setWindowName(name);
 }
 
-void Window::frame() {
-    viewer->frame();
-}
+//void Window::frame() {
+//    viewer->frame();
+//}
 
 void Window::initDefaultLight() {
     osg::ref_ptr<osg::LightSource> myLightSource = new graphics::OSGLightStruct(defaultLight.lStruct);

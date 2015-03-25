@@ -10,13 +10,15 @@
 
 #include <stdexcept>
 
+#include <osgViewer/CompositeViewer>
+
 #include "../graphics/interfaces/data/GraphicData.h"
 
 #include "Window.h"
 
 namespace osgviz {
 
-class WindowManager {
+class WindowManager : public osgViewer::CompositeViewer {
 public:
 	WindowManager();
 	virtual ~WindowManager();
@@ -29,9 +31,6 @@ public:
 		}
 		return NULL;
 	}
-
-
-	void frame();
 
 private:
 	std::vector<Window*> windows;

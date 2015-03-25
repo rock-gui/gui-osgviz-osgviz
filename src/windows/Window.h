@@ -37,7 +37,7 @@ class Window {
 
 
 public:
-	Window(osg::Group *scene, interfaces::GraphicData graphicData);
+	Window(osg::Group *scene, interfaces::GraphicData graphicData, std::string name = "3d Window");
 
 	virtual ~Window();
 
@@ -49,7 +49,7 @@ public:
 
 	osgViewer::View* addView(std::string name = "3d Window");
 
-	void frame();
+	//void frame();
 
 
 	void showRain(const bool &val = true);
@@ -57,27 +57,24 @@ public:
 	void showFog(const bool &val = true);
 
 
-	inline osgViewer::GraphicsWindow * getGraphicsWindow(){
-		return graphicsWindow;
-	}
+	//inline osgViewer::GraphicsWindow * getGraphicsWindow(){
+	//	return graphicsWindow;
+	//}
 
 	inline osgViewer::View* getView(int index = 0){
 		return views[index];
-	}
-
-	inline osg::ref_ptr<osgViewer::CompositeViewer> getViewer(){
-		return viewer;
 	}
 
 private:
 
 	void initDefaultLight();
 
-	osg::ref_ptr<osgViewer::CompositeViewer> viewer;
-	std::vector<osgViewer::View* > views;
-	osgViewer::GraphicsWindow * graphicsWindow;
+	osg::ref_ptr<osg::GraphicsContext> graphicsContext;
 
-	osgViewer::View* mainView;
+	std::vector<osg::ref_ptr<osgViewer::View> > views;
+	//osgViewer::GraphicsWindow * graphicsWindow;
+
+	osgViewer::View* mainView;	
 
 
 	osg::Group *scene;
