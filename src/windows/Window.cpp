@@ -57,6 +57,8 @@ Window::Window(osg::Group *scene, interfaces::GraphicData graphicData, std::stri
     mainView = new osgViewer::View;
 
     mainView->getCamera()->setGraphicsContext( graphicsContext.get() );
+    // TODO: at the moment the main view are set to the full window
+    // maybe in the futer we want to divide the window into several views
     mainView->getCamera()->setViewport( new osg::Viewport(0, 0, traits->width, traits->height) );
 
     //viewer->addView(mainView);
