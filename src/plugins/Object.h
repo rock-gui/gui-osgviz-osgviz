@@ -34,7 +34,7 @@ public:
 
 	virtual ~Object();
 
-	virtual void setContent(osg::ref_ptr<osg::Node> object);
+	//virtual void setContent(osg::ref_ptr<osg::Node> object);
 
 	virtual bool clicked(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object){return false;}
 
@@ -104,7 +104,7 @@ protected:
     bool visible;
 
     //osg::ref_ptr<osg::Group> root;
-    osg::ref_ptr<osg::Node> object;
+    //osg::ref_ptr<osg::Node> object;
 
     osg::ref_ptr<osg::MatrixTransform> scaleTransform;
 

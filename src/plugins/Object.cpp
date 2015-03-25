@@ -12,7 +12,7 @@
 
 namespace osgviz {
 
-Object::Object():cull_mask(0xffffffff),visible(true),object(NULL),scaleTransform(new osg::MatrixTransform),name(""){
+Object::Object():cull_mask(0xffffffff),visible(true),scaleTransform(new osg::MatrixTransform),name(""){
 	scaleTransform->setMatrix(osg::Matrix::scale(1.0, 1.0, 1.0));
 	PositionAttitudeTransform::addChild(scaleTransform);
 }
@@ -21,11 +21,11 @@ Object::~Object() {
 	// TODO Auto-generated destructor stub
 }
 
-void Object::setContent(osg::ref_ptr<osg::Node> object) {
-	this->object = object;
-	scaleTransform->addChild(object);
-	//root->addChild(this);
-}
+//void Object::setContent(osg::ref_ptr<osg::Node> object) {
+//	this->object = object;
+//	scaleTransform->addChild(object);
+//	//root->addChild(this);
+//}
 
 //void Object::setRootNode(osg::Group* node){
 //	root = node;
