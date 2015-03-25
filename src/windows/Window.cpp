@@ -13,28 +13,51 @@
 #include "../graphics/wrapper/OSGLightStruct.h"
 #include <stdio.h>
 
+#include <osg/GraphicsContext>
+
 namespace osgviz {
 
 Window::Window(osg::Group *scene, interfaces::GraphicData graphicData, std::string name) {
 
     osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
     traits->windowName = name;
-    traits->x = graphicData.windowPosX;
-    traits->y = graphicData.windowPosY;
-    traits->width = graphicData.windowWidth;
-    traits->height = graphicData.windowHeight;
-    traits->windowDecoration = true;
     traits->supportsResize = true;
     traits->doubleBuffer = true;
     traits->sharedContext = 0;
 
+    // full screen: the rendering window attributes according to current screen settings
+    if (graphicData.fullScreen == true) {
+        // TODO: allow to choose the screen
+        int screenNum = 0;
+        unsigned int width = graphicData.windowWidth;
+        unsigned int height = graphicData.windowHeight;
+
+        osg::GraphicsContext::WindowingSystemInterface* wsi = osg::GraphicsContext::getWindowingSystemInterface();
+        if (wsi)
+            wsi->getScreenResolution( osg::GraphicsContext::ScreenIdentifier(screenNum), width, height );
+
+        traits->x = 0;
+        traits->y = 0;
+        traits->width = width;
+        traits->height = height;        
+        traits->windowDecoration = false;
+    } 
+    // user defined window: the size and position of the window are defined in graphicData
+    else {
+        traits->x = graphicData.windowPosX;
+        traits->y = graphicData.windowPosY;
+        traits->width = graphicData.windowWidth;
+        traits->height = graphicData.windowHeight;
+        traits->windowDecoration = true;
+    }
+    
     graphicsContext = osg::GraphicsContext::createGraphicsContext( traits.get() );
 
     //viewer = new osgViewer::CompositeViewer();
     mainView = new osgViewer::View;
 
     mainView->getCamera()->setGraphicsContext( graphicsContext.get() );
-    mainView->getCamera()->setViewport( new osg::Viewport(0, 0, graphicData.windowWidth, graphicData.windowHeight) );
+    mainView->getCamera()->setViewport( new osg::Viewport(0, 0, traits->width, traits->height) );
 
     //viewer->addView(mainView);
     views.push_back(mainView);
