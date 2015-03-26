@@ -15,6 +15,10 @@ namespace osgviz {
 
 class Clickable {
 public:
+
+	Clickable(){};
+	virtual ~Clickable(){};
+
 	/**
 	 * @param object self, can be used to forward events to external handlers that operate on the object
 	 */
