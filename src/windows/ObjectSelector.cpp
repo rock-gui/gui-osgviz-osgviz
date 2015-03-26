@@ -37,8 +37,6 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 		   if (thisEvent == osgGA::GUIEventAdapter::PUSH){
 			   pushedButtonsMask = ea.getButtonMask();
 		   }
-		   std::cout << "event " << thisEvent << "mask" << pushedButtonsMask << std::endl;
-
 
 		   if(thisEvent == osgGA::GUIEventAdapter::RELEASE && lastEvent == osgGA::GUIEventAdapter::PUSH){
 			   osg::ref_ptr<osgUtil::LineSegmentIntersector> ray = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, ea.getXnormalized(), ea.getYnormalized());
@@ -57,7 +55,6 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 				   for (osg::NodePath::iterator node = intersection.nodePath.begin(); node != intersection.nodePath.end(); node++){
 					   Clickable* obj = dynamic_cast<Clickable*>(*node);
 					   if (obj){
-						   std::cout << "forward " << thisEvent << "mask" << pushedButtonsMask << std::endl;
 						   obj->clicked(pushedButtonsMask,w,p,obj);
 					   }
 				   };
