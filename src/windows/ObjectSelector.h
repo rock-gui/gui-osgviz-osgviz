@@ -25,6 +25,10 @@ public:
 
 private:
 	osgViewer::View *viewer;
+	osgGA::GUIEventAdapter::EventType thisEvent,lastEvent;
+	int pushedButtonsMask;
+
+
 
 };
 
