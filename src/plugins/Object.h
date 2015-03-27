@@ -103,6 +103,9 @@ public:
     	PositionAttitudeTransform::setAttitude( osg::Quat(angle, vec) );
     }
 
+    inline void rotate(const double &angle, const osg::Vec3d &vec){
+    	setAttitude( getAttitude() * osg::Quat(angle, vec) );
+    }
 
 
     void switchCullMask();
