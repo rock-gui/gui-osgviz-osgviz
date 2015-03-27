@@ -128,7 +128,6 @@ OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
 			return NULL;
 		}
 		viz->setParent(this);
-		viz->init();
 		loadedPlugins.push_back(viz);
 		return viz;
 

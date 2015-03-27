@@ -10,6 +10,7 @@
 
 //#include "graphics/interfaces/GraphicsManagerInterface.h"
 #include "plugins/OsgVizPlugin.h"
+#include "plugins/OsgVizVisualizerPlugin.h"
 #include "windows/WindowManager.h"
 
 #include "graphics/interfaces/data/GraphicData.h"
@@ -78,12 +79,16 @@ namespace osgviz
 		template <class VIZPLUGIN> VIZPLUGIN* getVisualizerPlugin(std::string classname){
 			VIZPLUGIN* viz = (VIZPLUGIN*)getVizPlugin(classname,classname);
 			viz->setRootNode(root);
+			OsgVizPlugin* vizplug = (OsgVizPlugin*)viz;
+			vizplug->init();
 			return viz;
 		}
 
 		template <class VIZPLUGIN> VIZPLUGIN* getDataPlugin(std::string classname){
 			VIZPLUGIN* data = (VIZPLUGIN*)getVizPlugin(classname,classname);
 			data->init(m_argc,m_argv);
+			OsgVizPlugin* dataplug = (OsgVizPlugin*)data;
+			data->init();
 			return data;
 		}
 

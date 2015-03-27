@@ -57,6 +57,9 @@ protected:
     	osgVizFuncPtr = &OsgVizPlugin::osgVizPtr;
     }
 
+
+
+private:
     OsgViz* osgVizPtr(){
     	return parent;
     }
