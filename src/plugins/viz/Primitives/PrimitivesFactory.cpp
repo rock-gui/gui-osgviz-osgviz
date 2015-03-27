@@ -7,6 +7,7 @@
 
 #include "PrimitivesFactory.h"
 
+#include "Primitives/ArrowNode.h"
 #include "Primitives/AxesNode.hpp"
 #include "Primitives/GridNode.hpp"
 
@@ -32,6 +33,10 @@ osg::ref_ptr<Object> PrimitivesFactory::createGrid(int rows,int cols,float dx, f
 	osg::ref_ptr<osg::Node> content = GridNode::create(rows,cols,dx, dy, show_coordinates, color);
 	obj->addChild(content);
 	return obj;
+}
+
+osg::ref_ptr<Object> PrimitivesFactory::createArrow(){
+	return new ArrowNode();
 }
 
 } /* namespace osgviz */

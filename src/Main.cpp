@@ -30,7 +30,10 @@ int main(int argc, char** argv)
 	osg::ref_ptr<osgviz::Object> grid = primitivesfactory->createGrid();
 	osgViz->addChild(grid);
 
+	osg::ref_ptr<osgviz::Object> arrow = primitivesfactory->createArrow();
+	osgViz->addChild(arrow);
 
+	arrow->rotate(M_PI/2.0,osg::Vec3d(0,1,0));
 
 
 	//osgviz::GraphicsManagerInterface* manager = osgViz->getGraphicsManagerInterface();
