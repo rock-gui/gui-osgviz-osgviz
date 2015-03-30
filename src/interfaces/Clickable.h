@@ -24,6 +24,8 @@ public:
 	 */
 	virtual bool clicked(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, Clickable* object) = 0;
 
+	virtual bool dragged(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, Clickable* object){return false;}
+
 };
 
 } /* namespace osgviz */

@@ -51,6 +51,8 @@ public:
 
 	void frame();
 
+	void enableCameraControl();
+	void disableCameraControl();
 
 	void showRain(const bool &val = true);
 	void showSnow(const bool &val = true);
@@ -96,6 +98,7 @@ private:
     osg::ref_ptr<ObjectSelector> objectSelector;
 
     osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> keyswitchManipulator;
+    int lastActiveCameraManipulator;
 };
 
 } /* namespace osgviz */

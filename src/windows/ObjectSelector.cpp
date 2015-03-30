@@ -8,6 +8,7 @@
 #include "ObjectSelector.h"
 
 #include "../interfaces/Clickable.h"
+#include "Window.h"
 
 #include <osgUtil/LineSegmentIntersector>
 #include <iostream>
@@ -15,7 +16,7 @@
 
 namespace osgviz {
 
-ObjectSelector::ObjectSelector(osgViewer::View * view):osgGA::GUIEventHandler(),viewer(view) {
+ObjectSelector::ObjectSelector(osgviz::Window *win):osgGA::GUIEventHandler(),window(win) {
 
 
 }
@@ -38,30 +39,53 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 			   pushedButtonsMask = ea.getButtonMask();
 		   }
 
-		   if(thisEvent == osgGA::GUIEventAdapter::RELEASE && lastEvent == osgGA::GUIEventAdapter::PUSH){
-			   osg::ref_ptr<osgUtil::LineSegmentIntersector> ray = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, ea.getXnormalized(), ea.getYnormalized());
-			   osgUtil::IntersectionVisitor visitor(ray);
+		   osg::ref_ptr<osgUtil::LineSegmentIntersector> ray = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, ea.getXnormalized(), ea.getYnormalized());
+		   osgUtil::IntersectionVisitor visitor(ray);
+		   window->getView()->getCamera()->accept(visitor);
+		   osgUtil::LineSegmentIntersector::Intersection intersection = ray->getFirstIntersection();
 
-			   viewer->getCamera()->accept(visitor);
+		   const osg::Vec3 &p = intersection.getLocalIntersectPoint();
+		   const osg::Vec3 &w = intersection.getWorldIntersectPoint();
 
-			   if (ray->containsIntersections())
-			   {
-				   osgUtil::LineSegmentIntersector::Intersection intersection = ray->getFirstIntersection();
-
-				   const osg::Vec3 &p = intersection.getLocalIntersectPoint();
-				   const osg::Vec3 &w = intersection.getWorldIntersectPoint();
+		   if (ray->containsIntersections()){
 
 
+			   if(thisEvent == osgGA::GUIEventAdapter::RELEASE && lastEvent == osgGA::GUIEventAdapter::PUSH){
+				   lastEvent = thisEvent;
+				   //get the first Clickabe Object in path that accepts being clicked
 				   for (osg::NodePath::iterator node = intersection.nodePath.begin(); node != intersection.nodePath.end(); node++){
 					   Clickable* obj = dynamic_cast<Clickable*>(*node);
 					   if (obj){
-						   obj->clicked(pushedButtonsMask,w,p,obj);
+						   if (obj->clicked(pushedButtonsMask,w,p,obj)){
+							   return true;
+						   }
 					   }
 				   };
-				   lastEvent = thisEvent;
-				   return true;
 			   }
+
+			   if (thisEvent == osgGA::GUIEventAdapter::DRAG){
+				   //get the first Clickabe Object in path
+				   for (osg::NodePath::iterator node = intersection.nodePath.begin(); node != intersection.nodePath.end(); node++){
+					   Clickable* obj = dynamic_cast<Clickable*>(*node);
+					   if (obj){
+						   if (obj->dragged(pushedButtonsMask,w,p,obj)){
+							   //there is a receiving obj,
+							   if (lastEvent == osgGA::GUIEventAdapter::PUSH){
+								   window->disableCameraControl();
+							   }
+							   lastEvent = thisEvent;
+							   return true;
+						   }
+					   }
+				   }
+			   }
+
+			   if (thisEvent == osgGA::GUIEventAdapter::RELEASE && lastEvent == osgGA::GUIEventAdapter::DRAG){
+				   window->enableCameraControl();
+			   }
+
 		   }
+
 		   lastEvent = thisEvent;
 		   return false;
 	   }
