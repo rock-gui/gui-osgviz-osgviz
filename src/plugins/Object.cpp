@@ -75,6 +75,42 @@ void Object::switchCullMask() {
   }
 }
 
+
+bool Object::clicked(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, Clickable *object){
+	printf("%s click %.2f,%.2f,%.2f\n",this->getName().c_str(),world.x(),world.y(),world.z());
+	bool finish = false;
+	if (!clickablecb.empty()){
+		for (std::vector< Clickable* >::iterator it = clickablecb.begin();it != clickablecb.end(); it++){
+			if ((*it)->clicked(buttonMask,world,local, this)){
+				printf("%s forwarded click\n",this->getName().c_str());
+				finish = true;
+			}
+		}
+
+	}
+	return finish;
+}
+
+bool Object::dragged(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, Clickable *object){
+	printf("%s dragged %.2f,%.2f,%.2f\n",this->getName().c_str(),world.x(),world.y(),world.z());
+	bool finish = false;
+	if (!clickablecb.empty()){
+		for (std::vector< Clickable* >::iterator it = clickablecb.begin();it != clickablecb.end(); it++){
+			if ((*it)->dragged(buttonMask,world,local, this)){
+				printf("%s forwarded dragged\n",this->getName().c_str());
+				finish = true;
+			}
+		}
+
+	}
+	return finish;
+}
+
+void Object::addClickableCallback(Clickable* cb) {
+	this->clickablecb.push_back(cb);
+}
+
+
 } /* namespace osgviz */
 
 

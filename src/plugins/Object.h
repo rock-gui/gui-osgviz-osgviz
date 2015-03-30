@@ -36,7 +36,9 @@ public:
 
 	//virtual void setContent(osg::ref_ptr<osg::Node> object);
 
-	virtual bool clicked(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object){return false;}
+	virtual bool clicked(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object);
+
+	virtual bool dragged(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object);
 
 	virtual bool pointerEvent(int buttonMask, const osg::Vec3d &world, const osg::Vec3d &local){return false;}
 
@@ -44,7 +46,7 @@ public:
 
     //virtual void setRootNode(osg::Group* node);
 
-
+	void addClickableCallback(Clickable * cb);
 
 
     inline void setName(std::string name){
@@ -129,6 +131,8 @@ private:
     osg::ref_ptr< osg::Geode > textgeode;
     osg::ref_ptr< osgText::Text > text;
     std::string name;
+
+	std::vector< Clickable* > clickablecb;
 
 };
 
