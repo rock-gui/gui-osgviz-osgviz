@@ -36,7 +36,11 @@ namespace osgviz {
     class ViewConfig {
     public:
       ViewConfig(int posX, int posY, int width, int height) :
-        posX(posX), posY(posY), width(width), height(height) {};
+                posX(posX), posY(posY), width(width), height(height),
+                clearColorRed(0.55),
+                clearColorGreen(0.67),
+                clearColorBlue(0.88),
+                clearColorAlpha(1.0) {};
 
       ViewConfig(): ViewConfig(0, 0, -1 ,-1) {};
 
@@ -45,6 +49,14 @@ namespace osgviz {
       int width;
       int height;       //!< if width or height are set to -1,
                         //!< than view will take the config (width and height) of window
+
+
+      float clearColorRed;
+      float clearColorGreen;
+      float clearColorBlue;
+      float clearColorAlpha;      
+
+
 
     };
 

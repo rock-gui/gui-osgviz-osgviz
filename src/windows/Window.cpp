@@ -28,7 +28,6 @@ Window::Window(WindowConfig windowConfig) :
 
     // full screen: the rendering window attributes according to current screen settings
     if (windowConfig.fullScreen == true) {
-        std::cout << "FULLSCREEN" << std::endl;
         // TODO: allow to choose the screen
         int screenNum = 0;
         unsigned int width = windowConfig.width;
@@ -46,7 +45,6 @@ Window::Window(WindowConfig windowConfig) :
     } 
     // user defined window: the size and position of the window are defined in graphicData
     else {
-        std::cout << "NOT FULLSCREEN" << std::endl;
         traits->x = windowConfig.posX;
         traits->y = windowConfig.posY;
         traits->width = windowConfig.width;
@@ -90,8 +88,8 @@ Window::Window(WindowConfig windowConfig) :
     // background color for the scene
     //mainView->getCamera()->setClearColor(graphicOptions.clearColor);
 
-    //root = new osg::Group;
-    //root->setStateSet(globalStateset.get()); 
+    root = new osg::Group;
+    root->setStateSet(globalStateset.get()); 
 
     //setScene(scene);
 }
@@ -105,14 +103,16 @@ osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* scene) {
 
     view->getCamera()->setGraphicsContext(graphicsContext);
 
+    view->getCamera()->setClearColor(osg::Vec4(viewConfig.clearColorRed,
+                                        viewConfig.clearColorGreen,
+                                        viewConfig.clearColorBlue,
+                                        viewConfig.clearColorAlpha));
+
     // if width and height is not set, than show view in full window
     if (viewConfig.width == -1 || viewConfig.height == -1) {
-        std::cout << "view in full window" << std::endl;
         const osg::GraphicsContext::Traits* traits = graphicsContext->getTraits();
-
         view->getCamera()->setViewport(0, 0, traits->width, traits->height);
     } else {
-        std::cout << "crop the view" << std::endl;
         view->getCamera()->setViewport(viewConfig.posX, viewConfig.posY, viewConfig.width, viewConfig.height);
     }
 
@@ -121,6 +121,8 @@ osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* scene) {
     view->setSceneData(scene);
 
     views.push_back(view);
+
+    root->addChild(scene);
 
     return view.release();
 }
