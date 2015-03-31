@@ -18,15 +18,21 @@ WindowManager::~WindowManager() {
 	// TODO Auto-generated destructor stub
 }
 
-Window* WindowManager::createWindow(interfaces::GraphicData graphicData, osg::Group* scene, std::string name) {
+Window* WindowManager::createWindow(WindowConfig windowConfig, osg::Group* scene) {
 	if (scene) {
-		Window* wnd = new Window(scene, graphicData, name);
-		osgViewer::View* view = wnd->getView(0); 
-		wnd->setName(name);
+		Window* wnd = new Window(windowConfig);
+		//osgViewer::View* view = wnd->getView(0); 
 		windows.push_back(wnd);
 
-		//osgViewer::View* view = wnd->getMainView();
-		addView(view);
+		if (windowConfig.dummyTwoViews == false) {
+			osgViewer::View* view = wnd->addView(ViewConfig(), scene);
+			addView(view);
+		} else {
+			osgViewer::View* viewLeft = wnd->addView(ViewConfig(0, 0, 300, 402), scene);
+			addView(viewLeft);
+			osgViewer::View* viewRight = wnd->addView(ViewConfig(300, 0, 420, 402), scene);
+			addView(viewRight);			
+		}
 
 		return wnd;		
 	}

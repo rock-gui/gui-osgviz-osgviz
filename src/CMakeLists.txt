@@ -55,6 +55,7 @@ rock_library(osgViz
       	   windows/ObjectSelector.h
            windows/Window.h
            windows/WindowManager.h
+           windows/config/WindowConfig.h
                
     LIBS ${Boost_SYSTEM_LIBRARY}
     DEPS osgVizGraphics

@@ -12,7 +12,7 @@
 #include "plugins/OsgVizPlugin.h"
 #include "windows/WindowManager.h"
 
-#include "graphics/interfaces/data/GraphicData.h"
+#include "windows/config/WindowConfig.h"
 
 
 /*namespace osgviz {
@@ -66,7 +66,7 @@ namespace osgviz
 
 		void updateContent();
 
-		int createWindow(interfaces::GraphicData graphicData = interfaces::GraphicData());
+		int createWindow(WindowConfig windowConfig = WindowConfig());
 		void destroyWindow(int id);
 
 		//inline GraphicsManagerInterface* getGraphicsManagerInterface(){

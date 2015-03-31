@@ -17,25 +17,27 @@
 
 namespace osgviz {
 
-Window::Window(osg::Group *scene, interfaces::GraphicData graphicData, std::string name) {
+Window::Window(WindowConfig windowConfig) :
+         windowConfig(windowConfig) {
 
     osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
-    traits->windowName = name;
-    traits->supportsResize = true;
+    traits->windowName = windowConfig.title;
+    traits->supportsResize = false;
     traits->doubleBuffer = true;
     traits->sharedContext = 0;
 
     // full screen: the rendering window attributes according to current screen settings
-    if (graphicData.fullScreen == true) {
+    if (windowConfig.fullScreen == true) {
+        std::cout << "FULLSCREEN" << std::endl;
         // TODO: allow to choose the screen
         int screenNum = 0;
-        unsigned int width = graphicData.windowWidth;
-        unsigned int height = graphicData.windowHeight;
+        unsigned int width = windowConfig.width;
+        unsigned int height = windowConfig.height;
 
         osg::GraphicsContext::WindowingSystemInterface* wsi = osg::GraphicsContext::getWindowingSystemInterface();
         if (wsi)
             wsi->getScreenResolution( osg::GraphicsContext::ScreenIdentifier(screenNum), width, height );
-
+        
         traits->x = 0;
         traits->y = 0;
         traits->width = width;
@@ -44,42 +46,38 @@ Window::Window(osg::Group *scene, interfaces::GraphicData graphicData, std::stri
     } 
     // user defined window: the size and position of the window are defined in graphicData
     else {
-        traits->x = graphicData.windowPosX;
-        traits->y = graphicData.windowPosY;
-        traits->width = graphicData.windowWidth;
-        traits->height = graphicData.windowHeight;
+        std::cout << "NOT FULLSCREEN" << std::endl;
+        traits->x = windowConfig.posX;
+        traits->y = windowConfig.posY;
+        traits->width = windowConfig.width;
+        traits->height = windowConfig.height;
         traits->windowDecoration = true;
     }
     
     graphicsContext = osg::GraphicsContext::createGraphicsContext( traits.get() );
 
-    //viewer = new osgViewer::CompositeViewer();
-    mainView = new osgViewer::View;
-
-    mainView->getCamera()->setGraphicsContext( graphicsContext.get() );
+    //mainView = new osgViewer::View;
+    /*if (graphicData.fullScreen == true) {
+        mainView->apply(new osgviz::SingleWindow(0, 0, -1, -1, 0));
+    } else {
+        mainView->apply(new osgviz::SingleWindow(graphicData.windowPosX, graphicData.windowPosY, graphicData.windowWidth, graphicData.windowHeight, 0));
+    }*/
+    //mainView->setUpViewInWindow(graphicData.windowPosX, graphicData.windowPosY, graphicData.windowWidth, graphicData.windowHeight);
+    //mainView->getCamera()->setGraphicsContext( graphicsContext.get() );
     // TODO: at the moment the main view are set to the full window
     // maybe in the futer we want to divide the window into several views
-    mainView->getCamera()->setViewport( new osg::Viewport(0, 0, traits->width, traits->height) );
+    //mainView->getCamera()->setViewport( new osg::Viewport(0, 0, traits->width, traits->height) );
+    //mainView->setCameraManipulator(new osgGA::TerrainManipulator());
+    //views.push_back(mainView);
 
-    //viewer->addView(mainView);
-    views.push_back(mainView);
-
-    objectSelector = new ObjectSelector(mainView);
-    mainView->addEventHandler(objectSelector);
-
-    //mainView->setUpViewInWindow(graphicData.windowPosX, graphicData.windowPosY, graphicData.windowWidth, graphicData.windowHeight);
-    //viewer->realize();
-    //osgViewer::ViewerBase::Windows m_windows;
-    //viewer->getWindows(m_windows);
-    //graphicsWindow = m_windows.front();
-
+    //objectSelector = new ObjectSelector(mainView);
+    //mainView->addEventHandler(objectSelector);
 
     globalStateset = new osg::StateSet();
 
     globalStateset->setMode(GL_DEPTH_TEST, osg::StateAttribute::ON);
     globalStateset->setMode(GL_LIGHTING, osg::StateAttribute::ON);
-
-    globalStateset->setMode(GL_LIGHT0, osg::StateAttribute::OFF);
+    globalStateset->setMode(GL_LIGHT0, osg::StateAttribute::ON);
     globalStateset->setMode(GL_LIGHT1, osg::StateAttribute::OFF);
     globalStateset->setMode(GL_LIGHT2, osg::StateAttribute::OFF);
     globalStateset->setMode(GL_LIGHT3, osg::StateAttribute::OFF);
@@ -90,136 +88,50 @@ Window::Window(osg::Group *scene, interfaces::GraphicData graphicData, std::stri
     globalStateset->setMode(GL_BLEND,osg::StateAttribute::OFF);
 
     // background color for the scene
+    //mainView->getCamera()->setClearColor(graphicOptions.clearColor);
 
-    //printf("windows %i\n",m_windows.size());
+    //root = new osg::Group;
+    //root->setStateSet(globalStateset.get()); 
 
-    //graphicsWindow->setClearColor(graphicOptions.clearColor);
-    mainView->getCamera()->setClearColor(graphicOptions.clearColor);
-
-    // some fixed function pipeline stuff...
-    // i guess the default is smooth shading, that means
-    // light influence is calculated per vertex and interpolated for fragments.
-    osg::ref_ptr<osg::LightModel> myLightModel = new osg::LightModel;
-    myLightModel->setTwoSided(false);
-    globalStateset->setAttributeAndModes(myLightModel.get(), osg::StateAttribute::ON);
-
-    // associate scene with global states
-
-    lightGroup = new osg::Group();
-    // init light (osg can have only 8 lights enabled at a time)
-    for (unsigned int i =0; i<8;i++) {
-        lightmanager ltemp;
-        ltemp.free=true;
-        myLights.push_back(ltemp);
-    }
-
-    initDefaultLight();
-
-
-    keyswitchManipulator = new osgGA::KeySwitchMatrixManipulator;  
-
-    keyswitchManipulator->addMatrixManipulator( '1', "Trackball", new osgGA::TerrainManipulator() );
-    keyswitchManipulator->addMatrixManipulator( '2', "Flight", new osgGA::FlightManipulator() );
-
-    unsigned int num = keyswitchManipulator->getNumMatrixManipulators();
-    keyswitchManipulator->selectMatrixManipulator(num);
-
-    mainView->setCameraManipulator(keyswitchManipulator);
-
-    setScene(scene);
-
-    if (graphicOptions.fogEnabled == true)
-        showFog(true);
+    //setScene(scene);
 }
 
 Window::~Window() {
 
 }
 
-osgViewer::View* Window::addView(std::string name) {
-    osgViewer::View* view = new osgViewer::View;
+osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* scene) {
+    osg::ref_ptr<osgViewer::View> view = new osgViewer::View;
 
-    //view->setCameraManipulator(keyswitchManipulator);
+    view->getCamera()->setGraphicsContext(graphicsContext);
 
-    //viewer->addView(view);
+    // if width and height is not set, than show view in full window
+    if (viewConfig.width == -1 || viewConfig.height == -1) {
+        std::cout << "view in full window" << std::endl;
+        const osg::GraphicsContext::Traits* traits = graphicsContext->getTraits();
+
+        view->getCamera()->setViewport(0, 0, traits->width, traits->height);
+    } else {
+        std::cout << "crop the view" << std::endl;
+        view->getCamera()->setViewport(viewConfig.posX, viewConfig.posY, viewConfig.width, viewConfig.height);
+    }
+
+    view->setCameraManipulator(new osgGA::TerrainManipulator());
+
     view->setSceneData(scene);
-    //view->setUpViewInWindow(posx,posy,width, height);
+
     views.push_back(view);
-    return view;
+
+    return view.release();
 }
 
 void Window::setScene(osg::Group* scene) {
-    this->scene = scene;
-    mainView->setSceneData(scene);
-    scene->setStateSet(globalStateset.get());
-    scene->addChild(lightGroup.get());
-    //scene->addChild(shadowedScene.get());
+    root->addChild(scene);
+    mainView->setSceneData(root);
 }
 
 osg::Group* Window::getScene() {
-    return this->scene;
-}
-
-void Window::setName(const std::string& name) {
-    //graphicsWindow->setWindowName(name);
-}
-
-//void Window::frame() {
-//    viewer->frame();
-//}
-
-void Window::initDefaultLight() {
-    osg::ref_ptr<osg::LightSource> myLightSource = new graphics::OSGLightStruct(defaultLight.lStruct);
-
-    //add to lightmanager for later editing possibility
-    defaultLight.light = myLightSource->getLight();
-    defaultLight.lightSource = myLightSource;
-    defaultLight.free = false;
-
-    lightGroup->addChild( myLightSource.get() );
-    globalStateset->setMode(GL_LIGHT0, osg::StateAttribute::ON);
-    myLightSource->setStateSetModes(*globalStateset, osg::StateAttribute::ON);
-}
-
-
-void Window::showRain(const bool &val) {
-    if (val) {
-        rain = new osgParticle::PrecipitationEffect;
-        rain->setWind(osg::Vec3(1, 0, 0));
-        rain->setParticleSpeed(0.4);
-        rain->rain(0.6); // alternatively, use rain
-        scene->addChild(rain.get());
-    } else {
-        scene->removeChild(rain.get());
-    }
-}
-
-void Window::showSnow(const bool &val) {
-    if (val) {
-        snow = new osgParticle::PrecipitationEffect;
-        snow->setWind(osg::Vec3(1, 0, 0));
-        snow->setParticleSpeed(0.4);
-        snow->snow(0.4); // alternatively, use rain
-        scene->addChild(snow.get());
-    } else {
-        scene->removeChild(snow.get());
-    }
-}
-
-void Window::showFog(const bool &val) {
-    if (val) {
-        graphicOptions.fogEnabled = true;
-
-        myFog = new osg::Fog;
-        myFog->setMode(osg::Fog::LINEAR);
-        myFog->setColor(graphicOptions.fogColor);
-        myFog->setStart(graphicOptions.fogStart);
-        myFog->setEnd(graphicOptions.fogEnd);
-        myFog->setDensity(graphicOptions.fogDensity);
-        globalStateset->setAttributeAndModes(myFog.get(), osg::StateAttribute::ON);        
-    } else {
-        graphicOptions.fogEnabled = false;        
-    }
+    return this->root;
 }
 
 } /* namespace osgviz */
