@@ -12,7 +12,7 @@
 
 #include <osgUtil/LineSegmentIntersector>
 #include <iostream>
-
+#include <stdio.h>
 
 namespace osgviz {
 
@@ -33,13 +33,14 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 	   //ignored events (for the lastEvent setting)
 	   if (thisEvent != osgGA::GUIEventAdapter::FRAME && thisEvent != osgGA::GUIEventAdapter::MOVE ){
 
+		   std::cout << "event " << thisEvent << std::endl;
 
 		   //save the buttonmask (not available in release event)
 		   if (thisEvent == osgGA::GUIEventAdapter::PUSH){
 			   pushedButtonsMask = ea.getButtonMask();
 		   }
 
-		   osg::ref_ptr<osgUtil::LineSegmentIntersector> ray = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, ea.getXnormalized(), ea.getYnormalized());
+		   		   osg::ref_ptr<osgUtil::LineSegmentIntersector> ray = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, ea.getXnormalized(), ea.getYnormalized());
 		   osgUtil::IntersectionVisitor visitor(ray);
 		   window->getView()->getCamera()->accept(visitor);
 		   osgUtil::LineSegmentIntersector::Intersection intersection = ray->getFirstIntersection();
@@ -49,8 +50,8 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 
 		   if (ray->containsIntersections()){
 
-
-			   if(thisEvent == osgGA::GUIEventAdapter::RELEASE && lastEvent == osgGA::GUIEventAdapter::PUSH){
+			   //normal click
+			   if(thisEvent & osgGA::GUIEventAdapter::RELEASE && lastEvent & osgGA::GUIEventAdapter::PUSH){
 				   lastEvent = thisEvent;
 				   //get the first Clickabe Object in path that accepts being clicked
 				   for (osg::NodePath::iterator node = intersection.nodePath.begin(); node != intersection.nodePath.end(); node++){
@@ -63,24 +64,38 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 				   };
 			   }
 
-			   if (thisEvent == osgGA::GUIEventAdapter::DRAG){
+			   //drag
+			   if (thisEvent & osgGA::GUIEventAdapter::DRAG){
+
+
+
 				   //get the first Clickabe Object in path
 				   for (osg::NodePath::iterator node = intersection.nodePath.begin(); node != intersection.nodePath.end(); node++){
 					   Clickable* obj = dynamic_cast<Clickable*>(*node);
 					   if (obj){
+
+						  // window->disableCameraControl();
+						   std::cout << "drag obj " << thisEvent << " " << lastEvent << std::endl;
+						   fflush(stdout);
 						   if (obj->dragged(pushedButtonsMask,w,p,obj)){
 							   //there is a receiving obj,
+							   std::cout << "dragged obj " << thisEvent << " " << lastEvent << std::endl;
+							   fflush(stdout);
 							   if (lastEvent == osgGA::GUIEventAdapter::PUSH){
-								   window->disableCameraControl();
+								   std::cout << "disable cam control"<< std::endl;
+							   	   window->disableCameraControl();
 							   }
 							   lastEvent = thisEvent;
 							   return true;
+						   }else{
+							   std::cout << "drag false " << thisEvent << " " << lastEvent << std::endl;
 						   }
 					   }
 				   }
 			   }
 
-			   if (thisEvent == osgGA::GUIEventAdapter::RELEASE && lastEvent == osgGA::GUIEventAdapter::DRAG){
+			   if (thisEvent & osgGA::GUIEventAdapter::RELEASE && lastEvent & osgGA::GUIEventAdapter::DRAG){
+				   std::cout << "enable cam control"<< std::endl;
 				   window->enableCameraControl();
 			   }
 

@@ -77,7 +77,7 @@ Window::Window(osg::Group *scene, interfaces::GraphicData graphicData) {
 
     keyswitchManipulator = new osgGA::KeySwitchMatrixManipulator;  
 
-    //keyswitchManipulator->addMatrixManipulator( '0', "NONE", NULL );
+    keyswitchManipulator->addMatrixManipulator( '0', "NONE", NULL );
     keyswitchManipulator->addMatrixManipulator( '1', "Trackball", new osgGA::TerrainManipulator() );
     keyswitchManipulator->addMatrixManipulator( '2', "Flight", new osgGA::FlightManipulator() );
 
@@ -182,11 +182,11 @@ void Window::showFog(const bool &val) {
 }
 
 void Window::enableCameraControl() {
-//	keyswitchManipulator->selectMatrixManipulator('1');
+	keyswitchManipulator->selectMatrixManipulator('1');
 }
 
 void Window::disableCameraControl() {
-//	keyswitchManipulator->selectMatrixManipulator('0');
+	keyswitchManipulator->selectMatrixManipulator('0');
 }
 
 } /* namespace osgviz */
