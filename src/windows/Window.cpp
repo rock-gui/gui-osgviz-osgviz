@@ -9,8 +9,6 @@
 
 #include <osgGA/TerrainManipulator>
 #include <osg/Fog>
-#include <osg/LightModel>
-#include "../graphics/wrapper/OSGLightStruct.h"
 #include <stdio.h>
 
 #include <osg/GraphicsContext>
@@ -54,23 +52,6 @@ Window::Window(WindowConfig windowConfig) :
     
     graphicsContext = osg::GraphicsContext::createGraphicsContext( traits.get() );
 
-    //mainView = new osgViewer::View;
-    /*if (graphicData.fullScreen == true) {
-        mainView->apply(new osgviz::SingleWindow(0, 0, -1, -1, 0));
-    } else {
-        mainView->apply(new osgviz::SingleWindow(graphicData.windowPosX, graphicData.windowPosY, graphicData.windowWidth, graphicData.windowHeight, 0));
-    }*/
-    //mainView->setUpViewInWindow(graphicData.windowPosX, graphicData.windowPosY, graphicData.windowWidth, graphicData.windowHeight);
-    //mainView->getCamera()->setGraphicsContext( graphicsContext.get() );
-    // TODO: at the moment the main view are set to the full window
-    // maybe in the futer we want to divide the window into several views
-    //mainView->getCamera()->setViewport( new osg::Viewport(0, 0, traits->width, traits->height) );
-    //mainView->setCameraManipulator(new osgGA::TerrainManipulator());
-    //views.push_back(mainView);
-
-    //objectSelector = new ObjectSelector(mainView);
-    //mainView->addEventHandler(objectSelector);
-
     globalStateset = new osg::StateSet();
 
     globalStateset->setMode(GL_DEPTH_TEST, osg::StateAttribute::ON);
@@ -85,13 +66,8 @@ Window::Window(WindowConfig windowConfig) :
     globalStateset->setMode(GL_LIGHT7, osg::StateAttribute::OFF);
     globalStateset->setMode(GL_BLEND,osg::StateAttribute::OFF);
 
-    // background color for the scene
-    //mainView->getCamera()->setClearColor(graphicOptions.clearColor);
-
     root = new osg::Group;
     root->setStateSet(globalStateset.get()); 
-
-    //setScene(scene);
 }
 
 Window::~Window() {
@@ -121,7 +97,6 @@ osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* scene) {
     view->setSceneData(scene);
 
     views.push_back(view);
-
     root->addChild(scene);
 
     return view.release();
