@@ -15,10 +15,16 @@ namespace osgviz {
 
 class Clickable {
 public:
+
+	Clickable(){};
+	virtual ~Clickable(){};
+
 	/**
 	 * @param object self, can be used to forward events to external handlers that operate on the object
 	 */
 	virtual bool clicked(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, Clickable* object) = 0;
+
+	virtual bool dragged(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, Clickable* object){return false;}
 
 };
 

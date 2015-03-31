@@ -34,9 +34,11 @@ public:
 
 	virtual ~Object();
 
-	virtual void setContent(osg::ref_ptr<osg::Node> object);
+	//virtual void setContent(osg::ref_ptr<osg::Node> object);
 
-	virtual bool clicked(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object){return false;}
+	virtual bool clicked(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object);
+
+	virtual bool dragged(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object);
 
 	virtual bool pointerEvent(int buttonMask, const osg::Vec3d &world, const osg::Vec3d &local){return false;}
 
@@ -44,7 +46,7 @@ public:
 
     //virtual void setRootNode(osg::Group* node);
 
-
+	void addClickableCallback(Clickable * cb);
 
 
     inline void setName(std::string name){
@@ -58,9 +60,22 @@ public:
     /**
      * override osg::PositionAttitudeTransform addChild
      */
-    inline bool addChild(osg::Node *child){
+    virtual bool addChild(osg::Node *child){
     	return scaleTransform->addChild(child);
     }
+
+    virtual bool getNumChildren() const{
+    	return scaleTransform->getNumChildren();
+    }
+
+    Node* getChild(unsigned int i){
+    	return scaleTransform->getChild(i);
+    }
+
+    const Node* getChild(unsigned int i) const{
+    	return scaleTransform->getChild(i);
+    }
+
 
 	inline void setScale(const float &x, const float &y, const float &z){
 		scaleTransform->setMatrix(osg::Matrix::scale(x, y, z));
@@ -90,6 +105,9 @@ public:
     	PositionAttitudeTransform::setAttitude( osg::Quat(angle, vec) );
     }
 
+    inline void rotate(const double &angle, const osg::Vec3d &vec){
+    	setAttitude( getAttitude() * osg::Quat(angle, vec) );
+    }
 
 
     void switchCullMask();
@@ -104,7 +122,7 @@ protected:
     bool visible;
 
     //osg::ref_ptr<osg::Group> root;
-    osg::ref_ptr<osg::Node> object;
+    //osg::ref_ptr<osg::Node> object;
 
     osg::ref_ptr<osg::MatrixTransform> scaleTransform;
 
@@ -113,6 +131,8 @@ private:
     osg::ref_ptr< osg::Geode > textgeode;
     osg::ref_ptr< osgText::Text > text;
     std::string name;
+
+	std::vector< Clickable* > clickablecb;
 
 };
 

@@ -8,13 +8,15 @@
 #include "ObjectSelector.h"
 
 #include "../interfaces/Clickable.h"
+#include "Window.h"
 
 #include <osgUtil/LineSegmentIntersector>
 #include <iostream>
 
+
 namespace osgviz {
 
-ObjectSelector::ObjectSelector(osgViewer::View * view):osgGA::GUIEventHandler(),viewer(view) {
+ObjectSelector::ObjectSelector(osgviz::Window *win):osgGA::GUIEventHandler(),window(win) {
 
 
 }
@@ -26,47 +28,68 @@ ObjectSelector::~ObjectSelector() {
 
 bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa)
    {
-       switch (ea.getEventType())
-       {
-           case(osgGA::GUIEventAdapter::PUSH):
-           {
-               std::cout << "Keydown!" << std::endl;
+	   thisEvent = ea.getEventType();
 
-               osg::ref_ptr<osgUtil::LineSegmentIntersector> ray = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, ea.getXnormalized(), ea.getYnormalized());
-               osgUtil::IntersectionVisitor visitor(ray);
-
-               viewer->getCamera()->accept(visitor);
-
-               if (ray->containsIntersections())
-               {
-            	   osgUtil::LineSegmentIntersector::Intersection intersection = ray->getFirstIntersection();
-
-                   //if (m_selector->handle(intersection))
-                   //{
-            	   std::cout << ("intersection") << std::endl;
-
-                   const osg::Vec3 &p = intersection.getLocalIntersectPoint();
-            	   const osg::Vec3 &w = intersection.getWorldIntersectPoint();
-                   std::cout << "Local: " << p[0] << " " << p[1] << " " << p[2] << std::endl;
-                   std::cout << "World: " << w[0] << " " << w[1] << " " << w[2] << std::endl;
-
-                   int mask = ea.getButtonMask();
-
-                   for (osg::NodePath::iterator node = intersection.nodePath.begin(); node != intersection.nodePath.end(); node++){
-                	   Clickable* obj = dynamic_cast<Clickable*>(*node);
-                       if (obj){
-                    	   obj->clicked(mask,w,p, obj);
-                       }
-                   };
+	   //ignored events (for the lastEvent setting)
+	   if (thisEvent != osgGA::GUIEventAdapter::FRAME && thisEvent != osgGA::GUIEventAdapter::MOVE ){
 
 
-                       return true;
-                   //}
-               }
-           }
-           default:
-               return false;
-       }
+		   //save the buttonmask (not available in release event)
+		   if (thisEvent == osgGA::GUIEventAdapter::PUSH){
+			   pushedButtonsMask = ea.getButtonMask();
+		   }
+
+		   osg::ref_ptr<osgUtil::LineSegmentIntersector> ray = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, ea.getXnormalized(), ea.getYnormalized());
+		   osgUtil::IntersectionVisitor visitor(ray);
+		   window->getView()->getCamera()->accept(visitor);
+		   osgUtil::LineSegmentIntersector::Intersection intersection = ray->getFirstIntersection();
+
+		   const osg::Vec3 &p = intersection.getLocalIntersectPoint();
+		   const osg::Vec3 &w = intersection.getWorldIntersectPoint();
+
+		   if (ray->containsIntersections()){
+
+
+			   if(thisEvent == osgGA::GUIEventAdapter::RELEASE && lastEvent == osgGA::GUIEventAdapter::PUSH){
+				   lastEvent = thisEvent;
+				   //get the first Clickabe Object in path that accepts being clicked
+				   for (osg::NodePath::iterator node = intersection.nodePath.begin(); node != intersection.nodePath.end(); node++){
+					   Clickable* obj = dynamic_cast<Clickable*>(*node);
+					   if (obj){
+						   if (obj->clicked(pushedButtonsMask,w,p,obj)){
+							   return true;
+						   }
+					   }
+				   };
+			   }
+
+			   if (thisEvent == osgGA::GUIEventAdapter::DRAG){
+				   //get the first Clickabe Object in path
+				   for (osg::NodePath::iterator node = intersection.nodePath.begin(); node != intersection.nodePath.end(); node++){
+					   Clickable* obj = dynamic_cast<Clickable*>(*node);
+					   if (obj){
+						   if (obj->dragged(pushedButtonsMask,w,p,obj)){
+							   //there is a receiving obj,
+							   if (lastEvent == osgGA::GUIEventAdapter::PUSH){
+								   window->disableCameraControl();
+							   }
+							   lastEvent = thisEvent;
+							   return true;
+						   }
+					   }
+				   }
+			   }
+
+			   if (thisEvent == osgGA::GUIEventAdapter::RELEASE && lastEvent == osgGA::GUIEventAdapter::DRAG){
+				   window->enableCameraControl();
+			   }
+
+		   }
+
+		   lastEvent = thisEvent;
+		   return false;
+	   }
+	   return false;
    }
 
 } /* namespace osgviz */

@@ -10,13 +10,16 @@
 
 
 #include <osgGA/GUIEventHandler>
-#include <osgViewer/View>
+
+//#include <osgViewer/View>
 
 namespace osgviz {
 
+class Window;
+
 class ObjectSelector : public osgGA::GUIEventHandler{
 public:
-	ObjectSelector(osgViewer::View * view);
+	ObjectSelector(osgviz::Window *win);
 
 	virtual ~ObjectSelector();
 
@@ -24,7 +27,11 @@ public:
 
 
 private:
-	osgViewer::View *viewer;
+	osgviz::Window *window;
+	osgGA::GUIEventAdapter::EventType thisEvent,lastEvent;
+	int pushedButtonsMask;
+
+
 
 };
 

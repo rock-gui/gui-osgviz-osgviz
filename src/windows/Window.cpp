@@ -96,6 +96,10 @@ osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* scene) {
 
     view->setSceneData(scene);
 
+    ObjectSelector* objectSelector = new ObjectSelector(this);
+    view->addEventHandler(objectSelector);
+    objectSelectors.push_back(objectSelector);
+
     views.push_back(view);
     root->addChild(scene);
 
@@ -111,10 +115,14 @@ osg::Group* Window::getScene() {
     return this->root;
 }
 
+void Window::enableCameraControl() {
+//	keyswitchManipulator->selectMatrixManipulator('1');
+}
+
+void Window::disableCameraControl() {
+//	keyswitchManipulator->selectMatrixManipulator('0');
+}
+
 } /* namespace osgviz */
-
-
-
-
 
 

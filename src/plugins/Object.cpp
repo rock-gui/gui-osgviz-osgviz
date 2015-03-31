@@ -12,7 +12,7 @@
 
 namespace osgviz {
 
-Object::Object():cull_mask(0xffffffff),visible(true),object(NULL),scaleTransform(new osg::MatrixTransform),name(""){
+Object::Object():cull_mask(0xffffffff),visible(true),scaleTransform(new osg::MatrixTransform),name(""){
 	scaleTransform->setMatrix(osg::Matrix::scale(1.0, 1.0, 1.0));
 	PositionAttitudeTransform::addChild(scaleTransform);
 }
@@ -21,11 +21,11 @@ Object::~Object() {
 	// TODO Auto-generated destructor stub
 }
 
-void Object::setContent(osg::ref_ptr<osg::Node> object) {
-	this->object = object;
-	scaleTransform->addChild(object);
-	//root->addChild(this);
-}
+//void Object::setContent(osg::ref_ptr<osg::Node> object) {
+//	this->object = object;
+//	scaleTransform->addChild(object);
+//	//root->addChild(this);
+//}
 
 //void Object::setRootNode(osg::Group* node){
 //	root = node;
@@ -74,6 +74,42 @@ void Object::switchCullMask() {
     this->setNodeMask(cull_mask);
   }
 }
+
+
+bool Object::clicked(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, Clickable *object){
+	printf("%s click %.2f,%.2f,%.2f\n",this->getName().c_str(),world.x(),world.y(),world.z());
+	bool finish = false;
+	if (!clickablecb.empty()){
+		for (std::vector< Clickable* >::iterator it = clickablecb.begin();it != clickablecb.end(); it++){
+			if ((*it)->clicked(buttonMask,world,local, this)){
+				printf("%s forwarded click\n",this->getName().c_str());
+				finish = true;
+			}
+		}
+
+	}
+	return finish;
+}
+
+bool Object::dragged(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, Clickable *object){
+	printf("%s dragged %.2f,%.2f,%.2f\n",this->getName().c_str(),world.x(),world.y(),world.z());
+	bool finish = false;
+	if (!clickablecb.empty()){
+		for (std::vector< Clickable* >::iterator it = clickablecb.begin();it != clickablecb.end(); it++){
+			if ((*it)->dragged(buttonMask,world,local, this)){
+				printf("%s forwarded dragged\n",this->getName().c_str());
+				finish = true;
+			}
+		}
+
+	}
+	return finish;
+}
+
+void Object::addClickableCallback(Clickable* cb) {
+	this->clickablecb.push_back(cb);
+}
+
 
 } /* namespace osgviz */
 

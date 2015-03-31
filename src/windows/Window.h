@@ -35,6 +35,13 @@ public:
 
 	osgViewer::View* addView(ViewConfig viewConfig, osg::Group* scene);
 
+	void enableCameraControl();
+	void disableCameraControl();
+
+	void showRain(const bool &val = true);
+	void showSnow(const bool &val = true);
+	void showFog(const bool &val = true);
+
 	inline osgViewer::View* getView(int index = 0) {
 		if (views.size() == 0)
 			return NULL;
@@ -54,9 +61,10 @@ private:
 
 	osg::ref_ptr<osg::StateSet> globalStateset;
 
-    osg::ref_ptr<ObjectSelector> objectSelector;
+    std::vector<osg::ref_ptr<ObjectSelector> > objectSelectors;
 
-    void initDefaultLight();
+    osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> keyswitchManipulator;
+    int lastActiveCameraManipulator;
 };
 
 } /* namespace osgviz */
