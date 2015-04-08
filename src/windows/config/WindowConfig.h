@@ -35,7 +35,7 @@ namespace osgviz {
 
     class ViewConfig {
     public:
-      ViewConfig(int posX = 0, int posY = 0, int width = 0, int height = 0) :
+      ViewConfig(float posX = 0.0, float posY = 0.0, float width = 1.0, float height = 1.0) :
                 posX(posX), posY(posY), width(width), height(height),
                 clearColorRed(0.55),
                 clearColorGreen(0.67),
@@ -43,12 +43,11 @@ namespace osgviz {
                 clearColorAlpha(1.0),
                 hasObjectSelector(true) {};
 
-      int posX;
-      int posY;
-      int width;
-      int height;       //!< if width or height are set to -1,
+      float posX;
+      float posY;
+      float width;
+      float height;       //!< if width or height are set to -1,
                         //!< than view will take the config (width and height) of window
-
 
       float clearColorRed;
       float clearColorGreen;

@@ -77,11 +77,14 @@ Window::~Window() {
 osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* scene) {
     // if the size of view is not specified,
     // than the view covers the whole window
-    if (viewConfig.width == 0 || viewConfig.width == 0) {
-        const osg::GraphicsContext::Traits* traits = graphicsContext->getTraits();
-        viewConfig.width = traits->width;
-        viewConfig.height = traits->height;
-    }
+    const osg::GraphicsContext::Traits* traits = graphicsContext->getTraits();
+    viewConfig.posX = traits->width * viewConfig.posX;
+    viewConfig.posY = traits->height * viewConfig.posY;
+    viewConfig.width = traits->width * viewConfig.width;
+    viewConfig.height = traits->height * viewConfig.height;
+
+    std::cout << viewConfig.posX << " " << viewConfig.posY << " " 
+    << viewConfig.width << " " << viewConfig.height << std::endl;
 
     osg::ref_ptr<SuperView> view = new SuperView(viewConfig, scene);
     view->setGraphicContext(graphicsContext);

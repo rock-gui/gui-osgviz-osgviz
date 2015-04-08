@@ -27,8 +27,8 @@ Window* WindowManager::createWindow(WindowConfig windowConfig, osg::Group* scene
 		if (windowConfig.dummyTwoViews == false) {
 			osgViewer::View* view = wnd->addView(ViewConfig(), scene);
 		} else {
-			osgViewer::View* viewLeft = wnd->addView(ViewConfig(0, 0, 300, 402), scene);
-			osgViewer::View* viewRight = wnd->addView(ViewConfig(300, 0, 420, 402), scene);		
+			osgViewer::View* viewLeft = wnd->addView(ViewConfig(0, 0, 0.5, 1.0), scene);
+			osgViewer::View* viewRight = wnd->addView(ViewConfig(0.5, 0, 0.5, 1.0), scene);		
 		}
 
 		return wnd;		

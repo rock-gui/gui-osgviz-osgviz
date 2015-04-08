@@ -12,6 +12,7 @@ SuperView::SuperView(ViewConfig viewConfig, osg::Group* scene) : osgViewer::View
                                         viewConfig.clearColorBlue,
                                         viewConfig.clearColorAlpha));
 
+	// TODO: check the width and height, should be > 0
 	getCamera()->setViewport(viewConfig.posX, viewConfig.posY, viewConfig.width, viewConfig.height);
 
 	//setCameraManipulator(new osgGA::TerrainManipulator());
