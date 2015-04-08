@@ -8,7 +8,7 @@
 #include "ObjectSelector.h"
 
 #include "../interfaces/Clickable.h"
-#include "Window.h"
+#include "SuperView.h"
 
 #include <osgUtil/LineSegmentIntersector>
 #include <iostream>
@@ -16,7 +16,7 @@
 
 namespace osgviz {
 
-ObjectSelector::ObjectSelector(osgviz::Window *win):osgGA::GUIEventHandler(),window(win) {
+ObjectSelector::ObjectSelector(osgviz::SuperView *view):osgGA::GUIEventHandler(),view(view) {
 
 
 }
@@ -33,7 +33,6 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 	   //ignored events (for the lastEvent setting)
 	   if (thisEvent != osgGA::GUIEventAdapter::FRAME && thisEvent != osgGA::GUIEventAdapter::MOVE ){
 
-
 		   //save the buttonmask (not available in release event)
 		   if (thisEvent == osgGA::GUIEventAdapter::PUSH){
 			   pushedButtonsMask = ea.getButtonMask();
@@ -41,14 +40,13 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 
 		   osg::ref_ptr<osgUtil::LineSegmentIntersector> ray = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, ea.getXnormalized(), ea.getYnormalized());
 		   osgUtil::IntersectionVisitor visitor(ray);
-		   window->getView()->getCamera()->accept(visitor);
+		   view->getCamera()->accept(visitor);
 		   osgUtil::LineSegmentIntersector::Intersection intersection = ray->getFirstIntersection();
 
 		   const osg::Vec3 &p = intersection.getLocalIntersectPoint();
 		   const osg::Vec3 &w = intersection.getWorldIntersectPoint();
 
 		   if (ray->containsIntersections()){
-
 
 			   if(thisEvent == osgGA::GUIEventAdapter::RELEASE && lastEvent == osgGA::GUIEventAdapter::PUSH){
 				   lastEvent = thisEvent;
@@ -71,7 +69,7 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 						   if (obj->dragged(pushedButtonsMask,w,p,obj)){
 							   //there is a receiving obj,
 							   if (lastEvent == osgGA::GUIEventAdapter::PUSH){
-								   window->disableCameraControl();
+								   view->disableCameraControl();
 							   }
 							   lastEvent = thisEvent;
 							   return true;
@@ -81,7 +79,7 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 			   }
 
 			   if (thisEvent == osgGA::GUIEventAdapter::RELEASE && lastEvent == osgGA::GUIEventAdapter::DRAG){
-				   window->enableCameraControl();
+				   view->enableCameraControl();
 			   }
 
 		   }

@@ -9,7 +9,7 @@
 
 namespace osgviz {
 
-WindowManager::WindowManager() : osgViewer::CompositeViewer() {
+WindowManager::WindowManager() {
 	// TODO Auto-generated constructor stub
 
 }
@@ -26,12 +26,9 @@ Window* WindowManager::createWindow(WindowConfig windowConfig, osg::Group* scene
 
 		if (windowConfig.dummyTwoViews == false) {
 			osgViewer::View* view = wnd->addView(ViewConfig(), scene);
-			addView(view);
 		} else {
 			osgViewer::View* viewLeft = wnd->addView(ViewConfig(0, 0, 300, 402), scene);
-			addView(viewLeft);
-			osgViewer::View* viewRight = wnd->addView(ViewConfig(300, 0, 420, 402), scene);
-			addView(viewRight);			
+			osgViewer::View* viewRight = wnd->addView(ViewConfig(300, 0, 420, 402), scene);		
 		}
 
 		return wnd;		
@@ -40,6 +37,15 @@ Window* WindowManager::createWindow(WindowConfig windowConfig, osg::Group* scene
 		std::runtime_error("WindowManager::createWindow: try to create window, but the scene pointer is not set.");
 		return 0;
 	}
+}
+
+void WindowManager::frame() {
+	for(RefWindows::iterator witr = windows.begin();
+        witr != windows.end();
+        ++witr)
+    {
+		witr->get()->frame();
+    }
 }
 
 } /* namespace osgviz */

@@ -47,14 +47,16 @@ rock_library(osgVizGraphics
 
 rock_library(osgViz
     SOURCES OsgViz.cpp
-           windows/ObjectSelector.cpp
            windows/Window.cpp
            windows/WindowManager.cpp
+           windows/SuperView.cpp    
+           windows/ObjectSelector.cpp       
            
     HEADERS OsgViz.hpp
-      	   windows/ObjectSelector.h
            windows/Window.h
            windows/WindowManager.h
+           windows/SuperView.h
+           windows/ObjectSelector.h
            windows/config/WindowConfig.h
                
     LIBS ${Boost_SYSTEM_LIBRARY}
@@ -90,7 +92,6 @@ rock_library(ModelLoader
     HEADERS plugins/viz/ModelLoader/ModelLoader.h
     DEPS osgVizPlugin)
     
-
 rock_executable(osgViz_bin Main.cpp
     DEPS osgViz)
 

@@ -7,15 +7,15 @@
 
 #include "Window.h"
 
-#include <osgGA/TerrainManipulator>
-#include <osg/Fog>
 #include <stdio.h>
 
 #include <osg/GraphicsContext>
 
+#include "SuperView.h"
+
 namespace osgviz {
 
-Window::Window(WindowConfig windowConfig) :
+Window::Window(WindowConfig windowConfig) : osgViewer::CompositeViewer(),
          windowConfig(windowConfig) {
 
     osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
@@ -75,52 +75,21 @@ Window::~Window() {
 }
 
 osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* scene) {
-    osg::ref_ptr<osgViewer::View> view = new osgViewer::View;
-
-    view->getCamera()->setGraphicsContext(graphicsContext);
-
-    view->getCamera()->setClearColor(osg::Vec4(viewConfig.clearColorRed,
-                                        viewConfig.clearColorGreen,
-                                        viewConfig.clearColorBlue,
-                                        viewConfig.clearColorAlpha));
-
-    // if width and height is not set, than show view in full window
-    if (viewConfig.width == -1 || viewConfig.height == -1) {
+    // if the size of view is not specified,
+    // than the view covers the whole window
+    if (viewConfig.width == 0 || viewConfig.width == 0) {
         const osg::GraphicsContext::Traits* traits = graphicsContext->getTraits();
-        view->getCamera()->setViewport(0, 0, traits->width, traits->height);
-    } else {
-        view->getCamera()->setViewport(viewConfig.posX, viewConfig.posY, viewConfig.width, viewConfig.height);
+        viewConfig.width = traits->width;
+        viewConfig.height = traits->height;
     }
 
-    view->setCameraManipulator(new osgGA::TerrainManipulator());
+    osg::ref_ptr<SuperView> view = new SuperView(viewConfig, scene);
+    view->setGraphicContext(graphicsContext);
 
-    view->setSceneData(scene);
-
-    ObjectSelector* objectSelector = new ObjectSelector(this);
-    view->addEventHandler(objectSelector);
-    objectSelectors.push_back(objectSelector);
-
-    views.push_back(view);
+    osgViewer::CompositeViewer::addView((osgViewer::View*) view.release());
     root->addChild(scene);
 
     return view.release();
-}
-
-void Window::setScene(osg::Group* scene) {
-    root->addChild(scene);
-    mainView->setSceneData(root);
-}
-
-osg::Group* Window::getScene() {
-    return this->root;
-}
-
-void Window::enableCameraControl() {
-//	keyswitchManipulator->selectMatrixManipulator('1');
-}
-
-void Window::disableCameraControl() {
-//	keyswitchManipulator->selectMatrixManipulator('0');
 }
 
 } /* namespace osgviz */

@@ -24,6 +24,7 @@ int main(int argc, char** argv)
 	windowConfig.dummyTwoViews = true;
 
 	osgViz->createWindow(windowConfig);
+	
 
 	osgviz::ModelLoader *modelloader = NULL;
 	if (argc > 1){

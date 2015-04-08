@@ -40,9 +40,15 @@ namespace osgviz {
                 clearColorRed(0.55),
                 clearColorGreen(0.67),
                 clearColorBlue(0.88),
-                clearColorAlpha(1.0) {};
+                clearColorAlpha(1.0),
+                hasObjectSelector(true) {};
 
-      ViewConfig(): ViewConfig(0, 0, -1 ,-1) {};
+      ViewConfig(): posX(0), posY(0), width(0), height(0),
+                clearColorRed(0.55),
+                clearColorGreen(0.67),
+                clearColorBlue(0.88),
+                clearColorAlpha(1.0),
+                hasObjectSelector(true) {};
 
       int posX;
       int posY;
@@ -56,8 +62,7 @@ namespace osgviz {
       float clearColorBlue;
       float clearColorAlpha;      
 
-
-
+      bool hasObjectSelector;
     };
 
 } // end of namespace osgviz

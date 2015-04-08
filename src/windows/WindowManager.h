@@ -10,15 +10,13 @@
 
 #include <stdexcept>
 
-#include <osgViewer/CompositeViewer>
-
 #include "config/WindowConfig.h"
 
 #include "Window.h"
 
 namespace osgviz {
 
-class WindowManager : public osgViewer::CompositeViewer {
+class WindowManager {
 public:
 	WindowManager();
 	virtual ~WindowManager();
@@ -27,13 +25,17 @@ public:
 
 	inline Window* getWindowByID(const unsigned int& id){
 		if (id < windows.size()){
-			return windows[id];
+			return windows.at(id);
 		}
 		return NULL;
 	}
 
+	void frame();
+
 private:
-	std::vector<Window*> windows;
+	typedef std::vector< osg::ref_ptr<Window> > RefWindows;
+
+	RefWindows windows;
 
 };
 
