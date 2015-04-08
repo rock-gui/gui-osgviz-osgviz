@@ -35,15 +35,8 @@ namespace osgviz {
 
     class ViewConfig {
     public:
-      ViewConfig(int posX, int posY, int width, int height) :
+      ViewConfig(int posX = 0, int posY = 0, int width = 0, int height = 0) :
                 posX(posX), posY(posY), width(width), height(height),
-                clearColorRed(0.55),
-                clearColorGreen(0.67),
-                clearColorBlue(0.88),
-                clearColorAlpha(1.0),
-                hasObjectSelector(true) {};
-
-      ViewConfig(): posX(0), posY(0), width(0), height(0),
                 clearColorRed(0.55),
                 clearColorGreen(0.67),
                 clearColorBlue(0.88),
