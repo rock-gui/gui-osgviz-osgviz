@@ -12,10 +12,18 @@ SuperView::SuperView(ViewConfig viewConfig, osg::Group* scene) : osgViewer::View
                                         viewConfig.clearColorBlue,
                                         viewConfig.clearColorAlpha));
 
-	// TODO: check the width and height, should be > 0
-	getCamera()->setViewport(viewConfig.posX, viewConfig.posY, viewConfig.width, viewConfig.height);
+	double fovy, aspectRatio, zNear, zFar;
+    getCamera()->getProjectionMatrixAsPerspective(fovy, aspectRatio, zNear, zFar);
 
-	//setCameraManipulator(new osgGA::TerrainManipulator());
+    double newAspectRatio = double(viewConfig.width) / double(viewConfig.height);
+    double aspectRatioChange = newAspectRatio / aspectRatio;
+    if (aspectRatioChange != 1.0)
+    {
+        getCamera()->getProjectionMatrix() *= osg::Matrix::scale(1.0/aspectRatioChange,1.0,1.0);
+    }	
+
+	// TODO: check the width and height, should be > 0
+	getCamera()->setViewport(new osg::Viewport(viewConfig.posX, viewConfig.posY, viewConfig.width, viewConfig.height));    
 
 	keyswitchManipulator = new osgGA::KeySwitchMatrixManipulator;  
 	keyswitchManipulator->addMatrixManipulator( '0', "NONE", NULL );

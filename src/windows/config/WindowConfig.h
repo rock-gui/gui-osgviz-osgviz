@@ -43,11 +43,12 @@ namespace osgviz {
                 clearColorAlpha(1.0),
                 hasObjectSelector(true) {};
 
+
+      // TODO: add two possibilities for size: percentage and fix size 
       float posX;
       float posY;
       float width;
-      float height;       //!< if width or height are set to -1,
-                        //!< than view will take the config (width and height) of window
+      float height;       
 
       float clearColorRed;
       float clearColorGreen;
