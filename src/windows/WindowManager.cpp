@@ -35,12 +35,12 @@ Window* WindowManager::createWindow(WindowConfig windowConfig, osg::Group* scene
 	}
 	else {
 		std::runtime_error("WindowManager::createWindow: try to create window, but the scene pointer is not set.");
-		return 0;
+		return NULL;
 	}
 }
 
 void WindowManager::frame() {
-	for(RefWindows::iterator witr = windows.begin();
+	for(std::vector<Window::Ptr>::iterator witr = windows.begin();
         witr != windows.end();
         ++witr)
     {

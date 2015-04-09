@@ -107,7 +107,7 @@ OsgViz::~OsgViz(){
 int OsgViz::createWindow(WindowConfig windowConfig) {
 	//int id = graphicsManager->new3DWindow();
 	//mars::interfaces::GraphicsWindowInterface* window = this->get3DWindow(1);
-	Window* wnd = windowManager.createWindow(windowConfig, root);
+	windowManager.createWindow(windowConfig, root);
 	//return id;
 	return 0;
 }

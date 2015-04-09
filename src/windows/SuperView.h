@@ -9,6 +9,7 @@
 #define OSGVIZ_OSGVIZ_SRC_WINDOWS_VIEW_H_
 
 #include <iostream>
+#include <stdexcept>
 
 #include <osgViewer/View>
 #include <osgParticle/PrecipitationEffect>
@@ -27,9 +28,7 @@ class SuperView : public osgViewer::View {
 	public:
 		SuperView();
 
-		SuperView(ViewConfig viewConfig, osg::Group* scene = NULL);
-
-		void setGraphicContext(osg::GraphicsContext* graphicsContext);
+		SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContext, osg::Group* scene = NULL);
 
 		void activeObjectSelector();
 		void deactivateObjectSelector();

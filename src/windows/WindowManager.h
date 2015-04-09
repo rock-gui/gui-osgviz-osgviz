@@ -33,9 +33,7 @@ public:
 	void frame();
 
 private:
-	typedef std::vector< osg::ref_ptr<Window> > RefWindows;
-
-	RefWindows windows;
+	std::vector<Window::Ptr> windows;
 
 };
 

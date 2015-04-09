@@ -24,6 +24,8 @@ namespace osgviz {
 class Window : public osgViewer::CompositeViewer {
 
 public:
+	typedef osg::ref_ptr<Window> Ptr;
+	
 	Window(WindowConfig windowConfig);
 	virtual ~Window();
 

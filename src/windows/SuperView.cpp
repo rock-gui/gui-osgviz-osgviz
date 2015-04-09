@@ -4,7 +4,12 @@ namespace osgviz {
 
 SuperView::SuperView() : osgViewer::View() {}
 
-SuperView::SuperView(ViewConfig viewConfig, osg::Group* scene) : osgViewer::View(), viewConfig(viewConfig) {
+SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContext, osg::Group* scene) : osgViewer::View(), viewConfig(viewConfig) {
+
+	if (graphicsContext == NULL)
+		throw std::runtime_error("SuperView: Graphic Context is null pointer.");
+	else
+		getCamera()->setGraphicsContext(graphicsContext);
 
 	// set background color
 	getCamera()->setClearColor(osg::Vec4(viewConfig.clearColorRed,
@@ -12,19 +17,30 @@ SuperView::SuperView(ViewConfig viewConfig, osg::Group* scene) : osgViewer::View
                                         viewConfig.clearColorBlue,
                                         viewConfig.clearColorAlpha));
 
+	const osg::GraphicsContext::Traits* traits = graphicsContext->getTraits();
+    int posX = traits->width * viewConfig.posX;
+    int posY = traits->height * viewConfig.posY;
+    int width = traits->width * viewConfig.width;
+    int height = traits->height * viewConfig.height;
+
+    // set projection matrix
 	double fovy, aspectRatio, zNear, zFar;
     getCamera()->getProjectionMatrixAsPerspective(fovy, aspectRatio, zNear, zFar);
 
-    double newAspectRatio = double(viewConfig.width) / double(viewConfig.height);
+    double newAspectRatio = double(width) / double(height);
     double aspectRatioChange = newAspectRatio / aspectRatio;
-    if (aspectRatioChange != 1.0)
-    {
-        getCamera()->getProjectionMatrix() *= osg::Matrix::scale(1.0/aspectRatioChange,1.0,1.0);
+    if (aspectRatioChange != 1.0) {
+        getCamera()->getProjectionMatrix() *= osg::Matrix::scale(1.0/aspectRatioChange, 1.0, 1.0);
     }	
 
-	// TODO: check the width and height, should be > 0
-	getCamera()->setViewport(new osg::Viewport(viewConfig.posX, viewConfig.posY, viewConfig.width, viewConfig.height));    
+	getCamera()->setViewport(new osg::Viewport(posX, posY, width, height));    
 
+	// set buffer
+	GLenum buffer = traits->doubleBuffer ? GL_BACK : GL_FRONT;
+    getCamera()->setDrawBuffer(buffer);
+    getCamera()->setReadBuffer(buffer);	
+
+    // set camera manipulator
 	keyswitchManipulator = new osgGA::KeySwitchMatrixManipulator;  
 	keyswitchManipulator->addMatrixManipulator( '0', "NONE", NULL );
     keyswitchManipulator->addMatrixManipulator( '1', "Trackball", new osgGA::TerrainManipulator() );
@@ -39,14 +55,6 @@ SuperView::SuperView(ViewConfig viewConfig, osg::Group* scene) : osgViewer::View
 		objectSelector = new ObjectSelector(this);
     	addEventHandler(objectSelector);
     }
-}
-
-void SuperView::setGraphicContext(osg::GraphicsContext* graphicsContext) {
-	if (graphicsContext == NULL)
-		// TODO: throw exception
-		std::cout << "graphic context is null" << std::endl;
-	else
-		getCamera()->setGraphicsContext(graphicsContext);
 }
 
 void SuperView::activeObjectSelector() {
