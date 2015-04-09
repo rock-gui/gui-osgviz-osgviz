@@ -68,7 +68,7 @@ void SuperView::deactivateObjectSelector() {
 	if (objectSelector.valid() == true) {
 		removeEventHandler(objectSelector.get());
 	} else {
-		std::cout << "no object selector was active at the moment" << std::endl;
+		OSG_WARN << "SuperView::deactivateObjectSelector: No object selector was active at the moment." << std::endl;
 	}
 }
 

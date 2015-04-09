@@ -77,11 +77,14 @@ Window::~Window() {
 osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* scene) {
     osg::ref_ptr<SuperView> view = new SuperView(viewConfig, graphicsContext.get(), scene);
 
-    osgViewer::CompositeViewer::addView((osgViewer::View*) view.release());
+    osgViewer::CompositeViewer::addView((osgViewer::View*) view.get());
     root->addChild(scene);
 
     return view.release();
 }
+
+
+
 
 } /* namespace osgviz */
 
