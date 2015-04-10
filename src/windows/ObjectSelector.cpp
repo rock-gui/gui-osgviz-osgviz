@@ -33,7 +33,7 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 	   //ignored events (for the lastEvent setting)
 	   if (thisEvent != osgGA::GUIEventAdapter::FRAME && thisEvent != osgGA::GUIEventAdapter::MOVE ){
 
-		   std::cout << "event " << thisEvent << std::endl;
+//		   std::cout << "event " << thisEvent << std::endl;
 
 		   //save the buttonmask (not available in release event)
 		   if (thisEvent == osgGA::GUIEventAdapter::PUSH){
@@ -75,27 +75,27 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 					   if (obj){
 
 						  // window->disableCameraControl();
-						   std::cout << "drag obj " << thisEvent << " " << lastEvent << std::endl;
+//						   std::cout << "drag obj " << thisEvent << " " << lastEvent << std::endl;
 						   fflush(stdout);
 						   if (obj->dragged(pushedButtonsMask,w,p,obj)){
 							   //there is a receiving obj,
-							   std::cout << "dragged obj " << thisEvent << " " << lastEvent << std::endl;
+//							   std::cout << "dragged obj " << thisEvent << " " << lastEvent << std::endl;
 							   fflush(stdout);
 							   if (lastEvent == osgGA::GUIEventAdapter::PUSH){
-								   std::cout << "disable cam control"<< std::endl;
+//								   std::cout << "disable cam control"<< std::endl;
 							   	   window->disableCameraControl();
 							   }
 							   lastEvent = thisEvent;
 							   return true;
-						   }else{
-							   std::cout << "drag false " << thisEvent << " " << lastEvent << std::endl;
+//						   }else{
+//							   std::cout << "drag false " << thisEvent << " " << lastEvent << std::endl;
 						   }
 					   }
 				   }
 			   }
 
 			   if (thisEvent & osgGA::GUIEventAdapter::RELEASE && lastEvent & osgGA::GUIEventAdapter::DRAG){
-				   std::cout << "enable cam control"<< std::endl;
+//				   std::cout << "enable cam control"<< std::endl;
 				   window->enableCameraControl();
 			   }
 
