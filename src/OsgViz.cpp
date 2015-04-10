@@ -121,16 +121,20 @@ OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
 	viz = (OsgVizPlugin*)libmanager->getLibrary(name);
 	if (viz){
 		return viz;
-	}else if (libmanager->loadLibrary(path) == lib_manager::LibManager::LIBMGR_NO_ERROR){
-		OsgVizPlugin* viz = (OsgVizPlugin*)libmanager->acquireLibrary(name);
-		if (!viz){
-			fprintf(stderr,"unable to load lib %s\n",name.c_str());
-			return NULL;
-		}
-		viz->setParent(this);
-		loadedPlugins.push_back(viz);
-		return viz;
+	}else{
 
+		if (libmanager->loadLibrary(path) == lib_manager::LibManager::LIBMGR_NO_ERROR){
+			fprintf(stderr,"trying to load %s\n",name.c_str());
+			OsgVizPlugin* viz = (OsgVizPlugin*)libmanager->acquireLibrary(name);
+			if (!viz){
+				fprintf(stderr,"unable to load lib %s\n",name.c_str());
+				return NULL;
+			}
+			fprintf(stderr,"loaded %s\n",name.c_str());
+			viz->setParent(this);
+			loadedPlugins.push_back(viz);
+			return viz;
+		}
 	}
 	return NULL;
 }
