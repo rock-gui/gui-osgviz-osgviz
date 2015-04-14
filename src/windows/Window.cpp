@@ -8,6 +8,7 @@
 #include "Window.h"
 
 #include <osgGA/TerrainManipulator>
+#include <osgGA/TrackballManipulator>
 #include <osg/Fog>
 #include <osg/LightModel>
 #include "../graphics/wrapper/OSGLightStruct.h"
@@ -78,8 +79,10 @@ Window::Window(osg::Group *scene, interfaces::GraphicData graphicData) {
     keyswitchManipulator = new osgGA::KeySwitchMatrixManipulator;  
 
     keyswitchManipulator->addMatrixManipulator( '0', "NONE", NULL );
-    keyswitchManipulator->addMatrixManipulator( '1', "Trackball", new osgGA::TerrainManipulator() );
+    keyswitchManipulator->addMatrixManipulator( '1', "Terrain", new osgGA::TerrainManipulator() );
     keyswitchManipulator->addMatrixManipulator( '2', "Flight", new osgGA::FlightManipulator() );
+    keyswitchManipulator->addMatrixManipulator( '3', "Orbit", new osgGA::OrbitManipulator() );
+    keyswitchManipulator->addMatrixManipulator( '4', "Trackball", new osgGA::TrackballManipulator() );
 
     keyswitchManipulator->selectMatrixManipulator('1');
 
