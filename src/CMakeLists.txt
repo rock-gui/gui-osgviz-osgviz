@@ -29,6 +29,7 @@ endif()
 
 rock_library(osgVizInterfaces
 	HEADERS interfaces/Clickable.h
+			interfaces/WindowInterface.h
 )
 
 

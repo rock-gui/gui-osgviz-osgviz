@@ -10,7 +10,7 @@
 
 
 #include <osgGA/GUIEventHandler>
-
+#include "../interfaces/Clickable.h"
 //#include <osgViewer/View>
 
 namespace osgviz {
@@ -28,6 +28,7 @@ public:
 
 private:
 	osgviz::Window *window;
+	Clickable *draggedObject;
 	osgGA::GUIEventAdapter::EventType thisEvent,lastEvent;
 	int pushedButtonsMask;
 

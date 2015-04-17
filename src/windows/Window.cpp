@@ -192,6 +192,13 @@ void Window::disableCameraControl() {
 	keyswitchManipulator->selectMatrixManipulator('0');
 }
 
+void Window::setCursorShape(int cursor){
+	graphicsWindow->setCursor((osgViewer::GraphicsWindow::MouseCursor)cursor);
+}
+void Window::setCursorPos(int x, int y){
+	graphicsWindow->requestWarpPointer(x,y);
+}
+
 } /* namespace osgviz */
 
 

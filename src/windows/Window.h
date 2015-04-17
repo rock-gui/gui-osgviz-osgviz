@@ -19,11 +19,12 @@
 
 #include "../graphics/interfaces/data/GraphicData.h"
 #include "../graphics/interfaces/data/LightData.h"
+#include "../interfaces/WindowInterface.h"
 #include "ObjectSelector.h"
 
 namespace osgviz {
 
-class Window {
+class Window : public WindowInterface {
 
     /**
      * internal struct to manage lights
@@ -51,8 +52,14 @@ public:
 
 	void frame();
 
-	void enableCameraControl();
-	void disableCameraControl();
+	virtual void enableCameraControl();
+	virtual void disableCameraControl();
+
+	virtual void setCursorShape(int cursor);
+	virtual void setCursorPos(int x, int y);
+
+
+
 
 	void showRain(const bool &val = true);
 	void showSnow(const bool &val = true);

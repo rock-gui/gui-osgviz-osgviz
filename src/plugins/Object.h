@@ -23,22 +23,16 @@ namespace osgviz {
 
 class Object: public osg::PositionAttitudeTransform, public Clickable{
 
-protected:
-	friend class OsgVizVisualizerPlugin;
-	Object();
-
 public:
-
-
-
+	Object();
 
 	virtual ~Object();
 
 	//virtual void setContent(osg::ref_ptr<osg::Node> object);
 
-	virtual bool clicked(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object);
+	virtual bool clicked(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object, WindowInterface* window = NULL);
 
-	virtual bool dragged(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object);
+	virtual bool dragged(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object, WindowInterface* window = NULL);
 
 	virtual bool pointerEvent(int buttonMask, const osg::Vec3d &world, const osg::Vec3d &local){return false;}
 

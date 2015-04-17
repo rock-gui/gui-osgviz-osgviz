@@ -7,7 +7,6 @@
 
 #include "ObjectSelector.h"
 
-#include "../interfaces/Clickable.h"
 #include "Window.h"
 
 #include <osgUtil/LineSegmentIntersector>
@@ -17,7 +16,7 @@
 namespace osgviz {
 
 ObjectSelector::ObjectSelector(osgviz::Window *win):osgGA::GUIEventHandler(),window(win) {
-
+	draggedObject= NULL;
 
 }
 
@@ -40,13 +39,14 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 			   pushedButtonsMask = ea.getButtonMask();
 		   }
 
-		   		   osg::ref_ptr<osgUtil::LineSegmentIntersector> ray = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, ea.getXnormalized(), ea.getYnormalized());
+		   osg::ref_ptr<osgUtil::LineSegmentIntersector> ray = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, ea.getXnormalized(), ea.getYnormalized());
 		   osgUtil::IntersectionVisitor visitor(ray);
 		   window->getView()->getCamera()->accept(visitor);
 		   osgUtil::LineSegmentIntersector::Intersection intersection = ray->getFirstIntersection();
 
 		   const osg::Vec3 &p = intersection.getLocalIntersectPoint();
 		   const osg::Vec3 &w = intersection.getWorldIntersectPoint();
+		   const osg::Vec2d &c = osg::Vec2d(ea.getX(),ea.getY());
 
 		   if (ray->containsIntersections()){
 
@@ -57,7 +57,7 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 				   for (osg::NodePath::iterator node = intersection.nodePath.begin(); node != intersection.nodePath.end(); node++){
 					   Clickable* obj = dynamic_cast<Clickable*>(*node);
 					   if (obj){
-						   if (obj->clicked(pushedButtonsMask,w,p,obj)){
+						   if (obj->clicked(pushedButtonsMask,c,w,p,obj,window)){
 							   return true;
 						   }
 					   }
@@ -65,44 +65,58 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 			   }
 
 			   //drag
-			   if (thisEvent & osgGA::GUIEventAdapter::DRAG){
 
-
-
+			   if (thisEvent & osgGA::GUIEventAdapter::DRAG && lastEvent & osgGA::GUIEventAdapter::PUSH){
 				   //get the first Clickabe Object in path
+				   draggedObject = NULL;
 				   for (osg::NodePath::iterator node = intersection.nodePath.begin(); node != intersection.nodePath.end(); node++){
 					   Clickable* obj = dynamic_cast<Clickable*>(*node);
 					   if (obj){
-
-						  // window->disableCameraControl();
-//						   std::cout << "drag obj " << thisEvent << " " << lastEvent << std::endl;
-						   fflush(stdout);
-						   if (obj->dragged(pushedButtonsMask,w,p,obj)){
+						   if (obj->dragged(pushedButtonsMask,c,w,p,obj,window)){
 							   //there is a receiving obj,
-//							   std::cout << "dragged obj " << thisEvent << " " << lastEvent << std::endl;
-							   fflush(stdout);
-							   if (lastEvent == osgGA::GUIEventAdapter::PUSH){
-//								   std::cout << "disable cam control"<< std::endl;
-							   	   window->disableCameraControl();
-							   }
+							   window->disableCameraControl();
+							   draggedObject = obj;
 							   lastEvent = thisEvent;
 							   return true;
-//						   }else{
-//							   std::cout << "drag false " << thisEvent << " " << lastEvent << std::endl;
 						   }
 					   }
 				   }
 			   }
 
-			   if (thisEvent & osgGA::GUIEventAdapter::RELEASE && lastEvent & osgGA::GUIEventAdapter::DRAG){
-//				   std::cout << "enable cam control"<< std::endl;
-				   window->enableCameraControl();
+			   if (thisEvent & osgGA::GUIEventAdapter::DRAG){
+				   //don't need chacks, the initial
+				   if (draggedObject){
+					   lastEvent = thisEvent;
+					   return draggedObject->dragged(pushedButtonsMask,c,w,p,draggedObject,window);
+				   }
+				   lastEvent = thisEvent;
+				   return false;
 			   }
 
+			   if (thisEvent & osgGA::GUIEventAdapter::RELEASE && lastEvent & osgGA::GUIEventAdapter::DRAG){
+				   window->enableCameraControl();
+				   printf("drag release \n");
+				   if (draggedObject){
+					   int buttons = 0;
+					   //dragging stopped
+					   printf("drag release2 \n");
+					   bool res = draggedObject->dragged(buttons,c,w,p,draggedObject,window);
+					   draggedObject = NULL;
+					   return res;
+				   }
+			   }
 		   }
 
 		   lastEvent = thisEvent;
+
+		   if (draggedObject){
+			   //no intersection, but still dragging
+			   return true;
+		   }
 		   return false;
+
+
+
 	   }
 	   return false;
    }

@@ -9,6 +9,7 @@
 #define OSGVIZ_OSGVIZ_SRC_INTERFACES_CLICKABLE_H_
 
 #include <osg/Vec3d>
+#include "WindowInterface.h"
 
 
 namespace osgviz {
@@ -22,9 +23,12 @@ public:
 	/**
 	 * @param object self, can be used to forward events to external handlers that operate on the object
 	 */
-	virtual bool clicked(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, Clickable* object) = 0;
+	virtual bool clicked(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, Clickable* object, WindowInterface* window = NULL) = 0;
 
-	virtual bool dragged(const int &buttonMask, const osg::Vec3d &world, const osg::Vec3d &local, Clickable* object){return false;}
+	/**
+	 * @param buttonMask is called with 0 when dragging stopped
+	 */
+	virtual bool dragged(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, Clickable* object, WindowInterface* window = NULL){return false;}
 
 };
 
