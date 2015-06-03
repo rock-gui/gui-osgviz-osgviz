@@ -11,6 +11,8 @@
 #include <osgGA/TrackballManipulator>
 #include <osg/Fog>
 #include <osg/LightModel>
+#include <osgViewer/ViewerEventHandlers>
+
 #include "../graphics/wrapper/OSGLightStruct.h"
 #include <stdio.h>
 
@@ -92,6 +94,9 @@ Window::Window(osg::Group *scene, interfaces::GraphicData graphicData) {
 
     if (graphicOptions.fogEnabled == true)
         showFog(true);
+
+    mainView->addEventHandler(new osgViewer::StatsHandler());
+
 }
 
 Window::~Window() {
