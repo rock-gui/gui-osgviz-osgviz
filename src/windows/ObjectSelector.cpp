@@ -95,7 +95,7 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 
 			   if (thisEvent & osgGA::GUIEventAdapter::RELEASE && lastEvent & osgGA::GUIEventAdapter::DRAG){
 				   window->enableCameraControl();
-				   printf("drag release \n");
+				   //printf("drag release \n");
 				   if (draggedObject){
 					   int buttons = 0;
 					   //dragging stopped
