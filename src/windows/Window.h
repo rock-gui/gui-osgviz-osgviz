@@ -87,6 +87,10 @@ public:
 		id = newid;
 	}
 
+	inline osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> getKeySwitchManipulator(){
+		return keyswitchManipulator;
+	}
+
 private:
 
 	void initDefaultLight();
