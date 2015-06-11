@@ -23,6 +23,7 @@ Window* WindowManager::createWindow(interfaces::GraphicData graphicData, osg::Gr
 		Window* wnd = new Window(scene, graphicData);
 		wnd->setName(name);
 		windows.push_back(wnd);
+		wnd->setId(windows.size());
 		return wnd;		
 	}
 	else {

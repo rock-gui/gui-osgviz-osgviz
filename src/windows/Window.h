@@ -47,6 +47,7 @@ public:
 	osg::Group* getScene();
 
 	void setName(const std::string& name);
+	const std::string getName();
 
 	osgViewer::View* addView(std::string name = "3d Window");
 
@@ -78,9 +79,20 @@ public:
 		return viewer;
 	}
 
+	inline unsigned int getId(){
+		return id;
+	}
+
+	inline void setId(unsigned int newid){
+		id = newid;
+	}
+
 private:
 
 	void initDefaultLight();
+
+
+	unsigned int id;
 
 	osg::ref_ptr<osgViewer::CompositeViewer> viewer;
 	std::vector<osgViewer::View* > views;

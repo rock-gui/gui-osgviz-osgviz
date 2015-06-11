@@ -131,6 +131,10 @@ void Window::setName(const std::string& name) {
     graphicsWindow->setWindowName(name);
 }
 
+const std::string Window::getName() {
+    graphicsWindow->getWindowName();
+}
+
 void Window::frame() {
     viewer->frame();
 }
