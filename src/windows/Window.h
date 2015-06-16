@@ -57,6 +57,8 @@ public:
     osgViewer::View* addView(ViewConfig viewConfig, osg::Group* scene);
 
 
+    osgViewer::GraphicsWindow * getGraphicsWindow(int index = 0);
+
 /*	void frame();
 
 	void enableCameraControl();
@@ -69,9 +71,7 @@ public:
 
 
 
-	inline osgViewer::GraphicsWindow * getGraphicsWindow(){
-		return graphicsWindow;
-	}
+
 
 	inline osgViewer::View* getView(int index = 0){
 		return views[index];

@@ -168,6 +168,15 @@ osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* scene) {
 ////	keyswitchManipulator->selectMatrixManipulator('0');
 //}
 
+osgViewer::GraphicsWindow* Window::getGraphicsWindow(int index) {
+	osgViewer::ViewerBase::Windows m_windows;
+	this->getWindows(m_windows);
+	if (m_windows.size() > index){
+		return m_windows[index];
+	}
+	return NULL;
+}
+
 } /* namespace osgviz */
 
 
