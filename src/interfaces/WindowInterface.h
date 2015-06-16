@@ -16,6 +16,8 @@ public:
 	virtual void enableCameraControl() = 0;
 	virtual void disableCameraControl() = 0;
 
+	virtual void activeObjectSelector() = 0;
+	virtual void deactivateObjectSelector() = 0;
 
 	virtual void setCursorShape(int cursor) = 0;
 	virtual void setCursorPos(int x, int y) = 0;

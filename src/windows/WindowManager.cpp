@@ -18,10 +18,10 @@ WindowManager::~WindowManager() {
 	// TODO Auto-generated destructor stub
 }
 
-Window* WindowManager::createWindow(interfaces::GraphicData graphicData, osg::Group* scene, std::string name) {
+Window* WindowManager::createWindow(WindowConfig windowConfig, osg::Group* scene) {
 	if (scene) {
-		Window* wnd = new Window(scene, graphicData);
-		wnd->setName(name);
+		Window* wnd = new Window(windowConfig);
+		wnd->setName(windowConfig.title);
 		windows.push_back(wnd);
 
 		if (windowConfig.dummyTwoViews == false) {

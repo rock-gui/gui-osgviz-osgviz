@@ -48,13 +48,14 @@ public:
 	Window(WindowConfig windowConfig);
 	virtual ~Window();
 
-	void setScene(osg::Group *scene);
+//	void setScene(osg::Group *scene);
 
-	osg::Group* getScene();
+//	osg::Group* getScene();
 
 	void setName(const std::string& name);
 
-        osgViewer::View* addView(ViewConfig viewConfig, osg::Group* scene);
+    osgViewer::View* addView(ViewConfig viewConfig, osg::Group* scene);
+
 
 /*	void frame();
 
@@ -64,6 +65,8 @@ public:
 	void showRain(const bool &val = true);
 	void showSnow(const bool &val = true);
 	void showFog(const bool &val = true);
+
+
 
 
 	inline osgViewer::GraphicsWindow * getGraphicsWindow(){
@@ -78,14 +81,30 @@ public:
 		return viewer;
 	}*/
 
+    inline unsigned int getId(){
+    	return id;
+    }
+
+    inline void setId(unsigned int newid){
+    	id = newid;
+    }
+
+
 private:
 	WindowConfig windowConfig;
+
+	unsigned int id;
 
 	osg::ref_ptr<osg::GraphicsContext> graphicsContext;
 
 	osg::ref_ptr<osg::Group> root;
 
 	osg::ref_ptr<osg::StateSet> globalStateset;
+
+	osg::ref_ptr<osgViewer::CompositeViewer> viewer;
+	std::vector<osgViewer::View* > views;
+	osgViewer::GraphicsWindow * graphicsWindow;
+
 };
 
 } /* namespace osgviz */

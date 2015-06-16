@@ -1,5 +1,7 @@
 #include "SuperView.h"
 
+#include <stdio.h>
+
 namespace osgviz {
 
 SuperView::SuperView() : osgViewer::View() {}
@@ -78,6 +80,16 @@ void SuperView::enableCameraControl() {
 
 void SuperView::disableCameraControl() {
 	keyswitchManipulator->selectMatrixManipulator('0');
+}
+
+void SuperView::setCursorShape(int cursor){
+	printf("not implemented : %s\n", __PRETTY_FUNCTION__);
+	//graphicsWindow->setCursor((osgViewer::GraphicsWindow::MouseCursor)cursor);
+}
+void SuperView::setCursorPos(int x, int y){
+	printf("not implemented : %s\n", __PRETTY_FUNCTION__);
+ 	//graphicsWindow->requestWarpPointer(x,y);
+//	keyswitchManipulator->selectMatrixManipulator('0');
 }
 
 }

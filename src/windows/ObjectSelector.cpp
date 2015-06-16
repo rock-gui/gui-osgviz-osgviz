@@ -57,7 +57,7 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 				   for (osg::NodePath::iterator node = intersection.nodePath.begin(); node != intersection.nodePath.end(); node++){
 					   Clickable* obj = dynamic_cast<Clickable*>(*node);
 					   if (obj){
-						   if (obj->clicked(pushedButtonsMask,c,w,p,obj,window)){
+						   if (obj->clicked(pushedButtonsMask,c,w,p,obj,view)){
 							   return true;
 						   }
 					   }
@@ -72,9 +72,9 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 				   for (osg::NodePath::iterator node = intersection.nodePath.begin(); node != intersection.nodePath.end(); node++){
 					   Clickable* obj = dynamic_cast<Clickable*>(*node);
 					   if (obj){
-						   if (obj->dragged(pushedButtonsMask,c,w,p,obj,window)){
+						   if (obj->dragged(pushedButtonsMask,c,w,p,obj,view)){
 							   //there is a receiving obj,
-							   window->disableCameraControl();
+							   view->disableCameraControl();
 							   draggedObject = obj;
 							   lastEvent = thisEvent;
 							   return true;
@@ -87,20 +87,20 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 				   //don't need chacks, the initial
 				   if (draggedObject){
 					   lastEvent = thisEvent;
-					   return draggedObject->dragged(pushedButtonsMask,c,w,p,draggedObject,window);
+					   return draggedObject->dragged(pushedButtonsMask,c,w,p,draggedObject,view);
 				   }
 				   lastEvent = thisEvent;
 				   return false;
 			   }
 
 			   if (thisEvent & osgGA::GUIEventAdapter::RELEASE && lastEvent & osgGA::GUIEventAdapter::DRAG){
-				   window->enableCameraControl();
+				   view->enableCameraControl();
 				   //printf("drag release \n");
 				   if (draggedObject){
 					   int buttons = 0;
 					   //dragging stopped
-					   printf("drag release2 \n");
-					   bool res = draggedObject->dragged(buttons,c,w,p,draggedObject,window);
+//					   printf("drag release2 \n");
+					   bool res = draggedObject->dragged(buttons,c,w,p,draggedObject,view);
 					   draggedObject = NULL;
 					   return res;
 				   }

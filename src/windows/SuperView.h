@@ -23,18 +23,21 @@
 
 namespace osgviz {
 
-class SuperView : public osgViewer::View {
+class SuperView : public osgViewer::View, public WindowInterface {
 
 	public:
 		SuperView();
 
 		SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContext, osg::Group* scene = NULL);
 
-		void activeObjectSelector();
-		void deactivateObjectSelector();
+		virtual void activeObjectSelector();
+		virtual void deactivateObjectSelector();
 
-		void enableCameraControl();
-		void disableCameraControl();
+		virtual void enableCameraControl();
+		virtual void disableCameraControl();
+
+	 	virtual void setCursorShape(int cursor);
+	 	virtual void setCursorPos(int x, int y);
 
 	private:
 		ViewConfig viewConfig;
