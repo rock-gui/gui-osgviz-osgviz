@@ -9,6 +9,7 @@
 #define OSGVIZ_OSGVIZ_SRC_WINDOWS_WINDOW_H_
 
 #include <iostream>
+#include <vector>
 
 #include <osgViewer/CompositeViewer>
 #include <osgParticle/PrecipitationEffect>
@@ -17,14 +18,18 @@
 #include <osgGA/TerrainManipulator>
 #include <osgGA/FlightManipulator>
 
+#include <osg/GraphicsContext>
+#include <osg/Group>
+#include <osg/StateSet>
+
 #include "../graphics/interfaces/data/GraphicData.h"
 #include "../graphics/interfaces/data/LightData.h"
-#include "../interfaces/WindowInterface.h"
 #include "ObjectSelector.h"
+#include "config/WindowConfig.h"
 
 namespace osgviz {
 
-class Window : public WindowInterface {
+class Window : public osgViewer::CompositeViewer{
 
     /**
      * internal struct to manage lights
@@ -38,8 +43,9 @@ class Window : public WindowInterface {
 
 
 public:
-	Window(osg::Group *scene, interfaces::GraphicData graphicData);
-
+	typedef osg::ref_ptr<Window> Ptr;
+	
+	Window(WindowConfig windowConfig);
 	virtual ~Window();
 
 	void setScene(osg::Group *scene);
@@ -47,20 +53,13 @@ public:
 	osg::Group* getScene();
 
 	void setName(const std::string& name);
-	const std::string getName();
 
-	osgViewer::View* addView(std::string name = "3d Window");
+        osgViewer::View* addView(ViewConfig viewConfig, osg::Group* scene);
 
-	void frame();
+/*	void frame();
 
-	virtual void enableCameraControl();
-	virtual void disableCameraControl();
-
-	virtual void setCursorShape(int cursor);
-	virtual void setCursorPos(int x, int y);
-
-
-
+	void enableCameraControl();
+	void disableCameraControl();
 
 	void showRain(const bool &val = true);
 	void showSnow(const bool &val = true);
@@ -77,51 +76,16 @@ public:
 
 	inline osg::ref_ptr<osgViewer::CompositeViewer> getViewer(){
 		return viewer;
-	}
-
-	inline unsigned int getId(){
-		return id;
-	}
-
-	inline void setId(unsigned int newid){
-		id = newid;
-	}
-
-	inline osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> getKeySwitchManipulator(){
-		return keyswitchManipulator;
-	}
+	}*/
 
 private:
+	WindowConfig windowConfig;
 
-	void initDefaultLight();
+	osg::ref_ptr<osg::GraphicsContext> graphicsContext;
 
+	osg::ref_ptr<osg::Group> root;
 
-	unsigned int id;
-
-	osg::ref_ptr<osgViewer::CompositeViewer> viewer;
-	std::vector<osgViewer::View* > views;
-	osgViewer::GraphicsWindow * graphicsWindow;
-
-	osgViewer::View* mainView;
-
-
-	osg::Group *scene;
 	osg::ref_ptr<osg::StateSet> globalStateset;
-	interfaces::GraphicData graphicOptions;
-
-
-	osg::ref_ptr<osg::Group> lightGroup;
-	lightmanager defaultLight;
-    std::vector<lightmanager> myLights;
-
-
-    osg::ref_ptr<osgParticle::PrecipitationEffect> snow, rain;
-    osg::ref_ptr<osg::Fog> myFog;
-
-    osg::ref_ptr<ObjectSelector> objectSelector;
-
-    osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> keyswitchManipulator;
-    int lastActiveCameraManipulator;
 };
 
 } /* namespace osgviz */

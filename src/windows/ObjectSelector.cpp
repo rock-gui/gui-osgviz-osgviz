@@ -7,16 +7,17 @@
 
 #include "ObjectSelector.h"
 
-#include "Window.h"
+#include "../interfaces/Clickable.h"
+#include "SuperView.h"
 
 #include <osgUtil/LineSegmentIntersector>
 #include <iostream>
-#include <stdio.h>
+
 
 namespace osgviz {
 
-ObjectSelector::ObjectSelector(osgviz::Window *win):osgGA::GUIEventHandler(),window(win) {
-	draggedObject= NULL;
+ObjectSelector::ObjectSelector(osgviz::SuperView *view):osgGA::GUIEventHandler(),view(view) {
+draggedObject= NULL;
 
 }
 
@@ -32,7 +33,6 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 	   //ignored events (for the lastEvent setting)
 	   if (thisEvent != osgGA::GUIEventAdapter::FRAME && thisEvent != osgGA::GUIEventAdapter::MOVE ){
 
-//		   std::cout << "event " << thisEvent << std::endl;
 
 		   //save the buttonmask (not available in release event)
 		   if (thisEvent == osgGA::GUIEventAdapter::PUSH){
@@ -41,7 +41,7 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 
 		   osg::ref_ptr<osgUtil::LineSegmentIntersector> ray = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, ea.getXnormalized(), ea.getYnormalized());
 		   osgUtil::IntersectionVisitor visitor(ray);
-		   window->getView()->getCamera()->accept(visitor);
+		   view->getCamera()->accept(visitor);
 		   osgUtil::LineSegmentIntersector::Intersection intersection = ray->getFirstIntersection();
 
 		   const osg::Vec3 &p = intersection.getLocalIntersectPoint();
@@ -105,6 +105,7 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 					   return res;
 				   }
 			   }
+
 		   }
 
 		   lastEvent = thisEvent;
@@ -114,9 +115,6 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 			   return true;
 		   }
 		   return false;
-
-
-
 	   }
 	   return false;
    }

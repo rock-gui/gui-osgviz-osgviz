@@ -15,11 +15,11 @@
 
 namespace osgviz {
 
-class Window;
+class SuperView;
 
 class ObjectSelector : public osgGA::GUIEventHandler{
 public:
-	ObjectSelector(osgviz::Window *win);
+	ObjectSelector(osgviz::SuperView *view);
 
 	virtual ~ObjectSelector();
 
@@ -27,7 +27,7 @@ public:
 
 
 private:
-	osgviz::Window *window;
+	osgviz::SuperView *view;
 	Clickable *draggedObject;
 	osgGA::GUIEventAdapter::EventType thisEvent,lastEvent;
 	int pushedButtonsMask;

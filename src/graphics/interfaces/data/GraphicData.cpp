@@ -36,6 +36,8 @@ namespace osgviz {
       windowPosX = 0;
       windowPosY = 0;
 
+      fullScreen = false;
+
       clearColor.r() = 0.55;
       clearColor.g() = 0.67;
       clearColor.b() = 0.88;

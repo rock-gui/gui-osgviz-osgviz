@@ -5,6 +5,8 @@
 
 #include "plugins/viz/Primitives/PrimitivesFactory.h"
 
+#include "windows/config/WindowConfig.h"
+
 #include <unistd.h>//sleep
 #include <stdio.h>
 
@@ -13,7 +15,16 @@ int main(int argc, char** argv)
 {
 	osgviz::OsgViz *osgViz = osgviz::OsgViz::getInstance();
 
-	osgViz->createWindow();
+	osgviz::WindowConfig windowConfig = osgviz::WindowConfig();
+	windowConfig.fullScreen = false;
+
+	osgViz->createWindow(windowConfig);
+
+	windowConfig.fullScreen = false;
+	windowConfig.dummyTwoViews = true;
+
+	osgViz->createWindow(windowConfig);
+	
 
 	osgviz::ModelLoader *modelloader = NULL;
 	if (argc > 1){

@@ -3,6 +3,7 @@
 //#include "graphics/GraphicsManager.h"
 
 #include <stdio.h>
+#include <unistd.h>
 #include <osgGA/TerrainManipulator>
 #include <X11/Xlib.h>
 
@@ -103,10 +104,10 @@ OsgViz::~OsgViz(){
 
 }
 
-int OsgViz::createWindow(interfaces::GraphicData graphicData) {
+int OsgViz::createWindow(WindowConfig windowConfig) {
 	//int id = graphicsManager->new3DWindow();
 	//mars::interfaces::GraphicsWindowInterface* window = this->get3DWindow(1);
-	Window* wnd = windowManager.createWindow(graphicData, root);
+	windowManager.createWindow(windowConfig, root);
 	//return id;
 	return 0;
 }

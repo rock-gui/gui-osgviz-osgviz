@@ -10,7 +10,7 @@
 
 #include <stdexcept>
 
-#include "../graphics/interfaces/data/GraphicData.h"
+#include "config/WindowConfig.h"
 
 #include "Window.h"
 
@@ -21,20 +21,19 @@ public:
 	WindowManager();
 	virtual ~WindowManager();
 
-	Window* createWindow(interfaces::GraphicData graphicData = interfaces::GraphicData(), osg::Group* scene = NULL, std::string name = "Env");
+	Window* createWindow(WindowConfig windowConfig, osg::Group* scene = NULL);
 
 	inline Window* getWindowByID(const unsigned int& id){
 		if (id < windows.size()){
-			return windows[id];
+			return windows.at(id);
 		}
 		return NULL;
 	}
 
-
 	void frame();
 
 private:
-	std::vector<Window*> windows;
+	std::vector<Window::Ptr> windows;
 
 };
 
