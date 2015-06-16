@@ -24,6 +24,7 @@ Window* WindowManager::createWindow(WindowConfig windowConfig, osg::Group* scene
 		wnd->setName(windowConfig.title);
 		windows.push_back(wnd);
 
+		wnd->setId(windows.size());
 		if (windowConfig.dummyTwoViews == false) {
 			wnd->addView(ViewConfig(), scene);
 		} else {

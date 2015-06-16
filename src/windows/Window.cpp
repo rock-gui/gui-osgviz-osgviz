@@ -69,10 +69,6 @@ Window::Window(WindowConfig windowConfig) : osgViewer::CompositeViewer(),
     root = new osg::Group;
     root->setStateSet(globalStateset.get());
 
-    osgViewer::ViewerBase::Windows m_windows;
-    this->getWindows(m_windows);
-    graphicsWindow = m_windows.front();
-
 }
 
 Window::~Window() {
@@ -102,9 +98,9 @@ osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* scene) {
 //    return this->scene;
 //}
 
-void Window::setName(const std::string& name) {
-	graphicsWindow->setWindowName(name);
-}
+//void Window::setName(const std::string& name) {
+//	graphicsWindow->setWindowName(name);
+//}
 
 //void Window::frame() {
 //    viewer->frame();

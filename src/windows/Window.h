@@ -52,7 +52,7 @@ public:
 
 //	osg::Group* getScene();
 
-	void setName(const std::string& name);
+	//void setName(const std::string& name);
 
     osgViewer::View* addView(ViewConfig viewConfig, osg::Group* scene);
 
@@ -100,10 +100,6 @@ private:
 	osg::ref_ptr<osg::Group> root;
 
 	osg::ref_ptr<osg::StateSet> globalStateset;
-
-	osg::ref_ptr<osgViewer::CompositeViewer> viewer;
-	std::vector<osgViewer::View* > views;
-	osgViewer::GraphicsWindow * graphicsWindow;
 
 };
 
