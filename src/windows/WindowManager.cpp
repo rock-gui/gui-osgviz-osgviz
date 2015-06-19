@@ -18,20 +18,21 @@ WindowManager::~WindowManager() {
 	// TODO Auto-generated destructor stub
 }
 
-Window* WindowManager::createWindow(WindowConfig windowConfig, osg::Group* scene) {
+unsigned int WindowManager::createWindow(WindowConfig windowConfig, osg::Group* scene) {
 	if (scene) {
 		Window* wnd = new Window(windowConfig);
 		wnd->setName(windowConfig.title);
+
+		unsigned int wndId = windows.size();
 		windows.push_back(wnd);
 
-		wnd->setId(windows.size());
 		if (windowConfig.dummyTwoViews == false) {
 			wnd->addView(ViewConfig(), scene);
 		} else {
 			wnd->addView(ViewConfig(0, 0, 0.5, 1.0), scene);
 			wnd->addView(ViewConfig(0.5, 0, 0.5, 1.0), scene);		
 		}
-		return wnd;		
+		return wndId;		
 	}
 	else {
 		std::runtime_error("WindowManager::createWindow: try to create window, but the scene pointer is not set.");

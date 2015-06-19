@@ -20,13 +20,16 @@ int main(int argc, char** argv)
 	osgviz::WindowConfig windowConfig = osgviz::WindowConfig();
 	windowConfig.fullScreen = false;
 
-	osgViz->createWindow(windowConfig);
+	unsigned int id = osgViz->createWindow(windowConfig);
+
+	std::cout << "id: " << id << std::endl;
 
 	windowConfig.fullScreen = false;
 	windowConfig.dummyTwoViews = true;
 
-	osgViz->createWindow(windowConfig);
-	
+	id = osgViz->createWindow(windowConfig);
+
+	std::cout << "id: " << id << std::endl;
 
 	osgviz::ModelLoader *modelloader = NULL;
 	if (argc > 1){
@@ -43,12 +46,13 @@ int main(int argc, char** argv)
 	osgviz::WindowManager* winman = osgViz->getWindowManager();
 	osg::ref_ptr<osgviz::Window> win_1 = winman->getWindowByID(0);
 
-	osg::ref_ptr<osgviz::Object> axes = primitivesfactory->createAxes();
+	
 	//osgViz->addChild(axes);
 
-	win_1->addChild(axes);
-
 	osg::ref_ptr<osgviz::Window> win_2 = winman->getWindowByID(1);
+
+	osg::ref_ptr<osgviz::Object> axes = primitivesfactory->createAxes();
+	win_2->addChild(axes);
 
 	osg::ref_ptr<osgviz::Object> arrow = primitivesfactory->createArrow();
 	arrow->rotate(M_PI/2.0,osg::Vec3d(0,1,0));

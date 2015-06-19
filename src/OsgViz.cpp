@@ -46,10 +46,6 @@ void FrameUpdateThread::run()
 	}
 }
 
-
-
-
-
 OsgViz::OsgViz(lib_manager::LibManager * manager): lib_manager::LibInterface(manager)
 {
 	createdOwnManager = false;
@@ -104,15 +100,13 @@ OsgViz::~OsgViz(){
 
 }
 
-int OsgViz::createWindow(WindowConfig windowConfig) {
+unsigned int OsgViz::createWindow(WindowConfig windowConfig) {
 	//int id = graphicsManager->new3DWindow();
 	//mars::interfaces::GraphicsWindowInterface* window = this->get3DWindow(1);
-	windowManager.createWindow(windowConfig, root);
-	//return id;
-	return 0;
+	return windowManager.createWindow(windowConfig, root);
 }
 
-void OsgViz::destroyWindow(int id){
+void OsgViz::destroyWindow(unsigned int id){
 	//graphicsManager->remove3DWindow(id);
 }
 

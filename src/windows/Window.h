@@ -67,11 +67,6 @@ public:
 	void showSnow(const bool &val = true);
 	void showFog(const bool &val = true);
 
-
-
-
-
-
 	inline osgViewer::View* getView(int index = 0){
 		return views[index];
 	}
@@ -80,14 +75,6 @@ public:
 		return viewer;
 	}*/
 
-    inline unsigned int getId(){
-    	return id;
-    }
-
-    inline void setId(unsigned int newid){
-    	id = newid;
-    }
-
     void addChild(osg::Group *scene) {
     	root->addChild(scene);
     }
@@ -95,8 +82,6 @@ public:
 
 private:
 	WindowConfig windowConfig;
-
-	unsigned int id;
 
 	osg::ref_ptr<osg::GraphicsContext> graphicsContext;
 

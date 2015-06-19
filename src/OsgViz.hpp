@@ -67,8 +67,8 @@ namespace osgviz
 
 		void updateContent();
 
-		int createWindow(WindowConfig windowConfig = WindowConfig());
-		void destroyWindow(int id);
+		unsigned int createWindow(WindowConfig windowConfig = WindowConfig());
+		void destroyWindow(unsigned int id);
 
 		//inline GraphicsManagerInterface* getGraphicsManagerInterface(){
 		//	return (GraphicsManagerInterface*)graphicsManager;
