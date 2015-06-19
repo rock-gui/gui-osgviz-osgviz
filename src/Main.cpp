@@ -7,6 +7,8 @@
 
 #include "windows/config/WindowConfig.h"
 
+#include "windows/SuperView.h"
+
 #include <unistd.h>//sleep
 #include <stdio.h>
 
@@ -35,16 +37,23 @@ int main(int argc, char** argv)
 	}
 	osgviz::PrimitivesFactory *primitivesfactory = osgViz->getVisualizerPlugin< osgviz::PrimitivesFactory >("PrimitivesFactory");
 
-	osg::ref_ptr<osgviz::Object> axes = primitivesfactory->createAxes();
-	osgViz->addChild(axes);
-
 	osg::ref_ptr<osgviz::Object> grid = primitivesfactory->createGrid();
 	osgViz->addChild(grid);
 
-	osg::ref_ptr<osgviz::Object> arrow = primitivesfactory->createArrow();
-	osgViz->addChild(arrow);
+	osgviz::WindowManager* winman = osgViz->getWindowManager();
+	osg::ref_ptr<osgviz::Window> win_1 = winman->getWindowByID(0);
 
+	osg::ref_ptr<osgviz::Object> axes = primitivesfactory->createAxes();
+	//osgViz->addChild(axes);
+
+	win_1->addChild(axes);
+
+	osg::ref_ptr<osgviz::Window> win_2 = winman->getWindowByID(1);
+
+	osg::ref_ptr<osgviz::Object> arrow = primitivesfactory->createArrow();
 	arrow->rotate(M_PI/2.0,osg::Vec3d(0,1,0));
+	((osgviz::SuperView*)win_2->getView(0))->addChild(arrow);
+
 
 
 	//osgviz::GraphicsManagerInterface* manager = osgViz->getGraphicsManagerInterface();

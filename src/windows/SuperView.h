@@ -39,6 +39,10 @@ class SuperView : public osgViewer::View, public WindowInterface {
 	 	virtual void setCursorShape(int cursor);
 	 	virtual void setCursorPos(int x, int y);
 
+	 	void addChild(osg::Group *scene) {
+	 		root->addChild(scene);
+	 	}
+
 	private:
 		ViewConfig viewConfig;
 
@@ -49,6 +53,8 @@ class SuperView : public osgViewer::View, public WindowInterface {
 		osg::ref_ptr<osg::Fog> fog;
 
 		osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> keyswitchManipulator;
+
+		osg::ref_ptr<osg::Group> root;
 };
 
 } /* namespace osgviz */

@@ -56,7 +56,6 @@ public:
 
     osgViewer::View* addView(ViewConfig viewConfig, osg::Group* scene);
 
-
     osgViewer::GraphicsWindow * getGraphicsWindow(int index = 0);
 
 /*	void frame();
@@ -87,6 +86,10 @@ public:
 
     inline void setId(unsigned int newid){
     	id = newid;
+    }
+
+    void addChild(osg::Group *scene) {
+    	root->addChild(scene);
     }
 
 

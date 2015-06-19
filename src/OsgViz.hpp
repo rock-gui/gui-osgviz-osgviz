@@ -74,8 +74,6 @@ namespace osgviz
 		//	return (GraphicsManagerInterface*)graphicsManager;
 		//}
 
-
-
 		template <class VIZPLUGIN> VIZPLUGIN* getVisualizerPlugin(std::string classname){
 			VIZPLUGIN* viz = (VIZPLUGIN*)getVizPlugin(classname,classname);
 			viz->setRootNode(root);
@@ -91,7 +89,6 @@ namespace osgviz
 			data->init();
 			return data;
 		}
-
 
 		inline osg::ref_ptr<osg::Group> getRootNode(){
 			return root;

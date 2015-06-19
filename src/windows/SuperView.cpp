@@ -51,7 +51,10 @@ SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContex
 
     setCameraManipulator(keyswitchManipulator);
 
-	setSceneData(scene);
+    root = new osg::Group();
+
+    root->addChild(scene);
+	setSceneData(root);
 
 	if (viewConfig.hasObjectSelector == true) {
 		objectSelector = new ObjectSelector(this);
