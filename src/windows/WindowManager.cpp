@@ -26,12 +26,10 @@ unsigned int WindowManager::createWindow(WindowConfig windowConfig, osg::Group* 
 		unsigned int wndId = windows.size();
 		windows.push_back(wnd);
 
-		if (windowConfig.dummyTwoViews == false) {
-			wnd->addView(ViewConfig(), scene);
-		} else {
-			wnd->addView(ViewConfig(0, 0, 0.5, 1.0), scene);
-			wnd->addView(ViewConfig(0.5, 0, 0.5, 1.0), scene);		
+		for (unsigned int i = 0; i < windowConfig.viewsConfig.size(); ++i) {
+			wnd->addView(windowConfig.viewsConfig.at(i), scene);
 		}
+
 		return wndId;		
 	}
 	else {

@@ -17,19 +17,21 @@ int main(int argc, char** argv)
 {
 	osgviz::OsgViz *osgViz = osgviz::OsgViz::getInstance();
 
+	// --------- create first window ---------
 	osgviz::WindowConfig windowConfig = osgviz::WindowConfig();
 	windowConfig.fullScreen = false;
+	windowConfig.viewsConfig.push_back(osgviz::ViewConfig());
 
 	unsigned int id = osgViz->createWindow(windowConfig);
+	std::cout << "window id: " << id << std::endl;
 
-	std::cout << "id: " << id << std::endl;
-
+	// --------- create second window ---------
 	windowConfig.fullScreen = false;
-	windowConfig.dummyTwoViews = true;
+	windowConfig.viewsConfig.at(0) = osgviz::ViewConfig(0, 0, 0.5, 1.0);
+	windowConfig.viewsConfig.push_back(osgviz::ViewConfig(0.5, 0, 0.5, 1.0));
 
 	id = osgViz->createWindow(windowConfig);
-
-	std::cout << "id: " << id << std::endl;
+	std::cout << "window id: " << id << std::endl;
 
 	osgviz::ModelLoader *modelloader = NULL;
 	if (argc > 1){

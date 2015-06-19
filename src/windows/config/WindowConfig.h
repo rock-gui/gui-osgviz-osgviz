@@ -2,36 +2,9 @@
 #define OSGVIZ_WINDOW_CONFIG_H
 
 #include <string>
+#include <vector>
 
 namespace osgviz {
-
-    class WindowConfig {
-    public:
-      WindowConfig() : title("Env"), 
-                      posX(0),
-                      posY(0),      
-                      width(720),
-                      height(405),
-                      fullScreen(false),
-                      screenNumber(0),
-                      dummyTwoViews(false) {};
-
-      std::string title;
-
-      int posX;
-      int posY;
-      int width;
-      int height;
-
-      bool fullScreen;     //!< if full screen is set to true:
-                            //!< the window will take the size of the screen
-                            //!< therefore the windowWidth, windowHeight, windowPosX and windowPosY will be ignored
-
-      int screenNumber;
-
-      bool dummyTwoViews;
-    };
-
 
     class ViewConfig {
     public:
@@ -56,7 +29,36 @@ namespace osgviz {
       float clearColorAlpha;      
 
       bool hasObjectSelector;
+    };  
+
+    class WindowConfig {
+    public:
+      WindowConfig() : title("Env"), 
+                      posX(0),
+                      posY(0),      
+                      width(720),
+                      height(405),
+                      fullScreen(false),
+                      screenNumber(0) {};
+
+      std::string title;
+
+      int posX;
+      int posY;
+      int width;
+      int height;
+
+      bool fullScreen;     //!< if full screen is set to true:
+                            //!< the window will take the size of the screen
+                            //!< therefore the windowWidth, windowHeight, windowPosX and windowPosY will be ignored
+
+      int screenNumber;
+
+      std::vector<ViewConfig> viewsConfig;
     };
+
+
+
 
 } // end of namespace osgviz
 
