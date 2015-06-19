@@ -104,7 +104,7 @@ namespace osgviz
 		}
 
 		inline WindowManager* getWindowManager(){
-			return &windowManager;
+			return windowManager.get();
 		}
 
 
@@ -131,9 +131,7 @@ namespace osgviz
 		//osgViewer::Viewer viewer;
 		//std::vector<osgViewer::Viewer *> viewers;
 
-		WindowManager windowManager;
-
-
+		WindowManager::Ptr windowManager;
 	};
 
 	class FrameUpdateThread : public OpenThreads::Thread

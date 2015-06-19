@@ -16,8 +16,11 @@
 
 namespace osgviz {
 
-class WindowManager {
+class WindowManager: public osg::Referenced {
 public:
+
+	typedef osg::ref_ptr<WindowManager> Ptr;
+
 	WindowManager();
 	virtual ~WindowManager();
 

@@ -71,6 +71,8 @@ void OsgViz::init(int argc,char** argv){
 	XInitThreads();
 	instance = this;
 
+	windowManager = new WindowManager();
+
 	
 //	wnd->showRain();
 
@@ -103,7 +105,7 @@ OsgViz::~OsgViz(){
 unsigned int OsgViz::createWindow(WindowConfig windowConfig) {
 	//int id = graphicsManager->new3DWindow();
 	//mars::interfaces::GraphicsWindowInterface* window = this->get3DWindow(1);
-	return windowManager.createWindow(windowConfig, root);
+	return windowManager->createWindow(windowConfig, root);
 }
 
 void OsgViz::destroyWindow(unsigned int id){
@@ -140,7 +142,7 @@ void OsgViz::updateContent(){
 	//graphicsManager->draw();
 //	viewer.frame();
 
-	windowManager.frame();
+	windowManager->frame();
 	//graphicsManager->get3DWindow();
 
 //	osgViewer::ViewerBase::Views views;
