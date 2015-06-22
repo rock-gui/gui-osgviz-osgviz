@@ -33,7 +33,7 @@ public:
 		return NULL;
 	}
 
-	inline std::vector<Window::Ptr> getWindowIDs() const{
+	inline std::vector<Window::Ptr> getWindows() const{
 		return windows;
 	}
 
