@@ -105,7 +105,13 @@ OsgViz::~OsgViz(){
 unsigned int OsgViz::createWindow(WindowConfig windowConfig) {
 	//int id = graphicsManager->new3DWindow();
 	//mars::interfaces::GraphicsWindowInterface* window = this->get3DWindow(1);
-	return windowManager->createWindow(windowConfig, root);
+	unsigned int winID = windowManager->createWindow(windowConfig);
+
+	// all created windows will share the same osgviz scene
+	windowManager->getWindowByID(winID)->addChild(root);
+
+	return winID;
+
 }
 
 void OsgViz::destroyWindow(unsigned int id){

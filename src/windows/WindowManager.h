@@ -24,7 +24,7 @@ public:
 	WindowManager();
 	virtual ~WindowManager();
 
-	unsigned int createWindow(WindowConfig windowConfig, osg::Group* scene = NULL);
+	unsigned int createWindow(WindowConfig windowConfig, osg::Group* windowScene = NULL);
 
 	inline Window* getWindowByID(const unsigned int& id){
 		if (id < windows.size()){

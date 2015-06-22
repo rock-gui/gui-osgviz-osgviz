@@ -6,7 +6,7 @@ namespace osgviz {
 
 SuperView::SuperView() : osgViewer::View() {}
 
-SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContext, osg::Group* scene) : osgViewer::View(), viewConfig(viewConfig) {
+SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContext, osg::Group* viewScene) : osgViewer::View(), viewConfig(viewConfig) {
 
 	if (graphicsContext == NULL)
 		throw std::runtime_error("SuperView: Graphic Context is null pointer.");
@@ -52,9 +52,9 @@ SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContex
     setCameraManipulator(keyswitchManipulator);
 
     root = new osg::Group();
-
-    root->addChild(scene);
 	setSceneData(root);
+
+	addChild(viewScene);
 
 	if (viewConfig.hasObjectSelector == true) {
 		objectSelector = new ObjectSelector(this);

@@ -45,7 +45,7 @@ class Window : public osgViewer::CompositeViewer{
 public:
 	typedef osg::ref_ptr<Window> Ptr;
 	
-	Window(WindowConfig windowConfig);
+	Window(WindowConfig windowConfig, osg::Group* windowScene = NULL);
 	virtual ~Window();
 
 //	void setScene(osg::Group *scene);
@@ -54,7 +54,7 @@ public:
 
 	//void setName(const std::string& name);
 
-    osgViewer::View* addView(ViewConfig viewConfig, osg::Group* scene);
+    osgViewer::View* addView(ViewConfig viewConfig, osg::Group* viewScene = NULL);
 
     osgViewer::GraphicsWindow * getGraphicsWindow(int index = 0);
 

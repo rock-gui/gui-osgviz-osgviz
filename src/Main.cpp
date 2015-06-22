@@ -48,19 +48,17 @@ int main(int argc, char** argv)
 	osgviz::WindowManager* winman = osgViz->getWindowManager();
 	osg::ref_ptr<osgviz::Window> win_1 = winman->getWindowByID(0);
 
-	
 	//osgViz->addChild(axes);
 
 	osg::ref_ptr<osgviz::Window> win_2 = winman->getWindowByID(1);
-
-	osg::ref_ptr<osgviz::Object> axes = primitivesfactory->createAxes();
-	win_2->addChild(axes);
 
 	osg::ref_ptr<osgviz::Object> arrow = primitivesfactory->createArrow();
 	arrow->rotate(M_PI/2.0,osg::Vec3d(0,1,0));
 	((osgviz::SuperView*)win_2->getView(0))->addChild(arrow);
 
 
+	osg::ref_ptr<osgviz::Object> axes = primitivesfactory->createAxes();
+	win_2->addChild(axes);
 
 	//osgviz::GraphicsManagerInterface* manager = osgViz->getGraphicsManagerInterface();
 	//manager->setCamera(2);

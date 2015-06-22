@@ -15,7 +15,7 @@
 
 namespace osgviz {
 
-Window::Window(WindowConfig windowConfig) : osgViewer::CompositeViewer(),
+Window::Window(WindowConfig windowConfig, osg::Group* windowScene) : osgViewer::CompositeViewer(),
          windowConfig(windowConfig) {
 
     osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
@@ -69,17 +69,21 @@ Window::Window(WindowConfig windowConfig) : osgViewer::CompositeViewer(),
     root = new osg::Group;
     root->setStateSet(globalStateset.get());
 
+    addChild(windowScene);
 }
 
 Window::~Window() {
 
 }
 
-osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* scene) {
-    root->addChild(scene);
-
-    osg::ref_ptr<SuperView> view = new SuperView(viewConfig, graphicsContext.get(), root);
+osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* viewScene) {
+    // set the view with its own scene
+    osg::ref_ptr<SuperView> view = new SuperView(viewConfig, graphicsContext.get(), viewScene);
     osgViewer::CompositeViewer::addView((osgViewer::View*) view.get());
+
+    // set also window scene to the view
+    // so all views in the window share the same window scene
+    view->addChild(root);
 
     return view.release();
 }

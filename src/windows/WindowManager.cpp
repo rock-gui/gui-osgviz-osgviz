@@ -18,30 +18,23 @@ WindowManager::~WindowManager() {
 	// TODO Auto-generated destructor stub
 }
 
-unsigned int WindowManager::createWindow(WindowConfig windowConfig, osg::Group* scene) {
-	if (scene) {
-		Window* wnd = new Window(windowConfig);
-		wnd->setName(windowConfig.title);
+unsigned int WindowManager::createWindow(WindowConfig windowConfig, osg::Group* windowScene) {
+	Window* wnd = new Window(windowConfig, windowScene);
+	wnd->setName(windowConfig.title);
 
-		unsigned int wndId = windows.size();
-		windows.push_back(wnd);
+	unsigned int wndId = windows.size();
+	windows.push_back(wnd);
 
-		// if no view config is given, take the default configs
-		if (windowConfig.viewsConfig.size() == 0) {
-			wnd->addView(ViewConfig(), scene);
-		} else {
-			for (unsigned int i = 0; i < windowConfig.viewsConfig.size(); ++i) {
-				wnd->addView(windowConfig.viewsConfig.at(i), scene);
-			}
+	// if no view config is given, take the default configs
+	if (windowConfig.viewsConfig.size() == 0) {
+		wnd->addView(ViewConfig());
+	} else {
+		for (unsigned int i = 0; i < windowConfig.viewsConfig.size(); ++i) {
+			wnd->addView(windowConfig.viewsConfig.at(i));
 		}
+	}
 
-		return wndId;		
-	}
-	else {
-		std::runtime_error("WindowManager::createWindow: try to create window, but the scene pointer is not set.");
-		
-	}
-	return 0;
+	return wndId;		
 }
 
 void WindowManager::frame() {

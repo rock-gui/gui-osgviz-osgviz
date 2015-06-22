@@ -28,7 +28,7 @@ class SuperView : public osgViewer::View, public WindowInterface {
 	public:
 		SuperView();
 
-		SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContext, osg::Group* scene = NULL);
+		SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContext, osg::Group* viewScene = NULL);
 
 		virtual void activeObjectSelector();
 		virtual void deactivateObjectSelector();
