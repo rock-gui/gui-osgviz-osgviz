@@ -26,7 +26,7 @@ public:
 
 	unsigned int createWindow(WindowConfig windowConfig, osg::Group* windowScene = NULL);
 
-	inline Window* getWindowByID(const unsigned int& id){
+	inline Window::Ptr getWindowByID(const unsigned int& id){
 		if (id < windows.size()){
 			return windows.at(id);
 		}
