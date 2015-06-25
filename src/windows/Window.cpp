@@ -10,6 +10,7 @@
 #include <stdio.h>
 
 #include <osg/GraphicsContext>
+#include <osgViewer/ViewerEventHandlers>
 
 #include "SuperView.h"
 
@@ -84,6 +85,7 @@ osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* viewScene) {
     // set also window scene to the view
     // so all views in the window share the same window scene
     view->addChild(root);
+    view->addEventHandler(new osgViewer::StatsHandler());
 
     return view.release();
 }
