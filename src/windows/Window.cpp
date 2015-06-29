@@ -35,13 +35,13 @@ Window::Window(WindowConfig windowConfig, osg::Group* windowScene) : osgViewer::
         osg::GraphicsContext::WindowingSystemInterface* wsi = osg::GraphicsContext::getWindowingSystemInterface();
         if (wsi)
             wsi->getScreenResolution( osg::GraphicsContext::ScreenIdentifier(screenNum), width, height );
-        
+
         traits->x = 0;
         traits->y = 0;
         traits->width = width;
-        traits->height = height;        
+        traits->height = height;
         traits->windowDecoration = false;
-    } 
+    }
     // user defined window: the size and position of the window are defined in graphicData
     else {
         traits->x = windowConfig.posX;
@@ -50,7 +50,7 @@ Window::Window(WindowConfig windowConfig, osg::Group* windowScene) : osgViewer::
         traits->height = windowConfig.height;
         traits->windowDecoration = true;
     }
-    
+
     graphicsContext = osg::GraphicsContext::createGraphicsContext( traits.get() );
 
     globalStateset = new osg::StateSet();
@@ -74,7 +74,8 @@ Window::Window(WindowConfig windowConfig, osg::Group* windowScene) : osgViewer::
 }
 
 Window::~Window() {
-
+    delete globalStateset;
+    delete root;
 }
 
 osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* viewScene) {
@@ -182,5 +183,3 @@ osgViewer::GraphicsWindow* Window::getGraphicsWindow(int index) {
 }
 
 } /* namespace osgviz */
-
-
