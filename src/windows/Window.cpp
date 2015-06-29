@@ -74,8 +74,6 @@ Window::Window(WindowConfig windowConfig, osg::Group* windowScene) : osgViewer::
 }
 
 Window::~Window() {
-    delete globalStateset;
-    delete root;
 }
 
 void Window::setWindowGeometry(int posX, int posY, int width, int height) {
