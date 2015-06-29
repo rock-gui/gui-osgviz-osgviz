@@ -7,7 +7,6 @@ namespace osgviz {
 SuperView::SuperView() : osgViewer::View() {}
 
 SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContext, osg::Group* viewScene) : osgViewer::View(), viewConfig(viewConfig) {
-
 	if (graphicsContext == NULL)
 		throw std::runtime_error("SuperView: Graphic Context is null pointer.");
 	else
@@ -19,28 +18,29 @@ SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContex
                                         viewConfig.clearColorBlue,
                                         viewConfig.clearColorAlpha));
 
-	const osg::GraphicsContext::Traits* traits = graphicsContext->getTraits();
+	// calculate the size and position of view
+	const osg::GraphicsContext::Traits* traits = getCamera()->getGraphicsContext()->getTraits();
     int posX = traits->width * viewConfig.posX;
     int posY = traits->height * viewConfig.posY;
     int width = traits->width * viewConfig.width;
     int height = traits->height * viewConfig.height;
 
-    // set projection matrix
+	// set projection matrix
 	double fovy, aspectRatio, zNear, zFar;
     getCamera()->getProjectionMatrixAsPerspective(fovy, aspectRatio, zNear, zFar);
 
     double newAspectRatio = double(width) / double(height);
     double aspectRatioChange = newAspectRatio / aspectRatio;
     if (aspectRatioChange != 1.0) {
-        getCamera()->getProjectionMatrix() *= osg::Matrix::scale(1.0/aspectRatioChange, 1.0, 1.0);
-    }	
+        getCamera()->getProjectionMatrix() *= osg::Matrix::scale(1.0 / aspectRatioChange, 1.0, 1.0);
+    }	    
 
-	getCamera()->setViewport(new osg::Viewport(posX, posY, width, height));    
+    getCamera()->setViewport(new osg::Viewport(posX, posY, width, height));  
 
 	// set buffer
 	GLenum buffer = traits->doubleBuffer ? GL_BACK : GL_FRONT;
     getCamera()->setDrawBuffer(buffer);
-    getCamera()->setReadBuffer(buffer);	
+    getCamera()->setReadBuffer(buffer);	 
 
     // set camera manipulator
 	keyswitchManipulator = new osgGA::KeySwitchMatrixManipulator;  
@@ -51,15 +51,14 @@ SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContex
 
     setCameraManipulator(keyswitchManipulator);
 
-    root = new osg::Group();
-	setSceneData(root);
-
-	addChild(viewScene);
-
 	if (viewConfig.hasObjectSelector == true) {
 		objectSelector = new ObjectSelector(this);
     	addEventHandler(objectSelector);
-    }
+    }    
+
+    root = new osg::Group();
+	setSceneData(root);
+	addChild(viewScene);
 }
 
 void SuperView::activeObjectSelector() {

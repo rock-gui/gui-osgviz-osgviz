@@ -78,6 +78,10 @@ Window::~Window() {
     delete root;
 }
 
+void Window::setWindowGeometry(int posX, int posY, int width, int height) {
+    printf("not implemented : %s\n", __PRETTY_FUNCTION__);
+}
+
 osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* viewScene) {
     // set the view with its own scene
     osg::ref_ptr<SuperView> view = new SuperView(viewConfig, graphicsContext.get(), viewScene);
@@ -125,45 +129,45 @@ osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* viewScene) {
 //}
 
 
-//void Window::showRain(const bool &val) {
-//    if (val) {
-//        rain = new osgParticle::PrecipitationEffect;
-//        rain->setWind(osg::Vec3(1, 0, 0));
-//        rain->setParticleSpeed(0.4);
-//        rain->rain(0.6); // alternatively, use rain
-//        scene->addChild(rain.get());
-//    } else {
-//        scene->removeChild(rain.get());
-//    }
-//}
-//
-//void Window::showSnow(const bool &val) {
-//    if (val) {
-//        snow = new osgParticle::PrecipitationEffect;
-//        snow->setWind(osg::Vec3(1, 0, 0));
-//        snow->setParticleSpeed(0.4);
-//        snow->snow(0.4); // alternatively, use rain
-//        scene->addChild(snow.get());
-//    } else {
-//        scene->removeChild(snow.get());
-//    }
-//}
-//
-//void Window::showFog(const bool &val) {
-//    if (val) {
-//        graphicOptions.fogEnabled = true;
-//
-//        myFog = new osg::Fog;
-//        myFog->setMode(osg::Fog::LINEAR);
-//        myFog->setColor(graphicOptions.fogColor);
-//        myFog->setStart(graphicOptions.fogStart);
-//        myFog->setEnd(graphicOptions.fogEnd);
-//        myFog->setDensity(graphicOptions.fogDensity);
-//        globalStateset->setAttributeAndModes(myFog.get(), osg::StateAttribute::ON);
-//    } else {
-//        graphicOptions.fogEnabled = false;
-//    }
-//}
+void Window::showRain(const bool &val) {
+    if (val) {
+        rain = new osgParticle::PrecipitationEffect;
+        rain->setWind(osg::Vec3(1, 0, 0));
+        rain->setParticleSpeed(0.4);
+        rain->rain(0.6); // alternatively, use rain
+        root->addChild(rain.get());
+    } else {
+        root->removeChild(rain.get());
+    }
+}
+
+
+void Window::showSnow(const bool &val) {
+    if (val) {
+        snow = new osgParticle::PrecipitationEffect;
+        snow->setWind(osg::Vec3(1, 0, 0));
+        snow->setParticleSpeed(0.4);
+        snow->snow(0.4); // alternatively, use rain
+        root->addChild(snow.get());
+    } else {
+        root->removeChild(snow.get());
+    }
+}
+
+// void Window::showFog(const bool &val) {
+//     if (val) {
+//         myFog = new osg::Fog;
+//         myFog->setMode(osg::Fog::LINEAR);
+//         myFog->setColor(graphicOptions.fogColor);
+//         myFog->setStart(graphicOptions.fogStart);
+//         myFog->setEnd(graphicOptions.fogEnd);
+//         myFog->setDensity(graphicOptions.fogDensity);
+//         globalStateset->setAttributeAndModes(myFog.get(), osg::StateAttribute::ON);
+//     } else {
+//         globalStateset->setAttributeAndModes(myFog.get(), osg::StateAttribute::OFF);
+//     }
+// }
+
 //
 //void Window::enableCameraControl() {
 ////	keyswitchManipulator->selectMatrixManipulator('1');

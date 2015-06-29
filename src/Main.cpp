@@ -52,6 +52,9 @@ int main(int argc, char** argv)
 
 	osg::ref_ptr<osgviz::Window> win_2 = winman->getWindowByID(1);
 
+	win_2->showSnow(true);
+	//win_2->showRain(true);
+
 	osg::ref_ptr<osgviz::Object> arrow = primitivesfactory->createArrow();
 	arrow->rotate(M_PI/2.0,osg::Vec3d(0,1,0));
 	((osgviz::SuperView*)win_2->getView(0))->addChild(arrow);

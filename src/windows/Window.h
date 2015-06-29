@@ -29,7 +29,7 @@
 
 namespace osgviz {
 
-class Window : public osgViewer::CompositeViewer{
+class Window : public osgViewer::CompositeViewer {
 
     /**
      * internal struct to manage lights
@@ -56,16 +56,24 @@ public:
 
     osgViewer::View* addView(ViewConfig viewConfig, osg::Group* viewScene = NULL);
 
-    osgViewer::GraphicsWindow * getGraphicsWindow(int index = 0);
+    osgViewer::GraphicsWindow* getGraphicsWindow(int index = 0);
+
+    void addChild(osg::Group *scene) {
+    	root->addChild(scene);
+    }    
+
+	void setWindowGeometry(int posX, int posY, int width, int height);    
+
+	void showRain(const bool &val = true);
+	void showSnow(const bool &val = true);
+	//void showFog(const bool &val = true);    
 
 /*	void frame();
 
 	void enableCameraControl();
 	void disableCameraControl();
 
-	void showRain(const bool &val = true);
-	void showSnow(const bool &val = true);
-	void showFog(const bool &val = true);
+
 
 	inline osgViewer::View* getView(int index = 0){
 		return views[index];
@@ -75,19 +83,18 @@ public:
 		return viewer;
 	}*/
 
-    void addChild(osg::Group *scene) {
-    	root->addChild(scene);
-    }
+
 
 
 private:
 	WindowConfig windowConfig;
 
 	osg::ref_ptr<osg::GraphicsContext> graphicsContext;
+	osg::ref_ptr<osg::StateSet> globalStateset;	
 
 	osg::ref_ptr<osg::Group> root;
 
-	osg::ref_ptr<osg::StateSet> globalStateset;
+	osg::ref_ptr<osgParticle::PrecipitationEffect> snow, rain;
 
 };
 
