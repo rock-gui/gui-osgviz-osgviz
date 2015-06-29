@@ -21,7 +21,22 @@
 #include "config/WindowConfig.h"
 #include "ObjectSelector.h"
 
+#include "../graphics/interfaces/data/GraphicData.h"
+#include "../graphics/interfaces/data/LightData.h"
+
+#include "../graphics/wrapper/OSGLightStruct.h"
+
 namespace osgviz {
+
+    /**
+     * internal struct to manage lights
+     */
+    struct lightmanager {
+      osg::ref_ptr<osg::LightSource> lightSource;
+      osg::ref_ptr<osg::Light> light;
+      interfaces::LightData lStruct;
+      bool free;
+    };	
 
 class SuperView : public osgViewer::View, public WindowInterface {
 
@@ -29,6 +44,8 @@ class SuperView : public osgViewer::View, public WindowInterface {
 		SuperView();
 
 		SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContext, osg::Group* viewScene = NULL);
+
+		~SuperView();
 
 		virtual void activeObjectSelector();
 		virtual void deactivateObjectSelector();
@@ -55,6 +72,17 @@ class SuperView : public osgViewer::View, public WindowInterface {
 		osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> keyswitchManipulator;
 
 		osg::ref_ptr<osg::Group> root;
+
+		osg::ref_ptr<osg::StateSet> globalStateset;	
+
+		// includes osg::lights, osg::lightsource, lightstruct and flag to check if full
+		std::vector<lightmanager> myLights;		
+
+		osg::ref_ptr<osg::Group> lightGroup;
+
+		lightmanager defaultLight;		
+
+		void initDefaultLight();
 };
 
 } /* namespace osgviz */
