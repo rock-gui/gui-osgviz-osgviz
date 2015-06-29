@@ -101,8 +101,6 @@ SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContex
 }
 
 SuperView::~SuperView() {
-    //delete globalStateset;
-    //delete root;
 }
 
 void SuperView::activeObjectSelector() {

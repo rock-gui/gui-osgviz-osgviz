@@ -59,8 +59,6 @@ Window::Window(WindowConfig windowConfig, osg::Group* windowScene)
 }
 
 Window::~Window() {
-    //delete globalStateset;
-    //delete root;
 }
 
 void Window::setWindowGeometry(int posX, int posY, int width, int height) {
