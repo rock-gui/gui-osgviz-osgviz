@@ -79,7 +79,7 @@ SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContex
     globalStateset->setMode(GL_LIGHT6, osg::StateAttribute::OFF);
     globalStateset->setMode(GL_LIGHT7, osg::StateAttribute::OFF);
     globalStateset->setMode(GL_BLEND,osg::StateAttribute::OFF);
-    root->setStateSet(globalStateset.get());
+    root->setStateSet(globalStateset.get()); 
 
     // some fixed function pipeline stuff...
     // i guess the default is smooth shading, that means
@@ -98,9 +98,63 @@ SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContex
     }
 
     initDefaultLight();    
+
+    // background color for the scene
+    graphicData.clearColor = osgviz::Color(0.55, 0.67, 0.88, 1.0);
+
+	// setup FOG
+	graphicData.fogColor = osgviz::Color(0.2, 0.2, 0.2, 1.0);
+	graphicData.fogEnabled = true;
+	graphicData.fogDensity = 0.35;
+	graphicData.fogStart = 10.0;
+	graphicData.fogEnd = 30.0;    
+
+	setFogSettings(graphicData);    
 }
 
 SuperView::~SuperView() {
+}
+
+void SuperView::setFogSettings(const osgviz::interfaces::GraphicData &graphicOptions) {
+	osg::ref_ptr<osg::Fog> myFog = (osg::Fog*)globalStateset->getAttribute(osg::StateAttribute::FOG);
+	if (myFog.valid() == false) {
+		myFog = new osg::Fog;
+	}
+
+	myFog->setMode(osg::Fog::LINEAR);
+
+	graphicData = graphicOptions;
+
+// in original GraphicsManager code		
+	//      for(unsigned int i=0; i<graphicsWindows.size(); i++)
+	//        graphicsWindows[i]->setClearColor(graphicOptions.clearColor);	
+
+	// Q: in original code
+	// myFog->setColor(osg::Vec4(graphicOptions.fogColor.r,
+	//								graphicOptions.fogColor.g,
+	//								graphicOptions.fogColor.b, 1.0));
+
+	myFog->setColor(osg::Vec4(graphicData.fogColor.x(),
+                                graphicData.fogColor.y(),
+                                graphicData.fogColor.z(), 1.0));
+	myFog->setStart(graphicData.fogStart);
+	myFog->setEnd(graphicData.fogEnd);
+	myFog->setDensity(graphicData.fogDensity);
+	if (graphicData.fogEnabled == true) {
+		globalStateset->setAttributeAndModes(myFog.get(), osg::StateAttribute::ON);
+// in original GraphicsManager code		
+//        useFog = true;
+	} else {
+		globalStateset->setMode(GL_FOG, osg::StateAttribute::OFF);
+// in original GraphicsManager code			
+//        useFog = false;		
+	}		
+
+// in original GraphicsManager code			
+//      map<unsigned long, osg::ref_ptr<OSGNodeStruct> >::iterator iter;
+//
+//      for(iter=drawObjects_.begin(); iter!=drawObjects_.end(); ++iter)
+//        iter->second->object()->setUseFog(useFog);	
 }
 
 void SuperView::activeObjectSelector() {

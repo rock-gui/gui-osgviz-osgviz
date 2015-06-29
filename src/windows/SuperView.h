@@ -60,6 +60,8 @@ class SuperView : public osgViewer::View, public WindowInterface {
 	 		root->addChild(scene);
 	 	}
 
+	 	void setFogSettings(const osgviz::interfaces::GraphicData &graphicOptions);
+
 	private:
 		ViewConfig viewConfig;
 
@@ -80,7 +82,9 @@ class SuperView : public osgViewer::View, public WindowInterface {
 
 		osg::ref_ptr<osg::Group> lightGroup;
 
-		lightmanager defaultLight;		
+		lightmanager defaultLight;	
+
+		osgviz::interfaces::GraphicData graphicData;
 
 		void initDefaultLight();
 };
