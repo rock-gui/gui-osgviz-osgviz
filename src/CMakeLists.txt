@@ -59,7 +59,6 @@ rock_library(osgViz
            windows/SuperView.h
            windows/ObjectSelector.h
            windows/config/WindowConfig.h
-           Timing.h
            TypeNameDemangling.h
            GraphPrinter.h
                
