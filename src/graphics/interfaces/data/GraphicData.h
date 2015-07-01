@@ -34,15 +34,6 @@ namespace osgviz {
     public:
       GraphicData();
 
-      int windowWidth;
-      int windowHeight;
-      int windowPosX;
-      int windowPosY;
-
-      bool fullScreen;     //!< if full screen is set to true:
-                            //!< the window will take the size of the screen
-                            //!< therefore the windowWidth, windowHeight, windowPosX and windowPosY will be ignored
-
       Color clearColor;
       bool fogEnabled;
       sReal fogDensity;

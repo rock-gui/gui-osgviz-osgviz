@@ -16,8 +16,10 @@
 
 namespace osgviz {
 
-Window::Window(WindowConfig windowConfig, osg::Group* windowScene) : osgViewer::CompositeViewer(),
-         windowConfig(windowConfig) {
+Window::Window(WindowConfig windowConfig, osg::Group* windowScene) 
+       : osgViewer::CompositeViewer(),
+         windowConfig(windowConfig),
+         root(new osg::Group) {
 
     osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
     traits->windowName = windowConfig.title;
@@ -52,23 +54,6 @@ Window::Window(WindowConfig windowConfig, osg::Group* windowScene) : osgViewer::
     }
 
     graphicsContext = osg::GraphicsContext::createGraphicsContext( traits.get() );
-
-    globalStateset = new osg::StateSet();
-
-    globalStateset->setMode(GL_DEPTH_TEST, osg::StateAttribute::ON);
-    globalStateset->setMode(GL_LIGHTING, osg::StateAttribute::ON);
-    globalStateset->setMode(GL_LIGHT0, osg::StateAttribute::ON);
-    globalStateset->setMode(GL_LIGHT1, osg::StateAttribute::OFF);
-    globalStateset->setMode(GL_LIGHT2, osg::StateAttribute::OFF);
-    globalStateset->setMode(GL_LIGHT3, osg::StateAttribute::OFF);
-    globalStateset->setMode(GL_LIGHT4, osg::StateAttribute::OFF);
-    globalStateset->setMode(GL_LIGHT5, osg::StateAttribute::OFF);
-    globalStateset->setMode(GL_LIGHT6, osg::StateAttribute::OFF);
-    globalStateset->setMode(GL_LIGHT7, osg::StateAttribute::OFF);
-    globalStateset->setMode(GL_BLEND,osg::StateAttribute::OFF);
-
-    root = new osg::Group;
-    root->setStateSet(globalStateset.get());
 
     addChild(windowScene);
 }

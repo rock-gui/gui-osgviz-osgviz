@@ -23,24 +23,12 @@
 #include <osg/StateSet>
 
 #include "../graphics/interfaces/data/GraphicData.h"
-#include "../graphics/interfaces/data/LightData.h"
 #include "ObjectSelector.h"
 #include "config/WindowConfig.h"
 
 namespace osgviz {
 
 class Window : public osgViewer::CompositeViewer {
-
-    /**
-     * internal struct to manage lights
-     */
-    struct lightmanager {
-      osg::ref_ptr<osg::LightSource> lightSource;
-      osg::ref_ptr<osg::Light> light;
-      interfaces::LightData lStruct;
-      bool free;
-    };
-
 
 public:
 	typedef osg::ref_ptr<Window> Ptr;
@@ -90,7 +78,6 @@ private:
 	WindowConfig windowConfig;
 
 	osg::ref_ptr<osg::GraphicsContext> graphicsContext;
-	osg::ref_ptr<osg::StateSet> globalStateset;	
 
 	osg::ref_ptr<osg::Group> root;
 

@@ -41,7 +41,7 @@ rock_library(osgVizGraphics
             graphics/interfaces/OsgVizDefs.h
             graphics/interfaces/data/GraphicData.h
             graphics/interfaces/data/LightData.h
-            graphics/wrapper/OSGLightStruct.cpp
+            graphics/wrapper/OSGLightStruct.h
 
     DEPS_PKGCONFIG openscenegraph eigen3)
 
