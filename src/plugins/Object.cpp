@@ -21,7 +21,7 @@ namespace osgviz {
 Object::Object():cull_mask(0xffffffff),visible(true),scaleTransform(new osg::MatrixTransform),name(""){
 	scaleTransform->setMatrix(osg::Matrix::scale(1.0, 1.0, 1.0));
 	PositionAttitudeTransform::addChild(scaleTransform);
-	rw = osgDB::Registry::instance()->getReaderWriterForExtension("osgb");
+	rw = osgDB::Registry::instance()->getReaderWriterForExtension("osgt");
 }
 
 Object::~Object() {
@@ -119,7 +119,7 @@ void Object::addClickableCallback(Clickable* cb) {
 
 
 std::string Object::getScene(){
-	printf("setScene\n");
+	printf("getScene\n");
 	Timing timing;
 	//http://trac.openscenegraph.org/projects/osg//wiki/Support/KnowledgeBase/SerializationSupport
 	std::string mout("");
@@ -127,19 +127,23 @@ std::string Object::getScene(){
 	if (rw){
 		osg::Node* node = this;
 	    rw->writeNode(*node, mout);//,new osgDB::Options("Ascii"));
+	}else{
+		printf("no rw object\n");
 	}
 	timing.print_loop_time();
 	return mout;
 }
 
 void Object::setScene(std::string & in){
-	printf("getScene\n");
+	printf("setScene\n");
 	Timing timing;
 	timing.start();
 	if (rw)	{
 	    osgDB::ReaderWriter::ReadResult rr = rw->readNode(in);
 	    this->scaleTransform->removeChild((unsigned int)0);
 		this->scaleTransform->addChild(rr.takeNode());
+	}else{
+		printf("no rw object\n");
 	}
 	timing.print_loop_time();
 }
