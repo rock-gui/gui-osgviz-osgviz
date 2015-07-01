@@ -18,6 +18,8 @@
 #include <osgGA/TerrainManipulator>
 #include <osgGA/FlightManipulator>
 
+#include <osgDB/WriteFile>
+
 #include "config/WindowConfig.h"
 #include "ObjectSelector.h"
 
@@ -39,8 +41,12 @@ class SuperView : public osgViewer::View, public WindowInterface {
 	 	virtual void setCursorShape(int cursor);
 	 	virtual void setCursorPos(int x, int y);
 
-	 	void addChild(osg::Group *scene) {
+	 	void addChild(osg::ref_ptr<osg::Group> scene) {
 	 		root->addChild(scene);
+	 	}
+
+	 	void setRoot(osg::ref_ptr<osg::Group> scene){
+	 		root = scene;
 	 	}
 
 	private:

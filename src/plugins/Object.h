@@ -12,12 +12,19 @@
 #include <osg/MatrixTransform>
 #include <osg/PositionAttitudeTransform>
 
+#include <string>
+
 #include "../interfaces/Clickable.h"
 
 #include <stdio.h>
 
 #ifndef SRC_PLUGINS_OBJECT_H_
 #define SRC_PLUGINS_OBJECT_H_
+
+namespace osgDB{
+	class ReaderWriter;
+}
+
 
 namespace osgviz {
 
@@ -110,6 +117,12 @@ public:
 
     void displayName(float font_size = 0.1f);
 
+
+    std::string getScene();
+
+    void setScene(std::string & in);
+
+
 protected:
     friend class ModelViewFactory;
     unsigned int cull_mask;
@@ -127,6 +140,8 @@ private:
     std::string name;
 
 	std::vector< Clickable* > clickablecb;
+
+	osgDB::ReaderWriter* rw;
 
 };
 

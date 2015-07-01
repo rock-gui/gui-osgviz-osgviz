@@ -59,6 +59,7 @@ rock_library(osgViz
            windows/SuperView.h
            windows/ObjectSelector.h
            windows/config/WindowConfig.h
+           Timing.h
                
     LIBS ${Boost_SYSTEM_LIBRARY}
     DEPS osgVizGraphics

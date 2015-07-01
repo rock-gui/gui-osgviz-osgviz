@@ -15,14 +15,8 @@
 
 #include "windows/config/WindowConfig.h"
 
-
-/*namespace osgviz {
-	namespace graphics{
-		class GraphicsManager;
-	}
-}*/
-
 #include <stdio.h>
+#include "Timing.h"
 
 namespace osgviz
 {
@@ -100,7 +94,10 @@ namespace osgviz
 		}
 
 		inline void write(const char* name){
+			Timing mtime;
+			mtime.start();
 			osgDB::writeNodeFile(*root, name);
+			mtime.print_loop_time();
 		}
 
 		inline WindowManager* getWindowManager(){
