@@ -9,6 +9,7 @@
 #define OSGVIZ_OSGVIZ_SRC_WINDOWS_WINDOWMANAGER_H_
 
 #include <stdexcept>
+#include <OpenThreads/Thread>
 
 #include "config/WindowConfig.h"
 
@@ -24,7 +25,7 @@ public:
 	WindowManager();
 	virtual ~WindowManager();
 
-	unsigned int createWindow(WindowConfig windowConfig, osg::ref_ptr<osg::Node> windowScene = NULL);
+	unsigned int createWindow(WindowConfig& windowConfig, osg::ref_ptr<osg::Node> windowScene = NULL);
 
 	inline Window::Ptr getWindowByID(const unsigned int& id){
 		if (id < windows.size()){
@@ -40,7 +41,9 @@ public:
 	void frame();
 
 private:
+	OpenThreads::Mutex windowsMutex;
 	std::vector<Window::Ptr> windows;
+
 
 };
 
