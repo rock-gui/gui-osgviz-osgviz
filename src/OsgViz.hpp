@@ -189,6 +189,8 @@ namespace osgviz
 		        OsgViz* osgviz;
 		        OpenThreads::Mutex mutex;
 
+		        Timing timingserialize,timingdeserialize;
+
 		};
 
 

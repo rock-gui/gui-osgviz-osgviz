@@ -210,7 +210,7 @@ SerializedObject OsgViz::serialize(osg::Node* node){
 	}
 
 
-	printf("serialize\n");
+//	printf("serialize\n");
 	Timing timing;
 	//http://trac.openscenegraph.org/projects/osg//wiki/Support/KnowledgeBase/SerializationSupport
 	std::vector< ObjectSerializeCharType > data;
@@ -228,8 +228,8 @@ SerializedObject OsgViz::serialize(osg::Node* node){
 	    stream.seekp(0);
 	    stream.read(data.data(),size);
 
-	    std::string name (node->getName()+"_out.osgb");
-	    osgDB::writeNodeFile(*node, name);
+//	    std::string name (node->getName()+"_out.osgb");
+//	    osgDB::writeNodeFile(*node, name);
 
 	}else{
 		printf("no rw object\n");
@@ -245,22 +245,24 @@ osg::ref_ptr<osg::Node> OsgViz::deserialize(SerializedObject & in){
 		rw = osgDB::Registry::instance()->getReaderWriterForExtension("osgb");
 	}
 
-	printf("deserialize\n");
+//	printf("deserialize\n");
 	Timing timing;
 	timing.start();
 	osg::ref_ptr<osg::Node> node;
 	if (rw)	{
 		std::stringbuf buffer;
 		//buffer.sputn(in.data(),in.size());
-		printf("size %i\n",in.size());
+//		printf("size %i\n",in.size());
 		std::iostream stream(&buffer);
 		stream.write(in.data(),in.size());
 		stream.seekp(0);
 
 	    osgDB::ReaderWriter::ReadResult rr = rw->readNode(stream);
 	    node = rr.takeNode();
-	    std::string name (node->getName()+"_in.osgb");
-	    osgDB::writeNodeFile(*node, name);
+
+//	    std::string name (node->getName()+"_in.osgb");
+//	    osgDB::writeNodeFile(*node, name);
+
 	}else{
 		printf("no rw object\n");
 	}
