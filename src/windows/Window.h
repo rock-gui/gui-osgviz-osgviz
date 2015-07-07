@@ -76,6 +76,10 @@ public:
 		return root;
 	}
 
+	inline void clear(){
+		root->removeChild(0,root->getNumChildren());
+	}
+
 
 private:
 	WindowConfig windowConfig;
