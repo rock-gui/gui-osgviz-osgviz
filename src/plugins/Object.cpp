@@ -10,18 +10,15 @@
 #include <stdio.h>
 #include <cxxabi.h>
 
-#include "../Timing.h"
 #include <unistd.h>
-#include <osgDB/ReaderWriter>
-#include <osgDB/Registry>
+
 
 
 namespace osgviz {
 
-Object::Object():cull_mask(0xffffffff),visible(true),scaleTransform(new osg::MatrixTransform),name(""){
+Object::Object():cull_mask(0xffffffff),visible(true),scaleTransform(new osg::MatrixTransform){
 	scaleTransform->setMatrix(osg::Matrix::scale(1.0, 1.0, 1.0));
 	PositionAttitudeTransform::addChild(scaleTransform);
-	rw = osgDB::Registry::instance()->getReaderWriterForExtension("osgt");
 }
 
 Object::~Object() {
@@ -50,7 +47,7 @@ void Object::displayName(float font_size){
     stateset->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
 
 	text = new osgText::Text();
-	text->setText(name);
+	text->setText(this->getName());
 	text->setCharacterSize(font_size);
 	text->setAxisAlignment(osgText::Text::XY_PLANE);
 	text->setAlignment(osgText::Text::LEFT_TOP);
@@ -117,36 +114,6 @@ void Object::addClickableCallback(Clickable* cb) {
 	this->clickablecb.push_back(cb);
 }
 
-
-std::string Object::getScene(){
-	printf("getScene\n");
-	Timing timing;
-	//http://trac.openscenegraph.org/projects/osg//wiki/Support/KnowledgeBase/SerializationSupport
-	std::string mout("");
-	timing.start();
-	if (rw){
-		osg::Node* node = this;
-	    rw->writeNode(*node, mout);//,new osgDB::Options("Ascii"));
-	}else{
-		printf("no rw object\n");
-	}
-	timing.print_loop_time();
-	return mout;
-}
-
-void Object::setScene(std::string & in){
-	printf("setScene\n");
-	Timing timing;
-	timing.start();
-	if (rw)	{
-	    osgDB::ReaderWriter::ReadResult rr = rw->readNode(in);
-	    this->scaleTransform->removeChild((unsigned int)0);
-		this->scaleTransform->addChild(rr.takeNode());
-	}else{
-		printf("no rw object\n");
-	}
-	timing.print_loop_time();
-}
 
 
 } /* namespace osgviz */

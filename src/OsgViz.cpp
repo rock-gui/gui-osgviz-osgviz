@@ -6,9 +6,14 @@
 #include <unistd.h>
 #include <osgGA/TerrainManipulator>
 #include <X11/Xlib.h>
+#include <osgDB/ReaderWriter>
+#include <osgDB/WriteFile>
+#include <osgDB/Registry>
 
 #include "windows/WindowManager.h"
 
+//debug
+#include "Timing.h"
 
 CREATE_LIB(osgviz::OsgViz);
 DESTROY_LIB(osgviz::OsgViz);
@@ -68,6 +73,7 @@ void OsgViz::init(int argc,char** argv){
 	m_argc = argc;
 	m_argv = argv;
 	root = new osg::Group();
+	root->setName("OsgViz root");
 	XInitThreads();
 	instance = this;
 
@@ -196,5 +202,71 @@ const std::string OsgViz::getLibName() const {
 int OsgViz::getLibVersion() const{
 	return 1;
 }
+
+SerializedObject OsgViz::serialize(osg::Node* node){
+
+	if (rw.get() == NULL){
+		rw = osgDB::Registry::instance()->getReaderWriterForExtension("osgb");
+	}
+
+
+	printf("serialize\n");
+	Timing timing;
+	//http://trac.openscenegraph.org/projects/osg//wiki/Support/KnowledgeBase/SerializationSupport
+	std::vector< ObjectSerializeCharType > data;
+
+	timing.start();
+	if (rw){
+		std::stringbuf buffer;
+		std::iostream stream(&buffer);
+	    rw->writeNode(*node, stream);//,new osgDB::Options("Ascii"));
+	    //rewind the buffer to the start
+	    //buffer.pubseekpos(0);
+	    int size = stream.tellp();
+	    printf("size %i\n",size);
+	    data.resize(size);
+	    stream.seekp(0);
+	    stream.read(data.data(),size);
+
+	    std::string name (node->getName()+"_out.osgb");
+	    osgDB::writeNodeFile(*node, name);
+
+	}else{
+		printf("no rw object\n");
+	}
+	timing.print_loop_time();
+
+	return data;
+}
+
+osg::ref_ptr<osg::Node> OsgViz::deserialize(SerializedObject & in){
+
+	if (rw.get() == NULL){
+		rw = osgDB::Registry::instance()->getReaderWriterForExtension("osgb");
+	}
+
+	printf("deserialize\n");
+	Timing timing;
+	timing.start();
+	osg::ref_ptr<osg::Node> node;
+	if (rw)	{
+		std::stringbuf buffer;
+		//buffer.sputn(in.data(),in.size());
+		printf("size %i\n",in.size());
+		std::iostream stream(&buffer);
+		stream.write(in.data(),in.size());
+		stream.seekp(0);
+
+	    osgDB::ReaderWriter::ReadResult rr = rw->readNode(stream);
+	    node = rr.takeNode();
+	    std::string name (node->getName()+"_in.osgb");
+	    osgDB::writeNodeFile(*node, name);
+	}else{
+		printf("no rw object\n");
+	}
+	timing.print_loop_time();
+	return node;
+}
+
 
 }

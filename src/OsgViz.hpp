@@ -18,9 +18,17 @@
 #include <stdio.h>
 #include "Timing.h"
 
+
+namespace osgDB{
+	class ReaderWriter;
+}
+
+
 namespace osgviz
 {
 
+	typedef std::basic_streambuf<char>::char_type ObjectSerializeCharType;
+	typedef std::vector< ObjectSerializeCharType > SerializedObject;
 
 	class FrameUpdateThread;
 
@@ -63,6 +71,12 @@ namespace osgviz
 
 		unsigned int createWindow(WindowConfig windowConfig = WindowConfig());
 		void destroyWindow(unsigned int id);
+
+
+	    SerializedObject serialize(osg::Node* node);
+
+	    osg::ref_ptr<osg::Node> deserialize(SerializedObject & in);
+
 
 		//inline GraphicsManagerInterface* getGraphicsManagerInterface(){
 		//	return (GraphicsManagerInterface*)graphicsManager;
@@ -129,6 +143,10 @@ namespace osgviz
 		//std::vector<osgViewer::Viewer *> viewers;
 
 		WindowManager::Ptr windowManager;
+
+
+		osg::ref_ptr<osgDB::ReaderWriter> rw ;
+
 	};
 
 	class FrameUpdateThread : public OpenThreads::Thread

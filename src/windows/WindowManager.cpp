@@ -18,7 +18,7 @@ WindowManager::~WindowManager() {
 	// TODO Auto-generated destructor stub
 }
 
-unsigned int WindowManager::createWindow(WindowConfig windowConfig, osg::Group* windowScene) {
+unsigned int WindowManager::createWindow(WindowConfig windowConfig, osg::ref_ptr<osg::Node> windowScene) {
 	Window* wnd = new Window(windowConfig, windowScene);
 	wnd->setName(windowConfig.title);
 

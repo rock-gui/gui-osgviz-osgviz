@@ -21,12 +21,9 @@
 #ifndef SRC_PLUGINS_OBJECT_H_
 #define SRC_PLUGINS_OBJECT_H_
 
-namespace osgDB{
-	class ReaderWriter;
-}
-
 
 namespace osgviz {
+
 
 class Object: public osg::PositionAttitudeTransform, public Clickable{
 
@@ -48,15 +45,6 @@ public:
     //virtual void setRootNode(osg::Group* node);
 
 	void addClickableCallback(Clickable * cb);
-
-
-    inline void setName(std::string name){
-    	this->name = name;
-    }
-
-    inline std::string getName(){
-		return this->name;
-	}
 
     /**
      * override osg::PositionAttitudeTransform addChild
@@ -118,11 +106,6 @@ public:
     void displayName(float font_size = 0.1f);
 
 
-    std::string getScene();
-
-    void setScene(std::string & in);
-
-
 protected:
     friend class ModelViewFactory;
     unsigned int cull_mask;
@@ -137,11 +120,8 @@ private:
 
     osg::ref_ptr< osg::Geode > textgeode;
     osg::ref_ptr< osgText::Text > text;
-    std::string name;
 
 	std::vector< Clickable* > clickablecb;
-
-	osgDB::ReaderWriter* rw;
 
 };
 
