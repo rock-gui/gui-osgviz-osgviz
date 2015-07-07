@@ -15,18 +15,20 @@
 
 #include "windows/config/WindowConfig.h"
 
-
-/*namespace osgviz {
-	namespace graphics{
-		class GraphicsManager;
-	}
-}*/
-
 #include <stdio.h>
+#include "Timing.h"
+
+
+namespace osgDB{
+	class ReaderWriter;
+}
+
 
 namespace osgviz
 {
 
+	typedef std::basic_streambuf<char>::char_type ObjectSerializeCharType;
+	typedef std::vector< ObjectSerializeCharType > SerializedObject;
 
 	class FrameUpdateThread;
 
@@ -70,6 +72,12 @@ namespace osgviz
 		unsigned int createWindow(WindowConfig windowConfig = WindowConfig());
 		void destroyWindow(unsigned int id);
 
+
+	    SerializedObject serialize(osg::Node* node);
+
+	    osg::ref_ptr<osg::Node> deserialize(SerializedObject & in);
+
+
 		//inline GraphicsManagerInterface* getGraphicsManagerInterface(){
 		//	return (GraphicsManagerInterface*)graphicsManager;
 		//}
@@ -100,7 +108,10 @@ namespace osgviz
 		}
 
 		inline void write(const char* name){
+			Timing mtime;
+			mtime.start();
 			osgDB::writeNodeFile(*root, name);
+			mtime.print_loop_time();
 		}
 
 		inline WindowManager* getWindowManager(){
@@ -132,6 +143,10 @@ namespace osgviz
 		//std::vector<osgViewer::Viewer *> viewers;
 
 		WindowManager::Ptr windowManager;
+
+
+		osg::ref_ptr<osgDB::ReaderWriter> rw ;
+
 	};
 
 	class FrameUpdateThread : public OpenThreads::Thread
@@ -173,6 +188,8 @@ namespace osgviz
 		        bool running;
 		        OsgViz* osgviz;
 		        OpenThreads::Mutex mutex;
+
+		        Timing timingserialize,timingdeserialize;
 
 		};
 

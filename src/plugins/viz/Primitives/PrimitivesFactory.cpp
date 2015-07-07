@@ -25,6 +25,7 @@ osg::ref_ptr<Object> PrimitivesFactory::createAxes(float scale,bool blabels){
 	osg::ref_ptr<Object> obj = createObject();
 	osg::ref_ptr<osg::Node> content = AxesNode::create(scale,blabels);
 	obj->addChild(content);
+	obj->setName("Axes");
 	return obj;
 }
 
@@ -32,11 +33,14 @@ osg::ref_ptr<Object> PrimitivesFactory::createGrid(int rows,int cols,float dx, f
 	osg::ref_ptr<Object> obj = createObject();
 	osg::ref_ptr<osg::Node> content = GridNode::create(rows,cols,dx, dy, show_coordinates, color);
 	obj->addChild(content);
+	obj->setName("Grid");
 	return obj;
 }
 
 osg::ref_ptr<Object> PrimitivesFactory::createArrow(){
-	return new ArrowNode();
+	osg::ref_ptr<Object> node = new ArrowNode();
+	node->setName("Arrow");
+	return node;
 }
 
 } /* namespace osgviz */

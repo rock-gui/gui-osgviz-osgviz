@@ -64,6 +64,7 @@ SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContex
     	addEventHandler(objectSelector);
     }    
 
+	root->setName("SuperView root");
 	setSceneData(root);
 	addChild(viewScene);
 

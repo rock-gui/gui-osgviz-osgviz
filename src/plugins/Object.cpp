@@ -10,9 +10,13 @@
 #include <stdio.h>
 #include <cxxabi.h>
 
+#include <unistd.h>
+
+
+
 namespace osgviz {
 
-Object::Object():cull_mask(0xffffffff),visible(true),scaleTransform(new osg::MatrixTransform),name(""){
+Object::Object():cull_mask(0xffffffff),visible(true),scaleTransform(new osg::MatrixTransform){
 	scaleTransform->setMatrix(osg::Matrix::scale(1.0, 1.0, 1.0));
 	PositionAttitudeTransform::addChild(scaleTransform);
 }
@@ -43,7 +47,7 @@ void Object::displayName(float font_size){
     stateset->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
 
 	text = new osgText::Text();
-	text->setText(name);
+	text->setText(this->getName());
 	text->setCharacterSize(font_size);
 	text->setAxisAlignment(osgText::Text::XY_PLANE);
 	text->setAlignment(osgText::Text::LEFT_TOP);
@@ -109,6 +113,7 @@ bool Object::dragged(const int &buttonMask, const osg::Vec2d &cursor, const osg:
 void Object::addClickableCallback(Clickable* cb) {
 	this->clickablecb.push_back(cb);
 }
+
 
 
 } /* namespace osgviz */

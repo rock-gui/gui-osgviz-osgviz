@@ -33,7 +33,7 @@ class Window : public osgViewer::CompositeViewer {
 public:
 	typedef osg::ref_ptr<Window> Ptr;
 	
-	Window(WindowConfig windowConfig, osg::Group* windowScene = NULL);
+	Window(WindowConfig windowConfig, osg::ref_ptr<osg::Node> windowScene);
 	virtual ~Window();
 
 //	void setScene(osg::Group *scene);
@@ -46,7 +46,7 @@ public:
 
     osgViewer::GraphicsWindow* getGraphicsWindow(int index = 0);
 
-    void addChild(osg::Group *scene) {
+    void addChild(osg::ref_ptr<osg::Node> scene) {
     	root->addChild(scene);
     }    
 
@@ -72,6 +72,13 @@ public:
 	}*/
 
 
+	inline osg::ref_ptr<osg::Group> getRootNode(){
+		return root;
+	}
+
+	inline void clear(){
+		root->removeChild(0,root->getNumChildren());
+	}
 
 
 private:

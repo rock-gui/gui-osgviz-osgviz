@@ -23,36 +23,61 @@ class GraphPrinter{
 
 public:
 
-	static void print(osg::Node* root){
+	static void print(osg::Node* root, bool complete = false, const char* filename = NULL){
+
+		FILE* file = stdout;
+		if (filename){
+			FILE * out = fopen ( filename, "w" );
+			if (out){
+				file = out;
+			}
+		}
+
 		std::deque< osg::Node* > nodes;
 		std::map< osg::Node*, bool > knownNodes;
 		nodes.push_back(root);
 
-		printf("\n\ndigraph nodes {\n");
+		fprintf(file,"\n\ndigraph nodes {\n");
 		while (!nodes.empty()){
 
 			osg::Node* node = nodes.front();
 			osg::Group * group = dynamic_cast< osg::Group * >(node);
 			if (group){
-				printf("\t \"%p\" [label=\"%s\\n%s\"]\n",node,demangledTypeName(*group).c_str(),node->getName().c_str());
+				fprintf(file,"\t \"%p\" [label=\"%s\\n%s\"]\n",node,demangledTypeName(*group).c_str(),node->getName().c_str());
 				for (unsigned int i=0;i< group->getNumChildren();++i){
 					osg::Node* child = group->getChild(i);
 					if (child){
-						printf("\t\t \"%p\" -> \"%p\"\n",node,child);
-						nodes.push_back(child);
+						fprintf(file,"\t\t \"%p\" -> \"%p\"\n",node,child);
+						if (!knownNodes[child]){
+							nodes.push_back(child);
+							knownNodes[child] = true;
+						}
+					}
+				}
+				if (complete){
+					for (unsigned int i=0;i< group->getNumParents();++i){
+						osg::Node* parent = group->getParent(i);
+						if (parent){
+							//fprintf(file,"\t\t \"%p\" -> \"%p\"\n",parent,node);
+							if (!knownNodes[parent]){
+								nodes.push_back(parent);
+								knownNodes[parent] = true;
+							}
+						}
 					}
 				}
 			}
 
 			osg::Geode * geode = dynamic_cast< osg::Geode * >(node);
 			if (geode){
-				printf("\t \"%p\" [label=\"%s\\n%s\"]\n",node,demangledTypeName(*geode).c_str(),node->getName().c_str());
+				fprintf(file,"\t \"%p\" [label=\"%s\\n%s\"]\n",node,demangledTypeName(*geode).c_str(),node->getName().c_str());
 			}
 			nodes.pop_front();
 
 		}
 
-		printf("}\n\n");
+		fprintf(file,"}\n\n");
+		fflush(file);
 	}
 
 
