@@ -41,6 +41,8 @@ public:
 
     virtual void init(){};
 
+    virtual void start(){};
+
     inline lib_manager::LibManager* getLibManager(){
     	return libmanager;
     }

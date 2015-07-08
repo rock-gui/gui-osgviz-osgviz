@@ -44,8 +44,10 @@ namespace osgviz
 
 		OsgViz(lib_manager::LibManager * manager);
 
+		private:
 		OsgViz(int argc, char** argv);
 
+		public:
 		~OsgViz();
 
 
@@ -94,9 +96,11 @@ namespace osgviz
 			VIZPLUGIN* data = (VIZPLUGIN*)getVizPlugin(classname,classname);
 			data->init(m_argc,m_argv);
 			OsgVizPlugin* dataplug = (OsgVizPlugin*)data;
-			data->init();
+			dataplug->init();
 			return data;
 		}
+
+		OsgVizPlugin* loadPlugin(std::string classname);
 
 		inline osg::ref_ptr<osg::Group> getRootNode(){
 			return root;
@@ -188,8 +192,6 @@ namespace osgviz
 		        bool running;
 		        OsgViz* osgviz;
 		        OpenThreads::Mutex mutex;
-
-		        Timing timingserialize,timingdeserialize;
 
 		};
 
