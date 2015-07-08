@@ -44,8 +44,10 @@ namespace osgviz
 
 		OsgViz(lib_manager::LibManager * manager);
 
+		private:
 		OsgViz(int argc, char** argv);
 
+		public:
 		~OsgViz();
 
 
