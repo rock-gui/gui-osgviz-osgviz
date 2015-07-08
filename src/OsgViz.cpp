@@ -148,7 +148,13 @@ OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
 	return NULL;
 }
 
-
+OsgVizPlugin* OsgViz::loadPlugin(std::string classname){
+	OsgVizPlugin* data = getVizPlugin(classname,classname);
+	if (data){
+		data->init();
+	}
+	return data;
+}
 
 void OsgViz::updateContent(){
 	//graphicsManager->draw();

@@ -100,6 +100,8 @@ namespace osgviz
 			return data;
 		}
 
+		OsgVizPlugin* loadPlugin(std::string classname);
+
 		inline osg::ref_ptr<osg::Group> getRootNode(){
 			return root;
 		}
