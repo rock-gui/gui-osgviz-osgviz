@@ -51,7 +51,8 @@ rock_library(osgViz
            windows/Window.cpp
            windows/WindowManager.cpp
            windows/SuperView.cpp    
-           windows/ObjectSelector.cpp       
+           windows/ObjectSelector.cpp   
+           tools/UpdateThread.cpp    
            
     HEADERS OsgViz.hpp
            windows/Window.h
@@ -59,9 +60,10 @@ rock_library(osgViz
            windows/SuperView.h
            windows/ObjectSelector.h
            windows/config/WindowConfig.h
-           Timing.h
-           TypeNameDemangling.h
-           GraphPrinter.h
+           tools/UpdateThread.h
+           tools/Timing.h
+           tools/TypeNameDemangling.h
+           tools/GraphPrinter.h
                
     LIBS ${Boost_SYSTEM_LIBRARY}
     DEPS osgVizGraphics

@@ -6,7 +6,7 @@
 #include <osg/Group>
 #include <osgViewer/Viewer>
 #include <osgDB/WriteFile>
-#include <OpenThreads/Thread>
+
 
 //#include "graphics/interfaces/GraphicsManagerInterface.h"
 #include "plugins/OsgVizPlugin.h"
@@ -16,7 +16,8 @@
 #include "windows/config/WindowConfig.h"
 
 #include <stdio.h>
-#include "Timing.h"
+#include "tools/Timing.h"
+#include "tools/UpdateThread.h"
 
 
 namespace osgDB{
@@ -30,10 +31,7 @@ namespace osgviz
 	typedef std::basic_streambuf<char>::char_type ObjectSerializeCharType;
 	typedef std::vector< ObjectSerializeCharType > SerializedObject;
 
-	class FrameUpdateThread;
-
-
-	class OsgViz: public lib_manager::LibInterface
+	class OsgViz: public lib_manager::LibInterface, public Updatable
 	{
 
 		public: 
@@ -60,7 +58,7 @@ namespace osgviz
 	    void init(int argc,char** argv);
 
 	    /**
-	     * starts a thread calling updateContent
+	     * starts a thread calling update
 	     */
 	    void startThread();
 	    void stopThread();
@@ -69,7 +67,7 @@ namespace osgviz
 	    void unlockThread();
 
 
-		void updateContent();
+		virtual void update();
 
 		unsigned int createWindow(WindowConfig windowConfig = WindowConfig());
 		void destroyWindow(unsigned int id);
@@ -141,7 +139,7 @@ namespace osgviz
 		char** m_argv;
 
 
-		FrameUpdateThread* thread;
+		UpdateThread* thread;
 		//graphics::GraphicsManager* graphicsManager;
 		//osgViewer::Viewer viewer;
 		//std::vector<osgViewer::Viewer *> viewers;
@@ -153,47 +151,6 @@ namespace osgviz
 
 	};
 
-	class FrameUpdateThread : public OpenThreads::Thread
-		{
-		    public:
-
-		FrameUpdateThread(OsgViz* osgviz):
-		        	osgviz(osgviz){
-		        	running = false;
-		        }
-
-		        ~FrameUpdateThread()
-		        {
-		            if (isRunning())
-		            {
-		                cancel();
-		                join();
-		            }
-		        }
-
-		        int cancel()
-		        {
-		        	mutex.lock();
-		        	running = false;
-		        	mutex.unlock();
-		            return 0;
-		        }
-
-		        void run();
-
-		        void lock(){
-		        	mutex.lock();
-		        }
-		        void unlock(){
-		        	mutex.unlock();
-		        }
-
-		    private:
-		        bool running;
-		        OsgViz* osgviz;
-		        OpenThreads::Mutex mutex;
-
-		};
 
 
 

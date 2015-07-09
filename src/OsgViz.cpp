@@ -3,7 +3,6 @@
 //#include "graphics/GraphicsManager.h"
 
 #include <stdio.h>
-#include <unistd.h>
 #include <osgGA/TerrainManipulator>
 #include <X11/Xlib.h>
 #include <osgDB/ReaderWriter>
@@ -11,9 +10,6 @@
 #include <osgDB/Registry>
 
 #include "windows/WindowManager.h"
-
-//debug
-#include "Timing.h"
 
 CREATE_LIB(osgviz::OsgViz);
 DESTROY_LIB(osgviz::OsgViz);
@@ -33,23 +29,7 @@ OsgViz* OsgViz::getInstance(int argc,char** argv){
 
 
 
-void FrameUpdateThread::run()
-{
-	mutex.lock();
-	running = true;
 
-	while (running){
-		mutex.unlock();
-		usleep(10000);
-		mutex.lock();
-		//int result = _viewerBase->run();
-		osgviz->updateContent();
-		mutex.unlock();
-		//give others a chance to lock
-		usleep(10000);
-		mutex.lock();
-	}
-}
 
 OsgViz::OsgViz(lib_manager::LibManager * manager): lib_manager::LibInterface(manager)
 {
@@ -156,7 +136,7 @@ OsgVizPlugin* OsgViz::loadPlugin(std::string classname){
 	return data;
 }
 
-void OsgViz::updateContent(){
+void OsgViz::update(){
 	//graphicsManager->draw();
 //	viewer.frame();
 
@@ -174,7 +154,7 @@ void OsgViz::updateContent(){
 
 void OsgViz::startThread(){
 	if (!thread){
-		thread = new FrameUpdateThread(this);
+		thread = new UpdateThread(this, 5000);
 		thread->startThread();
 	}else{
 		fprintf(stderr,"thread already running\n");
@@ -216,12 +196,9 @@ SerializedObject OsgViz::serialize(osg::Node* node){
 	}
 
 
-//	printf("serialize\n");
-	Timing timing;
 	//http://trac.openscenegraph.org/projects/osg//wiki/Support/KnowledgeBase/SerializationSupport
-	std::vector< ObjectSerializeCharType > data;
+	SerializedObject data;
 
-	timing.start();
 	if (rw){
 		std::stringbuf buffer;
 		std::iostream stream(&buffer);
@@ -229,18 +206,12 @@ SerializedObject OsgViz::serialize(osg::Node* node){
 	    //rewind the buffer to the start
 	    //buffer.pubseekpos(0);
 	    int size = stream.tellp();
-	    printf("size %i\n",size);
 	    data.resize(size);
 	    stream.seekp(0);
 	    stream.read(data.data(),size);
-
-//	    std::string name (node->getName()+"_out.osgb");
-//	    osgDB::writeNodeFile(*node, name);
-
 	}else{
 		printf("no rw object\n");
 	}
-	timing.print_loop_time();
 
 	return data;
 }
@@ -251,14 +222,9 @@ osg::ref_ptr<osg::Node> OsgViz::deserialize(SerializedObject & in){
 		rw = osgDB::Registry::instance()->getReaderWriterForExtension("osgb");
 	}
 
-//	printf("deserialize\n");
-	Timing timing;
-	timing.start();
 	osg::ref_ptr<osg::Node> node;
 	if (rw)	{
 		std::stringbuf buffer;
-		//buffer.sputn(in.data(),in.size());
-//		printf("size %i\n",in.size());
 		std::iostream stream(&buffer);
 		stream.write(in.data(),in.size());
 		stream.seekp(0);
@@ -266,13 +232,9 @@ osg::ref_ptr<osg::Node> OsgViz::deserialize(SerializedObject & in){
 	    osgDB::ReaderWriter::ReadResult rr = rw->readNode(stream);
 	    node = rr.takeNode();
 
-//	    std::string name (node->getName()+"_in.osgb");
-//	    osgDB::writeNodeFile(*node, name);
-
 	}else{
 		printf("no rw object\n");
 	}
-	timing.print_loop_time();
 	return node;
 }
 

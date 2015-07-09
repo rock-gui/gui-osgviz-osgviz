@@ -12,7 +12,7 @@
 #include <unistd.h>//sleep
 #include <stdio.h>
 
-#include "GraphPrinter.h"
+#include "tools/GraphPrinter.h"
 
 
 int main(int argc, char** argv)
