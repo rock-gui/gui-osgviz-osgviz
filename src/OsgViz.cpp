@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <osgGA/TerrainManipulator>
 #include <X11/Xlib.h>
-#include <osgDB/ReaderWriter>
 #include <osgDB/WriteFile>
 #include <osgDB/Registry>
 
@@ -187,55 +186,6 @@ const std::string OsgViz::getLibName() const {
 
 int OsgViz::getLibVersion() const{
 	return 1;
-}
-
-SerializedObject OsgViz::serialize(osg::Node* node){
-
-	if (rw.get() == NULL){
-		rw = osgDB::Registry::instance()->getReaderWriterForExtension("osgb");
-	}
-
-
-	//http://trac.openscenegraph.org/projects/osg//wiki/Support/KnowledgeBase/SerializationSupport
-	SerializedObject data;
-
-	if (rw){
-		std::stringbuf buffer;
-		std::iostream stream(&buffer);
-	    rw->writeNode(*node, stream);//,new osgDB::Options("Ascii"));
-	    //rewind the buffer to the start
-	    //buffer.pubseekpos(0);
-	    int size = stream.tellp();
-	    data.resize(size);
-	    stream.seekp(0);
-	    stream.read(data.data(),size);
-	}else{
-		printf("no rw object\n");
-	}
-
-	return data;
-}
-
-osg::ref_ptr<osg::Node> OsgViz::deserialize(SerializedObject & in){
-
-	if (rw.get() == NULL){
-		rw = osgDB::Registry::instance()->getReaderWriterForExtension("osgb");
-	}
-
-	osg::ref_ptr<osg::Node> node;
-	if (rw)	{
-		std::stringbuf buffer;
-		std::iostream stream(&buffer);
-		stream.write(in.data(),in.size());
-		stream.seekp(0);
-
-	    osgDB::ReaderWriter::ReadResult rr = rw->readNode(stream);
-	    node = rr.takeNode();
-
-	}else{
-		printf("no rw object\n");
-	}
-	return node;
 }
 
 

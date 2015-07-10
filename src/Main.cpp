@@ -72,32 +72,12 @@ int main(int argc, char** argv)
 	//manager->showRain(true);
 
 
-	osgViz->createWindow();
-	osg::ref_ptr<osgviz::Window> win_3 = winman->getWindowByID(2);
-
-	osg::ref_ptr<osg::Node> copy;
-
-
-
 	osgViz->startThread();
 
 
 
 	while (true){
 		sleep(1);
-
-
-		osgViz->lockThread();
-		osgviz::SerializedObject obj = osgViz->serialize(arrow);
-		printf("size %i\n",obj.size());
-		win_3->getRootNode()->removeChild(0,win_3->getRootNode()->getNumChildren());
-		copy = osgViz->deserialize(obj);
-		win_3->addChild(copy);
-		osgViz->unlockThread();
-
-		GraphPrinter::print(win_3->getRootNode(),true,"out.dot");
-
-
 	}
 
 

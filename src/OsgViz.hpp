@@ -7,7 +7,6 @@
 #include <osgViewer/Viewer>
 #include <osgDB/WriteFile>
 
-
 //#include "graphics/interfaces/GraphicsManagerInterface.h"
 #include "plugins/OsgVizPlugin.h"
 #include "plugins/OsgVizVisualizerPlugin.h"
@@ -27,9 +26,6 @@ namespace osgDB{
 
 namespace osgviz
 {
-
-	typedef std::basic_streambuf<char>::char_type ObjectSerializeCharType;
-	typedef std::vector< ObjectSerializeCharType > SerializedObject;
 
 	class OsgViz: public lib_manager::LibInterface, public Updatable
 	{
@@ -72,10 +68,6 @@ namespace osgviz
 		unsigned int createWindow(WindowConfig windowConfig = WindowConfig());
 		void destroyWindow(unsigned int id);
 
-
-	    SerializedObject serialize(osg::Node* node);
-
-	    osg::ref_ptr<osg::Node> deserialize(SerializedObject & in);
 
 
 		//inline GraphicsManagerInterface* getGraphicsManagerInterface(){
@@ -146,8 +138,6 @@ namespace osgviz
 
 		WindowManager::Ptr windowManager;
 
-
-		osg::ref_ptr<osgDB::ReaderWriter> rw ;
 
 	};
 
