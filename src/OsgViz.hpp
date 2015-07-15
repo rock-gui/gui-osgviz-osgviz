@@ -82,11 +82,19 @@ namespace osgviz
 			return viz;
 		}
 
-		template <class VIZPLUGIN> VIZPLUGIN* getDataPlugin(std::string classname){
+//		template <class VIZPLUGIN> VIZPLUGIN* getDataPlugin(std::string classname){
+//			VIZPLUGIN* data = (VIZPLUGIN*)getVizPlugin(classname,classname);
+//			data->init(m_argc,m_argv);
+//
+//			return data;
+//		}
+
+		/**
+		 * root node is not set
+		 */
+		template <class VIZPLUGIN> VIZPLUGIN* getPlugin(std::string classname){
 			VIZPLUGIN* data = (VIZPLUGIN*)getVizPlugin(classname,classname);
 			data->init(m_argc,m_argv);
-			OsgVizPlugin* dataplug = (OsgVizPlugin*)data;
-			dataplug->init();
 			return data;
 		}
 
