@@ -76,9 +76,11 @@ namespace osgviz
 
 		template <class VIZPLUGIN> VIZPLUGIN* getVisualizerPlugin(std::string classname){
 			VIZPLUGIN* viz = (VIZPLUGIN*)getVizPlugin(classname,classname);
-			viz->setRootNode(root);
-			OsgVizPlugin* vizplug = (OsgVizPlugin*)viz;
-			vizplug->init();
+			if (viz){
+				viz->setRootNode(root);
+				OsgVizPlugin* vizplug = (OsgVizPlugin*)viz;
+				vizplug->init();
+			}
 			return viz;
 		}
 
@@ -93,8 +95,7 @@ namespace osgviz
 		 * root node is not set
 		 */
 		template <class VIZPLUGIN> VIZPLUGIN* getPlugin(std::string classname){
-			VIZPLUGIN* data = (VIZPLUGIN*)getVizPlugin(classname,classname);
-			data->init(m_argc,m_argv);
+			VIZPLUGIN* data = (VIZPLUGIN*)loadPlugin(classname);
 			return data;
 		}
 
