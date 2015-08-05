@@ -64,6 +64,7 @@ rock_library(osgViz
            tools/Timing.h
            tools/TypeNameDemangling.h
            tools/GraphPrinter.h
+           tools/SearchNodes.h
                
     LIBS ${Boost_SYSTEM_LIBRARY}
     DEPS osgVizGraphics
