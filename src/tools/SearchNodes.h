@@ -23,7 +23,7 @@ class SearchNodes{
 
 public:
 
-	static void SearchNodes::printAll(osg::Node* start, bool complete = false){
+	static void printAll(osg::Node* start, bool complete = false){
 		std::deque< osg::Node* > nodes;
 		std::map< osg::Node*, bool > knownNodes;
 		nodes.push_back(start);
@@ -33,7 +33,9 @@ public:
 
 			osg::Node* node = nodes.front();
 
-			printf("%s\n",node->getName().c_str());
+			if (node->getName().size()>0){
+				printf("%s\n",node->getName().c_str());
+			}
 
 			osg::Group * group = dynamic_cast< osg::Group * >(node);
 
@@ -111,7 +113,7 @@ public:
 		}
 
 		printf("node %s not found, available nodes\n",name.c_str());
-		printAll(start,complete);
+		//printAll(start,complete);
 
 		return NULL;
 	}
