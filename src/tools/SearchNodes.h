@@ -113,7 +113,7 @@ public:
 		}
 
 		printf("node %s not found, available nodes\n",name.c_str());
-		//printAll(start,complete);
+		printAll(start,complete);
 
 		return NULL;
 	}
