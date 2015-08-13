@@ -126,6 +126,11 @@ public:
 
 		}
 
+		if (foundNodes.empty()){
+			printf("node %s not found, available nodes\n",name.c_str());
+			printAll(start,addParents);
+		}
+
 		return foundNodes;
 	}
 
@@ -157,6 +162,12 @@ public:
 			nodes.pop_front();
 
 		}
+
+		if (foundGeodes.empty()){
+			printf("node %s not found, available nodes\n",name.c_str());
+			printAll(start,addParents);
+		}
+
 		return foundGeodes;
 	}
 
