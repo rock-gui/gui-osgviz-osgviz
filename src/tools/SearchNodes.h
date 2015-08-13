@@ -20,10 +20,42 @@
  */
 
 class SearchNodes{
+private:
+
+	static void expand(osg::Node* node, std::map< osg::Node*, bool > &knownNodes, std::deque< osg::Node* > &queue, bool addParents = false){
+
+		osg::Group * group = dynamic_cast< osg::Group * >(node);
+
+		if (group){
+
+			for (unsigned int i=0;i< group->getNumChildren();++i){
+				osg::Node* child = group->getChild(i);
+				if (child){
+					if (!knownNodes[child]){
+						queue.push_back(child);
+						knownNodes[child] = true;
+					}
+				}
+			}
+			if (addParents){
+				for (unsigned int i=0;i< group->getNumParents();++i){
+					osg::Node* parent = group->getParent(i);
+					if (parent){
+						//fprintf(file,"\t\t \"%p\" -> \"%p\"\n",parent,node);
+						if (!knownNodes[parent]){
+							queue.push_back(parent);
+							knownNodes[parent] = true;
+						}
+					}
+				}
+			}
+		}
+	}
+
 
 public:
 
-	static void printAll(osg::Node* start, bool complete = false){
+	static void printAll(osg::Node* start, bool addParents = false){
 		std::deque< osg::Node* > nodes;
 		std::map< osg::Node*, bool > knownNodes;
 		nodes.push_back(start);
@@ -37,38 +69,14 @@ public:
 				printf("%s\n",node->getName().c_str());
 			}
 
-			osg::Group * group = dynamic_cast< osg::Group * >(node);
+			expand(node,knownNodes,nodes,addParents);
 
-			if (group){
-
-				for (unsigned int i=0;i< group->getNumChildren();++i){
-					osg::Node* child = group->getChild(i);
-					if (child){
-						if (!knownNodes[child]){
-							nodes.push_back(child);
-							knownNodes[child] = true;
-						}
-					}
-				}
-				if (complete){
-					for (unsigned int i=0;i< group->getNumParents();++i){
-						osg::Node* parent = group->getParent(i);
-						if (parent){
-							//fprintf(file,"\t\t \"%p\" -> \"%p\"\n",parent,node);
-							if (!knownNodes[parent]){
-								nodes.push_back(parent);
-								knownNodes[parent] = true;
-							}
-						}
-					}
-				}
-			}
 			nodes.pop_front();
 		}
 
 	}
 
-	static osg::Node* searchByName(std::string name, osg::Node* start, bool complete = false){
+	static osg::Node* searchByName(std::string name, osg::Node* start, bool addParents = false){
 		std::deque< osg::Node* > nodes;
 		std::map< osg::Node*, bool > knownNodes;
 		nodes.push_back(start);
@@ -82,44 +90,20 @@ public:
 				return node;
 			}
 
-			osg::Group * group = dynamic_cast< osg::Group * >(node);
+			expand(node,knownNodes,nodes,addParents);
 
-			if (group){
-
-				for (unsigned int i=0;i< group->getNumChildren();++i){
-					osg::Node* child = group->getChild(i);
-					if (child){
-						if (!knownNodes[child]){
-							nodes.push_back(child);
-							knownNodes[child] = true;
-						}
-					}
-				}
-				if (complete){
-					for (unsigned int i=0;i< group->getNumParents();++i){
-						osg::Node* parent = group->getParent(i);
-						if (parent){
-							//fprintf(file,"\t\t \"%p\" -> \"%p\"\n",parent,node);
-							if (!knownNodes[parent]){
-								nodes.push_back(parent);
-								knownNodes[parent] = true;
-							}
-						}
-					}
-				}
-			}
 			nodes.pop_front();
 
 		}
 
 		printf("node %s not found, available nodes\n",name.c_str());
-		printAll(start,complete);
+		printAll(start,addParents);
 
 		return NULL;
 	}
 
 
-	static std::vector<osg::Node*> searchAllByName(std::string name, osg::Node* start, bool complete = false){
+	static std::vector<osg::Node*> searchAllByName(std::string name, osg::Node* start, bool addParents = false){
 		std::deque< osg::Node* > nodes;
 		std::map< osg::Node*, bool > knownNodes;
 		nodes.push_back(start);
@@ -136,40 +120,45 @@ public:
 
 			osg::Group * group = dynamic_cast< osg::Group * >(node);
 
-			if (group){
+			expand(node,knownNodes,nodes,addParents);
 
-				for (unsigned int i=0;i< group->getNumChildren();++i){
-					osg::Node* child = group->getChild(i);
-					if (child){
-						if (!knownNodes[child]){
-							nodes.push_back(child);
-							knownNodes[child] = true;
-						}
-					}
-				}
-				if (complete){
-					for (unsigned int i=0;i< group->getNumParents();++i){
-						osg::Node* parent = group->getParent(i);
-						if (parent){
-							//fprintf(file,"\t\t \"%p\" -> \"%p\"\n",parent,node);
-							if (!knownNodes[parent]){
-								nodes.push_back(parent);
-								knownNodes[parent] = true;
-							}
-						}
-					}
-				}
-			}
 			nodes.pop_front();
 
 		}
 
-		printf("node %s not found, available nodes\n",name.c_str());
-		printAll(start,complete);
-
 		return foundNodes;
 	}
 
+	static std::vector<osg::Node*> searchGeodes(osg::Node* start, bool onlyWithDrawable = false, bool addParents = false){
+		std::deque< osg::Node* > nodes;
+		std::map< osg::Node*, bool > knownNodes;
+		nodes.push_back(start);
+		std::vector<osg::Node*> foundGeodes;
+
+
+		while (!nodes.empty()){
+
+			osg::Node* node = nodes.front();
+
+			osg::Geode * geode = dynamic_cast< osg::Geode * >(node);
+			if (geode){
+				if (onlyWithDrawable){
+					if (geode->getNumDrawables()){
+						foundGeodes.push_back(geode);
+					}
+				}else{
+					foundGeodes.push_back(geode);
+				}
+			}
+
+
+			expand(node,knownNodes,nodes,addParents);
+
+			nodes.pop_front();
+
+		}
+		return foundGeodes;
+	}
 
 };
 
