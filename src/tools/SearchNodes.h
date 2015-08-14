@@ -164,7 +164,7 @@ public:
 		}
 
 		if (foundGeodes.empty()){
-			printf("node %s not found, available nodes\n",name.c_str());
+			printf("no geodes found on node %s\n",start->getName().c_str());
 			printAll(start,addParents);
 		}
 
