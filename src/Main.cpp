@@ -12,8 +12,13 @@ int main(int argc, char** argv)
 	osgviz::OsgViz *osgViz = osgviz::OsgViz::getInstance();
 
 	//load lib with some helpful primitives
+	printf("load plugin\n");
 	osgviz::PrimitivesFactory *primitivesfactory = osgViz->getVisualizerPlugin< osgviz::PrimitivesFactory >("PrimitivesFactory");
 
+	if (!primitivesfactory){
+		printf("plugin not found\n");
+	}
+	
 	osg::ref_ptr<osgviz::Object> grid = primitivesfactory->createGrid();
 	osgViz->addChild(grid);
 
@@ -24,6 +29,8 @@ int main(int argc, char** argv)
 
 	osg::ref_ptr<osgviz::Object> axes = primitivesfactory->createAxes();
 	osgViz->addChild(axes);
+	
+	printf("creating window\n");
 
 	osgViz->createWindow();
 

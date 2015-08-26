@@ -13,6 +13,9 @@ namespace osgviz {
 class WindowInterface{
 
 public:
+	WindowInterface(){};
+	virtual ~WindowInterface(){};
+
 	virtual void enableCameraControl() = 0;
 	virtual void disableCameraControl() = 0;
 

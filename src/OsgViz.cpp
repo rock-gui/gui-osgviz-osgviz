@@ -4,7 +4,9 @@
 
 #include <stdio.h>
 #include <osgGA/TerrainManipulator>
-#include <X11/Xlib.h>
+#ifndef WIN32
+	#include <X11/Xlib.h>
+#endif
 #include <osgDB/WriteFile>
 #include <osgDB/Registry>
 
@@ -53,7 +55,9 @@ void OsgViz::init(int argc,char** argv){
 	m_argv = argv;
 	root = new osg::Group();
 	root->setName("OsgViz root");
-	XInitThreads();
+	#ifndef WIN32
+		XInitThreads();
+	#endif
 	instance = this;
 
 	windowManager = new WindowManager();
