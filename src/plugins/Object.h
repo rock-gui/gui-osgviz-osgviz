@@ -53,7 +53,7 @@ public:
     	return scaleTransform->addChild(child);
     }
 
-    virtual bool getNumChildren() const{
+    virtual unsigned int getNumChildren() const{
     	return scaleTransform->getNumChildren();
     }
 
