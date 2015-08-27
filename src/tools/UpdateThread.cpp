@@ -50,7 +50,12 @@ namespace osgviz {
 
 		while (running){
 			mutex->unlock();
+			
+			#ifdef WIN32
+			Sleep(halfInterval/1000);
+			#else
 			usleep(halfInterval);
+			#endif
 			//printf("lock\n");fflush(stdout);
 			mutex->lock();
 			//int result = _viewerBase->run();
@@ -59,7 +64,11 @@ namespace osgviz {
 			//printf("updateend\n");fflush(stdout);
 			mutex->unlock();
 			//give others a chance to lock
+			#ifdef WIN32
+			Sleep(halfInterval/1000);
+			#else
 			usleep(halfInterval);
+			#endif
 			//printf("lock2\n");fflush(stdout);
 			mutex->lock();
 		}
