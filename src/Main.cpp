@@ -9,14 +9,16 @@
 
 int main(int argc, char** argv)
 {
+	printf("getting instance\n");
+	fflush(stdout);
 	osgviz::OsgViz *osgViz = osgviz::OsgViz::getInstance();
 
 	//load lib with some helpful primitives
-	printf("load plugin\n");
+	printf("load plugin\n");	fflush(stdout);
 	osgviz::PrimitivesFactory *primitivesfactory = osgViz->getVisualizerPlugin< osgviz::PrimitivesFactory >("PrimitivesFactory");
 
 	if (!primitivesfactory){
-		printf("plugin not found\n");
+		printf("plugin not found\n");	fflush(stdout);
 	}
 	
 	osg::ref_ptr<osgviz::Object> grid = primitivesfactory->createGrid();
@@ -30,10 +32,11 @@ int main(int argc, char** argv)
 	osg::ref_ptr<osgviz::Object> axes = primitivesfactory->createAxes();
 	osgViz->addChild(axes);
 	
-	printf("creating window\n");
+	printf("creating window\n");fflush(stdout);
 
 	osgViz->createWindow();
 
+	sleep(1);
 	//you can create multiple ones:
 	//osgViz->createWindow();
 
@@ -41,25 +44,22 @@ int main(int argc, char** argv)
 	//osgViz->lockThread();
 	//do updates
 	//osgViz->unlockThread();
+	printf("startThread\n");fflush(stdout);
 	osgViz->startThread();
 
 	//or don't start the thread and update manually using osgViz->update();
 
 
 	while (true){
-		osgViz->lockThread();
+		//osgViz->lockThread();
 		//do updates
-		osgViz->unlockThread();
-
-		sleep(1);
+		//osgViz->unlockThread();
+		//osgViz->update();
+		printf("sleep\n");fflush(stdout);
+		usleep(100000);
 
 
 	}
-
-
-
-
-	delete osgViz;
 
 	return 0;
 }

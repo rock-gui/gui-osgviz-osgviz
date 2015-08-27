@@ -9,6 +9,12 @@
 #include "UpdateThread.h"
 
 #include <unistd.h>
+#include <stdio.h>
+
+#ifdef WIN32
+	#include <windows.h>
+	#define usleep(X) Sleep(X/1000)
+#endif
 
 namespace osgviz {
 
@@ -16,6 +22,7 @@ namespace osgviz {
 		halfInterval(intervalUsec/2),
 		updatable(updatable)
 	{
+		mutex = new OpenThreads::Mutex();
 			running = false;
 	}
 
@@ -26,38 +33,45 @@ namespace osgviz {
 			cancel();
 			join();
 		}
+		delete mutex;
 	}
 
 	int UpdateThread::cancel()
 	{
-		mutex.lock();
+		mutex->lock();
 		running = false;
-		mutex.unlock();
+		mutex->unlock();
 		return 0;
 	}
 
 	void UpdateThread::run(){
-		mutex.lock();
+		mutex->lock();
 		running = true;
 
 		while (running){
-			mutex.unlock();
+			mutex->unlock();
 			usleep(halfInterval);
-			mutex.lock();
+			//printf("lock\n");fflush(stdout);
+			mutex->lock();
 			//int result = _viewerBase->run();
+			//printf("update\n");fflush(stdout);
 			updatable->update();
-			mutex.unlock();
+			//printf("updateend\n");fflush(stdout);
+			mutex->unlock();
 			//give others a chance to lock
 			usleep(halfInterval);
-			mutex.lock();
+			//printf("lock2\n");fflush(stdout);
+			mutex->lock();
 		}
 	}
 
 	void UpdateThread::lock(){
-		mutex.lock();
+		//printf("lock\n");fflush(stdout);
+		mutex->lock();
 	}
 	void UpdateThread::unlock(){
-		mutex.unlock();
+		mutex->unlock();
+		//printf("unlock\n");fflush(stdout);
 	}
 
 

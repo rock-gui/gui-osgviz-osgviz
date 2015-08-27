@@ -161,7 +161,7 @@ void Window::showSnow(const bool &val) {
 ////	keyswitchManipulator->selectMatrixManipulator('0');
 //}
 
-osgViewer::GraphicsWindow* Window::getGraphicsWindow(int index) {
+osgViewer::GraphicsWindow* Window::getGraphicsWindow(unsigned int index) {
 	osgViewer::ViewerBase::Windows m_windows;
 	this->getWindows(m_windows);
 	if (m_windows.size() > index){

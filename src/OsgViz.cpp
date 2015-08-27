@@ -114,19 +114,24 @@ OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
 	if (viz){
 		return viz;
 	}else{
-
-		if (libmanager->loadLibrary(path) == lib_manager::LibManager::LIBMGR_NO_ERROR){
-			fprintf(stderr,"trying to load %s\n",name.c_str());
+		printf("trying to load %s\n",name.c_str());	fflush(stdout);
+		lib_manager::LibManager::ErrorNumber result = libmanager->loadLibrary(path);
+		printf("trying to load result %i\n",result);	fflush(stdout);
+		//if (result == lib_manager::LibManager::LIBMGR_NO_ERROR){
+			fprintf(stderr,"trying to load 2 %s\n",name.c_str());	fflush(stdout);
 			OsgVizPlugin* viz = (OsgVizPlugin*)libmanager->acquireLibrary(name);
+						fprintf(stderr,"trying to load 3%s\n",name.c_str());	fflush(stdout);
 			if (!viz){
-				fprintf(stderr,"unable to load lib %s\n",name.c_str());
+				fprintf(stderr,"unable to load lib %s\n",name.c_str());	fflush(stdout);
 				return NULL;
 			}
-			fprintf(stderr,"loaded %s\n",name.c_str());
+			fprintf(stderr,"loaded %s\n",name.c_str());	fflush(stdout);
 			viz->setParent(this);
 			loadedPlugins.push_back(viz);
 			return viz;
-		}
+		//}else{
+		//	fprintf(stderr,"load failed %s\n",name.c_str());	fflush(stdout);
+		//}
 	}
 	return NULL;
 }
@@ -143,7 +148,11 @@ void OsgViz::update(){
 	//graphicsManager->draw();
 //	viewer.frame();
 
+	
+	//printf("frame\n");fflush(stdout);
+
 	windowManager->frame();
+	//printf("frame end\n");fflush(stdout);
 	//graphicsManager->get3DWindow();
 
 //	osgViewer::ViewerBase::Views views;

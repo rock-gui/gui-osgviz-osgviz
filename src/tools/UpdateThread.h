@@ -38,7 +38,7 @@ public:
 		bool running;
 		unsigned int halfInterval;
 		Updatable* updatable;
-		OpenThreads::Mutex mutex;
+		OpenThreads::Mutex* mutex;
 
 
 };

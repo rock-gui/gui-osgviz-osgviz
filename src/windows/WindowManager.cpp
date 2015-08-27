@@ -41,12 +41,16 @@ unsigned int WindowManager::createWindow(WindowConfig& windowConfig, osg::ref_pt
 
 void WindowManager::frame() {
 	windowsMutex.lock();
+	//printf("WindowManager::frame\n");fflush(stdout);
 	for(std::vector<Window::Ptr>::iterator witr = windows.begin();
         witr != windows.end();
         ++witr)
     {
+		//printf("WindowManager::frame call\n");fflush(stdout);
 		witr->get()->frame();
+		//printf("WindowManager::frame call end\n");fflush(stdout);
     }
+	//printf("WindowManager::frame end\n");fflush(stdout);
 	windowsMutex.unlock();
 }
 

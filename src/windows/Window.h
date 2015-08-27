@@ -44,7 +44,7 @@ public:
 
     osgViewer::View* addView(ViewConfig viewConfig, osg::Group* viewScene = NULL);
 
-    osgViewer::GraphicsWindow* getGraphicsWindow(int index = 0);
+    osgViewer::GraphicsWindow* getGraphicsWindow(unsigned int index = 0);
 
     void addChild(osg::ref_ptr<osg::Node> scene) {
     	root->addChild(scene);
