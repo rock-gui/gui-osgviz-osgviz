@@ -46,8 +46,18 @@ namespace osgviz {
 
 	void UpdateThread::run(){
 		mutex->lock();
-		running = true;
 
+		//first initial run
+		updatable->update();
+		mutex->unlock();
+		#ifdef WIN32
+		Sleep(halfInterval/1000);
+		#else
+		usleep(halfInterval);
+		#endif
+
+		running = true;
+		mutex->lock();
 		while (running){
 			mutex->unlock();
 			
