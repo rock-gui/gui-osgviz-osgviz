@@ -46,34 +46,37 @@ public:
 
 	void addClickableCallback(Clickable * cb);
 
-    /**
-     * override osg::PositionAttitudeTransform addChild
-     */
-    virtual bool addChild(osg::Node *child){
-    	return scaleTransform->addChild(child);
-    }
-
-    virtual unsigned int getNumChildren() const{
-    	return scaleTransform->getNumChildren();
-    }
-
-    Node* getChild(unsigned int i){
-    	return scaleTransform->getChild(i);
-    }
-
-    const Node* getChild(unsigned int i) const{
-    	return scaleTransform->getChild(i);
-    }
-
-
+//    /**
+//     * override osg::PositionAttitudeTransform addChild
+//     */
+//    virtual bool addChild(osg::Node *child){
+//    	return scaleTransform->addChild(child);
+//    }
+//
+//    virtual unsigned int getNumChildren() const{
+//    	return scaleTransform->getNumChildren();
+//    }
+//
+//    Node* getChild(unsigned int i){
+//    	return scaleTransform->getChild(i);
+//    }
+//
+//    const Node* getChild(unsigned int i) const{
+//    	return scaleTransform->getChild(i);
+//    }
+//
+//
 	inline void setScale(const float &x, const float &y, const float &z){
-		scaleTransform->setMatrix(osg::Matrix::scale(x, y, z));
+		PositionAttitudeTransform::setScale(osg::Vec3d(x,y,z));
 	}
-
-	inline osg::Vec3d getScale()const {
-		return scaleTransform->getMatrix().getScale();
+//
+	inline void setScale(const osg::Vec3d &vec){
+		PositionAttitudeTransform::setScale(vec);
 	}
-
+//	inline osg::Vec3d getScale()const {
+//		return scaleTransform->getMatrix().getScale();
+//	}
+//
     inline void setPosition(const double &x, const double &y, const double &z){
     	PositionAttitudeTransform::setPosition(osg::Vec3d(x,y,z));
     }
@@ -114,7 +117,7 @@ protected:
     //osg::ref_ptr<osg::Group> root;
     //osg::ref_ptr<osg::Node> object;
 
-    osg::ref_ptr<osg::MatrixTransform> scaleTransform;
+    //osg::ref_ptr<osg::MatrixTransform> scaleTransform;
 
 private:
 
