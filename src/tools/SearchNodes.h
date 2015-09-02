@@ -171,6 +171,37 @@ public:
 		return foundGeodes;
 	}
 
+
+	template<class CLASS> std::vector<CLASS*> searchClass(osg::Node* start, bool addParents = false){
+			std::deque< osg::Node* > nodes;
+			std::map< osg::Node*, bool > knownNodes;
+			nodes.push_back(start);
+			std::vector<osg::CLASS*> found;
+
+
+			while (!nodes.empty()){
+
+				osg::Node* node = nodes.front();
+
+				CLASS * searchedclass = dynamic_cast< osg::CLASS * >(node);
+				if (searchedclass){
+					found.push_back(searchedclass);
+				}
+
+
+				expand(node,knownNodes,nodes,addParents);
+
+				nodes.pop_front();
+
+			}
+
+			if (found.empty()){
+				printf("no class found on node %s\n",start->getName().c_str());
+				printAll(start,addParents);
+			}
+
+			return found;
+		}
 };
 
 
