@@ -108,7 +108,7 @@ SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContex
 	graphicData.fogEnabled = true;
 	graphicData.fogDensity = 0.35;
 	graphicData.fogStart = 10.0;
-	graphicData.fogEnd = 30.0;    
+	graphicData.fogEnd = 300.0;
 
 	setFogSettings(graphicData);    
 }
