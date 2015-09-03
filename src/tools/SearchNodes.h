@@ -178,7 +178,7 @@ public:
 		std::vector<CLASS*> found;
 
 		if (skip_initial){
-			expand(node,knownNodes,nodes,addParents);
+			expand(start,knownNodes,nodes,addParents);
 		}else{
 			nodes.push_back(start);
 		}
