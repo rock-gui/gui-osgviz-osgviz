@@ -33,6 +33,8 @@ public:
 			}
 		}
 
+		bool firstnode = true;
+
 		std::deque< osg::Node* > nodes;
 		std::map< osg::Node*, bool > knownNodes;
 		nodes.push_back(root);
@@ -43,7 +45,12 @@ public:
 			osg::Node* node = nodes.front();
 			osg::Group * group = dynamic_cast< osg::Group * >(node);
 			if (group){
-				fprintf(file,"\t \"%p\" [label=\"%s\\n%s\"]\n",node,demangledTypeName(*group).c_str(),node->getName().c_str());
+				if (firstnode){
+					fprintf(file,"\t \"%p\" [label=\"%s\\n%s\" style=filled, fillcolor=green]\n",node,demangledTypeName(*group).c_str(),node->getName().c_str());
+					firstnode = false;
+				}else{
+					fprintf(file,"\t \"%p\" [label=\"%s\\n%s\"]\n",node,demangledTypeName(*group).c_str(),node->getName().c_str());
+				}
 				for (unsigned int i=0;i< group->getNumChildren();++i){
 					osg::Node* child = group->getChild(i);
 					if (child){
@@ -70,7 +77,15 @@ public:
 
 			osg::Geode * geode = dynamic_cast< osg::Geode * >(node);
 			if (geode){
-				fprintf(file,"\t \"%p\" [label=\"%s\\n%s\"]\n",node,demangledTypeName(*geode).c_str(),node->getName().c_str());
+
+				if (firstnode){
+					fprintf(file,"\t \"%p\" [label=\"%s\\n%s\" style=filled, fillcolor=green]\n",node,demangledTypeName(*geode).c_str(),node->getName().c_str());
+					firstnode = false;
+				}else{
+					fprintf(file,"\t \"%p\" [label=\"%s\\n%s\"]\n",node,demangledTypeName(*geode).c_str(),node->getName().c_str());
+				}
+
+
 			}
 			nodes.pop_front();
 
