@@ -27,7 +27,12 @@ OsgViz* OsgViz::getInstance(int argc,char** argv){
 	return instance;
 }
 
-
+OsgViz* OsgViz::getInstance(lib_manager::LibManager * manager){
+	if (!instance){
+		instance = new OsgViz(manager);
+	}
+	return instance;
+}
 
 
 
@@ -35,14 +40,14 @@ OsgViz* OsgViz::getInstance(int argc,char** argv){
 OsgViz::OsgViz(lib_manager::LibManager * manager): lib_manager::LibInterface(manager)
 {
 	createdOwnManager = false;
-	libmanager = manager;
+	instance = this;
 	init(0,NULL);
 
 }
 
 OsgViz::OsgViz(int argc, char** argv): lib_manager::LibInterface(NULL){
 	createdOwnManager = true;
-	libmanager = new lib_manager::LibManager();
+	libManager = new lib_manager::LibManager();
 	init(argc,argv);
 }
 
@@ -78,11 +83,11 @@ void OsgViz::init(int argc,char** argv){
 OsgViz::~OsgViz(){
 
 	for (std::vector< OsgVizPlugin* >::iterator it = loadedPlugins.begin();it!=loadedPlugins.end();it++){
-		libmanager->releaseLibrary((*it)->getLibName());
+		libManager->releaseLibrary((*it)->getLibName());
 	}
 
 	if (createdOwnManager){
-		delete libmanager;
+		delete libManager;
 	}
 
 	//if (graphicsManager){
@@ -110,16 +115,16 @@ void OsgViz::destroyWindow(unsigned int id){
 
 OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
 	OsgVizPlugin* viz = NULL;
-	viz = (OsgVizPlugin*)libmanager->getLibrary(name);
+	viz = (OsgVizPlugin*)libManager->getLibrary(name);
 	if (viz){
 		return viz;
 	}else{
 		printf("trying to load %s\n",name.c_str());	fflush(stdout);
-		lib_manager::LibManager::ErrorNumber result = libmanager->loadLibrary(path);
+		lib_manager::LibManager::ErrorNumber result = libManager->loadLibrary(path);
 		printf("trying to load result %i\n",result);	fflush(stdout);
 		//if (result == lib_manager::LibManager::LIBMGR_NO_ERROR){
 			fprintf(stderr,"trying to load 2 %s\n",name.c_str());	fflush(stdout);
-			OsgVizPlugin* viz = (OsgVizPlugin*)libmanager->acquireLibrary(name);
+			OsgVizPlugin* viz = (OsgVizPlugin*)libManager->acquireLibrary(name);
 						fprintf(stderr,"trying to load 3%s\n",name.c_str());	fflush(stdout);
 			if (!viz){
 				fprintf(stderr,"unable to load lib %s\n",name.c_str());	fflush(stdout);

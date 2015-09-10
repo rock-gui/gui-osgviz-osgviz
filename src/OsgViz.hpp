@@ -35,6 +35,7 @@ namespace osgviz
 	    CREATE_MODULE_INFO();
 
 		static OsgViz* getInstance(int argc = 0,char** argv = NULL);
+		static OsgViz* getInstance(lib_manager::LibManager * manager);
 
 		OsgViz(lib_manager::LibManager * manager);
 
@@ -127,7 +128,6 @@ namespace osgviz
 		OsgVizPlugin* getVizPlugin(std::string path, std::string name);
 
 		bool createdOwnManager;
-		lib_manager::LibManager *libmanager;
 
 		osg::ref_ptr<osg::Group> root;
 
