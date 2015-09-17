@@ -32,7 +32,7 @@ namespace osgviz
 
 		public: 
 
-	    CREATE_MODULE_INFO();
+	    //CREATE_MODULE_INFO();
 
 		static OsgViz* getInstance(int argc = 0,char** argv = NULL);
 		static OsgViz* getInstance(lib_manager::LibManager * manager);
