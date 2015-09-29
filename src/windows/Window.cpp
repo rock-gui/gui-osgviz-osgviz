@@ -62,8 +62,19 @@ Window::Window(WindowConfig windowConfig, osg::ref_ptr<osg::Node> windowScene)
 Window::~Window() {
 }
 
-void Window::setWindowGeometry(int posX, int posY, int width, int height) {
-    printf("not implemented : %s\n", __PRETTY_FUNCTION__);
+void Window::setWindowGeometry(int posX, int posY, int width, int height, int window) {
+	osgViewer::GraphicsWindow* gw =getGraphicsWindow(window);
+	windowConfig.posX = posX;
+	windowConfig.posY = posY;
+	windowConfig.width = width;
+	windowConfig.height = height;
+	if (gw){
+		gw->setWindowDecoration(true);
+		gw->setWindowRectangle(windowConfig.posX,windowConfig.posY,windowConfig.width,windowConfig.height);
+	}else{
+		fprintf(stderr, "window %i unknown\n", window);
+	}
+	//graphicsContext->resizedImplementation(posX,posY,width,height);
 }
 
 osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* viewScene) {
@@ -111,6 +122,29 @@ osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* viewScene) {
 //    globalStateset->setMode(GL_LIGHT0, osg::StateAttribute::ON);
 //    myLightSource->setStateSetModes(*globalStateset, osg::StateAttribute::ON);
 //}
+
+
+void Window::setFullscreen(bool state, int window){
+
+	osgViewer::GraphicsWindow* gw = getGraphicsWindow(window);
+
+	if (state){
+		int screenNum = 0;
+		unsigned int width = 0;
+		unsigned int height = 0;
+		osg::GraphicsContext::WindowingSystemInterface* wsi = osg::GraphicsContext::getWindowingSystemInterface();
+		if (wsi){
+			wsi->getScreenResolution( osg::GraphicsContext::ScreenIdentifier(screenNum), width, height );
+		}
+		gw->setWindowDecoration(false);
+		gw->setWindowRectangle(0,0,width,height);
+
+	}else{
+		gw->setWindowDecoration(true);
+		gw->setWindowRectangle(windowConfig.posX,windowConfig.posY,windowConfig.width,windowConfig.height);
+	}
+
+}
 
 
 void Window::showRain(const bool &val) {

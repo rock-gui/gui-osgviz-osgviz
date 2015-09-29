@@ -50,7 +50,9 @@ public:
     	root->addChild(scene);
     }    
 
-	void setWindowGeometry(int posX, int posY, int width, int height);    
+	void setWindowGeometry(int posX, int posY, int width, int height, int window=0);
+
+	void setFullscreen(bool state = true, int window=0);
 
 	void showRain(const bool &val = true);
 	void showSnow(const bool &val = true);

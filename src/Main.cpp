@@ -56,8 +56,14 @@ int main(int argc, char** argv)
 		//osgViz->unlockThread();
 		//osgViz->update();
 		printf("sleep\n");fflush(stdout);
-		usleep(100000);
 
+		sleep(5);
+//		osgViz->getWindowManager()->getWindowByID(0)->setFullscreen(true);
+//		sleep(5);
+//		osgViz->getWindowManager()->getWindowByID(0)->setFullscreen(false);
+//		sleep(5);
+//		osgViz->getWindowManager()->getWindowByID(0)->setWindowGeometry(150,150,1240,768);
+//		sleep(5);
 
 	}
 
