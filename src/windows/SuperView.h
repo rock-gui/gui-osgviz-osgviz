@@ -68,6 +68,9 @@ class SuperView : public osgViewer::View, public WindowInterface {
 
 	 	void setFogSettings(const osgviz::interfaces::GraphicData &graphicOptions);
 
+	 	inline osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> getKeyswitchMatrixManipulator(){
+	 		return keyswitchManipulator;
+	 	}
 	private:
 		ViewConfig viewConfig;
 
