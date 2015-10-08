@@ -124,26 +124,29 @@ osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* viewScene) {
 //}
 
 
-void Window::setFullscreen(bool state, int window){
-
+void Window::setFullscreen(bool state, int window, int screen){
+  printf("calling : %s state = %i win %i screen %i\n", __PRETTY_FUNCTION__,state,window,screen);fflush(stdout);
 	osgViewer::GraphicsWindow* gw = getGraphicsWindow(window);
 
-	if (state){
-		int screenNum = 0;
-		unsigned int width = 0;
-		unsigned int height = 0;
-		osg::GraphicsContext::WindowingSystemInterface* wsi = osg::GraphicsContext::getWindowingSystemInterface();
-		if (wsi){
-			wsi->getScreenResolution( osg::GraphicsContext::ScreenIdentifier(screenNum), width, height );
-		}
-		gw->setWindowDecoration(false);
-		gw->setWindowRectangle(0,0,width,height);
+  if (gw){
+    if (state){
+      unsigned int width = 0;
+      unsigned int height = 0;
+      osg::GraphicsContext::WindowingSystemInterface* wsi = osg::GraphicsContext::getWindowingSystemInterface();
+      if (wsi){
+        wsi->getScreenResolution( osg::GraphicsContext::ScreenIdentifier(screen), width, height );
+      }
+      printf("set fullscreen %ix%x\n", width, height);
+      gw->setWindowDecoration(false);
+      gw->setWindowRectangle(0,0,width,height);
 
-	}else{
-		gw->setWindowDecoration(true);
-		gw->setWindowRectangle(windowConfig.posX,windowConfig.posY,windowConfig.width,windowConfig.height);
-	}
-
+    }else{
+      gw->setWindowDecoration(true);
+      gw->setWindowRectangle(windowConfig.posX,windowConfig.posY,windowConfig.width,windowConfig.height);
+    }
+  }else{
+    printf("no getGraphicsWindow");
+  }
 }
 
 
