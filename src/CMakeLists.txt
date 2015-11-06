@@ -26,6 +26,9 @@ if(USE_MARS_VBO)
     ADD_DEFINITIONS(-DUSE_MARS_VBO)
 endif()
 
+if (UNIX)
+	set(ADDITIONAL_LIBS X11)
+endif (UNIX)
 
 rock_library(osgVizInterfaces
 	HEADERS interfaces/Clickable.h
@@ -66,13 +69,9 @@ rock_library(osgViz
            tools/GraphPrinter.h
            tools/SearchNodes.h
                
-    LIBS ${Boost_SYSTEM_LIBRARY}
+    LIBS ${Boost_SYSTEM_LIBRARY} ${ADDITIONAL_LIBS}
     DEPS osgVizGraphics
     DEPS_PKGCONFIG opencv lib_manager openscenegraph eigen3 )
-
-if (UNIX)
-	set(ADDITIONAL_LIBS X11)
-endif (UNIX)
 
 rock_library(osgVizPlugin
     SOURCES
