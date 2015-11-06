@@ -70,8 +70,9 @@ rock_library(osgViz
            tools/SearchNodes.h
                
     LIBS ${Boost_SYSTEM_LIBRARY} ${ADDITIONAL_LIBS}
-    DEPS osgVizGraphics
-    DEPS_PKGCONFIG opencv lib_manager openscenegraph eigen3 )
+    DEPS osgVizGraphics 
+    DEPS_PKGCONFIG opencv lib_manager openscenegraph eigen3
+)
 
 rock_library(osgVizPlugin
     SOURCES
