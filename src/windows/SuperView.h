@@ -71,6 +71,15 @@ class SuperView : public osgViewer::View, public WindowInterface {
 	 	inline osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> getKeyswitchMatrixManipulator(){
 	 		return keyswitchManipulator;
 	 	}
+
+	 	void disableCameraManipulator(){
+	 		setCameraManipulator(NULL);
+	 	}
+
+	 	void enableCameraManipulator(){
+	 		setCameraManipulator(keyswitchManipulator);
+	 	}
+
 	private:
 		ViewConfig viewConfig;
 
