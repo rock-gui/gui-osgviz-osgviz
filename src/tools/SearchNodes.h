@@ -96,8 +96,8 @@ public:
 
 		}
 
-		printf("node %s not found, available nodes\n",name.c_str());
-		printAll(start,addParents);
+//		printf("node %s not found, available nodes\n",name.c_str());
+//		printAll(start,addParents);
 
 		return NULL;
 	}
@@ -126,10 +126,10 @@ public:
 
 		}
 
-		if (foundNodes.empty()){
-			printf("node %s not found, available nodes\n",name.c_str());
-			printAll(start,addParents);
-		}
+//		if (foundNodes.empty()){
+//			printf("node %s not found, available nodes\n",name.c_str());
+//			printAll(start,addParents);
+//		}
 
 		return foundNodes;
 	}
@@ -199,10 +199,10 @@ public:
 
 		}
 
-		if (found.empty()){
-			printf("no class found on node %s\n",start->getName().c_str());
-			printAll(start,addParents);
-		}
+//		if (found.empty()){
+//			printf("no class found on node %s\n",start->getName().c_str());
+//			printAll(start,addParents);
+//		}
 
 		return found;
 	}
