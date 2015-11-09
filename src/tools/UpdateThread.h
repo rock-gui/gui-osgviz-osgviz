@@ -28,12 +28,18 @@ public:
 	UpdateThread(Updatable* updatable, unsigned int intervalUsec);
 	virtual ~UpdateThread();
 
-		int cancel();
-		void lock();
-		void unlock();
+	/**
+	 * Triggers update manually (thread save)
+	 */
+	void trigger();
+
+	int cancel();
+	void lock();
+	void unlock();
 
 	private:
 		void run();
+
 
 		bool running;
 		unsigned int halfInterval;
