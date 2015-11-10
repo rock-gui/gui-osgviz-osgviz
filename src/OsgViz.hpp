@@ -60,6 +60,7 @@ namespace osgviz
 	    void startThread();
 	    void stopThread();
 
+	    int tryLockThread();
 	    void lockThread();
 	    void unlockThread();
 

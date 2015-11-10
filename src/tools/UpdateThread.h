@@ -36,6 +36,7 @@ public:
 	int cancel();
 	void lock();
 	void unlock();
+	int trylock();
 
 	private:
 		void run();

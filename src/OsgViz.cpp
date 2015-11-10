@@ -198,6 +198,13 @@ void OsgViz::unlockThread(){
 	}
 }
 
+int OsgViz::tryLockThread(){
+	if (thread){
+		return thread->trylock();
+	}
+	return -1;
+}
+
 const std::string OsgViz::getLibName() const {
 	return "OsgViz";
 }

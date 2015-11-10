@@ -98,6 +98,10 @@ namespace osgviz {
 		mutex->unlock();
 		//printf("unlock\n");fflush(stdout);
 	}
+	int UpdateThread::trylock(){
+		mutex->trylock();
+		//printf("unlock\n");fflush(stdout);
+	}
 
 
 } /* namespace osgviz */
