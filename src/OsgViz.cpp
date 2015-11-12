@@ -34,6 +34,9 @@ OsgViz* OsgViz::getInstance(lib_manager::LibManager * manager){
 	return instance;
 }
 
+OsgViz* OsgViz::getExistingInstance(){
+	return instance;
+}
 
 
 
