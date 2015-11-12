@@ -68,6 +68,7 @@ rock_library(osgViz
            tools/TypeNameDemangling.h
            tools/GraphPrinter.h
            tools/SearchNodes.h
+           tools/GlobalPos.h
                
     LIBS ${Boost_SYSTEM_LIBRARY} ${ADDITIONAL_LIBS}
     DEPS osgVizGraphics 
