@@ -36,6 +36,7 @@ namespace osgviz
 
 		static OsgViz* getInstance(int argc = 0,char** argv = NULL);
 		static OsgViz* getInstance(lib_manager::LibManager * manager);
+		static OsgViz* getExistingInstance();
 
 		OsgViz(lib_manager::LibManager * manager);
 
@@ -60,6 +61,7 @@ namespace osgviz
 	    void startThread();
 	    void stopThread();
 
+	    int tryLockThread();
 	    void lockThread();
 	    void unlockThread();
 

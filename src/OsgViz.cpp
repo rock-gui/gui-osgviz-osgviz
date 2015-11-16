@@ -34,6 +34,9 @@ OsgViz* OsgViz::getInstance(lib_manager::LibManager * manager){
 	return instance;
 }
 
+OsgViz* OsgViz::getExistingInstance(){
+	return instance;
+}
 
 
 
@@ -196,6 +199,13 @@ void OsgViz::unlockThread(){
 	if (thread){
 		thread->unlock();
 	}
+}
+
+int OsgViz::tryLockThread(){
+	if (thread){
+		return thread->trylock();
+	}
+	return -1;
 }
 
 const std::string OsgViz::getLibName() const {

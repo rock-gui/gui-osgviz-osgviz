@@ -84,12 +84,22 @@ namespace osgviz {
 		}
 	}
 
+	void UpdateThread::trigger(){
+		mutex->lock();
+		updatable->update();
+		mutex->unlock();
+	}
+
 	void UpdateThread::lock(){
 		//printf("lock\n");fflush(stdout);
 		mutex->lock();
 	}
 	void UpdateThread::unlock(){
 		mutex->unlock();
+		//printf("unlock\n");fflush(stdout);
+	}
+	int UpdateThread::trylock(){
+		mutex->trylock();
 		//printf("unlock\n");fflush(stdout);
 	}
 

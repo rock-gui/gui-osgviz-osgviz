@@ -26,6 +26,9 @@ if(USE_MARS_VBO)
     ADD_DEFINITIONS(-DUSE_MARS_VBO)
 endif()
 
+if (UNIX)
+	set(ADDITIONAL_LIBS X11)
+endif (UNIX)
 
 rock_library(osgVizInterfaces
 	HEADERS interfaces/Clickable.h
@@ -65,11 +68,12 @@ rock_library(osgViz
            tools/TypeNameDemangling.h
            tools/GraphPrinter.h
            tools/SearchNodes.h
+           tools/GlobalPos.h
                
-    LIBS ${Boost_SYSTEM_LIBRARY}
-    DEPS osgVizGraphics
-    DEPS_PKGCONFIG opencv lib_manager openscenegraph eigen3 )
-
+    LIBS ${Boost_SYSTEM_LIBRARY} ${ADDITIONAL_LIBS}
+    DEPS osgVizGraphics 
+    DEPS_PKGCONFIG opencv lib_manager openscenegraph eigen3
+)
 
 rock_library(osgVizPlugin
     SOURCES
@@ -79,7 +83,8 @@ rock_library(osgVizPlugin
     plugins/OsgVizPlugin.h 
     plugins/OsgVizVisualizerPlugin.h 
     plugins/OsgVizDataPlugin.h 
-    DEPS_PKGCONFIG lib_manager openscenegraph eigen3)
+    DEPS_PKGCONFIG lib_manager openscenegraph eigen3
+    LIBS ${ADDITIONAL_LIBS})
 
 
 rock_library(PrimitivesFactory
@@ -100,7 +105,8 @@ rock_library(ModelLoader
     DEPS osgVizPlugin)
     
 rock_executable(osgViz_bin Main.cpp
-    DEPS osgViz)
+    DEPS osgViz
+    LIBS ${ADDITIONAL_LIBS})
 
 
 

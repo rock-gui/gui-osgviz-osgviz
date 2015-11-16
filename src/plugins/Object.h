@@ -97,6 +97,13 @@ public:
     	PositionAttitudeTransform::setAttitude( osg::Quat(angle, vec) );
     }
 
+    inline void setByPositionAttitudeTransform(const osg::PositionAttitudeTransform &pa){
+    	this->setPosition(pa.getPosition());
+    	this->setAttitude(pa.getAttitude());
+    	this->setScale(pa.getScale());
+    	this->setPivotPoint(pa.getPivotPoint());
+    }
+
     inline void rotate(const double &angle, const osg::Vec3d &vec){
     	setAttitude( getAttitude() * osg::Quat(angle, vec) );
     }
