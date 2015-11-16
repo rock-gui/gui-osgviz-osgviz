@@ -139,10 +139,11 @@ void Window::setFullscreen(bool state, int window, int screen){
       printf("set fullscreen %ix%x\n", width, height);
       gw->setWindowDecoration(false);
       gw->setWindowRectangle(0,0,width,height);
-
+      gw->useCursor(false);
     }else{
       gw->setWindowDecoration(true);
       gw->setWindowRectangle(windowConfig.posX,windowConfig.posY,windowConfig.width,windowConfig.height);
+      gw->useCursor(true);
     }
   }else{
     printf("no getGraphicsWindow");
