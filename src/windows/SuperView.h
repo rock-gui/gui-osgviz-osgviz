@@ -80,6 +80,10 @@ class SuperView : public osgViewer::View, public WindowInterface {
 	 		setCameraManipulator(keyswitchManipulator);
 	 	}
 
+	 	inline std::vector<lightmanager> getLights(){
+	 		return myLights;
+	 	}
+
 	private:
 		ViewConfig viewConfig;
 
