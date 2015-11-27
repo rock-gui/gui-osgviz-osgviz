@@ -7,6 +7,7 @@
 
 #include "ObjectSelector.h"
 
+#include "../OsgViz.hpp"
 #include "../interfaces/Clickable.h"
 #include "SuperView.h"
 
@@ -17,7 +18,7 @@
 namespace osgviz {
 
 ObjectSelector::ObjectSelector(osgviz::SuperView *view):osgGA::GUIEventHandler(),view(view) {
-draggedObject= NULL;
+	draggedObject= NULL;
 
 }
 
@@ -25,98 +26,118 @@ ObjectSelector::~ObjectSelector() {
 	// TODO Auto-generated destructor stub
 }
 
+Clickable* ObjectSelector::getIntersection(const osgGA::GUIEventAdapter& ea, osg::Vec3 &p, osg::Vec3 &w, osg::Vec2d &c){
+
+	printf("intersect\n");
+	osg::ref_ptr<osgUtil::LineSegmentIntersector> ray = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, ea.getXnormalized(), ea.getYnormalized());
+	osgUtil::IntersectionVisitor visitor(ray);
+
+	view->getCamera()->accept(visitor);
+
+	osgUtil::LineSegmentIntersector::Intersection intersection = ray->getFirstIntersection();
+
+	if( ray->containsIntersections()){
+		p = intersection.getLocalIntersectPoint();
+		w = intersection.getWorldIntersectPoint();
+		c = osg::Vec2d(ea.getX(),ea.getY());
+
+		for (osg::NodePath::iterator node = intersection.nodePath.begin(); node != intersection.nodePath.end(); node++){
+			Clickable* obj = dynamic_cast<Clickable*>(*node);
+			if (obj){
+					return obj;
+			}
+		}
+	}else{
+		return NULL;
+	}
+
+}
+
 
 bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa)
-   {
-	   thisEvent = ea.getEventType();
+{
+	thisEvent = ea.getEventType();
 
-	   //ignored events (for the lastEvent setting)
-	   if (thisEvent != osgGA::GUIEventAdapter::FRAME && thisEvent != osgGA::GUIEventAdapter::MOVE ){
+	//only evaluate following events
+	if (	   thisEvent == osgGA::GUIEventAdapter::PUSH
+			|| thisEvent == osgGA::GUIEventAdapter::RELEASE
+			|| thisEvent == osgGA::GUIEventAdapter::DRAG
+	){
 
 
-		   //save the buttonmask (not available in release event)
-		   if (thisEvent == osgGA::GUIEventAdapter::PUSH){
-			   pushedButtonsMask = ea.getButtonMask();
-		   }
+		//save the buttonmask (not available in release event)
+		if (thisEvent == osgGA::GUIEventAdapter::PUSH){
+			pushedButtonsMask = ea.getButtonMask();
+		}
 
-		   osg::ref_ptr<osgUtil::LineSegmentIntersector> ray = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, ea.getXnormalized(), ea.getYnormalized());
-		   osgUtil::IntersectionVisitor visitor(ray);
-		   view->getCamera()->accept(visitor);
-		   osgUtil::LineSegmentIntersector::Intersection intersection = ray->getFirstIntersection();
+		//normal click
+		if(thisEvent & osgGA::GUIEventAdapter::RELEASE && lastEvent & osgGA::GUIEventAdapter::PUSH){
+			lastEvent = thisEvent;
 
-		   const osg::Vec3 &p = intersection.getLocalIntersectPoint();
-		   const osg::Vec3 &w = intersection.getWorldIntersectPoint();
-		   const osg::Vec2d &c = osg::Vec2d(ea.getX(),ea.getY());
+			Clickable* obj = getIntersection(ea,p,w,c);
+			if (obj){
+				if (obj->clicked(pushedButtonsMask,c,w,p,obj,view)){
+					return true;
+				}
+			}
+		}
 
-		   if (ray->containsIntersections()){
+		//drag
 
-			   //normal click
-			   if(thisEvent & osgGA::GUIEventAdapter::RELEASE && lastEvent & osgGA::GUIEventAdapter::PUSH){
-				   lastEvent = thisEvent;
-				   //get the first Clickabe Object in path that accepts being clicked
-				   for (osg::NodePath::iterator node = intersection.nodePath.begin(); node != intersection.nodePath.end(); node++){
-					   Clickable* obj = dynamic_cast<Clickable*>(*node);
-					   if (obj){
-						   if (obj->clicked(pushedButtonsMask,c,w,p,obj,view)){
-							   return true;
-						   }
-					   }
-				   };
-			   }
+		if (thisEvent & osgGA::GUIEventAdapter::DRAG && lastEvent & osgGA::GUIEventAdapter::PUSH){
+			//get the first Clickabe Object in path
+			draggedObject = NULL;
 
-			   //drag
+			Clickable* obj = getIntersection(ea,p,w,c);
+			if (obj){
+				if (obj->dragged(pushedButtonsMask,c,w,p,obj,view)){
+					//there is a receiving obj,
+					view->disableCameraControl();
+					draggedObject = obj;
+					lastEvent = thisEvent;
+					return true;
+				}
+			}
+		}
 
-			   if (thisEvent & osgGA::GUIEventAdapter::DRAG && lastEvent & osgGA::GUIEventAdapter::PUSH){
-				   //get the first Clickabe Object in path
-				   draggedObject = NULL;
-				   for (osg::NodePath::iterator node = intersection.nodePath.begin(); node != intersection.nodePath.end(); node++){
-					   Clickable* obj = dynamic_cast<Clickable*>(*node);
-					   if (obj){
-						   if (obj->dragged(pushedButtonsMask,c,w,p,obj,view)){
-							   //there is a receiving obj,
-							   view->disableCameraControl();
-							   draggedObject = obj;
-							   lastEvent = thisEvent;
-							   return true;
-						   }
-					   }
-				   }
-			   }
+		if (thisEvent & osgGA::GUIEventAdapter::DRAG){
+			//don't need checks, the initial object is used
+			lastEvent = thisEvent;
+			if (draggedObject){
+				printf("drag\n");
+				if (getIntersection(ea,p,w,c)){
 
-			   if (thisEvent & osgGA::GUIEventAdapter::DRAG){
-				   //don't need chacks, the initial
-				   if (draggedObject){
-					   lastEvent = thisEvent;
-					   return draggedObject->dragged(pushedButtonsMask,c,w,p,draggedObject,view);
-				   }
-				   lastEvent = thisEvent;
-				   return false;
-			   }
+					return draggedObject->dragged(pushedButtonsMask,c,w,p,draggedObject,view);
+				}
+			}
+			return false;
+		}
 
-			   if (thisEvent & osgGA::GUIEventAdapter::RELEASE && lastEvent & osgGA::GUIEventAdapter::DRAG){
-				   view->enableCameraControl();
-				   //printf("drag release \n");
-				   if (draggedObject){
-					   int buttons = 0;
-					   //dragging stopped
-//					   printf("drag release2 \n");
-					   bool res = draggedObject->dragged(buttons,c,w,p,draggedObject,view);
-					   draggedObject = NULL;
-					   return res;
-				   }
-			   }
+		if (thisEvent & osgGA::GUIEventAdapter::RELEASE && lastEvent & osgGA::GUIEventAdapter::DRAG){
+			view->enableCameraControl();
+			lastEvent = thisEvent;
+			printf("drag release \n");
+			if (draggedObject){
+				//dragging stopped call calback with 0 as buttom mask
+				int buttons = 0;
+				getIntersection(ea,p,w,c);
+				bool res = draggedObject->dragged(buttons,c,w,p,draggedObject,view);
+				draggedObject = NULL;
+				return res;
+			}
+		}
 
-		   }
 
-		   lastEvent = thisEvent;
 
-		   if (draggedObject){
-			   //no intersection, but still dragging
-			   return true;
-		   }
-		   return false;
-	   }
-	   return false;
-   }
+		lastEvent = thisEvent;
+
+		if (draggedObject){
+			//no intersection, but still dragging
+			return true;
+		}
+		return false;
+	}
+	return false;
+}
 
 } /* namespace osgviz */
