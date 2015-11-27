@@ -115,6 +115,8 @@ public:
 
     void displayName(float font_size = 0.1f);
 
+    void setDirty();
+
 
 protected:
     friend class ModelViewFactory;
