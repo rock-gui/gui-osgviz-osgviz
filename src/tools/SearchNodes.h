@@ -12,6 +12,7 @@
 #include <osg/Group>
 #include <deque>
 #include <map>
+#include <stdio.h>
 
 
 /**
