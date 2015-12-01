@@ -12,7 +12,7 @@
 
 #include <unistd.h>
 
-
+#include <osg/ValueObject>
 
 namespace osgviz {
 
@@ -112,6 +112,10 @@ bool Object::dragged(const int &buttonMask, const osg::Vec2d &cursor, const osg:
 
 void Object::addClickableCallback(Clickable* cb) {
 	this->clickablecb.push_back(cb);
+}
+
+void Object::setDirty(){
+	this->setUserValue("dirty",true);
 }
 
 

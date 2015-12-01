@@ -32,6 +32,16 @@ private:
 	osgGA::GUIEventAdapter::EventType thisEvent,lastEvent;
 	int pushedButtonsMask;
 
+	/**
+	 * intersection coords
+	 */
+	osg::Vec3 p;
+	osg::Vec3 w;
+	osg::Vec2d c;
+
+
+	Clickable* getIntersection(const osgGA::GUIEventAdapter& ea, osg::Vec3 &p, osg::Vec3 &w, osg::Vec2d &c);
+
 
 
 };

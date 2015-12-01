@@ -51,6 +51,8 @@ OsgViz::OsgViz(lib_manager::LibManager * manager): lib_manager::LibInterface(man
 OsgViz::OsgViz(int argc, char** argv): lib_manager::LibInterface(NULL){
 	createdOwnManager = true;
 	libManager = new lib_manager::LibManager();
+	//not loaded by libmanager so we add ourselves
+	libManager->addLibrary(this);
 	init(argc,argv);
 }
 
