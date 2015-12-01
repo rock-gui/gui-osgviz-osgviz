@@ -47,10 +47,10 @@ Clickable* ObjectSelector::getIntersection(const osgGA::GUIEventAdapter& ea, osg
 					return obj;
 			}
 		}
-	}else{
 		return NULL;
 	}
 
+	return NULL;
 }
 
 
