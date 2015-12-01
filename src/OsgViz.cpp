@@ -60,6 +60,8 @@ OsgViz::OsgViz(int argc, char** argv): lib_manager::LibInterface(NULL){
 void OsgViz::init(int argc,char** argv){
 	//graphicsManager = new graphics::GraphicsManager(libmanager);
 
+	mutex = new OpenThreads::Mutex();
+
 	thread = NULL;
 	m_argc = argc;
 	m_argv = argv;
@@ -94,6 +96,8 @@ OsgViz::~OsgViz(){
 	if (createdOwnManager){
 		delete libManager;
 	}
+
+	delete mutex;
 
 	//if (graphicsManager){
 	//	delete graphicsManager;
@@ -155,13 +159,22 @@ OsgVizPlugin* OsgViz::loadPlugin(std::string classname){
 }
 
 void OsgViz::update(){
+
 	//graphicsManager->draw();
 //	viewer.frame();
 
+	//if (thread){
+		//thread->trigger();
+	//	windowManager->frame();
+	//}else{
+		mutex->lock();
+		windowManager->frame();
+		mutex->unlock();
+	//}
 	
 	//printf("frame\n");fflush(stdout);
 
-	windowManager->frame();
+
 	//printf("frame end\n");fflush(stdout);
 	//graphicsManager->get3DWindow();
 
@@ -176,7 +189,7 @@ void OsgViz::update(){
 
 void OsgViz::startThread(){
 	if (!thread){
-		thread = new UpdateThread(this, 5000);
+		thread = new UpdateThread(this, 10000);
 		thread->startThread();
 	}else{
 		fprintf(stderr,"thread already running\n");
@@ -194,18 +207,24 @@ void OsgViz::stopThread(){
 void OsgViz::lockThread(){
 	if (thread){
 		thread->lock();
+	}else{
+		mutex->lock();
 	}
 }
 
 void OsgViz::unlockThread(){
 	if (thread){
 		thread->unlock();
+	}else{
+		mutex->unlock();
 	}
 }
 
 int OsgViz::tryLockThread(){
 	if (thread){
 		return thread->trylock();
+	}else{
+		return mutex->trylock();
 	}
 	return -1;
 }

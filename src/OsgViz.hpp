@@ -143,6 +143,9 @@ namespace osgviz
 
 
 		UpdateThread* thread;
+
+		OpenThreads::Mutex* mutex;
+
 		//graphics::GraphicsManager* graphicsManager;
 		//osgViewer::Viewer viewer;
 		//std::vector<osgViewer::Viewer *> viewers;
