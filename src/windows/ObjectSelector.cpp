@@ -28,7 +28,6 @@ ObjectSelector::~ObjectSelector() {
 
 Clickable* ObjectSelector::getIntersection(const osgGA::GUIEventAdapter& ea, osg::Vec3 &p, osg::Vec3 &w, osg::Vec2d &c){
 
-	printf("intersect\n");
 	osg::ref_ptr<osgUtil::LineSegmentIntersector> ray = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, ea.getXnormalized(), ea.getYnormalized());
 	osgUtil::IntersectionVisitor visitor(ray);
 
@@ -104,7 +103,6 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 			//don't need checks, the initial object is used
 			lastEvent = thisEvent;
 			if (draggedObject){
-				printf("drag\n");
 				if (getIntersection(ea,p,w,c)){
 
 					return draggedObject->dragged(pushedButtonsMask,c,w,p,draggedObject,view);
@@ -116,7 +114,6 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
 		if (thisEvent & osgGA::GUIEventAdapter::RELEASE && lastEvent & osgGA::GUIEventAdapter::DRAG){
 			view->enableCameraControl();
 			lastEvent = thisEvent;
-			printf("drag release \n");
 			if (draggedObject){
 				//dragging stopped call calback with 0 as buttom mask
 				int buttons = 0;
