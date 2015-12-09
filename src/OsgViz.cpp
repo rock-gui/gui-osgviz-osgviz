@@ -128,18 +128,14 @@ OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
 	if (viz){
 		return viz;
 	}else{
-		printf("trying to load %s\n",name.c_str());	fflush(stdout);
 		lib_manager::LibManager::ErrorNumber result = libManager->loadLibrary(path);
-		printf("trying to load result %i\n",result);	fflush(stdout);
 		//if (result == lib_manager::LibManager::LIBMGR_NO_ERROR){
-			fprintf(stderr,"trying to load 2 %s\n",name.c_str());	fflush(stdout);
 			OsgVizPlugin* viz = (OsgVizPlugin*)libManager->acquireLibrary(name);
-						fprintf(stderr,"trying to load 3%s\n",name.c_str());	fflush(stdout);
+			//fprintf(stderr,"trying to load 3%s\n",name.c_str());	fflush(stdout);
 			if (!viz){
 				fprintf(stderr,"unable to load lib %s\n",name.c_str());	fflush(stdout);
 				return NULL;
 			}
-			fprintf(stderr,"loaded %s\n",name.c_str());	fflush(stdout);
 			viz->setParent(this);
 			loadedPlugins.push_back(viz);
 			return viz;
