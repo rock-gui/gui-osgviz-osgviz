@@ -11,6 +11,7 @@
 
 #include <cxxabi.h>
 #include <string>
+#include <typeindex> 
 
 /**
  * small helper to get nice (demangled) typenames from gcc
@@ -33,5 +34,14 @@ std::string demangledTypeName(const Type& p)
    free(p_nice_name);
    return result;
 }
+
+std::string demangledTypeName(const std::type_index& type)
+{
+   char* p_nice_name = abi::__cxa_demangle(type.name(),NULL,NULL,NULL);
+   std::string result(p_nice_name);
+   free(p_nice_name);
+   return result;  
+}
+
 
 #endif /* TYPENAMEDEMANGLING_H_ */
