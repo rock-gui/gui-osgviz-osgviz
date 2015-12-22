@@ -61,6 +61,7 @@ int main(int argc, char** argv)
     //axes2->displayName(0.3);
     axes2->setScale(100,100,100);
     axes2->setPosition(100,100,0);
+    axes2->rotate(M_PI/2.0,osg::Vec3(1,0,0));
     hud->addHudObject(axes2);
 
 
@@ -77,6 +78,12 @@ int main(int argc, char** argv)
     shape1->setColor(1,0,0,0.5);
     //shape1->setPosition(0.5,0.5,0.5);
     osgViz->addChild(shape1);
+
+
+//    osg::ref_ptr<osgviz::Object> image = primitivesfactory->loadImage("test.png");
+//    //shape1->setPosition(0.5,0.5,0.5);
+//    image->setPosition(1000,500,0);
+//    hud->addHudObject(image);
 
 	//sleep(1);
 	//you can create multiple ones:
