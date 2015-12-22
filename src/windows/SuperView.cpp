@@ -59,9 +59,9 @@ SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContex
 
     setCameraManipulator(keyswitchManipulator);
 
-	if (viewConfig.hasObjectSelector == true) {
-		objectSelector = new ObjectSelector(this);
-    	addEventHandler(objectSelector);
+    eventsEnabled = false;
+	if (viewConfig.handlesEvents == true) {
+		enableEventHandling();
     }    
 
 	root->setName("SuperView root");
@@ -87,7 +87,7 @@ SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContex
     // light influence is calculated per vertex and interpolated for fragments.
     osg::ref_ptr<osg::LightModel> myLightModel = new osg::LightModel;
     myLightModel->setTwoSided(false);
-    globalStateset->setAttributeAndModes(myLightModel.get(), osg::StateAttribute::ON);    
+    globalStateset->setAttributeAndModes(myLightModel.get(), osg::StateAttribute::ON);
 
     root->addChild(lightGroup.get());
 
@@ -158,16 +158,30 @@ void SuperView::setFogSettings(const osgviz::interfaces::GraphicData &graphicOpt
 //        iter->second->object()->setUseFog(useFog);	
 }
 
-void SuperView::activeObjectSelector() {
-	if (objectSelector.valid() != true) {
-		objectSelector = new ObjectSelector(this);		
+int SuperView::addEventHandler(osg::ref_ptr<osgGA::GUIEventHandler> handler,int priority) {
+	if (!eventsEnabled){
+	    enableEventHandling();
 	}
-	addEventHandler(objectSelector);
+	return hierarchicalEventHandler->addEventHandler(handler,priority);
 }
 
-void SuperView::deactivateObjectSelector() {
-	if (objectSelector.valid() == true) {
-		removeEventHandler(objectSelector.get());
+void SuperView::removeEventHandler(osg::ref_ptr<osgGA::GUIEventHandler> handler) {
+	if (hierarchicalEventHandler.valid() == true){
+		hierarchicalEventHandler->removeEventHandler(handler);
+	}
+}
+
+void SuperView::enableEventHandling() {
+    eventsEnabled = true;
+	if (hierarchicalEventHandler.valid() != true){
+		hierarchicalEventHandler = new HierarchicalEventHandler();
+	}
+	osgViewer::View::addEventHandler(hierarchicalEventHandler);
+}
+
+void SuperView::disableEventHandling() {
+	if (hierarchicalEventHandler.valid() == true) {
+		osgViewer::View::removeEventHandler(hierarchicalEventHandler.get());
 	} else {
 		OSG_WARN << "SuperView::deactivateObjectSelector: No object selector was active at the moment." << std::endl;
 	}
@@ -218,4 +232,9 @@ void SuperView::initDefaultLight() {
 	myLightSource->setStateSetModes(*globalStateset, osg::StateAttribute::ON);
 }
 
+
+
+
+
 }
+

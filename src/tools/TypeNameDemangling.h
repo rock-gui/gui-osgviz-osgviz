@@ -11,6 +11,7 @@
 
 #include <cxxabi.h>
 #include <string>
+#include <stdlib.h>
 
 /**
  * small helper to get nice (demangled) typenames from gcc

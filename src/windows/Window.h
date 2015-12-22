@@ -23,8 +23,8 @@
 #include <osg/StateSet>
 
 #include "../graphics/interfaces/data/GraphicData.h"
-#include "ObjectSelector.h"
 #include "config/WindowConfig.h"
+#include "HUD.h"
 
 namespace osgviz {
 
@@ -43,6 +43,9 @@ public:
 	//void setName(const std::string& name);
 
     osgViewer::View* addView(ViewConfig viewConfig, osg::Group* viewScene = NULL);
+
+    osgviz::HUD* addHUD(int width,int height);
+
 
     osgViewer::GraphicsWindow* getGraphicsWindow(unsigned int index = 0);
 

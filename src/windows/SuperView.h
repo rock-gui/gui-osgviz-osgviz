@@ -21,8 +21,9 @@
 #include <osgDB/WriteFile>
 
 #include "config/WindowConfig.h"
-#include "ObjectSelector.h"
+#include "EventHandlers/HierarchicalEventHandler.h"
 
+#include "../interfaces/WindowInterface.h"
 #include "../graphics/interfaces/data/GraphicData.h"
 #include "../graphics/interfaces/data/LightData.h"
 
@@ -49,8 +50,20 @@ class SuperView : public osgViewer::View, public WindowInterface {
 
 		~SuperView();
 
-		virtual void activeObjectSelector();
-		virtual void deactivateObjectSelector();
+		virtual void enableEventHandling();
+		virtual void disableEventHandling();
+
+		/**
+		 *
+		 * @param priority lower values are called after high values, it the value is taken, the handler is added below the current
+		 * the 3d Click events have a priority of 0
+		 * @param handler
+		 * @return the actual priority set (not equal precedence, if it was taken)
+		 */
+		virtual int addEventHandler(osg::ref_ptr<osgGA::GUIEventHandler> handler, int priority = 0);
+
+		virtual void removeEventHandler(osg::ref_ptr<osgGA::GUIEventHandler> handler);
+
 
 		virtual void enableCameraControl();
 		virtual void disableCameraControl();
@@ -87,7 +100,8 @@ class SuperView : public osgViewer::View, public WindowInterface {
 	private:
 		ViewConfig viewConfig;
 
-		osg::ref_ptr<ObjectSelector> objectSelector;
+		osg::ref_ptr<HierarchicalEventHandler> hierarchicalEventHandler;
+		bool eventsEnabled;
 
 		osg::ref_ptr<osgParticle::PrecipitationEffect> snow;
 		osg::ref_ptr<osgParticle::PrecipitationEffect> rain;

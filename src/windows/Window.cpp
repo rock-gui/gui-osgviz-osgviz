@@ -11,6 +11,7 @@
 
 #include <osg/GraphicsContext>
 #include <osgViewer/ViewerEventHandlers>
+#include "EventHandlers/ObjectSelector.h"
 
 #include "SuperView.h"
 
@@ -85,9 +86,18 @@ osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* viewScene) {
     // set also window scene to the view
     // so all views in the window share the same window scene
     view->addChild(root);
-    view->addEventHandler(new osgViewer::StatsHandler());
+
+    view->addEventHandler(new ObjectSelector(view),0);
+
+    view->addEventHandler(new osgViewer::StatsHandler(),-100);
 
     return view.release();
+}
+
+osgviz::HUD* Window::addHUD(int width,int height){
+    osgviz::HUD* hud = new HUD(this,width,height);
+    root->addChild(hud);
+    return hud;
 }
 
 /*void Window::setScene(osg::Group* scene) {

@@ -34,9 +34,57 @@ int main(int argc, char** argv)
 	
 	printf("creating window\n");fflush(stdout);
 
-	osgViz->createWindow();
+	int winid = osgViz->createWindow();
 
-	sleep(1);
+
+	osgviz::HUD* hud = osgViz->getWindowManager()->getWindowByID(winid)->addHUD(1920,1080);
+
+//	osg::ref_ptr<osgviz::Object> hudarrow = primitivesfactory->createArrow();
+//	hudarrow->setPosition(100,100,0);
+//	hudarrow->setScale(200,200,200);
+//	hud->addHudObject(hudarrow);
+
+
+    osg::Geode* geode = new osg::Geode();
+    osgText::Text* text = new  osgText::Text;
+    geode->addDrawable( text );
+    osg::Vec3 position(150.0f,800.0f,0.0f);
+    text->setPosition(position);
+    text->setText("Head Up Displays are simple :-)");
+    hud->addHudObject(geode);
+
+
+	osgviz::Object *mtext = new osgviz::Object();
+	mtext->setName("Head Up Displays are really simple :-)");
+	mtext->displayName(0.3);
+	mtext->setScale(100,100,0);
+	mtext->setPosition(200,300,0);
+	hud->addHudObject(mtext);
+
+
+
+    osg::ref_ptr<osgviz::Object> axes2 = primitivesfactory->createArrow();
+    axes2->setName("Head Up Displays are really simple :-)");
+    //axes2->displayName(0.3);
+    axes2->setScale(100,100,100);
+    axes2->setPosition(100,100,0);
+    hud->addHudObject(axes2);
+
+
+    osg::ref_ptr<osgviz::ShapeNode> shape = primitivesfactory->createInteractiveBox(100,100,100);
+    shape->setPosition(500,500,0);
+    //shape->setScale(100,100,100);
+    shape->setName("BoxBoxBoxBox");
+    shape->displayName(0.3);
+    shape->setColor(1,0,0,0.5);
+
+    hud->addHudObject(shape);
+
+    osg::ref_ptr<osgviz::ShapeNode> shape1 = primitivesfactory->createInteractiveBox(0.5,0.5,0.5);
+    //shape1->setColor(1,0,0,0.5);
+    osgViz->addChild(shape1);
+
+	//sleep(1);
 	//you can create multiple ones:
 	//osgViz->createWindow();
 
@@ -55,7 +103,7 @@ int main(int argc, char** argv)
 		//do updates
 		//osgViz->unlockThread();
 		//osgViz->update();
-		printf("sleep\n");fflush(stdout);
+		//printf("sleep\n");fflush(stdout);
 
 		sleep(5);
 //		osgViz->getWindowManager()->getWindowByID(0)->setFullscreen(true);

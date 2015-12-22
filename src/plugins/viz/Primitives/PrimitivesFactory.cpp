@@ -11,10 +11,13 @@
 #include "Primitives/AxesNode.hpp"
 #include "Primitives/GridNode.hpp"
 
+
 #include <osg/Geometry>
 #include <osg/LineWidth>
 #include <osg/Geode>
 #include <osg/ComputeBoundsVisitor>
+
+
 
 namespace osgviz {
 
@@ -48,14 +51,34 @@ osg::ref_ptr<Object> PrimitivesFactory::createArrow(){
 	return node;
 }
 
-osg::ref_ptr<Object> PrimitivesFactory::createBoundingBox(osg::Group* object){
+osg::ref_ptr<PrimitivesFactory::Shape> PrimitivesFactory::createShape(Shapes shape, const float &sizex,const float &sizey,const float &sizez){
+    osg::ref_ptr<Shape> obj = new Shape();
+    obj->geode = new osg::Geode();
 
-	osg::ref_ptr<Object> box = new Object();
-	osg::ref_ptr<osg::Geometry> selectionBox;
-	osg::ref_ptr<osg::Geode> selectionBoxGeode;
-	osg::ref_ptr<osg::Vec3Array> points;
-	osg::ref_ptr<osg::Vec4Array> colors;
-	osg::ref_ptr<osg::Vec3Array> normals;
+    switch(shape){
+    case BOX: obj->shape = new osg::Box(osg::Vec3(0,0,0),sizex,sizey,sizez); break;
+    case CAPSULE: break;
+    case CONE: break;
+    case CYLINDER: break;
+    case SPHERE: break;
+    }
+    obj->drawable = new osg::ShapeDrawable(obj->shape);
+    obj->geode->addDrawable(obj->drawable);
+    obj->addChild(obj->geode);
+    return obj;
+}
+
+osg::ref_ptr<ShapeNode> PrimitivesFactory::createInteractiveBox(const float &sizex,const float &sizey,const float &sizez){
+    osg::ref_ptr<ShapeNode> shape = new ShapeNode(ShapeNode::BOX);
+    shape->setScale(sizex,sizey,sizez);
+    return shape;
+}
+
+
+osg::ref_ptr<PrimitivesFactory::BoundingBox> PrimitivesFactory::createBoundingBox(osg::Group* object){
+
+	osg::ref_ptr<BoundingBox> box = new BoundingBox();
+
 
 
 	//create bounding box
@@ -67,39 +90,39 @@ osg::ref_ptr<Object> PrimitivesFactory::createBoundingBox(osg::Group* object){
 	}
 	osg::BoundingBox &bb(cbv.getBoundingBox());
 
-	selectionBoxGeode = new osg::Geode();
-	selectionBoxGeode->setName("Robot selection box");
-	selectionBox = new osg::Geometry();
+	box->selectionBoxGeode = new osg::Geode();
+	box->selectionBoxGeode->setName("Robot selection box");
+	box->selectionBox = new osg::Geometry();
 
-	points = new osg::Vec3Array;
-	colors = new osg::Vec4Array;
-	normals = new osg::Vec3Array;
+	box->points = new osg::Vec3Array;
+	box->colors = new osg::Vec4Array;
+	box->normals = new osg::Vec3Array;
 
 	for (int i = 0;i<8;i++){
 		for (int j = 0;j<8;j++){
-			points->push_back(bb.corner(i));
-			points->push_back(bb.corner(j));
+		    box->points->push_back(bb.corner(i));
+		    box->points->push_back(bb.corner(j));
 		}
 
 	}
 
 
-	colors->push_back(osg::Vec4(1.0,1.0,1.0,1));
+	box->colors->push_back(osg::Vec4(1.0,1.0,1.0,1));
 
-	normals->push_back(osg::Vec3(0.0f,-1.0f,0.0f));
+	box->normals->push_back(osg::Vec3(0.0f,-1.0f,0.0f));
 
-	selectionBox->setVertexArray(points.get());
-	selectionBox->setColorArray(colors.get(),osg::Array::BIND_OVERALL);
-	selectionBox->setNormalArray(normals, osg::Array::BIND_OVERALL);
-	selectionBox->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINES,0,points->size()));
+	box->selectionBox->setVertexArray(box->points.get());
+	box->selectionBox->setColorArray(box->colors.get(),osg::Array::BIND_OVERALL);
+	box->selectionBox->setNormalArray(box->normals, osg::Array::BIND_OVERALL);
+	box->selectionBox->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINES,0,box->points->size()));
 
 
-	selectionBox->getOrCreateStateSet()->setAttribute( new osg::LineWidth(2.0f),osg::StateAttribute::ON );
-	selectionBoxGeode->getOrCreateStateSet()->setMode( GL_LIGHTING, ::osg::StateAttribute::OFF );
+	box->selectionBox->getOrCreateStateSet()->setAttribute( new osg::LineWidth(2.0f),osg::StateAttribute::ON );
+	box->selectionBoxGeode->getOrCreateStateSet()->setMode( GL_LIGHTING, ::osg::StateAttribute::OFF );
 
-	selectionBoxGeode->addDrawable(selectionBox);
+	box->selectionBoxGeode->addDrawable(box->selectionBox);
 
-	box->addChild(selectionBoxGeode);
+	box->addChild(box->selectionBoxGeode);
 
 	return box;
 }

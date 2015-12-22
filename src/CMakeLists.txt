@@ -53,15 +53,19 @@ rock_library(osgViz
     SOURCES OsgViz.cpp
            windows/Window.cpp
            windows/WindowManager.cpp
-           windows/SuperView.cpp    
-           windows/ObjectSelector.cpp   
+           windows/SuperView.cpp
+           windows/HUD.cpp
+           windows/EventHandlers/HierarchicalEventHandler.cpp
+           windows/EventHandlers/ObjectSelector.cpp   
            tools/UpdateThread.cpp    
            
     HEADERS OsgViz.hpp
            windows/Window.h
            windows/WindowManager.h
            windows/SuperView.h
-           windows/ObjectSelector.h
+           windows/HUD.h
+           windows/EventHandlers/HierarchicalEventHandler.h
+           windows/EventHandlers/ObjectSelector.h
            windows/config/WindowConfig.h
            tools/UpdateThread.h
            tools/Timing.h
@@ -93,6 +97,7 @@ rock_library(PrimitivesFactory
     plugins/viz/Primitives/Primitives/AxesNode.cpp
     plugins/viz/Primitives/Primitives/GridNode.cpp
     plugins/viz/Primitives/Primitives/ArrowNode.cpp
+    plugins/viz/Primitives/Primitives/ShapeNode.cpp
     HEADERS
     plugins/viz/Primitives/PrimitivesFactory.h
     plugins/viz/Primitives/Primitives/ArrowNode.h
@@ -105,7 +110,7 @@ rock_library(ModelLoader
     DEPS osgVizPlugin)
     
 rock_executable(osgViz_bin Main.cpp
-    DEPS osgViz
+    DEPS osgViz osgVizPlugin
     LIBS ${ADDITIONAL_LIBS})
 
 

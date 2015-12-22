@@ -14,6 +14,7 @@
 
 #include <osg/ValueObject>
 
+
 namespace osgviz {
 
 Object::Object():cull_mask(0xffffffff),visible(true){
@@ -49,16 +50,16 @@ void Object::displayName(float font_size){
 	text = new osgText::Text();
 	text->setText(this->getName());
 	text->setCharacterSize(font_size);
-	text->setAxisAlignment(osgText::Text::XY_PLANE);
+    text->setAxisAlignment(osgText::Text::XY_PLANE);
 	text->setAlignment(osgText::Text::LEFT_TOP);
 	text->setPosition(osg::Vec3(0.0f, 0.0f, 0.0f));
-	text->setAxisAlignment(osgText::Text::XY_PLANE);
-	text->setAlignment(osgText::Text::LEFT_TOP);
 	text->setColor(osg::Vec4(0,0,0,1));
 
 
 
 	textgeode->addDrawable(text);
+
+
 	this->addChild(textgeode);
 
 }
@@ -81,7 +82,7 @@ void Object::switchCullMask() {
 
 
 bool Object::clicked(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, Clickable *object, WindowInterface* window){
-	//printf("%s click %.2f,%.2f,%.2f\n",this->getName().c_str(),world.x(),world.y(),world.z());
+	printf("%s click world: %.2f,%.2f,%.2f local: %.2f,%.2f,%.2f \n",this->getName().c_str(),world.x(),world.y(),world.z(),local.x(),local.y(),local.z());
 	bool finish = false;
 	if (!clickablecb.empty()){
 		for (std::vector< Clickable* >::iterator it = clickablecb.begin();it != clickablecb.end(); it++){

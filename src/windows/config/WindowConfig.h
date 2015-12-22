@@ -14,7 +14,7 @@ namespace osgviz {
                 clearColorGreen(0.67),
                 clearColorBlue(0.88),
                 clearColorAlpha(1.0),
-                hasObjectSelector(true) {};
+                handlesEvents(true) {};
 
 
       // TODO: add two possibilities for size: percentage and fix size 
@@ -28,7 +28,7 @@ namespace osgviz {
       float clearColorBlue;
       float clearColorAlpha;      
 
-      bool hasObjectSelector;
+      bool handlesEvents;
     };  
 
     class WindowConfig {
