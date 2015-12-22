@@ -13,8 +13,6 @@
 #include <osg/Shape>
 #include <osg/ShapeDrawable>
 
-#include "Primitives/ShapeNode.h"
-
 namespace osgviz {
 
 class PrimitivesFactory: public OsgVizVisualizerPlugin {
@@ -37,6 +35,10 @@ public:
 	    osg::ref_ptr<osg::Geode> geode;
 	    osg::ref_ptr<osg::Shape> shape;
 	    osg::ref_ptr<osg::ShapeDrawable> drawable;
+
+	    virtual void setColor(const float &r,const float &g,const float &b,const float &a = 1){
+	        drawable->setColor(osg::Vec4(r,g,b,a));
+	    }
 	};
 
 	/**
@@ -49,8 +51,6 @@ public:
 	 */
 	virtual osg::ref_ptr<Shape> createShape(Shapes shape,const float &sizex,const float &sizey,const float &sizez);
 
-
-	virtual osg::ref_ptr<ShapeNode> createInteractiveBox(const float &sizex,const float &sizey,const float &sizez);
 
 	struct BoundingBox : public osgviz::Object{
 	    osg::ref_ptr<osg::Geometry> selectionBox;

@@ -97,7 +97,6 @@ rock_library(PrimitivesFactory
     plugins/viz/Primitives/Primitives/AxesNode.cpp
     plugins/viz/Primitives/Primitives/GridNode.cpp
     plugins/viz/Primitives/Primitives/ArrowNode.cpp
-    plugins/viz/Primitives/Primitives/ShapeNode.cpp
     HEADERS
     plugins/viz/Primitives/PrimitivesFactory.h
     plugins/viz/Primitives/Primitives/ArrowNode.h

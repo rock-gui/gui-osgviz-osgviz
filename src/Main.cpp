@@ -1,7 +1,6 @@
 #include <iostream>
 #include "OsgViz.hpp"
 #include "plugins/viz/Primitives/PrimitivesFactory.h"
-
 #include <unistd.h>//sleep
 #include <stdio.h>
 
@@ -71,17 +70,18 @@ int main(int argc, char** argv)
     hud->addHudObject(axes2);
 
 
-    osg::ref_ptr<osgviz::ShapeNode> shape = primitivesfactory->createInteractiveBox(100,100,100);
+    osg::ref_ptr<osgviz::PrimitivesFactory::Shape> shape = primitivesfactory->createShape(osgviz::PrimitivesFactory::BOX,100,100,0);
     shape->setPosition(500,500,0);
     //shape->setScale(100,100,100);
     shape->setName("BoxBoxBoxBox");
-    shape->displayName(0.3);
+    shape->displayName(10);
     shape->setColor(1,0,0,0.5);
 
     hud->addHudObject(shape);
 
-    osg::ref_ptr<osgviz::ShapeNode> shape1 = primitivesfactory->createInteractiveBox(0.5,0.5,0.5);
-    //shape1->setColor(1,0,0,0.5);
+    osg::ref_ptr<osgviz::PrimitivesFactory::Shape> shape1 = primitivesfactory->createShape(osgviz::PrimitivesFactory::BOX,0.5,0.5,0.5);
+    shape1->setColor(1,0,0,0.5);
+    //shape1->setPosition(0.5,0.5,0.5);
     osgViz->addChild(shape1);
 
 	//sleep(1);

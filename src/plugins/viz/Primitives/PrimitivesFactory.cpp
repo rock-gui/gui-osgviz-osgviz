@@ -68,12 +68,6 @@ osg::ref_ptr<PrimitivesFactory::Shape> PrimitivesFactory::createShape(Shapes sha
     return obj;
 }
 
-osg::ref_ptr<ShapeNode> PrimitivesFactory::createInteractiveBox(const float &sizex,const float &sizey,const float &sizez){
-    osg::ref_ptr<ShapeNode> shape = new ShapeNode(ShapeNode::BOX);
-    shape->setScale(sizex,sizey,sizez);
-    return shape;
-}
-
 
 osg::ref_ptr<PrimitivesFactory::BoundingBox> PrimitivesFactory::createBoundingBox(osg::Group* object){
 
