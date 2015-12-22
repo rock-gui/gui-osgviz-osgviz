@@ -57,10 +57,10 @@ osg::ref_ptr<PrimitivesFactory::Shape> PrimitivesFactory::createShape(Shapes sha
 
     switch(shape){
     case BOX: obj->shape = new osg::Box(osg::Vec3(0,0,0),sizex,sizey,sizez); break;
-    case CAPSULE: break;
-    case CONE: break;
-    case CYLINDER: break;
-    case SPHERE: break;
+    case CAPSULE: obj->shape = new osg::Capsule(osg::Vec3(0,0,0),sizex,sizez); break;break;
+    case CONE: obj->shape = new osg::Cone(osg::Vec3(0,0,0),sizex,sizez); break;break;
+    case CYLINDER: obj->shape = new osg::Cylinder(osg::Vec3(0,0,0),sizex,sizez); break;break;
+    case SPHERE: obj->shape = new osg::Box(osg::Vec3(0,0,0),sizex); break;break;
     }
     obj->drawable = new osg::ShapeDrawable(obj->shape);
     obj->geode->addDrawable(obj->drawable);
@@ -92,13 +92,57 @@ osg::ref_ptr<PrimitivesFactory::BoundingBox> PrimitivesFactory::createBoundingBo
 	box->colors = new osg::Vec4Array;
 	box->normals = new osg::Vec3Array;
 
-	for (int i = 0;i<8;i++){
-		for (int j = 0;j<8;j++){
-		    box->points->push_back(bb.corner(i));
-		    box->points->push_back(bb.corner(j));
-		}
 
-	}
+
+
+
+//	for (int i = 0;i<8;i++){
+//		for (int j = 0;j<8;j++){
+//		    box->points->push_back(bb.corner(i));
+//		    box->points->push_back(bb.corner(j));
+//		}
+//
+//	}
+
+	//Bottom
+	box->points->push_back(osg::Vec3(bb.xMin(),bb.yMin(),bb.zMin()));
+	box->points->push_back(osg::Vec3(bb.xMax(),bb.yMin(),bb.zMin()));
+
+	box->points->push_back(osg::Vec3(bb.xMin(),bb.yMin(),bb.zMin()));
+	box->points->push_back(osg::Vec3(bb.xMin(),bb.yMax(),bb.zMin()));
+
+	box->points->push_back(osg::Vec3(bb.xMax(),bb.yMax(),bb.zMin()));
+    box->points->push_back(osg::Vec3(bb.xMin(),bb.yMax(),bb.zMin()));
+
+    box->points->push_back(osg::Vec3(bb.xMax(),bb.yMax(),bb.zMin()));
+    box->points->push_back(osg::Vec3(bb.xMax(),bb.yMin(),bb.zMin()));
+
+    //Top
+    box->points->push_back(osg::Vec3(bb.xMin(),bb.yMin(),bb.zMax()));
+    box->points->push_back(osg::Vec3(bb.xMax(),bb.yMin(),bb.zMax()));
+
+    box->points->push_back(osg::Vec3(bb.xMin(),bb.yMin(),bb.zMax()));
+    box->points->push_back(osg::Vec3(bb.xMin(),bb.yMax(),bb.zMax()));
+
+    box->points->push_back(osg::Vec3(bb.xMax(),bb.yMax(),bb.zMax()));
+    box->points->push_back(osg::Vec3(bb.xMin(),bb.yMax(),bb.zMax()));
+
+    box->points->push_back(osg::Vec3(bb.xMax(),bb.yMax(),bb.zMax()));
+    box->points->push_back(osg::Vec3(bb.xMax(),bb.yMin(),bb.zMax()));
+
+
+    //corners
+    box->points->push_back(osg::Vec3(bb.xMin(),bb.yMin(),bb.zMin()));
+    box->points->push_back(osg::Vec3(bb.xMin(),bb.yMin(),bb.zMax()));
+
+    box->points->push_back(osg::Vec3(bb.xMax(),bb.yMin(),bb.zMin()));
+    box->points->push_back(osg::Vec3(bb.xMax(),bb.yMin(),bb.zMax()));
+
+    box->points->push_back(osg::Vec3(bb.xMin(),bb.yMax(),bb.zMin()));
+    box->points->push_back(osg::Vec3(bb.xMin(),bb.yMax(),bb.zMax()));
+
+    box->points->push_back(osg::Vec3(bb.xMax(),bb.yMax(),bb.zMin()));
+    box->points->push_back(osg::Vec3(bb.xMax(),bb.yMax(),bb.zMax()));
 
 
 	box->colors->push_back(osg::Vec4(1.0,1.0,1.0,1));
@@ -120,4 +164,13 @@ osg::ref_ptr<PrimitivesFactory::BoundingBox> PrimitivesFactory::createBoundingBo
 
 	return box;
 }
+
+
+osg::ref_ptr<Object> PrimitivesFactory::loadImage(std::string path){
+
+}
+
+
+
+
 } /* namespace osgviz */

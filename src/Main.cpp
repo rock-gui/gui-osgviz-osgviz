@@ -53,12 +53,6 @@ int main(int argc, char** argv)
     hud->addHudObject(geode);
 
 
-	osgviz::Object *mtext = new osgviz::Object();
-	mtext->setName("Head Up Displays are really simple :-)");
-	mtext->displayName(0.3);
-	mtext->setScale(100,100,0);
-	mtext->setPosition(200,300,0);
-	hud->addHudObject(mtext);
 
 
 

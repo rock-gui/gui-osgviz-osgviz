@@ -44,9 +44,9 @@ public:
 	/**
 	 * These Spabes cannot receive click events
 	 * @param shape
-	 * @param sizex
-	 * @param sizey
-	 * @param sizez
+	 * @param sizex aka radius for non-boxes
+	 * @param sizey only for boxes
+	 * @param sizez aka height for all except box and sphere
 	 * @return
 	 */
 	virtual osg::ref_ptr<Shape> createShape(Shapes shape,const float &sizex,const float &sizey,const float &sizez);
@@ -61,6 +61,8 @@ public:
 	};
 	virtual osg::ref_ptr<BoundingBox> createBoundingBox(osg::Group* object);
 
+
+	virtual osg::ref_ptr<Object> loadImage(std::string path);
 
 };
 
