@@ -11,6 +11,7 @@
 #include <osgText/Text>
 #include <osg/MatrixTransform>
 #include <osg/PositionAttitudeTransform>
+#include <osg/AutoTransform>
 
 #include <string>
 
@@ -109,6 +110,8 @@ public:
     }
 
 
+    virtual void setName(const std::string &name);
+
     void switchCullMask();
     void xorCullMask(unsigned int mask);
 
@@ -130,6 +133,7 @@ protected:
 
 private:
 
+    osg::ref_ptr< osg::AutoTransform > texttransform;
     osg::ref_ptr< osg::Geode > textgeode;
     osg::ref_ptr< osgText::Text > text;
 

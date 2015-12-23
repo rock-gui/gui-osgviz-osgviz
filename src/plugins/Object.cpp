@@ -39,28 +39,35 @@ Object::~Object() {
 
 
 void Object::displayName(float font_size){
-	textgeode = new osg::Geode();
 
-	osg::StateSet* stateset = textgeode->getOrCreateStateSet();
-	stateset->setMode(GL_LIGHTING,osg::StateAttribute::OFF);
-    stateset->setMode(GL_BLEND,osg::StateAttribute::OFF);
-    //stateset->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
-    stateset->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
+    if (!texttransform.valid()){
+        texttransform = new osg::AutoTransform();
+        textgeode = new osg::Geode();
 
-	text = new osgText::Text();
-	text->setText(this->getName());
-	text->setCharacterSize(font_size);
-    text->setAxisAlignment(osgText::Text::XY_PLANE);
-	text->setAlignment(osgText::Text::LEFT_TOP);
-	text->setPosition(osg::Vec3(0.0f, 0.0f, 0.0f));
-	text->setColor(osg::Vec4(0,0,0,1));
+        osg::StateSet* stateset = textgeode->getOrCreateStateSet();
+        stateset->setMode(GL_LIGHTING,osg::StateAttribute::OFF);
+        stateset->setMode(GL_BLEND,osg::StateAttribute::OFF);
+        //stateset->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+        stateset->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
+
+        text = new osgText::Text();
+
+        text->setCharacterSize(font_size);
+        text->setAxisAlignment(osgText::Text::XY_PLANE);
+        text->setAlignment(osgText::Text::LEFT_TOP);
+        text->setPosition(osg::Vec3(0.0f, 0.0f, 0.0f));
+        text->setColor(osg::Vec4(0,0,0,1));
 
 
+        texttransform->setAutoRotateMode(osg::AutoTransform::ROTATE_TO_SCREEN);
 
-	textgeode->addDrawable(text);
+        textgeode->addDrawable(text);
+        texttransform->addChild(textgeode);
+    }
 
+    text->setText(this->getName());
 
-	this->addChild(textgeode);
+	this->addChild(texttransform);
 
 }
 
@@ -119,6 +126,12 @@ void Object::setDirty(){
 	this->setUserValue("dirty",true);
 }
 
+void Object::setName(const std::string &name){
+    osg::PositionAttitudeTransform::setName(name);
+    if (text.valid()){
+        text->setText(name);
+    }
+}
 
 
 } /* namespace osgviz */
