@@ -29,6 +29,10 @@ public:
 		return cylinder;
 	}
 
+    virtual void setColor(const float &r,const float &g,const float &b,const float &a = 1){
+        coneDrawable->setColor(osg::Vec4(r,g,b,a));
+        cylinderDrawable->setColor(osg::Vec4(r,g,b,a));
+    }
 
 private:
 	osg::ref_ptr<osg::Geode> geode;
