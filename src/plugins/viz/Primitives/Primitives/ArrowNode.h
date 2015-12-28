@@ -32,6 +32,13 @@ public:
     virtual void setColor(const float &r,const float &g,const float &b,const float &a = 1){
         coneDrawable->setColor(osg::Vec4(r,g,b,a));
         cylinderDrawable->setColor(osg::Vec4(r,g,b,a));
+
+        if (a<1){
+        this->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN |
+                                                           osg::StateAttribute::OVERRIDE |
+                                                           osg::StateAttribute::PROTECTED);
+        this->getOrCreateStateSet()->setMode( GL_BLEND, osg::StateAttribute::ON );
+        }
     }
 
 private:
