@@ -91,12 +91,20 @@ osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* viewScene) {
 
     view->addEventHandler(new osgViewer::StatsHandler(),-100);
 
-    return view.release();
+
+    views.push_back(view);
+
+    return view;
 }
 
 osgviz::HUD* Window::addHUD(int width,int height){
+
     osgviz::HUD* hud = new HUD(this,width,height);
+
     root->addChild(hud);
+
+    huds.push_back(hud);
+
     return hud;
 }
 

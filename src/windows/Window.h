@@ -42,7 +42,7 @@ public:
 
 	//void setName(const std::string& name);
 
-    osgViewer::View* addView(ViewConfig viewConfig, osg::Group* viewScene = NULL);
+	osgViewer::View* addView(ViewConfig viewConfig, osg::Group* viewScene = NULL);
 
     osgviz::HUD* addHUD(int width,int height);
 
@@ -94,6 +94,9 @@ private:
 	osg::ref_ptr<osg::Group> root;
 
 	osg::ref_ptr<osgParticle::PrecipitationEffect> snow, rain;
+
+	std::vector < osg::ref_ptr<osgviz::SuperView> > views;
+	std::vector < osgviz::HUD * > huds;
 
 };
 
