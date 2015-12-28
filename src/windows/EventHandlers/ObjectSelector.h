@@ -11,6 +11,8 @@
 
 #include <osgGA/GUIEventHandler>
 #include "../../interfaces/Clickable.h"
+
+#include <deque>
 //#include <osgViewer/View>
 
 namespace osgviz {
@@ -44,7 +46,7 @@ private:
 
 
 
-    std::vector<IntersectionResult> getIntersections(const osgGA::GUIEventAdapter& ea);
+    std::deque<IntersectionResult> getIntersections(const osgGA::GUIEventAdapter& ea);
 
 
 

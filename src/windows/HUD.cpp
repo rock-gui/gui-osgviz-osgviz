@@ -55,8 +55,8 @@ namespace osgviz{
       gw->getWindowRectangle (x,y,wwidth,wheight);
       resize(wwidth,wheight);
 
-      osgViewer::GraphicsWindow::Views views;
-      gw->getViews(views);
+//      osgViewer::GraphicsWindow::Views views;
+//      gw->getViews(views);
 
       //views.front()->addEventHandler(hudEventHandler);
 
