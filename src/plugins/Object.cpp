@@ -89,7 +89,7 @@ void Object::switchCullMask() {
 
 
 bool Object::clicked(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, Clickable *object, WindowInterface* window){
-	printf("%s click world: %.2f,%.2f,%.2f local: %.2f,%.2f,%.2f \n",this->getName().c_str(),world.x(),world.y(),world.z(),local.x(),local.y(),local.z());
+	//printf("%s click world: %.2f,%.2f,%.2f local: %.2f,%.2f,%.2f \n",this->getName().c_str(),world.x(),world.y(),world.z(),local.x(),local.y(),local.z());
 	bool finish = false;
 	if (!clickablecb.empty()){
 		for (std::vector< Clickable* >::iterator it = clickablecb.begin();it != clickablecb.end(); it++){
