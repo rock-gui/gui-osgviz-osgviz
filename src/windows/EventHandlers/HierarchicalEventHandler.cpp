@@ -51,15 +51,13 @@ bool HierarchicalEventHandler::handle(const osgGA::GUIEventAdapter& ea,	osgGA::G
                 || ea.getEventType() == osgGA::GUIEventAdapter::RELEASE
                 || ea.getEventType() == osgGA::GUIEventAdapter::DRAG
         ){
-            printf("checking no: %i %s\n",handler->first,demangledTypeName(handler->second.get()).c_str());
+            //printf("checking no: %i %s\n",handler->first,demangledTypeName(handler->second.get()).c_str());
+
+            if (handler->second->handle(ea,aa)){
+                printf("%s handled event, stopping\n\n",demangledTypeName(handler->second.get()).c_str());
+                return true;
+            }
         }
-		if (handler->second->handle(ea,aa)){
-
-
-
-			printf("%s handled event, stopping\n\n",demangledTypeName(handler->second.get()).c_str());
-			return true;
-		}
 	}
 	return false;
 }
