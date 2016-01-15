@@ -25,8 +25,8 @@
  *      Author: daniel
  */
 
-#ifndef MARS_GRAPHICS_OSGLIGHTSTRUCT_H
-#define MARS_GRAPHICS_OSGLIGHTSTRUCT_H
+#ifndef OSGVIZ_GRAPHICS_OSGLIGHTSTRUCT_H
+#define OSGVIZ_GRAPHICS_OSGLIGHTSTRUCT_H
 
 #include "../interfaces/data/LightData.h"
 
