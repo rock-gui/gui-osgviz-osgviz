@@ -124,13 +124,13 @@ void OsgViz::destroyWindow(unsigned int id){
 
 OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
 	OsgVizPlugin* viz = NULL;
-	viz = (OsgVizPlugin*)libManager->getLibrary(name);
+	viz = dynamic_cast<OsgVizPlugin*>(libManager->getLibrary(name));
 	if (viz){
 		return viz;
 	}else{
 		lib_manager::LibManager::ErrorNumber result = libManager->loadLibrary(path);
 		//if (result == lib_manager::LibManager::LIBMGR_NO_ERROR){
-			OsgVizPlugin* viz = (OsgVizPlugin*)libManager->acquireLibrary(name);
+			OsgVizPlugin* viz = dynamic_cast<OsgVizPlugin*>(libManager->acquireLibrary(name));
 			//fprintf(stderr,"trying to load 3%s\n",name.c_str());	fflush(stdout);
 			if (!viz){
 				fprintf(stderr,"unable to load lib %s\n",name.c_str());	fflush(stdout);

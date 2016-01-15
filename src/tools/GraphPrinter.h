@@ -47,6 +47,7 @@ public:
 			if (group){
 				if (firstnode){
 					fprintf(file,"\t \"%p\" [label=\"%s\\n%s\" style=filled, fillcolor=green]\n",node,demangledTypeName(*group).c_str(),node->getName().c_str());
+          knownNodes[node] = true;
 					firstnode = false;
 				}else{
 					fprintf(file,"\t \"%p\" [label=\"%s\\n%s\"]\n",node,demangledTypeName(*group).c_str(),node->getName().c_str());
