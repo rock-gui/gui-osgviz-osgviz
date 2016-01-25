@@ -49,8 +49,9 @@ namespace osgviz{
 
 class Window;
 
-class HUD:  public osg::GraphicsContext::ResizedCallback,
-            public osg::Camera
+class HUDCallback;
+
+class HUD:  public osg::Camera
             {
 
     public:
@@ -107,6 +108,8 @@ class HUD:  public osg::GraphicsContext::ResizedCallback,
       osg::ref_ptr<osg::Group> hudTerminalList;
       osg::ref_ptr<osg::MatrixTransform> hudscale;
 
+      HUDCallback* resizecallback;
+
 //    	osg::ref_ptr<osg::Image> hudImage;
 //    	osg::ref_ptr<osg::Texture2D> hudTexture;
 
@@ -134,8 +137,31 @@ class HUD:  public osg::GraphicsContext::ResizedCallback,
 
 
 
-    }; // end of class HUD 
+    };
+
+
+class HUDCallback: public osg::GraphicsContext::ResizedCallback{
+
+public:
+
+    HUDCallback(HUD* hud):myhud(hud){};
+
+    /**
+     * from osg::ResizedCallback
+     */
+    void resizedImplementation (osg::GraphicsContext *gc, int x, int y, int width, int height){
+        myhud->resizedImplementation(gc,x,y,width,height);
+    }
+
+
+private:
+    HUD* myhud;
+
+};
+
+
 
 } // end of namespace mars
+
 
 #endif /* MARS_GRAPHICS_HUD_H */

@@ -66,7 +66,7 @@ int main(int argc, char** argv)
 
 
     osg::ref_ptr<osgviz::PrimitivesFactory::Shape> shape = primitivesfactory->createShape(osgviz::PrimitivesFactory::BOX,100,100,0);
-    shape->setPosition(500,500,0);
+    shape->setPosition(2,3,0);
     //shape->setScale(100,100,100);
     shape->setName("BoxBoxBoxBox");
     shape->displayName(10);
@@ -79,6 +79,18 @@ int main(int argc, char** argv)
     //shape1->setPosition(0.5,0.5,0.5);
     osgViz->addChild(shape1);
 
+
+    //test 2nd HUD
+
+    osgviz::HUD* hud2 = osgViz->getWindowManager()->getWindowByID(winid)->addHUD(1920,1080);
+    osg::ref_ptr<osgviz::PrimitivesFactory::Shape> cone = primitivesfactory->createShape(osgviz::PrimitivesFactory::CONE,100,100,0);
+    cone->setPosition(700,500,0);
+    //shape->setScale(100,100,100);
+    cone->rotate(M_PI/2.0,osg::Vec3(1,0,0));
+    cone->setName("cone");
+    cone->displayName(10);
+    cone->setColor(1,0,0,0.5);
+    hud2->addHudObject(cone);
 
 //    osg::ref_ptr<osgviz::Object> image = primitivesfactory->loadImage("test.png");
 //    //shape1->setPosition(0.5,0.5,0.5);

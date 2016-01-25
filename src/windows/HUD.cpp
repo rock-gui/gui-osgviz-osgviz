@@ -38,6 +38,8 @@ namespace osgviz{
     HUD::HUD(osgviz::Window* win, int width, int height) {
       //hudCamera = new osg::Camera();
 
+
+
       hudTerminalList = new osg::Group;
       hudscale = new osg::MatrixTransform;
       hudscale->setMatrix(osg::Matrix::scale(1.0, 1.0, 1.0));
@@ -55,14 +57,12 @@ namespace osgviz{
       gw->getWindowRectangle (x,y,wwidth,wheight);
       resize(wwidth,wheight);
 
-//      osgViewer::GraphicsWindow::Views views;
-//      gw->getViews(views);
-
-      //views.front()->addEventHandler(hudEventHandler);
-
-      gw->setResizedCallback(this);
-
       setViewSize(width,height);
+
+      resizecallback = new HUDCallback(this);
+      gw->setResizedCallback(resizecallback);
+
+
 
 
             this->setGraphicsContext(gw);
@@ -110,6 +110,7 @@ namespace osgviz{
     }
 
     HUD::~HUD(void) {
+        delete resizecallback;
     }
   
 
@@ -123,13 +124,10 @@ namespace osgviz{
     }
 
     void HUD::resize(double width, double height) {
-      /*
-        std::vector<HUDElement*>::iterator iter;
-  
-        for(iter=elements.begin(); iter<elements.end(); iter++) {
-        (*iter)->resize(width, height);
-        }
-      */
+
+        printf("resize\n");
+
+
       window_width = width;
       window_height = height;
       double scale_x = window_width / hud_width;
@@ -139,8 +137,6 @@ namespace osgviz{
       mousescale_x = hud_width / window_width;
       mousescale_y = hud_height / window_height;
 
-
-
       this->setProjectionMatrix(osg::Matrix::ortho2D(x1, x2+window_width,
                                                           y1, y2+window_height));
       this->setViewport(0, 0, hud_width, hud_height);
@@ -149,9 +145,14 @@ namespace osgviz{
 
 
     void HUD::resizedImplementation(osg::GraphicsContext* gc, int x, int y, int width, int height) {
-    	this->resize(width,height);
+
+        printf("resizedImplementation\n");
+
+        this->resize(width,height);
+
     	//call the standard implementation
-    	gc->resizedImplementation(x, y, width, height);
+        gc->resizedImplementation(x, y, width, height);
+
     }
 
 //	bool HUD::mousePosition(const int &windowposx, const int &windowposy, int &hudposx, int &hudposy){
