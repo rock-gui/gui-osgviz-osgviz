@@ -33,6 +33,7 @@ endif (UNIX)
 rock_library(osgVizInterfaces
 	HEADERS interfaces/Clickable.h
 			interfaces/WindowInterface.h
+			interfaces/Updatable.h
 )
 
 
