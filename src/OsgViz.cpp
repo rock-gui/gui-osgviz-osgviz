@@ -156,32 +156,28 @@ OsgVizPlugin* OsgViz::loadPlugin(std::string classname){
 
 void OsgViz::update(){
 
-	//graphicsManager->draw();
-//	viewer.frame();
 
-	//if (thread){
-		//thread->trigger();
-	//	windowManager->frame();
-	//}else{
-		mutex->lock();
-		windowManager->frame();
-		mutex->unlock();
-	//}
-	
-	//printf("frame\n");fflush(stdout);
+    for (std::map<int, Updatable*>::reverse_iterator callback = updateCallbacks.rbegin(); callback != updateCallbacks.rend();++callback){
+        callback->second->update();
+    }
 
-
-	//printf("frame end\n");fflush(stdout);
-	//graphicsManager->get3DWindow();
-
-//	osgViewer::ViewerBase::Views views;
-//	viewer.getViews(views);
-//	int num = views[0]->getEventHandlers().size();
-//
-//	printf("event handlers %i\n ",num);
+    mutex->lock();
+    windowManager->frame();
+    mutex->unlock();
 
 
 }
+
+int OsgViz::addUpdateCallback(Updatable* callback, int priority) {
+    Updatable* existing = updateCallbacks[priority];
+    while (existing){
+        --priority;
+        existing = updateCallbacks[priority];
+    }
+    updateCallbacks[priority] = callback;
+    return priority;
+}
+
 
 void OsgViz::startThread(){
 	if (!thread){
@@ -235,3 +231,5 @@ int OsgViz::getLibVersion() const{
 
 
 }
+
+

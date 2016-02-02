@@ -68,6 +68,8 @@ namespace osgviz
 
 		virtual void update();
 
+		virtual int addUpdateCallback(Updatable* callback, int priority = 0);
+
 		unsigned int createWindow(WindowConfig windowConfig = WindowConfig());
 		void destroyWindow(unsigned int id);
 
@@ -152,6 +154,8 @@ namespace osgviz
 
 		WindowManager::Ptr windowManager;
 
+
+		std::map<int, Updatable*> updateCallbacks;
 
 	};
 
