@@ -9,18 +9,10 @@
 #define GUI_OSGVIZ_OSGVIZ_SRC_TOOLS_UPDATETHREAD_H_
 
 #include <OpenThreads/Thread>
+#include "../interfaces/Updatable.h"
+
 
 namespace osgviz {
-
-
-class Updatable{
-public:
-	Updatable(){};
-	virtual ~Updatable(){};
-	virtual void update() = 0;
-
-};
-
 
 class UpdateThread : public OpenThreads::Thread{
 public:

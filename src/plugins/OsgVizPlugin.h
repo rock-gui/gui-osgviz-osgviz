@@ -39,8 +39,16 @@ public:
 
     virtual int getLibVersion() const = 0;
 
+    /**
+     * init is calles after loading the plugin using
+     * osgviz::getVisualizerPlugin
+     */
     virtual void init(){};
 
+    /**
+     * in case the plugin want to start its own thread, start can be used
+     * @warning: be sure to call parent->lockThread() before changing the scene graph
+     */
     virtual void start(){};
 
     inline lib_manager::LibManager* getLibManager(){
