@@ -126,6 +126,15 @@ namespace osgviz
 			root->addChild(node);
 		}
 
+        inline void setScene(osg::Node * node){
+            root->removeChildren(0,root->getNumChildren());
+            root->addChild(node);
+        }
+
+        inline osg::Node* getScene(int index = 0){
+            return root->getChild(index);
+        }
+
 		inline void write(const char* name){
 			Timing mtime;
 			mtime.start();
