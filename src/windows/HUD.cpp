@@ -35,7 +35,7 @@
 
 namespace osgviz{
 
-    HUD::HUD(osgviz::Window* win, int width, int height) {
+    HUD::HUD(osg::ref_ptr<osgViewer::GraphicsWindow> gw, int width, int height):gw(gw) {
       //hudCamera = new osg::Camera();
 
 
@@ -46,9 +46,8 @@ namespace osgviz{
       hudscale->addChild(hudTerminalList.get());
       cull_mask = 0;
       x1 = x2 = y1 = y2 = 0.0;
-      window = win;
+      //window = win;
 
-      osgViewer::GraphicsWindow* gw =  win->getGraphicsWindow();
 
       setViewSize(width,height);
 
@@ -124,10 +123,6 @@ namespace osgviz{
     }
 
     void HUD::resize(double width, double height) {
-
-        printf("resize\n");
-
-
       window_width = width;
       window_height = height;
       double scale_x = window_width / hud_width;
@@ -145,8 +140,6 @@ namespace osgviz{
 
 
     void HUD::resizedImplementation(osg::GraphicsContext* gc, int x, int y, int width, int height) {
-
-        printf("resizedImplementation\n");
 
         this->resize(width,height);
 

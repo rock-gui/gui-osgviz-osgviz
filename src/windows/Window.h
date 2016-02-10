@@ -31,9 +31,8 @@ namespace osgviz {
 class Window : public osgViewer::CompositeViewer {
 
 public:
-	typedef osg::ref_ptr<Window> Ptr;
 	
-	Window(WindowConfig windowConfig, osg::ref_ptr<osg::Node> windowScene);
+	Window(WindowConfig windowConfig, osg::ref_ptr<osg::Node> windowScene, osg::ref_ptr<osg::GraphicsContext> graphicsContext = NULL);
 	virtual ~Window();
 
 //	void setScene(osg::Group *scene);
@@ -44,10 +43,10 @@ public:
 
 	osgViewer::View* addView(ViewConfig viewConfig, osg::Group* viewScene = NULL);
 
-	osg::ref_ptr<osgviz::HUD> addHUD(int width,int height);
+	osg::ref_ptr<osgviz::HUD> addHUD(int width,int height, unsigned int window = 0);
 
 
-    osgViewer::GraphicsWindow* getGraphicsWindow(unsigned int index = 0);
+	osg::ref_ptr<osgViewer::GraphicsWindow> getGraphicsWindow();
 
     void addChild(osg::ref_ptr<osg::Node> scene) {
     	root->addChild(scene);
@@ -85,13 +84,15 @@ public:
 		root->removeChild(0,root->getNumChildren());
 	}
 
+protected:
+	osg::ref_ptr<osg::Group> root;
 
 private:
 	WindowConfig windowConfig;
 
 	osg::ref_ptr<osg::GraphicsContext> graphicsContext;
 
-	osg::ref_ptr<osg::Group> root;
+	osg::ref_ptr<osgViewer::GraphicsWindow> gw;
 
 	osg::ref_ptr<osgParticle::PrecipitationEffect> snow, rain;
 

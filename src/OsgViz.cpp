@@ -105,7 +105,7 @@ OsgViz::~OsgViz(){
 
 }
 
-unsigned int OsgViz::createWindow(WindowConfig windowConfig) {
+unsigned int OsgViz::createWindow(WindowConfig windowConfig, osg::ref_ptr<osg::GraphicsContext> graphicsContext) {
 	//int id = graphicsManager->new3DWindow();
 	//mars::interfaces::GraphicsWindowInterface* window = this->get3DWindow(1);
 	unsigned int winID = windowManager->createWindow(windowConfig);

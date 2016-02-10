@@ -68,7 +68,19 @@ namespace osgviz
 
 		virtual void update();
 
-		unsigned int createWindow(WindowConfig windowConfig = WindowConfig());
+		/**
+		 * creates a new window to display a scene
+		 *
+		 * the globel scene of osgviz is always displayed addChild()
+		 * you can also add scenes to a single window by using the returned id and
+		 * getWindowManager()->getWindowByID(int id)->
+		 *
+		 * @param windowConfig
+		 * @param graphicsContext
+		 * @return
+		 */
+		unsigned int createWindow(WindowConfig windowConfig = WindowConfig(), osg::ref_ptr<osg::GraphicsContext> graphicsContext = NULL);
+
 		void destroyWindow(unsigned int id);
 
 
@@ -150,7 +162,7 @@ namespace osgviz
 		//osgViewer::Viewer viewer;
 		//std::vector<osgViewer::Viewer *> viewers;
 
-		WindowManager::Ptr windowManager;
+		osg::ref_ptr<WindowManager> windowManager;
 
 
 	};

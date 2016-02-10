@@ -17,59 +17,29 @@
 
 namespace osgviz {
 
-Window::Window(WindowConfig windowConfig, osg::ref_ptr<osg::Node> windowScene)
+Window::Window(WindowConfig windowConfig, osg::ref_ptr<osg::Node> windowScene, osg::ref_ptr<osg::GraphicsContext> graphicsContext)
        : osgViewer::CompositeViewer(),
          windowConfig(windowConfig),
-         root(new osg::Group) {
-
-    osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
-    traits->windowName = windowConfig.title;
-    traits->supportsResize = false;
-    traits->doubleBuffer = true;
-    traits->sharedContext = 0;
-
-    // full screen: the rendering window attributes according to current screen settings
-    if (windowConfig.fullScreen == true) {
-        // TODO: allow to choose the screen
-        int screenNum = 0;
-        unsigned int width = windowConfig.width;
-        unsigned int height = windowConfig.height;
-
-        osg::GraphicsContext::WindowingSystemInterface* wsi = osg::GraphicsContext::getWindowingSystemInterface();
-        if (wsi)
-            wsi->getScreenResolution( osg::GraphicsContext::ScreenIdentifier(screenNum), width, height );
-
-        traits->x = 0;
-        traits->y = 0;
-        traits->width = width;
-        traits->height = height;
-        traits->windowDecoration = false;
-    }
-    // user defined window: the size and position of the window are defined in graphicData
-    else {
-        traits->x = windowConfig.posX;
-        traits->y = windowConfig.posY;
-        traits->width = windowConfig.width;
-        traits->height = windowConfig.height;
-        traits->windowDecoration = true;
-    }
-
-    graphicsContext = osg::GraphicsContext::createGraphicsContext( traits.get() );
+         graphicsContext(graphicsContext),
+         root(new osg::Group){
 
     root->setName("Window root");
     addChild(windowScene);
+
+    gw = dynamic_cast<osgViewer::GraphicsWindow*> (graphicsContext.get());
+
 }
 
 Window::~Window() {
 }
 
 void Window::setWindowGeometry(int posX, int posY, int width, int height, int window) {
-	osgViewer::GraphicsWindow* gw =getGraphicsWindow(window);
 	windowConfig.posX = posX;
 	windowConfig.posY = posY;
 	windowConfig.width = width;
 	windowConfig.height = height;
-	if (gw){
+
+	if (gw.valid()){
 		gw->setWindowDecoration(true);
 		gw->setWindowRectangle(windowConfig.posX,windowConfig.posY,windowConfig.width,windowConfig.height);
 	}else{
@@ -97,9 +67,9 @@ osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* viewScene) {
     return view;
 }
 
-osg::ref_ptr<osgviz::HUD> Window::addHUD(int width,int height){
+osg::ref_ptr<osgviz::HUD> Window::addHUD(int width,int height, unsigned int window){
 
-    osg::ref_ptr<osgviz::HUD> hud = new HUD(this,width,height);
+    osg::ref_ptr<osgviz::HUD> hud = new HUD(gw,width,height);
 
     root->addChild(hud);
 
@@ -144,9 +114,8 @@ osg::ref_ptr<osgviz::HUD> Window::addHUD(int width,int height){
 
 void Window::setFullscreen(bool state, int window, int screen){
   printf("calling : %s state = %i win %i screen %i\n", __PRETTY_FUNCTION__,state,window,screen);fflush(stdout);
-	osgViewer::GraphicsWindow* gw = getGraphicsWindow(window);
 
-  if (gw){
+  if (gw.valid()){
     if (state){
       unsigned int width = 0;
       unsigned int height = 0;
@@ -217,13 +186,8 @@ void Window::showSnow(const bool &val) {
 ////	keyswitchManipulator->selectMatrixManipulator('0');
 //}
 
-osgViewer::GraphicsWindow* Window::getGraphicsWindow(unsigned int index) {
-	osgViewer::ViewerBase::Windows m_windows;
-	this->getWindows(m_windows);
-	if (m_windows.size() > index){
-		return m_windows[index];
-	}
-	return NULL;
+osg::ref_ptr<osgViewer::GraphicsWindow> Window::getGraphicsWindow() {
+    return gw;
 }
 
 } /* namespace osgviz */

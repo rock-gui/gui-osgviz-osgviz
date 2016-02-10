@@ -33,7 +33,7 @@ namespace osgviz {
 
     class WindowConfig {
     public:
-      WindowConfig() : title("Env"), 
+      WindowConfig() : title("osgviz"),
                       posX(0),
                       posY(0),      
                       width(720),

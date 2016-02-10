@@ -55,7 +55,7 @@ class HUD:  public osg::Camera
             {
 
     public:
-      HUD(osgviz::Window* win, int width, int height);
+      HUD(osg::ref_ptr<osgViewer::GraphicsWindow> gw, int width, int height);
       ~HUD(void);
   
 
@@ -113,6 +113,7 @@ class HUD:  public osg::Camera
 //    	osg::ref_ptr<osg::Image> hudImage;
 //    	osg::ref_ptr<osg::Texture2D> hudTexture;
 
+      osg::ref_ptr<osgViewer::GraphicsWindow> gw;
 
       unsigned long id;
       Color myColor;
@@ -128,7 +129,7 @@ class HUD:  public osg::Camera
 
 
       //osg::ref_ptr<osg::Camera> hudcam;
-      osgviz::Window* window;
+      //osgviz::Window* window;
 
       /**
        * should not be used!

@@ -20,29 +20,32 @@ namespace osgviz {
 class WindowManager: public osg::Referenced {
 public:
 
-	typedef osg::ref_ptr<WindowManager> Ptr;
 
 	WindowManager();
 	virtual ~WindowManager();
 
-	unsigned int createWindow(WindowConfig& windowConfig, osg::ref_ptr<osg::Node> windowScene = NULL);
+	unsigned int createWindow(WindowConfig& windowConfig, osg::ref_ptr<osg::Node> windowScene = NULL, osg::ref_ptr<osg::GraphicsContext> graphicsContext = NULL);
 
-	inline Window::Ptr getWindowByID(const unsigned int& id){
+	inline osg::ref_ptr<Window> getWindowByID(const unsigned int& id){
 		if (id < windows.size()){
 			return windows.at(id);
 		}
 		return NULL;
 	}
 
-	inline std::vector<Window::Ptr> getWindows() const{
+	inline std::vector< osg::ref_ptr<Window> > getWindows() const{
 		return windows;
 	}
 
 	void frame();
 
+
+	osg::ref_ptr<osg::GraphicsContext::Traits> genetrateTraits(WindowConfig& windowConfig);
+
+
 private:
 	OpenThreads::Mutex windowsMutex;
-	std::vector<Window::Ptr> windows;
+	std::vector< osg::ref_ptr<Window> > windows;
 
 
 };
