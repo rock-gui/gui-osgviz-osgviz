@@ -67,14 +67,18 @@ public:
 
 
 
-	inline osgViewer::View* getView(int index = 0){
-		return views[index];
-	}
+
 
 	inline osg::ref_ptr<osgViewer::CompositeViewer> getViewer(){
 		return viewer;
 	}*/
 
+    inline osgViewer::View* getView(unsigned int index = 0){
+        if (index < views.size()){
+            return views[index];
+        }
+        return NULL;
+    }
 
 	inline osg::ref_ptr<osg::Group> getRootNode(){
 		return root;
