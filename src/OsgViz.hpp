@@ -27,16 +27,16 @@ namespace osgDB{
 namespace osgviz
 {
 
-	class OsgViz: public lib_manager::LibInterface, public Updatable
+	class OsgViz: public lib_manager::LibInterface, public Updatable, public osg::Referenced
 	{
 
 		public: 
 
 	    //CREATE_MODULE_INFO();
 
-		static OsgViz* getInstance(int argc = 0,char** argv = NULL);
-		static OsgViz* getInstance(lib_manager::LibManager * manager);
-		static OsgViz* getExistingInstance();
+		static osg::ref_ptr<OsgViz> getInstance(int argc = 0,char** argv = NULL);
+		static osg::ref_ptr<OsgViz> getInstance(lib_manager::LibManager * manager);
+		static osg::ref_ptr<OsgViz> getExistingInstance();
 
 		OsgViz(lib_manager::LibManager * manager);
 

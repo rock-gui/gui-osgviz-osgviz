@@ -18,23 +18,23 @@ DESTROY_LIB(osgviz::OsgViz);
 namespace osgviz
 {
 
-OsgViz* instance = NULL;
+osg::ref_ptr<OsgViz> instance = NULL;
 
-OsgViz* OsgViz::getInstance(int argc,char** argv){
+osg::ref_ptr<OsgViz> OsgViz::getInstance(int argc,char** argv){
 	if (!instance){
 		instance = new OsgViz(argc,argv);
 	}
 	return instance;
 }
 
-OsgViz* OsgViz::getInstance(lib_manager::LibManager * manager){
+osg::ref_ptr<OsgViz> OsgViz::getInstance(lib_manager::LibManager * manager){
 	if (!instance){
 		instance = new OsgViz(manager);
 	}
 	return instance;
 }
 
-OsgViz* OsgViz::getExistingInstance(){
+osg::ref_ptr<OsgViz> OsgViz::getExistingInstance(){
 	return instance;
 }
 
