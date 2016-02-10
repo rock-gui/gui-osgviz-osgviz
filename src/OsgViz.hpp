@@ -75,8 +75,8 @@ namespace osgviz
 		 * you can also add scenes to a single window by using the returned id and
 		 * getWindowManager()->getWindowByID(int id)->
 		 *
-		 * @param windowConfig
-		 * @param graphicsContext
+		 * @param windowConfig window configuration, if a graphicsContext is given only ViewConfig settings are applied
+		 * @param graphicsContext set an external osg::GraphicsContext for example a osgQt::GraphicsWindowQt
 		 * @return
 		 */
 		unsigned int createWindow(WindowConfig windowConfig = WindowConfig(), osg::ref_ptr<osg::GraphicsContext> graphicsContext = NULL);
