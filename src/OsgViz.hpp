@@ -80,12 +80,10 @@ namespace osgviz
 		 * @return
 		 */
 		unsigned int createWindow(WindowConfig windowConfig = WindowConfig(), osg::ref_ptr<osg::GraphicsContext> graphicsContext = NULL);
+        void destroyWindow(unsigned int id);
+
 
 		virtual int addUpdateCallback(Updatable* callback, int priority = 0);
-
-		unsigned int createWindow(WindowConfig windowConfig = WindowConfig());
-		void destroyWindow(unsigned int id);
-
 
 
 		//inline GraphicsManagerInterface* getGraphicsManagerInterface(){

@@ -30,9 +30,8 @@ unsigned int WindowManager::createWindow(WindowConfig& windowConfig, osg::ref_pt
 	osg::ref_ptr<Window> wnd = new Window(windowConfig, windowScene, graphicsContext);
 	wnd->setName(windowConfig.title);
 
-	unsigned int wndId = windows.size();
-
 	windowsMutex.lock();
+	unsigned int wndId = windows.size();
 	windows.push_back(wnd);
 
 	// if no view config is given, take the default configs
