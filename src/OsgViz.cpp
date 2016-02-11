@@ -12,8 +12,6 @@
 
 #include "windows/WindowManager.h"
 
-CREATE_LIB(osgviz::OsgViz);
-DESTROY_LIB(osgviz::OsgViz);
 
 namespace osgviz
 {
@@ -40,19 +38,20 @@ osg::ref_ptr<OsgViz> OsgViz::getExistingInstance(){
 
 
 
-OsgViz::OsgViz(lib_manager::LibManager * manager): lib_manager::LibInterface(manager)
+OsgViz::OsgViz(lib_manager::LibManager * manager)
 {
+    libManager = manager;
 	createdOwnManager = false;
 	instance = this;
 	init(0,NULL);
 
 }
 
-OsgViz::OsgViz(int argc, char** argv): lib_manager::LibInterface(NULL){
+OsgViz::OsgViz(int argc, char** argv){
 	createdOwnManager = true;
 	libManager = new lib_manager::LibManager();
 	//not loaded by libmanager so we add ourselves
-	libManager->addLibrary(this);
+	//libManager->addLibrary(this);
 	init(argc,argv);
 }
 
@@ -220,15 +219,6 @@ int OsgViz::tryLockThread(){
 	}
 	return -1;
 }
-
-const std::string OsgViz::getLibName() const {
-	return "OsgViz";
-}
-
-int OsgViz::getLibVersion() const{
-	return 1;
-}
-
 
 }
 

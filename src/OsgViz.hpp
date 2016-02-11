@@ -27,30 +27,34 @@ namespace osgDB{
 namespace osgviz
 {
 
-	class OsgViz: public lib_manager::LibInterface, public Updatable, public osg::Referenced
+
+/**
+ * @class OsgViz
+ * This is the main class to 3d Visualisaztions, it uses the lib_manager::LibManager to load plugins
+ * this allows to load plugins as shared so all plugins can access each other on the same instances
+ * In case this is not wanted, the plugin should implement a "Factory"
+ */
+	class OsgViz: public Updatable, public osg::Referenced
 	{
 
 		public: 
 
-	    //CREATE_MODULE_INFO();
-
+	    /**
+	     * This instance Methods should be called on normal main programs
+	     * @param argc the argument count
+	     * @param argv
+	     * @return
+	     */
 		static osg::ref_ptr<OsgViz> getInstance(int argc = 0,char** argv = NULL);
 		static osg::ref_ptr<OsgViz> getInstance(lib_manager::LibManager * manager);
 		static osg::ref_ptr<OsgViz> getExistingInstance();
 
-		OsgViz(lib_manager::LibManager * manager);
-
 		private:
+		OsgViz(lib_manager::LibManager * manager);
 		OsgViz(int argc, char** argv);
 
 		public:
 		~OsgViz();
-
-
-		virtual const std::string getLibName() const;
-
-	    virtual int getLibVersion() const;
-
 
 
 	    void init(int argc,char** argv);
@@ -66,6 +70,9 @@ namespace osgviz
 	    void unlockThread();
 
 
+	    /**
+	     *
+	     */
 		virtual void update();
 
 		/**
@@ -86,10 +93,6 @@ namespace osgviz
 		virtual int addUpdateCallback(Updatable* callback, int priority = 0);
 
 
-		//inline GraphicsManagerInterface* getGraphicsManagerInterface(){
-		//	return (GraphicsManagerInterface*)graphicsManager;
-		//}
-
 		template <class VIZPLUGIN> VIZPLUGIN* getVisualizerPlugin(std::string classname){
 			VIZPLUGIN* viz = (VIZPLUGIN*)getVizPlugin(classname,classname);
 			if (viz){
@@ -99,13 +102,6 @@ namespace osgviz
 			}
 			return viz;
 		}
-
-//		template <class VIZPLUGIN> VIZPLUGIN* getDataPlugin(std::string classname){
-//			VIZPLUGIN* data = (VIZPLUGIN*)getVizPlugin(classname,classname);
-//			data->init(m_argc,m_argv);
-//
-//			return data;
-//		}
 
 		/**
 		 * root node is not set
@@ -136,10 +132,7 @@ namespace osgviz
         }
 
 		inline void write(const char* name){
-			Timing mtime;
-			mtime.start();
 			osgDB::writeNodeFile(*root, name);
-			mtime.print_loop_time();
 		}
 
 		inline WindowManager* getWindowManager(){
@@ -173,6 +166,8 @@ namespace osgviz
 		//std::vector<osgViewer::Viewer *> viewers;
 
 		osg::ref_ptr<WindowManager> windowManager;
+
+		lib_manager::LibManager * libManager;
 
 
 		std::map<int, Updatable*> updateCallbacks;
