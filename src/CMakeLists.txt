@@ -86,8 +86,6 @@ rock_library(osgVizPlugin
     HEADERS 
     plugins/Object.h
     plugins/OsgVizPlugin.h 
-    plugins/OsgVizVisualizerPlugin.h 
-    plugins/OsgVizDataPlugin.h 
     DEPS_PKGCONFIG lib_manager openscenegraph eigen3
     LIBS ${ADDITIONAL_LIBS})
 

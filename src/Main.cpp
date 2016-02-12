@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 
 	//load lib with some helpful primitives
 	printf("load plugin\n");	fflush(stdout);
-	osgviz::PrimitivesFactory *primitivesfactory = osgViz->getVisualizerPlugin< osgviz::PrimitivesFactory >("PrimitivesFactory");
+	osgviz::PrimitivesFactory *primitivesfactory = osgViz->getPlugin< osgviz::PrimitivesFactory >("PrimitivesFactory");
 
 	if (!primitivesfactory){
 		printf("plugin not found\n");	fflush(stdout);

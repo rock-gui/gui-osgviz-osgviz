@@ -24,13 +24,13 @@ namespace osgviz {
 
 OSGVIZ_PLUGIN(PrimitivesFactory);
 
-PrimitivesFactory::PrimitivesFactory(lib_manager::LibManager *theManager):OsgVizVisualizerPlugin(theManager) {}
+PrimitivesFactory::PrimitivesFactory(lib_manager::LibManager *theManager):OsgVizPlugin(theManager) {}
 
 PrimitivesFactory::~PrimitivesFactory() {}
 
 
 osg::ref_ptr<Object> PrimitivesFactory::createAxes(float scale,bool blabels){
-	osg::ref_ptr<Object> obj = createObject();
+	osg::ref_ptr<Object> obj = new Object();
 	osg::ref_ptr<osg::Node> content = AxesNode::create(scale,blabels);
 	obj->addChild(content);
 	obj->setName("Axes");
@@ -38,7 +38,7 @@ osg::ref_ptr<Object> PrimitivesFactory::createAxes(float scale,bool blabels){
 }
 
 osg::ref_ptr<Object> PrimitivesFactory::createGrid(int rows,int cols,float dx, float dy, bool show_coordinates, const ::osg::Vec4 &color){
-	osg::ref_ptr<Object> obj = createObject();
+	osg::ref_ptr<Object> obj = new Object();
 	osg::ref_ptr<osg::Node> content = GridNode::create(rows,cols,dx, dy, show_coordinates, color);
 	obj->addChild(content);
 	obj->setName("Grid");

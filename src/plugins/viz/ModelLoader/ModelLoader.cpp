@@ -17,7 +17,7 @@ namespace osgviz {
 
 OSGVIZ_PLUGIN(ModelLoader);
 
-ModelLoader::ModelLoader(lib_manager::LibManager *theManager):OsgVizVisualizerPlugin(theManager) {
+ModelLoader::ModelLoader(lib_manager::LibManager *theManager):OsgVizPlugin(theManager) {
 
 
 
@@ -38,7 +38,7 @@ void ModelLoader::init(int argc, char** argv){
 osg::ref_ptr<Object> ModelLoader::loadModel(std::string path){
 	printf("load %s\n",path.c_str());
     osg::ref_ptr<osg::Node> object = osgDB::readNodeFile(path);
-    osg::ref_ptr<Object> model = createObject();
+    osg::ref_ptr<Object> model = new Object();
     model->setName(path);
 	model->addChild(object);
 	return model;

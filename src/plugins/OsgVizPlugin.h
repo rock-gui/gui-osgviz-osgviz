@@ -11,6 +11,8 @@
 #include <lib_manager/LibManager.hpp>
 #include <stdio.h>
 
+#include "Object.h"
+
 
 #define OSGVIZ_PLUGIN(NAME) \
 	CREATE_LIB(NAME); \
@@ -24,11 +26,7 @@ class OsgViz;
 class OsgVizPlugin: public lib_manager::LibInterface  {
 public:
 
-	OsgVizPlugin(lib_manager::LibManager *theManager):LibInterface(theManager){
-		libmanager = theManager;
-		this->parent=NULL;
-		osgVizFuncPtr = &OsgVizPlugin::osgVizPtrError;
-	};
+	OsgVizPlugin(lib_manager::LibManager *theManager):LibInterface(theManager){};
 
 	virtual ~OsgVizPlugin(){};
 
@@ -41,9 +39,9 @@ public:
 
     /**
      * init is calles after loading the plugin using
-     * osgviz::getVisualizerPlugin
+     * osgviz::getPlugin
      */
-    virtual void init(){};
+    virtual void init(int argc,char** argv){};
 
     /**
      * in case the plugin want to start its own thread, start can be used
@@ -51,45 +49,16 @@ public:
      */
     virtual void start(){};
 
-    inline lib_manager::LibManager* getLibManager(){
-    	return libmanager;
-    }
-
-    inline OsgViz* osgViz(){
-    	return (this->*osgVizFuncPtr)();
-    }
-
 
 protected:
     friend class OsgViz;
-    inline void setParent(OsgViz* par){
-    	parent = par;
-    	osgVizFuncPtr = &OsgVizPlugin::osgVizPtr;
-    }
-
-
-
-private:
-    OsgViz* osgVizPtr(){
-    	return parent;
-    }
-
-    OsgViz* osgVizPtrError(){
-    	fprintf(stderr,"Unable to use OsgVizPlugin::osgViz() in constructor, parent pointer is still unset\n");
-    	fprintf(stderr,"You can use the virtual void init() function to initialize using osgViz()\n");
-    	fflush(stderr);
-    	return NULL;
+    inline void setRootNode(osg::Group* node){
+        root = node;
     }
 
 private:
 
-    OsgViz* parent;
-	lib_manager::LibManager *libmanager;
-
-	//member pointer to osgViz getter
-	OsgViz* (OsgVizPlugin::*osgVizFuncPtr)();
-
-
+	osg::ref_ptr<osg::Group> root;
 
 
 };

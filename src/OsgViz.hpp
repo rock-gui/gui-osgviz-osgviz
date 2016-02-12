@@ -9,7 +9,6 @@
 
 //#include "graphics/interfaces/GraphicsManagerInterface.h"
 #include "plugins/OsgVizPlugin.h"
-#include "plugins/OsgVizVisualizerPlugin.h"
 #include "windows/WindowManager.h"
 
 #include "windows/config/WindowConfig.h"
@@ -41,12 +40,18 @@ namespace osgviz
 
 	    /**
 	     * This instance Methods should be called on normal main programs
-	     * @param argc the argument count
+	     * osgviz does not have any args, but they are forwarded to the plugins loaded by getPlugin()
+	     * @param argc
 	     * @param argv
 	     * @return
 	     */
 		static osg::ref_ptr<OsgViz> getInstance(int argc = 0,char** argv = NULL);
 		static osg::ref_ptr<OsgViz> getInstance(lib_manager::LibManager * manager);
+
+		/**
+		 * This methos is meant for plugins to obtain the instance which is already loaded
+		 * @return the osgviz main
+		 */
 		static osg::ref_ptr<OsgViz> getExistingInstance();
 
 		private:
@@ -93,22 +98,9 @@ namespace osgviz
 		virtual int addUpdateCallback(Updatable* callback, int priority = 0);
 
 
-		template <class VIZPLUGIN> VIZPLUGIN* getVisualizerPlugin(std::string classname){
-			VIZPLUGIN* viz = (VIZPLUGIN*)getVizPlugin(classname,classname);
-			if (viz){
-				viz->setRootNode(root);
-				OsgVizPlugin* vizplug = (OsgVizPlugin*)viz;
-				vizplug->init();
-			}
+		template <class PLUGINTYPE> PLUGINTYPE* getPlugin(std::string classname){
+		    PLUGINTYPE* viz = (PLUGINTYPE*)getVizPlugin(classname,classname);
 			return viz;
-		}
-
-		/**
-		 * root node is not set
-		 */
-		template <class VIZPLUGIN> VIZPLUGIN* getPlugin(std::string classname){
-			VIZPLUGIN* data = (VIZPLUGIN*)loadPlugin(classname);
-			return data;
 		}
 
 		OsgVizPlugin* loadPlugin(std::string classname);

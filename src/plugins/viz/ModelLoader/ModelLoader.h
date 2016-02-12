@@ -8,11 +8,11 @@
 #ifndef GUI_OSGVIZ_SRC_PLUGINS_DATA_MODELLOADER_H_
 #define GUI_OSGVIZ_SRC_PLUGINS_DATA_MODELLOADER_H_
 
-#include "../../OsgVizVisualizerPlugin.h"
+#include "../../OsgVizPlugin.h"
 
 namespace osgviz {
 
-class ModelLoader : public OsgVizVisualizerPlugin{
+class ModelLoader : public OsgVizPlugin{
 public:
 	ModelLoader(lib_manager::LibManager *theManager);
 	virtual ~ModelLoader();

@@ -73,17 +73,6 @@ void OsgViz::init(int argc,char** argv){
 
 	windowManager = new WindowManager();
 
-	
-//	wnd->showRain();
-
-//	viewer.setUpViewInWindow(0,0,640,480);
-//	viewer.setSceneData(root);
-//	viewer.setCameraManipulator( new osgGA::TerrainManipulator() );
-//	viewer.realize();
-
-//	graphicsManager->initializeOSG(NULL,true);
-//	graphicsManager->addOSGNode(root);
-
 }
 
 OsgViz::~OsgViz(){
@@ -135,7 +124,11 @@ OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
 				fprintf(stderr,"unable to load lib %s\n",name.c_str());	fflush(stdout);
 				return NULL;
 			}
-			viz->setParent(this);
+			// init plugin data
+			//viz->setParent(this);
+            viz->setRootNode(root);
+            viz->init(m_argc,m_argv);
+
 			loadedPlugins.push_back(viz);
 			return viz;
 		//}else{
@@ -148,7 +141,7 @@ OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
 OsgVizPlugin* OsgViz::loadPlugin(std::string classname){
 	OsgVizPlugin* data = getVizPlugin(classname,classname);
 	if (data){
-		data->init();
+		data->init(m_argc,m_argv);
 	}
 	return data;
 }
