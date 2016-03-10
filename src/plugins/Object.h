@@ -35,49 +35,35 @@ public:
 
 	//virtual void setContent(osg::ref_ptr<osg::Node> object);
 
+
 	virtual bool clicked(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object, WindowInterface* window = NULL);
+
 
 	virtual bool dragged(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object, WindowInterface* window = NULL);
 
-	virtual bool pointerEvent(int buttonMask, const osg::Vec3d &world, const osg::Vec3d &local){return false;}
 
-	virtual bool keyEvent(int key, bool keyDown){return false;}
+//	virtual bool pointerEvent(int buttonMask, const osg::Vec3d &world, const osg::Vec3d &local){return false;}
+//
+//	virtual bool keyEvent(int key, bool keyDown){return false;}
 
-    //virtual void setRootNode(osg::Group* node);
-
+	/**
+	 * Any Ckiclable object can be added which are called if the clicked() or dragged () functions are not overloaded
+	 * They are called on each clicked callback occurence on this object
+	 * @param cb
+	 */
 	void addClickableCallback(Clickable * cb);
 
-//    /**
-//     * override osg::PositionAttitudeTransform addChild
-//     */
-//    virtual bool addChild(osg::Node *child){
-//    	return scaleTransform->addChild(child);
-//    }
-//
-//    virtual unsigned int getNumChildren() const{
-//    	return scaleTransform->getNumChildren();
-//    }
-//
-//    Node* getChild(unsigned int i){
-//    	return scaleTransform->getChild(i);
-//    }
-//
-//    const Node* getChild(unsigned int i) const{
-//    	return scaleTransform->getChild(i);
-//    }
-//
-//
+
+
 	inline void setScale(const float &x, const float &y, const float &z){
 		PositionAttitudeTransform::setScale(osg::Vec3d(x,y,z));
 	}
-//
+
 	inline void setScale(const osg::Vec3d &vec){
 		PositionAttitudeTransform::setScale(vec);
 	}
-//	inline osg::Vec3d getScale()const {
-//		return scaleTransform->getMatrix().getScale();
-//	}
-//
+
+
     inline void setPosition(const double &x, const double &y, const double &z){
     	PositionAttitudeTransform::setPosition(osg::Vec3d(x,y,z));
     }
@@ -97,6 +83,7 @@ public:
     inline void setOrientation(const double &angle, const osg::Vec3d &vec){
     	PositionAttitudeTransform::setAttitude( osg::Quat(angle, vec) );
     }
+
 
     inline void setByPositionAttitudeTransform(const osg::PositionAttitudeTransform &pa){
     	this->setPosition(pa.getPosition());

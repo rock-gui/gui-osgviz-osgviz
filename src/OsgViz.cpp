@@ -171,9 +171,9 @@ int OsgViz::addUpdateCallback(Updatable* callback, int priority) {
 }
 
 
-void OsgViz::startThread(){
+void OsgViz::startThread(int microseconds){
 	if (!thread){
-		thread = new UpdateThread(this, 10000);
+		thread = new UpdateThread(this, microseconds);
 		thread->startThread();
 	}else{
 		fprintf(stderr,"thread already running\n");
