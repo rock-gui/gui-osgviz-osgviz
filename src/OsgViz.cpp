@@ -106,7 +106,7 @@ unsigned int OsgViz::createWindow(WindowConfig windowConfig, osg::ref_ptr<osg::G
 }
 
 void OsgViz::destroyWindow(unsigned int id){
-	//graphicsManager->remove3DWindow(id);
+    windowManager->destroyWindow(id);
 }
 
 

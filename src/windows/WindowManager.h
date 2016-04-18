@@ -39,6 +39,11 @@ public:
 
 	void frame();
 
+    /**
+     * removed a window
+     * @param id the id of the window to remove
+     */
+    void destroyWindow(unsigned int id);
 
 	osg::ref_ptr<osg::GraphicsContext::Traits> genetrateTraits(WindowConfig& windowConfig);
 

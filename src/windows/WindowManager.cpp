@@ -20,10 +20,9 @@ WindowManager::~WindowManager() {
 
 unsigned int WindowManager::createWindow(WindowConfig& windowConfig, osg::ref_ptr<osg::Node> windowScene, osg::ref_ptr<osg::GraphicsContext> graphicsContext) {
 
-    if (!graphicsContext.valid()){
+    if (!graphicsContext){
 
         osg::ref_ptr<osg::GraphicsContext::Traits> traits = genetrateTraits(windowConfig);
-
         graphicsContext = osg::GraphicsContext::createGraphicsContext( traits );
     }
 
@@ -44,6 +43,12 @@ unsigned int WindowManager::createWindow(WindowConfig& windowConfig, osg::ref_pt
 	}
 	windowsMutex.unlock();
 	return wndId;		
+}
+
+void WindowManager::destroyWindow(unsigned int id){
+    windowsMutex.lock();
+    windows[id] = osg::ref_ptr<Window>();
+    windowsMutex.unlock();
 }
 
 void WindowManager::frame() {
