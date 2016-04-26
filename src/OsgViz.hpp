@@ -14,7 +14,7 @@
 #include "windows/config/WindowConfig.h"
 
 #include <stdio.h>
-#include "tools/Timing.h"
+//#include "tools/Timing.h"
 #include "tools/UpdateThread.h"
 
 

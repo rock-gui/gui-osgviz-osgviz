@@ -39,7 +39,7 @@ namespace osgviz {
   namespace interfaces {
 
 	LightData::LightData() {
-		pos = Vector(0.0, 0.0, 10.0);
+		pos = osg::Vec3f(0.0, 0.0, 10.0);
 		ambient = Color(0.0, 0.0, 0.0, 1.0);
 		diffuse = Color(1.0, 1.0, 1.0, 1.0);
 		specular = Color(1.0, 1.0, 1.0, 1.0);

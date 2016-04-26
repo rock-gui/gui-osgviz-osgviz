@@ -34,8 +34,8 @@
 #define CPP_UNUSED(a) (void)a
 
 #include <osg/Vec4>
-#include <Eigen/Core>
-#include <Eigen/Geometry>
+//#include <Eigen/Core>
+//#include <Eigen/Geometry>
 
 #ifndef M_PI
 #define M_PI (3.1415926535897932384626433832795)
@@ -61,8 +61,9 @@ namespace osgviz {
 
 
 
-    typedef Eigen::Matrix<double, 3, 1, Eigen::DontAlign> Vector;
-    typedef Eigen::Quaternion<double, Eigen::DontAlign> Quaternion;
+
+	//typedef Eigen::Matrix<double, 3, 1, Eigen::DontAlign> Vector;
+    //typedef Eigen::Quaternion<double, Eigen::DontAlign> Quaternion;
 
     struct Color : public osg::Vec4{
 

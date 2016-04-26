@@ -98,7 +98,7 @@ namespace osgviz {
     void OSGLightStruct::update(const LightData &ls) {
       //set light position
       //light_->setPosition(toOSGVec4(ls.pos,1.0f));
-      light_->setPosition(toOSGVec4(ls.pos, 1.0f));
+		light_->setPosition(osg::Vec4(ls.pos.x(), ls.pos.y(), ls.pos.z(), 1.0f));
 
       if(lightMarkerGeode.get()) {
         removeChild(lightMarkerGeode.get());
@@ -119,9 +119,9 @@ namespace osgviz {
         light_->setSpotCutoff(ls.angle*3.14/180.);
         light_->setSpotExponent(ls.exponent);
         if(ls.directional == true) {
-          light_->setPosition(toOSGVec4(ls.pos, 0.0f));
+          light_->setPosition(osg::Vec4(ls.pos.x(), ls.pos.y(), ls.pos.z(), 1.0f));
         } else {
-          light_->setPosition(toOSGVec4(ls.pos, 1.0f));
+          light_->setPosition(osg::Vec4(ls.pos.x(), ls.pos.y(), ls.pos.z(), 1.0f));
         }
       }
       //if no spotlight, set standard values for Omnilight
