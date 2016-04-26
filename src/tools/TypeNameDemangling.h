@@ -39,9 +39,9 @@ template<class Type>
 std::string demangledTypeName(const Type& p)
 {
 #ifdef __GNUC__
-   char* p_nice_name = abi::__cxa_demangle(typeid(*p).name(),NULL,NULL,NULL);
+   char* p_nice_name = abi::__cxa_demangle(typeid(p).name(),NULL,NULL,NULL);
 #else
-	char* p_nice_name = (char*)typeid(*p).name();
+	char* p_nice_name = (char*)typeid(p).name();
 #endif
    std::string result(p_nice_name);
    free(p_nice_name);
