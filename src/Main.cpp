@@ -1,7 +1,13 @@
 #include <iostream>
 #include "OsgViz.hpp"
 #include "plugins/viz/Primitives/PrimitivesFactory.h"
+
+#ifndef WIN32
 #include <unistd.h>//sleep
+#else
+#include <Windows.h>
+#define sleep(S) Sleep(S*1000)
+#endif
 #include <stdio.h>
 
 
@@ -14,7 +20,7 @@ int main(int argc, char** argv)
 
 	//load lib with some helpful primitives
 	printf("load plugin\n");	fflush(stdout);
-	osgviz::PrimitivesFactory *primitivesfactory = osgViz->getPlugin< osgviz::PrimitivesFactory >("PrimitivesFactory");
+	osgviz::PrimitivesFactory *primitivesfactory = new osgviz::PrimitivesFactory(NULL);
 
 	if (!primitivesfactory){
 		printf("plugin not found\n");	fflush(stdout);
@@ -105,8 +111,8 @@ int main(int argc, char** argv)
 	//osgViz->lockThread();
 	//do updates
 	//osgViz->unlockThread();
-	printf("startThread\n");fflush(stdout);
-	osgViz->startThread();
+	//printf("startThread\n");fflush(stdout);
+	//osgViz->startThread();
 
 	//or don't start the thread and update manually using osgViz->update();
 
@@ -115,10 +121,10 @@ int main(int argc, char** argv)
 		//osgViz->lockThread();
 		//do updates
 		//osgViz->unlockThread();
-		//osgViz->update();
+		osgViz->update();
 		//printf("sleep\n");fflush(stdout);
 
-		sleep(5);
+		//sleep(5);
 //		osgViz->getWindowManager()->getWindowByID(0)->setFullscreen(true);
 //		sleep(5);
 //		osgViz->getWindowManager()->getWindowByID(0)->setFullscreen(false);

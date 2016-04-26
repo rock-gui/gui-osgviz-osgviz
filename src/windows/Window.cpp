@@ -111,6 +111,9 @@ osg::ref_ptr<osgviz::HUD> Window::addHUD(int width,int height, unsigned int wind
 //    myLightSource->setStateSetModes(*globalStateset, osg::StateAttribute::ON);
 //}
 
+#ifdef _MSC_VER
+#define __PRETTY_FUNCTION__  __FUNCTION__ __FUNCSIG__
+#endif
 
 void Window::setFullscreen(bool state, int window, int screen){
   printf("calling : %s state = %i win %i screen %i\n", __PRETTY_FUNCTION__,state,window,screen);fflush(stdout);

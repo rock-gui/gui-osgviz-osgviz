@@ -4,6 +4,10 @@
 
 #include <osg/LightModel>
 
+#ifdef _MSC_VER
+#define __PRETTY_FUNCTION__  __FUNCTION__ __FUNCSIG__
+#endif
+
 namespace osgviz {
 
 SuperView::SuperView() : osgViewer::View() {}

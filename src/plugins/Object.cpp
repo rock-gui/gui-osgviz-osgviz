@@ -8,9 +8,9 @@
 #include "Object.h"
 
 #include <stdio.h>
-#include <cxxabi.h>
+//#include <cxxabi.h>
 
-#include <unistd.h>
+//#include <unistd.h>
 
 #include <osg/ValueObject>
 

@@ -6,6 +6,9 @@
 #include <osg/Point>
 #include <osgText/Text>
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 namespace osgviz
 {
     ::osg::Node* GridNode::create(int rows,int cols,float dx, float dy, bool show_coordinates, const ::osg::Vec4 &color)

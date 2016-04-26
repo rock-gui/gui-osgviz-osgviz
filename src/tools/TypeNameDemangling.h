@@ -8,8 +8,9 @@
 #ifndef TYPENAMEDEMANGLING_H_
 #define TYPENAMEDEMANGLING_H_
 
-
-#include <cxxabi.h>
+#ifdef __GNUC__
+	#include <cxxabi.h>
+#endif
 #include <string>
 #include <stdlib.h>
 #if __cplusplus > 199711L
@@ -24,7 +25,11 @@
 template<class Type>
 std::string demangledTypeName(const Type* p)
 {
+#ifdef __GNUC__
    char* p_nice_name = abi::__cxa_demangle(typeid(*p).name(),NULL,NULL,NULL);
+#else
+	char* p_nice_name = (char*)typeid(*p).name();
+#endif
    std::string result(p_nice_name);
    free(p_nice_name);
    return result;
@@ -33,7 +38,11 @@ std::string demangledTypeName(const Type* p)
 template<class Type>
 std::string demangledTypeName(const Type& p)
 {
-   char* p_nice_name = abi::__cxa_demangle(typeid(p).name(),NULL,NULL,NULL);
+#ifdef __GNUC__
+   char* p_nice_name = abi::__cxa_demangle(typeid(*p).name(),NULL,NULL,NULL);
+#else
+	char* p_nice_name = (char*)typeid(*p).name();
+#endif
    std::string result(p_nice_name);
    free(p_nice_name);
    return result;
