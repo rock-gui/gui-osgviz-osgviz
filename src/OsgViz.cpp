@@ -66,9 +66,6 @@ void OsgViz::init(int argc,char** argv){
 	m_argv = argv;
 	root = new osg::Group();
 	root->setName("OsgViz root");
-	#ifndef WIN32
-		XInitThreads();
-	#endif
 	instance = this;
 
 	windowManager = new WindowManager();
@@ -173,6 +170,9 @@ int OsgViz::addUpdateCallback(Updatable* callback, int priority) {
 
 void OsgViz::startThread(int microseconds){
 	if (!thread){
+		#ifndef WIN32
+			XInitThreads();
+		#endif
 		thread = new UpdateThread(this, microseconds);
 		thread->startThread();
 	}else{
