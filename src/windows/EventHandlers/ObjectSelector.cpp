@@ -50,7 +50,7 @@ std::deque<ObjectSelector::IntersectionResult> ObjectSelector::getIntersections(
         if( ray->containsIntersections()){
 
     //		for (osgUtil::LineSegmentIntersector::Intersections::iterator intersection = intersections.begin();intersection!=intersections.end();intersection++){
-            for (osgUtil::LineSegmentIntersector::Intersections::iterator intersection = intersections.begin();intersection != intersections.end();intersection++){
+            for (osgUtil::LineSegmentIntersector::Intersections::reverse_iterator intersection = intersections.rbegin();intersection != intersections.rend();intersection++){
 
 
                 result.p = intersection->getLocalIntersectPoint();
