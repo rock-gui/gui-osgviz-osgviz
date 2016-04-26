@@ -86,7 +86,9 @@ namespace osgviz
 		~OsgViz();
 
 		/**
-		 * starts a thread calling the update() function
+         * starts a thread calling the update() function.
+         * @note This will also initialize the xlib threading (XInitThreads()). This will break
+         *       when used together with qt or any other xlib based gui framework.
 		 * @param microseconds number of microseconds to wait between the calls on update()
 		 */
 	    void startThread(int microseconds = 10000);
