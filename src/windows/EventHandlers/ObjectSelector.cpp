@@ -28,22 +28,36 @@ std::deque<ObjectSelector::IntersectionResult> ObjectSelector::getIntersections(
     /* If a hud is clicked, return the node path to the hud, otherwise return
      * the path to the closest clicked object. */
   
-    osg::ref_ptr<osgUtil::LineSegmentIntersector> ray = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, ea.getXnormalized(), ea.getYnormalized());
-    osgUtil::IntersectionVisitor visitor(ray);
-    view->getCamera()->accept(visitor);
+    //projection space is [-1 ... 1], thus we can directly use the normalized
+    //mouse coordinates
+    double mx = ea.getXnormalized();
+    double my = ea.getYnormalized();
+    double w = 0.01; //width and height of the polytope, that is shot into the scene
+    double h = 0.01;
+    osg::ref_ptr<osgUtil::PolytopeIntersector> intersector;
+    intersector = new osgUtil::PolytopeIntersector( osgUtil::Intersector::PROJECTION, mx-w, my-h, mx+w, my+h );
+    intersector->setIntersectionLimit(osgUtil::Intersector::LIMIT_ONE_PER_DRAWABLE);// a single drawable will appear at most once while calculating intersections.
+
+    osgUtil::IntersectionVisitor iv(intersector);
+    view->getCamera()->accept(iv);
     
-    std::deque<IntersectionResult> 
-    results;
+    std::deque<IntersectionResult> results;
     
-    if(ray->containsIntersections())
+    if(intersector->containsIntersections())
     {
-        osgUtil::LineSegmentIntersector::Intersections intersections = ray->getIntersections();
+        osgUtil::PolytopeIntersector::Intersections intersections = intersector->getIntersections();
         IntersectionResult result;
         result.c = osg::Vec2d(ea.getX(),ea.getY());
         
-        osgUtil::LineSegmentIntersector::Intersections::iterator intersection = intersections.begin();
-        result.p = intersection->getLocalIntersectPoint();
-        result.w = intersection->getWorldIntersectPoint();
+        osgUtil::PolytopeIntersector::Intersections::iterator intersection = intersections.begin();
+        result.p = intersection->localIntersectionPoint;
+        if(intersection->matrix.valid()) {
+            result.w = intersection->localIntersectionPoint * (*intersection->matrix.get());
+        }
+        else {
+            std::cerr << "WARN: intersection matrix not valid" << std::endl;
+            result.w = intersection->localIntersectionPoint;
+        }
         //get the node path to the first intersection
         results = getclickablePath(intersection->nodePath, result);
         
