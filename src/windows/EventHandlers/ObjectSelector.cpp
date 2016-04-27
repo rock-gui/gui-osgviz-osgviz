@@ -51,13 +51,8 @@ std::deque<ObjectSelector::IntersectionResult> ObjectSelector::getIntersections(
         
         osgUtil::PolytopeIntersector::Intersections::iterator intersection = intersections.begin();
         result.p = intersection->localIntersectionPoint;
-        if(intersection->matrix.valid()) {
-            result.w = intersection->localIntersectionPoint * (*intersection->matrix.get());
-        }
-        else {
-            std::cerr << "WARN: intersection matrix not valid" << std::endl;
-            result.w = intersection->localIntersectionPoint;
-        }
+        result.w = intersection->localIntersectionPoint * (*intersection->matrix.get());
+
         //get the node path to the first intersection
         results = getclickablePath(intersection->nodePath, result);
         
@@ -70,6 +65,8 @@ std::deque<ObjectSelector::IntersectionResult> ObjectSelector::getIntersections(
         {
             if(containsHud(intersection->nodePath))
             {
+                result.p = intersection->localIntersectionPoint;
+                result.w = intersection->localIntersectionPoint * (*intersection->matrix.get());
                 results = getclickablePath(intersection->nodePath, result);
                 break;
             }
