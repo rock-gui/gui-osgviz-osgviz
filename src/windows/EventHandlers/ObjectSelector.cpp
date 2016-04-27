@@ -68,11 +68,11 @@ std::deque<ObjectSelector::IntersectionResult> ObjectSelector::getIntersections(
         ++intersection;
         for(;intersection != intersections.end(); ++intersection)
         {
-          if(containsHud(intersection->nodePath))
-          {
-            results = getclickablePath(intersection->nodePath, result);
-            break;
-          }
+            if(containsHud(intersection->nodePath))
+            {
+                results = getclickablePath(intersection->nodePath, result);
+                break;
+            }
         }
     }
     return results;
