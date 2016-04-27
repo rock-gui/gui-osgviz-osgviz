@@ -7,79 +7,87 @@
 
 #include "ObjectSelector.h"
 
-#include "../../OsgViz.hpp"
-#include "../../interfaces/Clickable.h"
-
-//#include "../../tools/TypeNameDemangling.h"
-
-#include "../SuperView.h"
-#include "../HUD.h"
+#include <osgViz/OsgViz.hpp>
+#include <osgViz/interfaces/Clickable.h>
+#include <osgViz/windows/SuperView.h>
+#include <osgViz/windows/HUD.h>
 
 #include <osgUtil/LineSegmentIntersector>
 #include <iostream>
 
-
-
 namespace osgviz {
 
 ObjectSelector::ObjectSelector(osgviz::SuperView *view):osgGA::GUIEventHandler(),view(view) {
-	draggedObject= NULL;
-
+    draggedObject= NULL;
 }
 
-ObjectSelector::~ObjectSelector() {
-	// TODO Auto-generated destructor stub
-}
+ObjectSelector::~ObjectSelector() {}
 
 std::deque<ObjectSelector::IntersectionResult> ObjectSelector::getIntersections(const osgGA::GUIEventAdapter& ea){
 
-	osg::ref_ptr<osgUtil::LineSegmentIntersector> ray = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, ea.getXnormalized(), ea.getYnormalized());
-	osgUtil::IntersectionVisitor visitor(ray);
-
-	view->getCamera()->accept(visitor);
-
-	osgUtil::LineSegmentIntersector::Intersections intersections = ray->getIntersections();
-	//osgUtil::LineSegmentIntersector::Intersection intersection = ray->getFirstIntersection();
-
-	std::deque<IntersectionResult> results;
-	IntersectionResult result;
-	//results.reserve(intersections.size());
-	result.c = osg::Vec2d(ea.getX(),ea.getY());
-
-
-        if( ray->containsIntersections()){
-
-    //		for (osgUtil::LineSegmentIntersector::Intersections::iterator intersection = intersections.begin();intersection!=intersections.end();intersection++){
-            for (osgUtil::LineSegmentIntersector::Intersections::reverse_iterator intersection = intersections.rbegin();intersection != intersections.rend();intersection++){
-
-
-                result.p = intersection->getLocalIntersectPoint();
-                result.w = intersection->getWorldIntersectPoint();
-
-                bool hashud = false;
-                for (osg::NodePath::const_iterator node = intersection->nodePath.begin(); node != intersection->nodePath.end(); node++){
-
-                    //printf("%s, %s\n",demangledTypeName(*node).c_str(), (*node)->getName().c_str());
-
-                    Clickable* obj = dynamic_cast<Clickable*>(*node);
-                    HUD* hud = dynamic_cast<HUD*>(*node);
-                    if (hud){
-                        hashud = true;
-                    }
-                    if (obj){
-                        result.clickable = obj;
-                        if (hashud){
-                            results.push_front(result);
-                        }else{
-                            results.push_back(result);
-                        }
-                    }
-                }
-    		}
+    /* If a hud is clicked, return the node path to the hud, otherwise return
+     * the path to the closest clicked object. */
+  
+    osg::ref_ptr<osgUtil::LineSegmentIntersector> ray = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, ea.getXnormalized(), ea.getYnormalized());
+    osgUtil::IntersectionVisitor visitor(ray);
+    view->getCamera()->accept(visitor);
+    
+    std::deque<IntersectionResult> 
+    results;
+    
+    if(ray->containsIntersections())
+    {
+        osgUtil::LineSegmentIntersector::Intersections intersections = ray->getIntersections();
+        IntersectionResult result;
+        result.c = osg::Vec2d(ea.getX(),ea.getY());
+        
+        osgUtil::LineSegmentIntersector::Intersections::iterator intersection = intersections.begin();
+        result.p = intersection->getLocalIntersectPoint();
+        result.w = intersection->getWorldIntersectPoint();
+        //get the node path to the first intersection
+        results = getclickablePath(intersection->nodePath, result);
+        
+        //If a hud is present, it may be anywhere in the intersection list because
+        //sorting is done by z-buffer value and the hud doesn't have one.
+        //Therefore all remaining intersections need to be checked
+        
+        ++intersection;
+        for(;intersection != intersections.end(); ++intersection)
+        {
+          if(containsHud(intersection->nodePath))
+          {
+            results = getclickablePath(intersection->nodePath, result);
+            break;
+          }
         }
+    }
+    return results;
+}
 
+bool ObjectSelector::containsHud(const osg::NodePath& nodePath) const
+{
+    osg::NodePath::const_iterator it;
+    for (it = nodePath.begin(); it != nodePath.end(); ++it){
+        HUD* hud = dynamic_cast<HUD*>(*it);
+        if (hud){
+            return true;
+        }      
+    }
+    return false;
+}
 
-	return results;
+std::deque<ObjectSelector::IntersectionResult> ObjectSelector::getclickablePath(const osg::NodePath& nodePath,
+                                                                                  ObjectSelector::IntersectionResult tmplate)
+{
+    std::deque<ObjectSelector::IntersectionResult> results;
+    for (osg::NodePath::const_iterator it = nodePath.begin(); it != nodePath.end(); it++){
+        Clickable* obj = dynamic_cast<Clickable*>(*it);
+        if(obj != NULL) {
+            tmplate.clickable = obj;
+            results.push_back(tmplate);  
+        }
+    }
+    return results;
 }
 
 
@@ -105,8 +113,10 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
             std::deque<IntersectionResult> intersections = getIntersections(ea);
 
             if (!intersections.empty()){
-                for (std::deque<IntersectionResult>::iterator inter = intersections.begin(); inter != intersections.end(); inter++){
-                        if (inter->clickable->clicked(pushedButtonsMask,inter->c,inter->w,inter->p,inter->clickable,view)){
+                std::deque<IntersectionResult>::reverse_iterator it;
+                for (it = intersections.rbegin(); it != intersections.rend(); it++){
+                        if (it->clickable->clicked(pushedButtonsMask, it->c, it->w,
+                                                   it->p, it->clickable, view)){
                             return true;
                         }
                 }
@@ -122,11 +132,13 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
             std::deque<IntersectionResult> intersections = getIntersections(ea);
 
             if (!intersections.empty()){
-                for (std::deque<IntersectionResult>::iterator inter = intersections.begin(); inter != intersections.end(); inter++){
-                    if (inter->clickable->dragged(pushedButtonsMask,inter->c,inter->w,inter->p,inter->clickable,view)){
+                std::deque<IntersectionResult>::reverse_iterator it;
+                for (it = intersections.rbegin(); it != intersections.rend(); it++){
+                    if (it->clickable->dragged(pushedButtonsMask, it->c, it->w,
+                                               it->p, it->clickable, view)){
                         //there is a receiving obj,
                         view->disableCameraControl();
-                        draggedObject = inter->clickable;
+                        draggedObject = it->clickable;
                         lastEvent = thisEvent;
                         return true;
                     }
@@ -141,10 +153,11 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
             if (draggedObject){
 
                 std::deque<IntersectionResult> intersections = getIntersections(ea);
-
-                for (std::deque<IntersectionResult>::iterator inter = intersections.begin(); inter != intersections.end(); inter++){
-                    if (inter->clickable == draggedObject){
-                        return draggedObject->dragged(pushedButtonsMask,inter->c,inter->w,inter->p,draggedObject,view);
+                std::deque<IntersectionResult>::iterator it;
+                for (it = intersections.begin(); it != intersections.end(); it++){
+                    if (it->clickable == draggedObject){
+                        return draggedObject->dragged(pushedButtonsMask, it->c, it->w,
+                                                      it->p, draggedObject, view);
                     }
                 }
             }
