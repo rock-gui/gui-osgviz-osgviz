@@ -39,8 +39,8 @@ namespace osgviz {
 
       unsigned int index;
       std::string name; //light name
-      Vector pos; //light position
-      Vector lookAt; //light direction
+      osg::Vec3f pos; //light position
+      osg::Vec3f lookAt; //light direction
       Color ambient; //color of the ambient part of the light
       Color diffuse; //color of the diffuse part of the light
       Color specular; //specular color of the light

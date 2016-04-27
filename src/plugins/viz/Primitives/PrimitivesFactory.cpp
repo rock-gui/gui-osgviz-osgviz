@@ -16,6 +16,7 @@
 #include <osg/LineWidth>
 #include <osg/Geode>
 #include <osg/ComputeBoundsVisitor>
+#include <osg/Version>
 
 #include <osgDB/ReadFile>
 
@@ -79,7 +80,7 @@ osg::ref_ptr<PrimitivesFactory::BoundingBox> PrimitivesFactory::createBoundingBo
 	osg::ComputeBoundsVisitor  cbv;
 
 	//the object location might be at 0,0,0, so we traverse its children
-	for (int i=0; i< object->getNumChildren();++i){
+	for (size_t i=0; i< object->getNumChildren();++i){
 		object->getChild(i)->accept(cbv);
 	}
 	osg::BoundingBox &bb(cbv.getBoundingBox());
@@ -150,8 +151,14 @@ osg::ref_ptr<PrimitivesFactory::BoundingBox> PrimitivesFactory::createBoundingBo
 	box->normals->push_back(osg::Vec3(0.0f,-1.0f,0.0f));
 
 	box->selectionBox->setVertexArray(box->points.get());
-	box->selectionBox->setColorArray(box->colors.get(),osg::Array::BIND_OVERALL);
-	box->selectionBox->setNormalArray(box->normals, osg::Array::BIND_OVERALL);
+#if OSG_VERSION_LESS_OR_EQUAL(3,0,2)
+    // needed for osg 3.0.2, present on ubuntu 12.04
+    box->selectionBox->setColorArray(box->colors.get());
+    box->selectionBox->setNormalArray(box->normals);
+#else
+    box->selectionBox->setColorArray(box->colors.get(),osg::Array::BIND_OVERALL);
+    box->selectionBox->setNormalArray(box->normals, osg::Array::BIND_OVERALL);
+#endif
 	box->selectionBox->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINES,0,box->points->size()));
 
 

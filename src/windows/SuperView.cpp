@@ -4,6 +4,10 @@
 
 #include <osg/LightModel>
 
+#ifdef _MSC_VER
+#define __PRETTY_FUNCTION__  __FUNCTION__ __FUNCSIG__
+#endif
+
 namespace osgviz {
 
 SuperView::SuperView() : osgViewer::View() {}
@@ -207,7 +211,7 @@ void SuperView::setCursorPos(int x, int y){
 
 
 void SuperView::initDefaultLight() {
-	defaultLight.lStruct.pos = Vector(0.0, 0.0, 10.0);
+	defaultLight.lStruct.pos = osg::Vec3f(0.0, 0.0, 10.0);
 	defaultLight.lStruct.ambient = osgviz::Color(0.0, 0.0, 0.0, 1.0);
 	defaultLight.lStruct.diffuse = osgviz::Color(1.0, 1.0, 1.0, 1.0);
 	defaultLight.lStruct.specular = osgviz::Color(1.0, 1.0, 1.0, 1.0);

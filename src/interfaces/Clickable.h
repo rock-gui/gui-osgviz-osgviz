@@ -20,14 +20,28 @@ public:
 	Clickable(){};
 	virtual ~Clickable(){};
 
-	/**
-	 * @param object self, can be used to forward events to external handlers that operate on the object
-	 */
+    /**
+     * Called when this object was clicked
+     * @param buttonMask the osgGA::GUIEventAdapter::MouseButtonMask
+     * @param cursor the cursor position in the 2d plane of the window
+     * @param world global coordinates of the click position
+     * @param local the local coordinated of the click position
+     * @param object the object hit (normally "this"), needed when a "non Object" Clickable is added to this Object as event handler using addClickableCallback
+     * @param window Interface to the window where this event originates from
+     * @return true if the event was handled, false if not -> event is propargated into the graph below this node to find another Object
+     */
 	virtual bool clicked(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, Clickable* object, WindowInterface* window = NULL) = 0;
 
-	/**
-	 * @param buttonMask is called with 0 when dragging stopped
-	 */
+    /**
+     * Called when this object was dragged
+     * @param buttonMask the osgGA::GUIEventAdapter::MouseButtonMask
+     * @param cursor the cursor position in the 2d plane of the window
+     * @param world global coordinates of the click position
+     * @param local the local coordinated of the click position
+     * @param object the object hit (normally "this"), needed when a "non Object" Clickable is added to this Object as event handler using addClickableCallback
+     * @param window Interface to the window where this event originates from
+     * @return true if the event was handled, false if not -> event is propargated into the graph below this node to find another Object
+     */
 	virtual bool dragged(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, Clickable* object, WindowInterface* window = NULL){return false;}
 
 };

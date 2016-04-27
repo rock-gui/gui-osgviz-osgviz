@@ -8,10 +8,11 @@
 
 #include "UpdateThread.h"
 
-#include <unistd.h>
 #include <stdio.h>
 
-#ifdef WIN32
+#ifndef WIN32
+	#include <unistd.h>
+#else
 	#include <windows.h>
 	#define usleep(X) Sleep(X/1000.0)
 #endif
@@ -87,7 +88,7 @@ namespace osgviz {
 		//printf("unlock\n");fflush(stdout);
 	}
 	int UpdateThread::trylock(){
-		mutex->trylock();
+		return mutex->trylock();
 		//printf("unlock\n");fflush(stdout);
 	}
 

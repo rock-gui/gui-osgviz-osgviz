@@ -1,4 +1,4 @@
-rock_find_cmake(Boost REQUIRED system)
+#rock_find_cmake(Boost REQUIRED system)
 
 
 find_package(OpenSceneGraph REQUIRED osgManipulator osgViewer osgFX osgShadow osgParticle osgTerrain osgDB osgGA osgWidget osgText osgUtil)
@@ -47,7 +47,7 @@ rock_library(osgVizGraphics
             graphics/interfaces/data/LightData.h
             graphics/wrapper/OSGLightStruct.h
 
-    DEPS_PKGCONFIG openscenegraph eigen3)
+    DEPS_PKGCONFIG openscenegraph)
 
 
 rock_library(osgViz
@@ -77,7 +77,7 @@ rock_library(osgViz
                
     LIBS ${Boost_SYSTEM_LIBRARY} ${ADDITIONAL_LIBS}
     DEPS osgVizGraphics 
-    DEPS_PKGCONFIG opencv lib_manager openscenegraph eigen3
+    DEPS_PKGCONFIG lib_manager openscenegraph
 )
 
 rock_library(osgVizPlugin
@@ -86,7 +86,7 @@ rock_library(osgVizPlugin
     HEADERS 
     plugins/Object.h
     plugins/OsgVizPlugin.h 
-    DEPS_PKGCONFIG lib_manager openscenegraph eigen3
+    DEPS_PKGCONFIG lib_manager openscenegraph
     LIBS ${ADDITIONAL_LIBS})
 
 
@@ -108,7 +108,7 @@ rock_library(ModelLoader
     DEPS osgVizPlugin)
     
 rock_executable(osgViz_bin Main.cpp
-    DEPS osgViz osgVizPlugin
+    DEPS osgViz osgVizPlugin PrimitivesFactory
     LIBS ${ADDITIONAL_LIBS})
 
 

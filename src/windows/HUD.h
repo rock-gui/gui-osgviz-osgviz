@@ -64,7 +64,7 @@ class HUD:  public osg::Camera
 
       void getSize(sReal &width, sReal &height);
       void setViewSize(double width, double height);
-      void getOffset(Vector &offset);
+      void getOffset(osg::Vec3f &offset);
       void resize(double width, double height);
 
 //      void addHudObject(osgviz::Object *elem);
@@ -117,7 +117,7 @@ class HUD:  public osg::Camera
 
       unsigned long id;
       Color myColor;
-      Vector myoff;
+      osg::Vec3f myoff;
 
       double hud_width, hud_height, window_width, window_height;
       double mousescale_x,mousescale_y;
