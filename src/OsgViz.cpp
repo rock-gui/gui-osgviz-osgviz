@@ -19,14 +19,14 @@ namespace osgviz
 osg::ref_ptr<OsgViz> instance = NULL;
 
 osg::ref_ptr<OsgViz> OsgViz::getInstance(int argc,char** argv){
-	if (!instance){
+	if (!instance.valid()){
 		instance = new OsgViz(argc,argv);
 	}
 	return instance;
 }
 
 osg::ref_ptr<OsgViz> OsgViz::getInstance(lib_manager::LibManager * manager){
-	if (!instance){
+	if (!instance.valid()){
 		instance = new OsgViz(manager);
 	}
 	return instance;
