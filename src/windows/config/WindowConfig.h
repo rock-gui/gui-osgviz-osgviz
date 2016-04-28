@@ -34,8 +34,8 @@ namespace osgviz {
     class WindowConfig {
     public:
       WindowConfig() : title("osgviz"),
-                      posX(0),
-                      posY(0),      
+                      posX(20),
+                      posY(20),      
                       width(720),
                       height(405),
                       fullScreen(false),
