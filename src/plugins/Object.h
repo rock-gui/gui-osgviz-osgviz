@@ -29,71 +29,71 @@ namespace osgviz {
 class Object: public osg::PositionAttitudeTransform, public Clickable{
 
 public:
-	Object();
+    Object();
 
-	virtual ~Object();
+    virtual ~Object();
 
-	//virtual void setContent(osg::ref_ptr<osg::Node> object);
-
-
-	virtual bool clicked(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object, WindowInterface* window = NULL);
+    //virtual void setContent(osg::ref_ptr<osg::Node> object);
 
 
-	virtual bool dragged(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object, WindowInterface* window = NULL);
+    virtual bool clicked(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object, WindowInterface* window = NULL);
 
 
-//	virtual bool pointerEvent(int buttonMask, const osg::Vec3d &world, const osg::Vec3d &local){return false;}
-//
-//	virtual bool keyEvent(int key, bool keyDown){return false;}
-
-	/**
-	 * Any Ckiclable object can be added which are called if the clicked() or dragged () functions are not overloaded
-	 * They are called on each clicked callback occurence on this object
-	 * @param cb
-	 */
-	void addClickableCallback(Clickable * cb);
+    virtual bool dragged(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object, WindowInterface* window = NULL);
 
 
+    //virtual bool pointerEvent(int buttonMask, const osg::Vec3d &world, const osg::Vec3d &local){return false;}
+    //
+    //virtual bool keyEvent(int key, bool keyDown){return false;}
 
-	inline void setScale(const float &x, const float &y, const float &z){
-		PositionAttitudeTransform::setScale(osg::Vec3d(x,y,z));
-	}
+    /**
+      * Any Ckiclable object can be added which are called if the clicked() or dragged () functions are not overloaded
+      * They are called on each clicked callback occurence on this object
+      * @param cb
+      */
+    void addClickableCallback(Clickable * cb);
 
-	inline void setScale(const osg::Vec3d &vec){
-		PositionAttitudeTransform::setScale(vec);
-	}
+
+
+    inline void setScale(const float &x, const float &y, const float &z){
+        PositionAttitudeTransform::setScale(osg::Vec3d(x,y,z));
+    }
+
+    inline void setScale(const osg::Vec3d &vec){
+        PositionAttitudeTransform::setScale(vec);
+    }
 
 
     inline void setPosition(const double &x, const double &y, const double &z){
-    	PositionAttitudeTransform::setPosition(osg::Vec3d(x,y,z));
+        PositionAttitudeTransform::setPosition(osg::Vec3d(x,y,z));
     }
 
     inline void setPosition(const osg::Vec3d& vec){
-    	PositionAttitudeTransform::setPosition(vec);
+        PositionAttitudeTransform::setPosition(vec);
     }
 
     inline void setOrientation(const double &x,const double &y,const double &z,const double &w){
-    	setAttitude( osg::Quat (x,y,z,w));
+        setAttitude( osg::Quat (x,y,z,w));
     }
 
     inline void setOrientation(const osg::Quat &quat){
-    	PositionAttitudeTransform::setAttitude( quat );
+        PositionAttitudeTransform::setAttitude( quat );
     }
 
     inline void setOrientation(const double &angle, const osg::Vec3d &vec){
-    	PositionAttitudeTransform::setAttitude( osg::Quat(angle, vec) );
+        PositionAttitudeTransform::setAttitude( osg::Quat(angle, vec) );
     }
 
 
     inline void setByPositionAttitudeTransform(const osg::PositionAttitudeTransform &pa){
-    	this->setPosition(pa.getPosition());
-    	this->setAttitude(pa.getAttitude());
-    	this->setScale(pa.getScale());
-    	this->setPivotPoint(pa.getPivotPoint());
+        this->setPosition(pa.getPosition());
+        this->setAttitude(pa.getAttitude());
+        this->setScale(pa.getScale());
+        this->setPivotPoint(pa.getPivotPoint());
     }
 
     inline void rotate(const double &angle, const osg::Vec3d &vec){
-    	setAttitude( getAttitude() * osg::Quat(angle, vec) );
+        setAttitude( getAttitude() * osg::Quat(angle, vec) );
     }
 
 
@@ -124,7 +124,7 @@ private:
     osg::ref_ptr< osg::Geode > textgeode;
     osg::ref_ptr< osgText::Text > text;
 
-	std::vector< Clickable* > clickablecb;
+    std::vector< Clickable* > clickablecb;
 
 };
 
