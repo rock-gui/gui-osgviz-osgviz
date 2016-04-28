@@ -35,12 +35,9 @@ public:
 
     //virtual void setContent(osg::ref_ptr<osg::Node> object);
 
-
     virtual bool clicked(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object, WindowInterface* window = NULL);
 
-
     virtual bool dragged(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object, WindowInterface* window = NULL);
-
 
     //virtual bool pointerEvent(int buttonMask, const osg::Vec3d &world, const osg::Vec3d &local){return false;}
     //
@@ -52,8 +49,10 @@ public:
       * @param cb
       */
     void addClickableCallback(Clickable * cb);
-
-
+    
+    /**returns true if @p cb is already registered as clickable callback for 
+     * this object. False otherwise.*/
+    bool hasClickableCallback(Clickable * cb);
 
     inline void setScale(const float &x, const float &y, const float &z){
         PositionAttitudeTransform::setScale(osg::Vec3d(x,y,z));
@@ -84,7 +83,6 @@ public:
         PositionAttitudeTransform::setAttitude( osg::Quat(angle, vec) );
     }
 
-
     inline void setByPositionAttitudeTransform(const osg::PositionAttitudeTransform &pa){
         this->setPosition(pa.getPosition());
         this->setAttitude(pa.getAttitude());
@@ -96,17 +94,14 @@ public:
         setAttitude( getAttitude() * osg::Quat(angle, vec) );
     }
 
-
     virtual void setName(const std::string &name);
 
     void switchCullMask();
     void xorCullMask(unsigned int mask);
 
-
     void displayName(float font_size = 0.1f);
 
     void setDirty();
-
 
 protected:
     friend class ModelViewFactory;

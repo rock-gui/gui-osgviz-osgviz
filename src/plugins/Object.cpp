@@ -13,7 +13,7 @@
 //#include <unistd.h>
 
 #include <osg/ValueObject>
-
+#include <algorithm>
 
 namespace osgviz {
 
@@ -132,6 +132,12 @@ void Object::setName(const std::string &name){
         text->setText(name);
     }
 }
+
+bool Object::hasClickableCallback(Clickable* cb)
+{
+    return std::find(clickablecb.begin(), clickablecb.end(), cb) != clickablecb.end();
+}
+
 
 
 } /* namespace osgviz */
