@@ -13,10 +13,14 @@
 
 #include "Object.h"
 
-
+#ifndef _MSC_VER
 #define OSGVIZ_PLUGIN(NAME) \
 	CREATE_LIB(NAME); \
 	DESTROY_LIB(NAME);
+#else
+ //no dynamic loading for msvc
+ #define OSGVIZ_PLUGIN(NAME) 
+#endif
 
 
 namespace osgviz {
