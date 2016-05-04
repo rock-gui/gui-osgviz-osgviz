@@ -1,40 +1,37 @@
 #include "ManipulationClickHandler.h"
 #include "TranslateBoxDragger.h"
 #include <iostream>
+#include <osg/io_utils>
 
 using namespace osgManipulator;
 using namespace osg;
 namespace osgviz {
   
   
+  //FIXME braucht man das?
 class PlaneConstraint : public osgManipulator::Constraint
 {
 public:
         PlaneConstraint() {}
 
-        virtual bool constrain(osgManipulator::TranslateInLineCommand& command) const
+        bool constrain(osgManipulator::TranslateInLineCommand& command) const
         {
-          std::cout << "translate line" << std::endl;
             return true;
         }
-        virtual bool constrain(osgManipulator::TranslateInPlaneCommand& command) const
+        bool constrain(osgManipulator::TranslateInPlaneCommand& command) const
         {
-          std::cout << "translate plane" << std::endl;
             return true;
         }
-        virtual bool constrain(osgManipulator::Scale1DCommand& command) const
+        bool constrain(osgManipulator::Scale1DCommand& command) const
         {
-          std::cout << "scale 1d" << std::endl;
             return true;
         }
-        virtual bool constrain(osgManipulator::Scale2DCommand& command) const
+        bool constrain(osgManipulator::Scale2DCommand& command) const
         {
-            std::cout << "scale 2d" << std::endl;
             return true;
         }
-        virtual bool constrain(osgManipulator::ScaleUniformCommand& command) const
+        bool constrain(osgManipulator::ScaleUniformCommand& command) const
         {
-          std::cout << "scale uniform" << std::endl;
             return true;
         }
 };
@@ -44,7 +41,8 @@ ManipulationClickHandler::ManipulationClickHandler() : clickedObject(NULL),
 {
     dragger->setupDefaultGeometry();
     dragger->addConstraint(new PlaneConstraint());
-    dragger->setHandleEvents(false);
+    dragger->setHandleEvents(true);
+    dragger->addDraggerCallback(this);
     draggerParent->addChild(dragger);
 }
 
@@ -85,7 +83,7 @@ void ManipulationClickHandler::deselectCurrentObject()
     }
 }
 
-void ManipulationClickHandler::selectObject(Object* obj)
+void ManipulationClickHandler::selectObject(osgviz::Object* obj)
 {
     //FIXME kollidiert das mit dem TransformerGraph weil der davon ausgeht,
     //      dass alle user knoten in der Group sind?
@@ -93,6 +91,64 @@ void ManipulationClickHandler::selectObject(Object* obj)
     obj->addChild(draggerParent);
 }
 
+bool ManipulationClickHandler::receive(const TranslateInLineCommand& command)
+{
+  std::cout<< "receive TranslateInLineCommand"<< std::endl;
+  return false;
+}
+
+bool ManipulationClickHandler::receive(const TranslateInPlaneCommand& command)
+{
+  if(command.getStage() == MotionCommand::START)
+  {
+      currentTranslation.set(0, 0, 0);
+  }
+  else if(command.getStage() == MotionCommand::MOVE)
+  {
+      const osg::Vec3d trans = command.getLocalToWorld().getRotate() * command.getTranslation();
+      currentTranslation = trans;
+  }
+  else if(command.getStage() == MotionCommand::FINISH)
+  {
+      objectTranslated(clickedObject, currentTranslation);
+      //reset the position of the dragger relative to the object after signaling
+      //that the object should be moved,
+      dragger->setMatrix(Matrixd());
+  }
+  else
+  {
+    return false;
+  }
+  return true;
+}
+
+bool ManipulationClickHandler::receive(const Scale1DCommand& command)
+{
+  std::cout <<"receive Scale1DCommand"<< std::endl;
+ // objectTranslated(clickedObject, command);
+  return false;
+}
+
+bool ManipulationClickHandler::receive(const Scale2DCommand& command)
+{
+  std::cout<< "receive Scale2DCommand"<< std::endl;
+// objectTranslated(clickedObject, command);
+  return false;
+}
+
+bool ManipulationClickHandler::receive(const ScaleUniformCommand& command)
+{
+  std::cout<< "receive ScaleUniformCommand"<< std::endl;
+ // objectTranslated(clickedObject, command);
+  return false;
+}
+
+bool ManipulationClickHandler::receive(const Rotate3DCommand& command)
+{
+  std::cout<< "receive Rotate3DCommand"<< std::endl;
+ // objectTranslated(clickedObject, command);
+  return false;
+}
 
 
   

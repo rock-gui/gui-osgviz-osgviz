@@ -20,10 +20,24 @@ TranslateBoxDragger::TranslateBoxDragger()
         addChild(planeDraggers[i].get());
         addDragger(planeDraggers[i].get());
     }
+    resetPosition();
+    setParentDragger(getParentDragger());
+}
 
-    {
-        planeDraggers[0]->setMatrix(osg::Matrix::translate(osg::Vec3(0.0,0.5,0.0)));
-    }
+TranslateBoxDragger::~TranslateBoxDragger()
+{
+}
+
+void TranslateBoxDragger::setupDefaultGeometry()
+{
+    for (unsigned int i=0; i<planeDraggers.size(); ++i)
+        planeDraggers[i]->setupDefaultGeometry();
+}
+
+void TranslateBoxDragger::resetPosition()
+{
+
+    planeDraggers[0]->setMatrix(osg::Matrix::translate(osg::Vec3(0.0,0.5,0.0)));
     {
         osg::Quat rotation; rotation.makeRotate(osg::Vec3(0.0f, -1.0f, 0.0f), osg::Vec3(0.0f, 1.0f, 0.0f));
         planeDraggers[1]->setMatrix(osg::Matrix(rotation)*osg::Matrix::translate(osg::Vec3(0.0,-0.5,0.0)));
@@ -47,25 +61,5 @@ TranslateBoxDragger::TranslateBoxDragger()
         osg::Quat rotation; rotation.makeRotate(osg::Vec3(0.0f, 1.0f, 0.0f), osg::Vec3(1.0f, 0.0f, 0.0f));
         planeDraggers[5]->setMatrix(osg::Matrix(rotation)*osg::Matrix::translate(osg::Vec3(0.5,0.0,0.0)));
     }
-
-    setParentDragger(getParentDragger());
 }
-
-TranslateBoxDragger::~TranslateBoxDragger()
-{
-}
-
-void TranslateBoxDragger::setupDefaultGeometry()
-{
-    for (unsigned int i=0; i<planeDraggers.size(); ++i)
-        planeDraggers[i]->setupDefaultGeometry();
-}
-
-void TranslateBoxDragger::setPlaneColor(const osg::Vec4& color)
-{
-  //FIXME warum gibts das nicht?
-   // for (unsigned int i=0; i<planeDraggers.size(); ++i)
-   //     planeDraggers[i]->setPlaneColor(color);
-}
-
 }

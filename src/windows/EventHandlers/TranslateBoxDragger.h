@@ -17,7 +17,8 @@ class TranslateBoxDragger : public osgManipulator::CompositeDragger
         /** Setup default geometry for dragger. */
         void setupDefaultGeometry();
 
-        void setPlaneColor(const osg::Vec4& color);
+        /**resets the position relative to the origin/object to default */
+        void resetPosition();
 
     protected:
 
