@@ -9,41 +9,12 @@ using namespace osgManipulator;
 using namespace osg;
 namespace osgviz {
   
-  
-  //FIXME braucht man das?
-class PlaneConstraint : public osgManipulator::Constraint
-{
-public:
-        PlaneConstraint() {}
-
-        bool constrain(osgManipulator::TranslateInLineCommand& command) const
-        {
-            return true;
-        }
-        bool constrain(osgManipulator::TranslateInPlaneCommand& command) const
-        {
-            return true;
-        }
-        bool constrain(osgManipulator::Scale1DCommand& command) const
-        {
-            return true;
-        }
-        bool constrain(osgManipulator::Scale2DCommand& command) const
-        {
-            return true;
-        }
-        bool constrain(osgManipulator::ScaleUniformCommand& command) const
-        {
-            return true;
-        }
-};
 
 ManipulationClickHandler::ManipulationClickHandler() : clickedObject(NULL),
     translationDragger(new TranslateBoxDragger()), rotationDragger(new osgManipulator::RotateSphereDragger()),
     translationDraggerParent(new NullClickObject()), rotationDraggerParent(new NullClickObject)
 {
     translationDragger->setupDefaultGeometry();
-    translationDragger->addConstraint(new PlaneConstraint());
     translationDragger->setHandleEvents(true);//allow the dragger to move itself when dragged
     translationDragger->addDraggerCallback(this);
     translationDraggerParent->addChild(translationDragger);
