@@ -72,7 +72,7 @@ void ManipulationClickHandler::selectObject(osgviz::Object* obj)
     //FIXME kollidiert das mit dem TransformerGraph weil der davon ausgeht,
     //      dass alle user knoten in der Group sind?
     clickedObject = obj;
-    obj->addChild(translationDragger);
+    obj->addChild(translationDraggerParent);
 }
 
 bool ManipulationClickHandler::receive(const TranslateInLineCommand& command)
