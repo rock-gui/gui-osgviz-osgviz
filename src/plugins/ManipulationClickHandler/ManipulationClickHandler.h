@@ -1,5 +1,5 @@
-#ifndef GUI_OSGVIZ_OSGVIZ_SRC_WINDOWS_EVENTHANDLERS_MANIPULATION_CLICK_HANDLER_H_
-#define GUI_OSGVIZ_OSGVIZ_SRC_WINDOWS_EVENTHANDLERS_MANIPULATION_CLICK_HANDLER_H_
+#ifndef GUI_OSGVIZ_OSGVIZ_PLUGINS_MANIPULATION_CLICK_HANDLER_MANIPULATION_CLICK_HANDLER_H
+#define GUI_OSGVIZ_OSGVIZ_PLUGINS_MANIPULATION_CLICK_HANDLER_MANIPULATION_CLICK_HANDLER_H
 
 #include <boost/signals2.hpp>
 #include <osgViz/interfaces/Clickable.h>
@@ -15,12 +15,14 @@ namespace osgviz {
 
  *  
  * FIXME small usage example */
-class ManipulationClickHandler : public osgviz::Clickable, public osgManipulator::DraggerCallback
+class ManipulationClickHandler : public osgviz::Clickable,
+                                 public osgManipulator::DraggerCallback
 {
   //TODO verschiedene Dragger unterstüzen, user auswählen lassen
 public:
-    ManipulationClickHandler();
     
+    ManipulationClickHandler();
+  
     /**Called when the user clicks on the object */
     virtual bool clicked(const int& buttonMask, const osg::Vec2d& cursor,
                         const osg::Vec3d& world, const osg::Vec3d& local,
@@ -44,6 +46,7 @@ public:
         objectTranslated;
     
 private:
+  
     /**Removes the dragger from clickedObject */
     void deselectCurrentObject();
     void selectObject(osgviz::Object* obj);
@@ -51,13 +54,15 @@ private:
     
     
     osgviz::Object* clickedObject;
-    osg::ref_ptr<osgManipulator::Dragger> dragger;
-    /**NullClickObject is used a parent for the dragger to avoid propagating
+    osg::ref_ptr<osgManipulator::Dragger> translationDragger;
+    osg::ref_ptr<osgManipulator::Dragger> rotationDragger;
+    /**NullClickObject is used a parent for the draggers to avoid propagating
      * click events from the dragger to the dragged node*/
-    osg::ref_ptr<NullClickObject> draggerParent;
+    osg::ref_ptr<NullClickObject> translationDraggerParent;
+    osg::ref_ptr<NullClickObject> rotationDraggerParent;
     
     osg::Vec3d currentTranslation; /**< buffers the current translation to emit it when the drag is finished */
-    
+    osg::Quat currentRotation; /**<buffers the current roation to emit it when dragging is over */
 };
 
 }

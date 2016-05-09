@@ -1,6 +1,6 @@
 #include "TranslateBoxDragger.h"
 
-
+//#include <osgViz/plugins/viz/Primitives/Primitives/AxesNode.hpp>
 
 #include <osg/ShapeDrawable>
 #include <osg/Geometry>
@@ -20,6 +20,11 @@ TranslateBoxDragger::TranslateBoxDragger()
         addChild(planeDraggers[i].get());
         addDragger(planeDraggers[i].get());
     }
+    
+    //FIXME wait till steffen comes back and discuss how to best get access to
+    //the AxesNode (linking PrimitivesFactory into osgViz might not be a good idea?
+    //addChild(osgviz::AxesNode::create());   
+    
     resetPosition();
     setParentDragger(getParentDragger());
 }

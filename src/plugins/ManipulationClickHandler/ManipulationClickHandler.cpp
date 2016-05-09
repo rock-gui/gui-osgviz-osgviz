@@ -2,6 +2,8 @@
 #include "TranslateBoxDragger.h"
 #include <iostream>
 #include <osg/io_utils>
+#include <osgManipulator/RotateSphereDragger>
+#include <osgViz/plugins/Object.h>
 
 using namespace osgManipulator;
 using namespace osg;
@@ -35,21 +37,29 @@ public:
             return true;
         }
 };
- 
+
 ManipulationClickHandler::ManipulationClickHandler() : clickedObject(NULL),
-    dragger(new TranslateBoxDragger()), draggerParent(new NullClickObject())
+    translationDragger(new TranslateBoxDragger()), rotationDragger(new osgManipulator::RotateSphereDragger()),
+    translationDraggerParent(new NullClickObject()), rotationDraggerParent(new NullClickObject)
 {
-    dragger->setupDefaultGeometry();
-    dragger->addConstraint(new PlaneConstraint());
-    dragger->setHandleEvents(true);
-    dragger->addDraggerCallback(this);
-    draggerParent->addChild(dragger);
+    translationDragger->setupDefaultGeometry();
+    translationDragger->addConstraint(new PlaneConstraint());
+    translationDragger->setHandleEvents(true);//allow the dragger to move itself when dragged
+    translationDragger->addDraggerCallback(this);
+    translationDraggerParent->addChild(translationDragger);
+    
+    rotationDragger->setupDefaultGeometry();
+    rotationDragger->setHandleEvents(true);
+    rotationDragger->addDraggerCallback(this);
+    rotationDraggerParent->addChild(rotationDragger);
+    
 }
 
 bool ManipulationClickHandler::clicked(const int& buttonMask, const Vec2d& cursor,
                                        const Vec3d& world, const Vec3d& local,
                                        Clickable* object, WindowInterface* window)
 {
+    std::cout << "MASK: " << buttonMask << std::endl;
     osgviz::Object* obj = dynamic_cast<osgviz::Object*>(object);
     if(obj != NULL && obj != clickedObject)
     {
@@ -79,7 +89,10 @@ void ManipulationClickHandler::deselectCurrentObject()
 {
     if(clickedObject != NULL)
     {
-        clickedObject->removeChild(draggerParent.get());
+        //dont know which dragger was used, just remove both of them and 
+        //ignore the return value :)
+        clickedObject->removeChild(translationDraggerParent.get());
+        clickedObject->removeChild(rotationDraggerParent.get());
     }
 }
 
@@ -88,7 +101,7 @@ void ManipulationClickHandler::selectObject(osgviz::Object* obj)
     //FIXME kollidiert das mit dem TransformerGraph weil der davon ausgeht,
     //      dass alle user knoten in der Group sind?
     clickedObject = obj;
-    obj->addChild(draggerParent);
+    obj->addChild(translationDragger);
 }
 
 bool ManipulationClickHandler::receive(const TranslateInLineCommand& command)
@@ -113,7 +126,7 @@ bool ManipulationClickHandler::receive(const TranslateInPlaneCommand& command)
       objectTranslated(clickedObject, currentTranslation);
       //reset the position of the dragger relative to the object after signaling
       //that the object should be moved,
-      dragger->setMatrix(Matrixd());
+      translationDragger->setMatrix(Matrixd());
   }
   else
   {

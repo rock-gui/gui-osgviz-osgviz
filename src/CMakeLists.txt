@@ -58,8 +58,6 @@ rock_library(osgViz
            windows/HUD.cpp
            windows/EventHandlers/HierarchicalEventHandler.cpp
            windows/EventHandlers/ObjectSelector.cpp   
-           windows/EventHandlers/ManipulationClickHandler.cpp
-           windows/EventHandlers/TranslateBoxDragger.cpp
            tools/UpdateThread.cpp    
            
     HEADERS OsgViz.hpp
@@ -69,9 +67,7 @@ rock_library(osgViz
            windows/HUD.h
            windows/EventHandlers/HierarchicalEventHandler.h
            windows/EventHandlers/ObjectSelector.h
-           windows/EventHandlers/ManipulationClickHandler.h
            windows/EventHandlers/NullClickObject.h
-           windows/EventHandlers/TranslateBoxDragger.h
            windows/config/WindowConfig.h
            tools/UpdateThread.h
            tools/Timing.h
@@ -106,6 +102,16 @@ rock_library(PrimitivesFactory
     plugins/viz/Primitives/Primitives/ArrowNode.h
     DEPS osgVizPlugin)
 
+rock_library(ManipulationClickHandler
+    SOURCES
+    plugins/ManipulationClickHandler/ManipulationClickHandler.cpp
+    plugins/ManipulationClickHandler/TranslateBoxDragger.cpp
+    HEADERS
+    plugins/ManipulationClickHandler/ManipulationClickHandler.h
+    plugins/ManipulationClickHandler/TranslateBoxDragger.h
+    DEPS osgVizPlugin)
+
+    
 
 rock_library(ModelLoader
     SOURCES plugins/viz/ModelLoader/ModelLoader.cpp
