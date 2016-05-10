@@ -115,6 +115,7 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
         //save the buttonmask (not available in release event)
         if (thisEvent == osgGA::GUIEventAdapter::PUSH){
             pushedButtonsMask = ea.getButtonMask();
+            modKeyMask = ea.getModKeyMask();
         }
 
         //normal click
@@ -127,7 +128,8 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
                 std::deque<IntersectionResult>::reverse_iterator it;
                 for (it = intersections.rbegin(); it != intersections.rend(); it++){
                         if (it->clickable->clicked(pushedButtonsMask, it->c, it->w,
-                                                   it->p, it->clickable, view)){
+                                                   it->p, it->clickable, modKeyMask,
+                                                   view)){
                             return true;
                         }
                 }
@@ -146,7 +148,8 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
                 std::deque<IntersectionResult>::reverse_iterator it;
                 for (it = intersections.rbegin(); it != intersections.rend(); it++){
                     if (it->clickable->dragged(pushedButtonsMask, it->c, it->w,
-                                               it->p, it->clickable, view)){
+                                               it->p, it->clickable, modKeyMask,
+                                               view)){
                         //there is a receiving obj,
                         view->disableCameraControl();
                         draggedObject = it->clickable;
@@ -168,7 +171,8 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
                 for (it = intersections.begin(); it != intersections.end(); it++){
                     if (it->clickable == draggedObject){
                         return draggedObject->dragged(pushedButtonsMask, it->c, it->w,
-                                                      it->p, draggedObject, view);
+                                                      it->p, draggedObject, modKeyMask,
+                                                      view);
                     }
                 }
             }
@@ -179,9 +183,10 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
             view->enableCameraControl();
             lastEvent = thisEvent;
             if (draggedObject){
-                //dragging stopped call calback with 0 as buttom mask
+                //dragging stopped call calback with 0 as buttom mask and modkey mask
                 int buttons = 0;
-                bool res = draggedObject->dragged(buttons,osg::Vec2d(0,0),osg::Vec3(0,0,0),osg::Vec3(0,0,0),draggedObject,view);
+                int modkey = 0;
+                bool res = draggedObject->dragged(buttons,osg::Vec2d(0,0),osg::Vec3(0,0,0),osg::Vec3(0,0,0),draggedObject,modkey,view);
                 draggedObject = NULL;
                 return res;
             }

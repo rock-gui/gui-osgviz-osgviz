@@ -10,13 +10,15 @@ class NullClickObject : public osgviz::Object
 {
 virtual bool clicked(const int& buttonMask, const osg::Vec2d& cursor,
                      const osg::Vec3d& world, const osg::Vec3d& local,
-                     Clickable* object, osgviz::WindowInterface* window = 0)
+                     Clickable* object, const int modifierMask,
+                     osgviz::WindowInterface* window = 0)
 {
     return true;
 }
 virtual bool dragged(const int& buttonMask, const osg::Vec2d& cursor,
                      const osg::Vec3d& world, const osg::Vec3d& local,
-                     Clickable* object, osgviz::WindowInterface* window = 0)
+                     Clickable* object, const int modifierMask,
+                     osgviz::WindowInterface* window = 0)
 {
     return true;
 }

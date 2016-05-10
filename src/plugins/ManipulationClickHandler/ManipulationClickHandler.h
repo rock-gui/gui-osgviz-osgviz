@@ -25,12 +25,14 @@ public:
   
     /**Called when the user clicks on the object */
     virtual bool clicked(const int& buttonMask, const osg::Vec2d& cursor,
-                        const osg::Vec3d& world, const osg::Vec3d& local,
-                        Clickable* object, osgviz::WindowInterface* window = 0);
+                         const osg::Vec3d& world, const osg::Vec3d& local,
+                         Clickable* object, const int modKeyMask,
+                         osgviz::WindowInterface* window = 0);
 
     virtual bool dragged(const int& buttonMask, const osg::Vec2d& cursor,
-                        const osg::Vec3d& world, const osg::Vec3d& local, 
-                        Clickable* object, osgviz::WindowInterface* window = 0);
+                         const osg::Vec3d& world, const osg::Vec3d& local, 
+                         Clickable* object, const int modKeyMask,
+                         osgviz::WindowInterface* window = 0);
     
     //are called whenever the user moves the dragger
     virtual bool receive(const osgManipulator::TranslateInLineCommand& command);

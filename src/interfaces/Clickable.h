@@ -27,10 +27,14 @@ public:
      * @param world global coordinates of the click position
      * @param local the local coordinated of the click position
      * @param object the object hit (normally "this"), needed when a "non Object" Clickable is added to this Object as event handler using addClickableCallback
+     * @param modifierMask the modifier key mask
      * @param window Interface to the window where this event originates from
      * @return true if the event was handled, false if not -> event is propargated into the graph below this node to find another Object
      */
-	virtual bool clicked(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, Clickable* object, WindowInterface* window = NULL) = 0;
+	virtual bool clicked(const int &buttonMask, const osg::Vec2d &cursor,
+                       const osg::Vec3d &world, const osg::Vec3d &local,
+                       Clickable* object, const int modifierMask,
+                       WindowInterface* window = NULL) = 0;
 
     /**
      * Called when this object was dragged
@@ -39,10 +43,14 @@ public:
      * @param world global coordinates of the click position
      * @param local the local coordinated of the click position
      * @param object the object hit (normally "this"), needed when a "non Object" Clickable is added to this Object as event handler using addClickableCallback
+     * @param modifierMask the modifier key mask
      * @param window Interface to the window where this event originates from
      * @return true if the event was handled, false if not -> event is propargated into the graph below this node to find another Object
      */
-	virtual bool dragged(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, Clickable* object, WindowInterface* window = NULL){return false;}
+	virtual bool dragged(const int &buttonMask, const osg::Vec2d &cursor,
+                       const osg::Vec3d &world, const osg::Vec3d &local,
+                       Clickable* object, const int modifierMask,
+                       WindowInterface* window = NULL){return false;}
 
 };
 

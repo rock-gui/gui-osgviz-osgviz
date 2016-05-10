@@ -28,7 +28,8 @@ ManipulationClickHandler::ManipulationClickHandler() : clickedObject(NULL),
 
 bool ManipulationClickHandler::clicked(const int& buttonMask, const Vec2d& cursor,
                                        const Vec3d& world, const Vec3d& local,
-                                       Clickable* object, WindowInterface* window)
+                                       Clickable* object, const int modKeyMask,
+                                       WindowInterface* window)
 {
     std::cout << "MASK: " << buttonMask << std::endl;
     osgviz::Object* obj = dynamic_cast<osgviz::Object*>(object);
@@ -50,7 +51,8 @@ bool ManipulationClickHandler::clicked(const int& buttonMask, const Vec2d& curso
 
 bool ManipulationClickHandler::dragged(const int& buttonMask, const Vec2d& cursor,
                                        const Vec3d& world, const Vec3d& local,
-                                       Clickable* object, WindowInterface* window)
+                                       Clickable* object, const int modKeyMask,
+                                       WindowInterface* window)
 {
     //dragged events are ignored (they are done by the dragger internally)
     return true;

@@ -43,6 +43,7 @@ private:
     Clickable *draggedObject;
     osgGA::GUIEventAdapter::EventType thisEvent,lastEvent;
     int pushedButtonsMask;
+    int modKeyMask;
     
     /** @return a queue containing all clickables that have been hit by the click
      *          sorted by distance to the camera.*/
