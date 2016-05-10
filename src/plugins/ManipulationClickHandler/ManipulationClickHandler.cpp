@@ -84,35 +84,39 @@ void ManipulationClickHandler::selectObject(osgviz::Object* obj)
 
 bool ManipulationClickHandler::receive(const MotionCommand& command)
 {
-  
-  if(command.getStage() == MotionCommand::START)
-  {
-      //remember initial dragger position in object coordinates.
-      //This is important because composit draggers are made up of multiple 
-      //sub-draggers. Each sub dragger has a different initial position in the
-      //object coordinate system
-      initialMotionMatrix = command.getMotionMatrix() * command.getLocalToWorld()
-                            * worldToObject;
-  }
-  else if(command.getStage() == MotionCommand::MOVE)
-  {
-      //convert current dragger position into object coordinate system
-      currentMotionMatrix = command.getMotionMatrix() * command.getLocalToWorld()
-                            * worldToObject;
-      //calculate relative distance between initial dragger position and current dragger position
-      currentMotionMatrix = osg::Matrix::inverse(initialMotionMatrix) * currentMotionMatrix;
-  }
-  else if(command.getStage() == MotionCommand::FINISH)
-  {
-       objectMoved(clickedObject, currentMotionMatrix);
-       //reset the position of the dragger relative to the object after signaling
-       //that the object should be moved,
-       translationDragger->setMatrix(Matrixd());
-  }
-  else
-  {
-    return false;
-  }
-  return true;
+    if(command.getStage() == MotionCommand::START)
+    {
+        //remember initial dragger position in object coordinates.
+        //This is important because composit draggers are made up of multiple 
+        //sub-draggers. Each sub dragger has a different initial position in the
+        //object coordinate system
+        initialMotionMatrix = command.getMotionMatrix() * command.getLocalToWorld()
+                              * worldToObject;
+        moved = false;
+    }
+    else if(command.getStage() == MotionCommand::MOVE)
+    {
+        moved = true;
+        //convert current dragger position into object coordinate system
+        currentMotionMatrix = command.getMotionMatrix() * command.getLocalToWorld()
+                              * worldToObject;
+        //calculate relative distance between initial dragger position and current dragger position
+        currentMotionMatrix = osg::Matrix::inverse(initialMotionMatrix) * currentMotionMatrix;
+    }
+    else if(command.getStage() == MotionCommand::FINISH)
+    {
+        //only update the position when the user has actually moved the object
+        //otherwise the object will move by a very small amout due to math inaccuracy
+        if(moved)
+            objectMoved(clickedObject, currentMotionMatrix);
+        //reset the position of the dragger relative to the object after signaling
+        //that the object should be moved,
+        translationDragger->setMatrix(Matrixd());
+    }
+    else
+    {
+        return false;
+    }
+    return true;
 }
 }
