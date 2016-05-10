@@ -35,17 +35,12 @@ public:
                          osgviz::WindowInterface* window = 0);
     
     //are called whenever the user moves the dragger
-    virtual bool receive(const osgManipulator::TranslateInLineCommand& command);
-    virtual bool receive(const osgManipulator::TranslateInPlaneCommand& command);
-    virtual bool receive(const osgManipulator::Scale1DCommand& command);
-    virtual bool receive(const osgManipulator::Scale2DCommand& command);
-    virtual bool receive(const osgManipulator::ScaleUniformCommand& command);
-    virtual bool receive(const osgManipulator::Rotate3DCommand& command);
+    virtual bool receive(const osgManipulator::MotionCommand& command);
     
-    /**This signal will be emitted once the translation process is complete.
+    /**This signal will be emitted once the movement is complete.
      * I.e. the user has clicked the object, dragged it and released it*/
-    boost::signals2::signal<void (const osgviz::Object*, const osg::Vec3d& translation)>
-        objectTranslated;
+    boost::signals2::signal<void (const osgviz::Object*, const osg::Matrix& motion)>
+        objectMoved;
     
 private:
   
@@ -62,9 +57,10 @@ private:
      * click events from the dragger to the dragged node*/
     osg::ref_ptr<NullClickObject> translationDraggerParent;
     osg::ref_ptr<NullClickObject> rotationDraggerParent;
-    
-    osg::Vec3d currentTranslation; /**< buffers the current translation to emit it when the drag is finished */
-    osg::Quat currentRotation; /**<buffers the current roation to emit it when dragging is over */
+       
+    osg::Matrix initialMotionMatrix;
+    osg::Matrix worldToObject; //transformation from world to selected object
+    osg::Matrix currentMotionMatrix;
 };
 
 }

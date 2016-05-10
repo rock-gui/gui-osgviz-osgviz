@@ -3,6 +3,7 @@
 #include <iostream>
 #include <osg/io_utils>
 #include <osgManipulator/RotateSphereDragger>
+#include <osgManipulator/Dragger>
 #include <osgViz/plugins/Object.h>
 
 using namespace osgManipulator;
@@ -31,7 +32,7 @@ bool ManipulationClickHandler::clicked(const int& buttonMask, const Vec2d& curso
                                        Clickable* object, const int modKeyMask,
                                        WindowInterface* window)
 {
-    std::cout << "MASK: " << buttonMask << std::endl;
+    std::cout << "MASK: " << modKeyMask << std::endl;
     osgviz::Object* obj = dynamic_cast<osgviz::Object*>(object);
     if(obj != NULL && obj != clickedObject)
     {
@@ -75,31 +76,38 @@ void ManipulationClickHandler::selectObject(osgviz::Object* obj)
     //      dass alle user knoten in der Group sind?
     clickedObject = obj;
     obj->addChild(translationDraggerParent);
+    osg::NodePath pathFromObjToRoot;
+    osgManipulator::computeNodePathToRoot(*clickedObject, pathFromObjToRoot);
+    const osg::Matrix objectToWorld = osg::computeLocalToWorld(pathFromObjToRoot);
+    worldToObject = osg::Matrix::inverse(objectToWorld);
 }
 
-bool ManipulationClickHandler::receive(const TranslateInLineCommand& command)
+bool ManipulationClickHandler::receive(const MotionCommand& command)
 {
-  std::cout<< "receive TranslateInLineCommand"<< std::endl;
-  return false;
-}
-
-bool ManipulationClickHandler::receive(const TranslateInPlaneCommand& command)
-{
+  
   if(command.getStage() == MotionCommand::START)
   {
-      currentTranslation.set(0, 0, 0);
+      //remember initial dragger position in object coordinates.
+      //This is important because composit draggers are made up of multiple 
+      //sub-draggers. Each sub dragger has a different initial position in the
+      //object coordinate system
+      initialMotionMatrix = command.getMotionMatrix() * command.getLocalToWorld()
+                            * worldToObject;
   }
   else if(command.getStage() == MotionCommand::MOVE)
   {
-      const osg::Vec3d trans = command.getLocalToWorld().getRotate() * command.getTranslation();
-      currentTranslation = trans;
+      //convert current dragger position into object coordinate system
+      currentMotionMatrix = command.getMotionMatrix() * command.getLocalToWorld()
+                            * worldToObject;
+      //calculate relative distance between initial dragger position and current dragger position
+      currentMotionMatrix = osg::Matrix::inverse(initialMotionMatrix) * currentMotionMatrix;
   }
   else if(command.getStage() == MotionCommand::FINISH)
   {
-      objectTranslated(clickedObject, currentTranslation);
-      //reset the position of the dragger relative to the object after signaling
-      //that the object should be moved,
-      translationDragger->setMatrix(Matrixd());
+       objectMoved(clickedObject, currentMotionMatrix);
+       //reset the position of the dragger relative to the object after signaling
+       //that the object should be moved,
+       translationDragger->setMatrix(Matrixd());
   }
   else
   {
@@ -107,35 +115,4 @@ bool ManipulationClickHandler::receive(const TranslateInPlaneCommand& command)
   }
   return true;
 }
-
-bool ManipulationClickHandler::receive(const Scale1DCommand& command)
-{
-  std::cout <<"receive Scale1DCommand"<< std::endl;
- // objectTranslated(clickedObject, command);
-  return false;
-}
-
-bool ManipulationClickHandler::receive(const Scale2DCommand& command)
-{
-  std::cout<< "receive Scale2DCommand"<< std::endl;
-// objectTranslated(clickedObject, command);
-  return false;
-}
-
-bool ManipulationClickHandler::receive(const ScaleUniformCommand& command)
-{
-  std::cout<< "receive ScaleUniformCommand"<< std::endl;
- // objectTranslated(clickedObject, command);
-  return false;
-}
-
-bool ManipulationClickHandler::receive(const Rotate3DCommand& command)
-{
-  std::cout<< "receive Rotate3DCommand"<< std::endl;
- // objectTranslated(clickedObject, command);
-  return false;
-}
-
-
-  
 }
