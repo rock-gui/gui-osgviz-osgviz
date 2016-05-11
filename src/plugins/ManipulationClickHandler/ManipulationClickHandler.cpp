@@ -76,10 +76,8 @@ void ManipulationClickHandler::selectObject(osgviz::Object* obj)
     //      dass alle user knoten in der Group sind?
     clickedObject = obj;
     obj->addChild(translationDraggerParent);
-    osg::NodePath pathFromObjToRoot;
-    osgManipulator::computeNodePathToRoot(*clickedObject, pathFromObjToRoot);
-    const osg::Matrix objectToWorld = osg::computeLocalToWorld(pathFromObjToRoot);
-    worldToObject = osg::Matrix::inverse(objectToWorld);
+    
+
 }
 
 bool ManipulationClickHandler::receive(const MotionCommand& command)
@@ -90,18 +88,35 @@ bool ManipulationClickHandler::receive(const MotionCommand& command)
         //This is important because composit draggers are made up of multiple 
         //sub-draggers. Each sub dragger has a different initial position in the
         //object coordinate system
-        initialMotionMatrix = command.getMotionMatrix() * command.getLocalToWorld()
-                              * worldToObject;
+//         initialMotionMatrix = objectToWorld * command.getWorldToLocal()
+//                             * command.getMotionMatrix() * command.getLocalToWorld() 
+//                             * worldToObject;
+
+        std::cout << "initial : " << initialMotionMatrix << std::endl;
         moved = false;
     }
     else if(command.getStage() == MotionCommand::MOVE)
     {
         moved = true;
-        //convert current dragger position into object coordinate system
-        currentMotionMatrix = command.getMotionMatrix() * command.getLocalToWorld()
-                              * worldToObject;
-        //calculate relative distance between initial dragger position and current dragger position
-        currentMotionMatrix = osg::Matrix::inverse(initialMotionMatrix) * currentMotionMatrix;
+        osg::NodePath pathFromObjToRoot;
+        osgManipulator::computeNodePathToRoot(*clickedObject, pathFromObjToRoot);
+        objectToWorld = osg::computeLocalToWorld(pathFromObjToRoot);
+        worldToObject = osg::Matrix::inverse(objectToWorld);
+        //copy paste from osgManipulator/Dragger.cpp
+        // Transform the command's motion matrix into local motion matrix.
+        currentMotionMatrix = objectToWorld * command.getWorldToLocal()
+                            * command.getMotionMatrix() * command.getLocalToWorld() 
+                            * worldToObject;
+
+        std::cout << "matrix : " << currentMotionMatrix << std::endl;
+        
+        osg::Vec3d trans, scale;
+        osg::Quat rot, so;
+        currentMotionMatrix.decompose(trans, rot, scale, so);
+        std::cout << "trans    : " << trans << std::endl;
+        std::cout << "rot      : " << rot << std::endl;
+        std::cout << "scale    : " << scale << std::endl;
+        std::cout << "so       : " << so << std::endl;
     }
     else if(command.getStage() == MotionCommand::FINISH)
     {

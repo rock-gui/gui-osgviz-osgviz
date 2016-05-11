@@ -3,7 +3,12 @@
 
 #include <osgManipulator/Dragger>
 #include <osgManipulator/Export>
-#include <osgManipulator/TranslatePlaneDragger>
+
+namespace osgManipulator
+{
+    class RotateCylinderDragger;
+    class TranslatePlaneDragger;
+}
 
 namespace osgviz 
 {
@@ -23,7 +28,7 @@ class TranslateBoxDragger : public osgManipulator::CompositeDragger
     protected:
 
         virtual ~TranslateBoxDragger();
-
+        std::vector<osg::ref_ptr<osgManipulator::RotateCylinderDragger> > rotatateDraggers;
         std::vector< osg::ref_ptr<osgManipulator::TranslatePlaneDragger > > planeDraggers;
 };
 }

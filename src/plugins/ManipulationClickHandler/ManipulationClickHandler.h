@@ -60,6 +60,7 @@ private:
        
     osg::Matrix initialMotionMatrix;
     osg::Matrix worldToObject; //transformation from world to selected object
+    osg::Matrix objectToWorld;
     osg::Matrix currentMotionMatrix;
     bool moved; //inidicates whether the user actually moved an object or just clicked & released
 };
