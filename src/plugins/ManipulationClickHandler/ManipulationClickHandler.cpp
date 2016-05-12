@@ -84,15 +84,6 @@ bool ManipulationClickHandler::receive(const MotionCommand& command)
 {
     if(command.getStage() == MotionCommand::START)
     {
-        //remember initial dragger position in object coordinates.
-        //This is important because composit draggers are made up of multiple 
-        //sub-draggers. Each sub dragger has a different initial position in the
-        //object coordinate system
-//         initialMotionMatrix = objectToWorld * command.getWorldToLocal()
-//                             * command.getMotionMatrix() * command.getLocalToWorld() 
-//                             * worldToObject;
-
-        std::cout << "initial : " << initialMotionMatrix << std::endl;
         moved = false;
     }
     else if(command.getStage() == MotionCommand::MOVE)
@@ -107,16 +98,6 @@ bool ManipulationClickHandler::receive(const MotionCommand& command)
         currentMotionMatrix = objectToWorld * command.getWorldToLocal()
                             * command.getMotionMatrix() * command.getLocalToWorld() 
                             * worldToObject;
-
-        std::cout << "matrix : " << currentMotionMatrix << std::endl;
-        
-        osg::Vec3d trans, scale;
-        osg::Quat rot, so;
-        currentMotionMatrix.decompose(trans, rot, scale, so);
-        std::cout << "trans    : " << trans << std::endl;
-        std::cout << "rot      : " << rot << std::endl;
-        std::cout << "scale    : " << scale << std::endl;
-        std::cout << "so       : " << so << std::endl;
     }
     else if(command.getStage() == MotionCommand::FINISH)
     {
