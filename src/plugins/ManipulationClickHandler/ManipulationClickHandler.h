@@ -37,10 +37,15 @@ public:
     //are called whenever the user moves the dragger
     virtual bool receive(const osgManipulator::MotionCommand& command);
     
-    /**This signal will be emitted once the movement is complete.
+    /**This signal is emitted once the movement is complete.
      * I.e. the user has clicked the object, dragged it and released it*/
     boost::signals2::signal<void (const osgviz::Object*, const osg::Matrix& motion)>
         objectMoved;
+    
+    /**This signal is emitted whenever the user selectes a new object*/
+    boost::signals2::signal<void (const osgviz::Object*)> objectSelected;
+        
+        
     
 private:
   

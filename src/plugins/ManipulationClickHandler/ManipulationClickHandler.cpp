@@ -76,8 +76,7 @@ void ManipulationClickHandler::selectObject(osgviz::Object* obj)
     //      dass alle user knoten in der Group sind?
     clickedObject = obj;
     obj->addChild(translationDraggerParent);
-    
-
+    objectSelected(clickedObject);
 }
 
 bool ManipulationClickHandler::receive(const MotionCommand& command)
