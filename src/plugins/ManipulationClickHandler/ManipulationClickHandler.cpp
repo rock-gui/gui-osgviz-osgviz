@@ -36,7 +36,6 @@ bool ManipulationClickHandler::clicked(const int& buttonMask, const Vec2d& curso
     osgviz::Object* obj = dynamic_cast<osgviz::Object*>(object);
     if(obj != NULL && obj != clickedObject)
     {
-        deselectCurrentObject();
         selectObject(obj);
         return true; 
     }
@@ -74,6 +73,7 @@ void ManipulationClickHandler::selectObject(osgviz::Object* obj)
 {
     //FIXME kollidiert das mit dem TransformerGraph weil der davon ausgeht,
     //      dass alle user knoten in der Group sind?
+    deselectCurrentObject();
     clickedObject = obj;
     obj->addChild(translationDraggerParent);
     objectSelected(clickedObject);
@@ -97,6 +97,8 @@ bool ManipulationClickHandler::receive(const MotionCommand& command)
         currentMotionMatrix = objectToWorld * command.getWorldToLocal()
                             * command.getMotionMatrix() * command.getLocalToWorld() 
                             * worldToObject;
+                            
+        objectMoving(clickedObject, currentMotionMatrix);
     }
     else if(command.getStage() == MotionCommand::FINISH)
     {

@@ -34,16 +34,25 @@ public:
                          Clickable* object, const int modKeyMask,
                          osgviz::WindowInterface* window = 0);
     
-    //are called whenever the user moves the dragger
+    //is called whenever the user moves the dragger
     virtual bool receive(const osgManipulator::MotionCommand& command);
     
-    /**This signal is emitted once the movement is complete.
-     * I.e. the user has clicked the object, dragged it and released it*/
-    boost::signals2::signal<void (const osgviz::Object*, const osg::Matrix& motion)>
-        objectMoved;
+    /** Select the specified object.  */
+    void selectObject(osgviz::Object* obj);
     
+    /**This signal is emitted once the movement is complete.
+     * I.e. the user has clicked the object, dragged it and released it.
+     * @param motion the final motion of the object relative to the original object
+     *               position.*/
+    boost::signals2::signal<void (const osgviz::Object* obj, const osg::Matrix& motion)>
+        objectMoved;
+        
+    /**This signal is emiitted while the user is moving an object. */
+    boost::signals2::signal<void (const osgviz::Object* obj, const osg::Matrix& motion)>
+        objectMoving;
+        
     /**This signal is emitted whenever the user selectes a new object*/
-    boost::signals2::signal<void (const osgviz::Object*)> objectSelected;
+    boost::signals2::signal<void (const osgviz::Object* obj)> objectSelected;
         
         
     
@@ -51,9 +60,6 @@ private:
   
     /**Removes the dragger from clickedObject */
     void deselectCurrentObject();
-    void selectObject(osgviz::Object* obj);
-    
-    
     
     osgviz::Object* clickedObject;
     osg::ref_ptr<osgManipulator::Dragger> translationDragger;
