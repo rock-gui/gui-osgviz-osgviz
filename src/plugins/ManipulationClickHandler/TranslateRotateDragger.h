@@ -14,11 +14,11 @@ namespace osgManipulator
 namespace osgviz 
 {
 /**A translation dragger that draws 4 planes around the object */
-class TranslateBoxDragger : public osgManipulator::CompositeDragger
+class TranslateRotateDragger : public osgManipulator::CompositeDragger
 {
     public:
-        META_OSGMANIPULATOR_Object(osgManipulator, TranslateBoxDragger);
-        TranslateBoxDragger();
+        META_OSGMANIPULATOR_Object(osgManipulator, TranslateRotateDragger);
+        TranslateRotateDragger();
 
         /** Setup default geometry for dragger. */
         void setupDefaultGeometry();
@@ -26,7 +26,7 @@ class TranslateBoxDragger : public osgManipulator::CompositeDragger
         /**resets the position relative to the origin/object to default */
         void resetPosition();
 
-        virtual ~TranslateBoxDragger();
+        virtual ~TranslateRotateDragger();
         
     private:
   

@@ -1,5 +1,5 @@
 #include "ManipulationClickHandler.h"
-#include "TranslateBoxDragger.h"
+#include "TranslateRotateDragger.h"
 #include <iostream>
 #include <osg/io_utils>
 #include <osgManipulator/RotateSphereDragger>
@@ -12,7 +12,7 @@ namespace osgviz {
   
 
 ManipulationClickHandler::ManipulationClickHandler() : clickedObject(NULL),
-    translationDragger(new TranslateBoxDragger()), rotationDragger(new osgManipulator::RotateSphereDragger()),
+    translationDragger(new TranslateRotateDragger()), rotationDragger(new osgManipulator::RotateSphereDragger()),
     translationDraggerParent(new NullClickObject()), rotationDraggerParent(new NullClickObject)
 {
     translationDragger->setupDefaultGeometry();

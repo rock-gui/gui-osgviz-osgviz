@@ -1,4 +1,4 @@
-#include "TranslateBoxDragger.h"
+#include "TranslateRotateDragger.h"
 
 #include <osgViz/plugins/viz/Primitives/Primitives/AxesNode.hpp>
 
@@ -53,7 +53,7 @@ osg::Geometry* createDiskGeometry(float radius, float offset, float z, unsigned 
 }
   
 
-TranslateBoxDragger::TranslateBoxDragger()
+TranslateRotateDragger::TranslateRotateDragger()
 {
     projector = new CylinderPlaneProjector();
     
@@ -73,11 +73,11 @@ TranslateBoxDragger::TranslateBoxDragger()
     setParentDragger(getParentDragger());
 }
 
-TranslateBoxDragger::~TranslateBoxDragger()
+TranslateRotateDragger::~TranslateRotateDragger()
 {
 }
 
-void TranslateBoxDragger::setupDefaultGeometry()
+void TranslateRotateDragger::setupDefaultGeometry()
 {
     for (unsigned int i = 0; i < planeDraggers.size(); ++i)
         planeDraggers[i]->setupDefaultGeometry();
@@ -85,7 +85,7 @@ void TranslateBoxDragger::setupDefaultGeometry()
         setupCylinderDefaultGeometry(rotatateDraggers[i].get());
 }
 
-void TranslateBoxDragger::resetPosition()
+void TranslateRotateDragger::resetPosition()
 {
 
     planeDraggers[0]->setMatrix(osg::Matrix::translate(osg::Vec3(0.0,0.5,0.0)));
@@ -132,7 +132,7 @@ void TranslateBoxDragger::resetPosition()
     rotatateDraggers[2]->setColor(osg::Vec4(0.0f,0.0f,1.0f,1.0f));
 }
 
-void TranslateBoxDragger::setupCylinderDefaultGeometry(RotateCylinderDragger* dragger) const
+void TranslateRotateDragger::setupCylinderDefaultGeometry(RotateCylinderDragger* dragger) const
 {
     osg::Geode* geode = new osg::Geode;
     {

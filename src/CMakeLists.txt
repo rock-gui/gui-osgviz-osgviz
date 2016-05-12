@@ -105,10 +105,10 @@ rock_library(PrimitivesFactory
 rock_library(ManipulationClickHandler
     SOURCES
     plugins/ManipulationClickHandler/ManipulationClickHandler.cpp
-    plugins/ManipulationClickHandler/TranslateBoxDragger.cpp
+    plugins/ManipulationClickHandler/TranslateRotateDragger.cpp
     HEADERS
     plugins/ManipulationClickHandler/ManipulationClickHandler.h
-    plugins/ManipulationClickHandler/TranslateBoxDragger.h
+    plugins/ManipulationClickHandler/TranslateRotateDragger.h
     DEPS osgVizPlugin PrimitivesFactory)
 
     
