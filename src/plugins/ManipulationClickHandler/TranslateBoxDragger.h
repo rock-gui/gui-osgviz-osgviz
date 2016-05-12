@@ -8,6 +8,7 @@ namespace osgManipulator
 {
     class RotateCylinderDragger;
     class TranslatePlaneDragger;
+    class CylinderPlaneProjector;
 }
 
 namespace osgviz 
@@ -25,11 +26,19 @@ class TranslateBoxDragger : public osgManipulator::CompositeDragger
         /**resets the position relative to the origin/object to default */
         void resetPosition();
 
-    protected:
-
         virtual ~TranslateBoxDragger();
+        
+    private:
+  
+        /** initializes the default geometry of @p dragger.
+        *  This method exists because RotateCylinderDragger::setupDefaultGeometry() 
+        *  does not have any parameters to adjust the thickness etc. of the dragger*/
+        void setupCylinderDefaultGeometry(osgManipulator::RotateCylinderDragger* dragger) const;
+            
         std::vector<osg::ref_ptr<osgManipulator::RotateCylinderDragger> > rotatateDraggers;
         std::vector< osg::ref_ptr<osgManipulator::TranslatePlaneDragger > > planeDraggers;
+        //FIXME not sure if I have to keep the projector around after creating the cylinder
+        osg::ref_ptr<osgManipulator::CylinderPlaneProjector> projector; //needed to create the rotation draggers
 };
 }
 
