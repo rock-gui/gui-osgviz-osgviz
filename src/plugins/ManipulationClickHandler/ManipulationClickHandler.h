@@ -28,11 +28,6 @@ public:
                          const osg::Vec3d& world, const osg::Vec3d& local,
                          Clickable* object, const int modKeyMask,
                          osgviz::WindowInterface* window = 0);
-
-    virtual bool dragged(const int& buttonMask, const osg::Vec2d& cursor,
-                         const osg::Vec3d& world, const osg::Vec3d& local, 
-                         Clickable* object, const int modKeyMask,
-                         osgviz::WindowInterface* window = 0);
     
     //is called whenever the user moves the dragger
     virtual bool receive(const osgManipulator::MotionCommand& command);

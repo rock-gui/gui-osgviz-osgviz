@@ -48,16 +48,6 @@ bool ManipulationClickHandler::clicked(const int& buttonMask, const Vec2d& curso
     }
 }
 
-
-bool ManipulationClickHandler::dragged(const int& buttonMask, const Vec2d& cursor,
-                                       const Vec3d& world, const Vec3d& local,
-                                       Clickable* object, const int modKeyMask,
-                                       WindowInterface* window)
-{
-    //dragged events are ignored (they are done by the dragger internally)
-    return true;
-}
-
 void ManipulationClickHandler::deselectCurrentObject()
 {
     if(clickedObject != NULL)
