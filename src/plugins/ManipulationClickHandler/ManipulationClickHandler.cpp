@@ -10,21 +10,22 @@ using namespace osgManipulator;
 using namespace osg;
 namespace osgviz {
   
-
 ManipulationClickHandler::ManipulationClickHandler() : clickedObject(NULL),
-    translationDragger(new TranslateRotateDragger()), rotationDragger(new osgManipulator::RotateSphereDragger()),
-    translationDraggerParent(new NullClickObject()), rotationDraggerParent(new NullClickObject)
+    translationDragger(new TranslateRotateDragger()), 
+    draggerGroup(new osg::Group()), translationDraggerParent(new NullClickObject()),
+    enabled(true)
 {
     translationDragger->setupDefaultGeometry();
     translationDragger->setHandleEvents(true);//allow the dragger to move itself when dragged
     translationDragger->addDraggerCallback(this);
     translationDraggerParent->addChild(translationDragger);
     
-    rotationDragger->setupDefaultGeometry();
-    rotationDragger->setHandleEvents(true);
-    rotationDragger->addDraggerCallback(this);
-    rotationDraggerParent->addChild(rotationDragger);
-    
+    /**The group was added because some code in vizkit3d assumes that all custom
+     * elements in a node are inside a group and breaks if this is not the case.
+     * Also it is easier to extend the draggers later on if all the dragger components
+     * are grouped :-)*/
+    draggerGroup->setName("Translation & Rotation dragger group");
+    draggerGroup->addChild(translationDraggerParent.get());
 }
 
 bool ManipulationClickHandler::clicked(const int& buttonMask, const Vec2d& cursor,
@@ -32,7 +33,9 @@ bool ManipulationClickHandler::clicked(const int& buttonMask, const Vec2d& curso
                                        Clickable* object, const int modKeyMask,
                                        WindowInterface* window)
 {
-    std::cout << "MASK: " << modKeyMask << std::endl;
+    if(!enabled)
+        return false;
+  
     osgviz::Object* obj = dynamic_cast<osgviz::Object*>(object);
     if(obj != NULL && obj != clickedObject)
     {
@@ -54,8 +57,8 @@ void ManipulationClickHandler::deselectCurrentObject()
     {
         //dont know which dragger was used, just remove both of them and 
         //ignore the return value :)
-        clickedObject->removeChild(translationDraggerParent.get());
-        clickedObject->removeChild(rotationDraggerParent.get());
+        clickedObject->removeChild(draggerGroup.get());
+        clickedObject = NULL;
     }
 }
 
@@ -65,12 +68,15 @@ void ManipulationClickHandler::selectObject(osgviz::Object* obj)
     //      dass alle user knoten in der Group sind?
     deselectCurrentObject();
     clickedObject = obj;
-    obj->addChild(translationDraggerParent);
+    obj->addChild(draggerGroup);
     objectSelected(clickedObject);
 }
 
 bool ManipulationClickHandler::receive(const MotionCommand& command)
 {
+    if(!enabled)
+        return false;
+  
     if(command.getStage() == MotionCommand::START)
     {
         moved = false;
@@ -105,5 +111,12 @@ bool ManipulationClickHandler::receive(const MotionCommand& command)
         return false;
     }
     return true;
+}
+
+void ManipulationClickHandler::setEnabled(const bool value)
+{
+    enabled = value;
+    if(!enabled)
+        deselectCurrentObject();
 }
 }

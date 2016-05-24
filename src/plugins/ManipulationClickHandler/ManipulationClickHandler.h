@@ -35,6 +35,12 @@ public:
     /** Select the specified object.  */
     void selectObject(osgviz::Object* obj);
     
+    /** Deselect whatever was selected before */
+    void deselectCurrentObject();
+    
+    /** Enabled/disable the handler */
+    void setEnabled(const bool value);
+    
     /**This signal is emitted once the movement is complete.
      * I.e. the user has clicked the object, dragged it and released it.
      * @param motion the final motion of the object relative to the original object
@@ -48,27 +54,27 @@ public:
         
     /**This signal is emitted whenever the user selectes a new object*/
     boost::signals2::signal<void (const osgviz::Object* obj)> objectSelected;
+
         
         
     
 private:
   
-    /**Removes the dragger from clickedObject */
-    void deselectCurrentObject();
+
     
     osgviz::Object* clickedObject;
     osg::ref_ptr<osgManipulator::Dragger> translationDragger;
-    osg::ref_ptr<osgManipulator::Dragger> rotationDragger;
+    osg::ref_ptr<osg::Group> draggerGroup; //contains both draggers
     /**NullClickObject is used a parent for the draggers to avoid propagating
      * click events from the dragger to the dragged node*/
     osg::ref_ptr<NullClickObject> translationDraggerParent;
-    osg::ref_ptr<NullClickObject> rotationDraggerParent;
        
     osg::Matrix initialMotionMatrix;
     osg::Matrix worldToObject; //transformation from world to selected object
     osg::Matrix objectToWorld;
     osg::Matrix currentMotionMatrix;
     bool moved; //inidicates whether the user actually moved an object or just clicked & released
+    bool enabled;
 };
 
 }
