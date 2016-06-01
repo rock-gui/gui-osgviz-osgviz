@@ -34,6 +34,7 @@ rock_library(osgVizInterfaces
 	HEADERS interfaces/Clickable.h
 			interfaces/WindowInterface.h
 			interfaces/Updatable.h
+			interfaces/MouseMoveCallback.h
 )
 
 
@@ -57,7 +58,8 @@ rock_library(osgViz
            windows/SuperView.cpp
            windows/HUD.cpp
            windows/EventHandlers/HierarchicalEventHandler.cpp
-           windows/EventHandlers/ObjectSelector.cpp   
+           windows/EventHandlers/ObjectSelector.cpp
+           windows/EventHandlers/MouseMoveEvent.cpp
            tools/UpdateThread.cpp    
            
     HEADERS OsgViz.hpp
@@ -68,6 +70,7 @@ rock_library(osgViz
            windows/EventHandlers/HierarchicalEventHandler.h
            windows/EventHandlers/ObjectSelector.h
            windows/EventHandlers/NullClickObject.h
+           windows/EventHandlers/MouseMoveEvent.h
            windows/config/WindowConfig.h
            tools/UpdateThread.h
            tools/Timing.h
