@@ -39,6 +39,9 @@ namespace osgviz{
     HUD::HoverScaler::HoverScaler(osgviz::Object* obj, const osg::Vec3d &size, const osg::Vec3d &scale, HoverScalerType type, HUD* hud):obj(obj),scale(scale),size(size),type(type),hud(hud){
         scaled = false;
         initial_scale = obj->getScale();
+        if (scale.x() == 0 || scale.y() == 0 || scale.z() == 0){
+        	printf("%s scale cannot be 0\n",__PRETTY_FUNCTION__);
+        }
     }
 
     bool HUD::HoverScaler::mouseMoved(const int& x, const int& y, const float& xNorm, const float& yNorm, const int& modifierMask){
@@ -50,14 +53,19 @@ namespace osgviz{
         int mousey = (yNorm+1.0)/2.0 * hud->getViewPortSizeY();
 
         //if inside scale up
-
-        if (   !scaled
+        if (!scaled
                 && pos.x()-(size.x()/2) < mousex
                 && pos.y()-(size.y()/2) < mousey
                 &&  pos.x()+(size.x()/2) > mousex
                 &&  pos.y()+(size.y()/2) > mousey
             ){
-            obj->setScale(scale);
+
+            printf("scale %i:%i\n",mousex,mousey);
+
+            initial_scale = obj->getScale();
+        	totalscale = osg::Vec3d(scale.x()*initial_scale.x(),scale.y()*initial_scale.y(),scale.z()*initial_scale.z());
+
+            obj->setScale(totalscale);
 
             position_unscaled = obj->getPosition();
             switch(type){
@@ -79,6 +87,7 @@ namespace osgviz{
                     ||  pos.y()+(size.y()*scale.y()/2) < mousey
                     )
             ){
+        	printf("unscale %i:%i\n",mousex,mousey);
             obj->setScale(initial_scale);
             obj->setPosition(position_unscaled);
             scaled = false;

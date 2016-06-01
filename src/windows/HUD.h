@@ -64,7 +64,7 @@ class HUD:  public osg::Camera {
 
     private:
         osgviz::Object* obj;
-        osg::Vec3d initial_scale,scale,size;
+        osg::Vec3d initial_scale,scale,size, totalscale;
         osg::Vec3d position_unscaled;
         bool scaled;
         HUD* hud;
