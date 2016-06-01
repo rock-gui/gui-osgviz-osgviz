@@ -35,9 +35,54 @@
 
 namespace osgviz{
 
-    HUD::HUD(osg::ref_ptr<osgViewer::GraphicsWindow> gw, int width, int height):gw(gw) {
-      //hudCamera = new osg::Camera();
 
+HUD::HoverScaler::HoverScaler(osgviz::Object* obj, const osg::Vec3d &size, const osg::Vec3d &scale, HUD* hud):obj(obj),scale(scale),size(size),hud(hud){
+    scaled = false;
+    initial_scale = obj->getScale();
+}
+
+bool HUD::HoverScaler::mouseMoved(const int& x, const int& y, const float& xNorm, const float& yNorm, const int& modifierMask){
+
+    osg::Vec3 pos = obj->getPosition();
+
+    //Norm is from -1 to 1, but we want 0 to 1
+    int mousex = (xNorm+1.0)/2.0 * hud->getViewPortSizeX();
+    int mousey = (yNorm+1.0)/2.0 * hud->getViewPortSizeY();
+
+    printf("Mouse pos %i, %i (%.2f,%.2f)\n",mousex,mousey,xNorm,yNorm);
+    printf("Objec pos %.2f, %.2f, %.2f, %.2f\n",pos.x(),pos.y(),pos.x()+size.x(),pos.y()+size.y());
+
+    //if inside scale up
+    if (        pos.x()-(size.x()/2) < mousex
+            &&  pos.y()-(size.y()/2) < mousey
+            &&  pos.x()+(size.x()/2) > mousex
+            &&  pos.y()+(size.y()/2) > mousey
+            && !scaled
+        ){
+        printf("inside\n");
+        obj->setScale(scale);
+        scaled = true;
+    }
+
+    //if out (again) scale back
+    if ((       pos.x()-(size.x()*scale.x()/2) > mousex //left
+            ||  pos.y()-(size.y()*scale.x()/2) > mousey
+            ||  pos.x()+(size.x()*scale.x()/2) < mousex
+            ||  pos.y()+(size.y()*scale.x()/2) < mousey
+    ) && scaled){
+        printf("outside\n");
+        obj->setScale(initial_scale);
+        scaled = false;
+    }
+
+    return false;
+}
+
+
+
+    HUD::HUD(osg::ref_ptr<osgviz::Window> window, int width, int height):window(window) {
+      //hudCamera = new osg::Camera();
+      gw=window->getGraphicsWindow();
 
 
       hudTerminalList = new osg::Group;
@@ -45,21 +90,22 @@ namespace osgviz{
       hudscale->setMatrix(osg::Matrix::scale(1.0, 1.0, 1.0));
       hudscale->addChild(hudTerminalList.get());
       cull_mask = 0;
-      x1 = x2 = y1 = y2 = 0.0;
+      //x1 = x2 = y1 = y2 = 0.0;
       //window = win;
 
 
-      setViewSize(width,height);
+      //setViewSize(width,height);
 
       int x,y,wwidth, wheight;
 
       gw->getWindowRectangle (x,y,wwidth,wheight);
+      setViewPortSize(width,height);
       resize(wwidth,wheight);
+      gw->resizedImplementation(x, y, wwidth, wheight);
 
-      setViewSize(width,height);
 
-      resizecallback = new HUDCallback(this);
-      gw->setResizedCallback(resizecallback);
+//      resizecallback = new HUDCallback(this);
+//      gw->setResizedCallback(resizecallback);
 
 
 
@@ -80,7 +126,7 @@ namespace osgviz{
       #else
             //hudCamera->setRenderTargetImplementation(osg::Camera::FRAME_BUFFER_OBJECT);
       #endif
-            this->setProjectionMatrix(osg::Matrix::ortho2D(0,hud_width,0,hud_height));
+            this->setProjectionMatrix(osg::Matrix::ortho2D(0,width,0,height));
             this->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
             this->setViewMatrix(osg::Matrix::identity());
 
@@ -109,60 +155,32 @@ namespace osgviz{
     }
 
     HUD::~HUD(void) {
-        delete resizecallback;
     }
-  
 
 
+    void HUD::setViewPortSize(int width, int height) {
+        viewport_height = height;
+        viewport_width = width;
+        this->setViewport(0, 0, width, height);
+    }
 
+    int HUD::getViewPortSizeX() {
+         return viewport_width;
+    }
 
-    void HUD::setViewSize(double width, double height) {
-      hud_width = width;
-      hud_height = height;
-      resize(window_width,window_height);
+    int HUD::getViewPortSizeY() {
+        return viewport_height;
     }
 
     void HUD::resize(double width, double height) {
-      window_width = width;
-      window_height = height;
-      double scale_x = window_width / hud_width;
-      double scale_y = window_height / hud_height;
-      hudscale->setMatrix(osg::Matrix::scale(scale_x, scale_y, 1.0));
-
-      mousescale_x = hud_width / window_width;
-      mousescale_y = hud_height / window_height;
-
-      this->setProjectionMatrix(osg::Matrix::ortho2D(x1, x2+window_width,
-                                                          y1, y2+window_height));
-      this->setViewport(0, 0, hud_width, hud_height);
-    }
-
-
-
-    void HUD::resizedImplementation(osg::GraphicsContext* gc, int x, int y, int width, int height) {
-
-        this->resize(width,height);
-
-    	//call the standard implementation
-        gc->resizedImplementation(x, y, width, height);
+      this->setProjectionMatrix(osg::Matrix::ortho2D(0, width, 0, height));
 
     }
 
-//	bool HUD::mousePosition(const int &windowposx, const int &windowposy, int &hudposx, int &hudposy){
-//		hudposx = windowposx*mousescale_x;
-//		hudposy = windowposy*mousescale_y;
-//		return true;
-//	}
-//
-//	bool HUD::localPosition(const osgviz::Object* obj, const osg::Vec3d &global, osg::Vec3d &local){
-//		osg::Vec3d pos = obj->getPosition();
-//		osg::Vec3d scale = obj->getScale();
-//		local.x() = global.x() - pos.x();
-//		local.y() = global.y() - pos.y();
-//		local.x() /= scale.x();
-//		local.y() /= scale.y();
-//		return true;
-//	}
+
+    void HUD::createScalableObject(osgviz::Object* obj, const osg::Vec3d size, const osg::Vec3d &scale){
+        window->addMouseMoveCallback(new HoverScaler(obj,size,scale,this));
+    }
 
 } // end of namespace graphics
 

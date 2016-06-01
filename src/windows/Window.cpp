@@ -73,7 +73,7 @@ osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* viewScene) {
 
 osg::ref_ptr<osgviz::HUD> Window::addHUD(int width,int height, unsigned int window){
 
-    osg::ref_ptr<osgviz::HUD> hud = new HUD(gw,width,height);
+    osg::ref_ptr<osgviz::HUD> hud = new HUD(this,width,height);
 
     root->addChild(hud);
 

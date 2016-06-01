@@ -44,6 +44,8 @@
 #include <stdio.h>
 
 #include "SuperView.h"
+#include "../interfaces/MouseMoveCallback.h"
+#include "../plugins/Object.h"
 
 namespace osgviz{
 
@@ -51,57 +53,38 @@ class Window;
 
 class HUDCallback;
 
-class HUD:  public osg::Camera
-            {
-
+class HUD:  public osg::Camera {
     public:
-      HUD(osg::ref_ptr<osgViewer::GraphicsWindow> gw, int width, int height);
+
+    struct HoverScaler: public osgviz::MouseMoveCallback, public osg::Referenced{
+        HoverScaler(osgviz::Object* obj, const osg::Vec3d& size, const osg::Vec3d &scale, HUD* hud);
+        virtual bool mouseMoved(const int& x, const int& y, const float& xNorm, const float& yNorm, const int& modifierMask);
+
+    private:
+        osgviz::Object* obj;
+        osg::Vec3d initial_scale,scale,size;
+        bool scaled;
+        HUD* hud;
+    };
+
+      HUD(osg::ref_ptr<osgviz::Window> window, int width, int height);
       ~HUD(void);
   
 
-      //void addHudObject(osg::Node *elem);
+      void setViewPortSize(int width, int height);
+      int getViewPortSizeX();
+      int getViewPortSizeY();
 
 
-      void getSize(sReal &width, sReal &height);
-      void setViewSize(double width, double height);
-      void getOffset(osg::Vec3f &offset);
       void resize(double width, double height);
 
-//      void addHudObject(osgviz::Object *elem);
+      void createScalableObject(osgviz::Object* obj, const osg::Vec3d size, const osg::Vec3d &scale);
+
 
       virtual bool addHudObject(osg::Node* node){
           return hudTerminalList->addChild(node);
       }
 
-
-//      void addHUDElement(HUDElement *elem);
-//      void removeHUDElement(HUDElement *elem);
-
-      /**
-       * from osg::ResizedCallback
-       */
-      virtual void resizedImplementation (osg::GraphicsContext *gc, int x, int y, int width, int height);
-
-
-//	virtual void emitPickEvent(int x, int y) {printf("emitPickEvent x:%i, y: %i\n",x,y);}
-//	//virtual void mouseMove(int x, int y) {printf("mouseMove x:%i, y: %i\n",x,y);}
-//	virtual void mousePress(int x, int y, int button) {printf("mousePress x:%i, y: %i\n",x,y);}
-//	virtual void mouseRelease(int x, int y, int button) {printf("mouseRelease x:%i, y: %i\n",x,y);}
-
-
-
-//	virtual bool clicked(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object, WindowInterface* window = NULL);
-//	virtual bool dragged(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world, const osg::Vec3d &local, osgviz::Clickable* object, WindowInterface* window = NULL);
-//	virtual bool pointerEvent(int buttonMask, const osg::Vec3d &world, const osg::Vec3d &local);
-//	virtual bool keyEvent(int key, bool keyDown);
-
-    protected:
-
-//	  	bool mousePosition(const int &windowposx, const int &windowposy, int &hudposx, int &hudposy);
-//
-//	  	bool localPosition(const osgviz::Object* obj, const osg::Vec3d &global, osg::Vec3d &local);
-
-//	  	bool inside(const osgviz::Object* obj, osg::Vec3d &local);
 
     private:
       //osg::ref_ptr<osg::Camera> hudCamera;
@@ -114,23 +97,15 @@ class HUD:  public osg::Camera
 //    	osg::ref_ptr<osg::Texture2D> hudTexture;
 
       osg::ref_ptr<osgViewer::GraphicsWindow> gw;
+      osg::ref_ptr<osgviz::Window> window;
 
       unsigned long id;
       Color myColor;
       osg::Vec3f myoff;
 
-      double hud_width, hud_height, window_width, window_height;
-      double mousescale_x,mousescale_y;
+      double viewport_width, viewport_height;
 
-      double x1, x2, y1, y2;
-      unsigned int row_index;
       unsigned int cull_mask;
-      //void initialize(osgViewer::GraphicsWindow* gw);
-
-
-      //osg::ref_ptr<osg::Camera> hudcam;
-      //osgviz::Window* window;
-
       /**
        * should not be used!
        */
@@ -141,24 +116,24 @@ class HUD:  public osg::Camera
     };
 
 
-class HUDCallback: public osg::GraphicsContext::ResizedCallback{
-
-public:
-
-    HUDCallback(HUD* hud):myhud(hud){};
-
-    /**
-     * from osg::ResizedCallback
-     */
-    void resizedImplementation (osg::GraphicsContext *gc, int x, int y, int width, int height){
-        myhud->resizedImplementation(gc,x,y,width,height);
-    }
-
-
-private:
-    HUD* myhud;
-
-};
+//class HUDCallback: public osg::GraphicsContext::ResizedCallback{
+//
+//public:
+//
+//    HUDCallback(HUD* hud):myhud(hud){};
+//
+//    /**
+//     * from osg::ResizedCallback
+//     */
+//    void resizedImplementation (osg::GraphicsContext *gc, int x, int y, int width, int height){
+//        myhud->resizedImplementation(gc,x,y,width,height);
+//    }
+//
+//
+//private:
+//    HUD* myhud;
+//
+//};
 
 
 

@@ -2,7 +2,6 @@
 #include "OsgViz.hpp"
 #include "plugins/viz/Primitives/PrimitivesFactory.h"
 
-#include "interfaces/MouseMoveCallback.h"
 
 #ifndef WIN32
 #include <unistd.h>//sleep
@@ -11,13 +10,6 @@
 #define sleep(S) Sleep(S*1000)
 #endif
 #include <stdio.h>
-
-struct CallbackPrint: public osgviz::MouseMoveCallback{
-
-    virtual bool mouseMoved(const int& x, const int& y, const float& xNorm, const float& yNorm, const int& modifierMask){
-        printf("Mouse pos %i, %i (%.2f,%.2f)\n",x,y,xNorm,yNorm);
-    }
-};
 
 
 int main(int argc, char** argv)
@@ -51,10 +43,6 @@ int main(int argc, char** argv)
 
 	osg::ref_ptr<osgviz::Window> window = osgViz->getWindowManager()->getWindowByID(winid);
 
-
-	CallbackPrint mousepositionPrinter;
-	window->addMouseMoveCallback(&mousepositionPrinter);
-
 	osgviz::HUD* hud = window->addHUD(1920,1080);
 
 //	osg::ref_ptr<osgviz::Object> hudarrow = primitivesfactory->createArrow();
@@ -85,13 +73,16 @@ int main(int argc, char** argv)
 
 
     osg::ref_ptr<osgviz::PrimitivesFactory::Shape> shape = primitivesfactory->createShape(osgviz::PrimitivesFactory::BOX,100,100,0);
-    shape->setPosition(2,3,0);
+    shape->setPosition(200,200,0);
     //shape->setScale(100,100,100);
     shape->setName("BoxBoxBoxBox");
     shape->displayName(10);
     shape->setColor(1,0,0,0.5);
 
     hud->addHudObject(shape);
+
+    hud->createScalableObject(shape.get(),osg::Vec3d(100,100,0),osg::Vec3d(2,2,1));
+
 
     osg::ref_ptr<osgviz::PrimitivesFactory::Shape> shape1 = primitivesfactory->createShape(osgviz::PrimitivesFactory::BOX,0.5,0.5,0.5);
     shape1->setColor(1,0,0,0.5);
@@ -110,6 +101,7 @@ int main(int argc, char** argv)
     cone->displayName(10);
     cone->setColor(1,0,0,0.5);
     hud2->addHudObject(cone);
+
 
 //    osg::ref_ptr<osgviz::Object> image = primitivesfactory->loadImage("test.png");
 //    //shape1->setPosition(0.5,0.5,0.5);
