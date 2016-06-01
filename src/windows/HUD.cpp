@@ -93,11 +93,6 @@ namespace osgviz{
       //hudCamera = new osg::Camera();
       gw=window->getGraphicsWindow();
 
-
-      hudTerminalList = new osg::Group;
-      hudscale = new osg::MatrixTransform;
-      hudscale->setMatrix(osg::Matrix::scale(1.0, 1.0, 1.0));
-      hudscale->addChild(hudTerminalList.get());
       cull_mask = 0;
       //x1 = x2 = y1 = y2 = 0.0;
       //window = win;
@@ -154,12 +149,6 @@ namespace osgviz{
                                                       osg::StateAttribute::OVERRIDE |
                                                       osg::StateAttribute::PROTECTED);
             this->setAllowEventFocus(true);
-
-            //hudCamera->setRenderer(new osgViewer::Renderer(hudCamera));
-            osg::Camera::addChild(hudscale.get());
-
-
-
 
     }
 

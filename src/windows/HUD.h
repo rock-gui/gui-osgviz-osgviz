@@ -86,13 +86,11 @@ class HUD:  public osg::Camera {
 
 
       virtual bool addHudObject(osg::Node* node){
-          return hudTerminalList->addChild(node);
+          return this->addChild(node);
       }
 
 
     private:
-      osg::ref_ptr<osg::Group> hudTerminalList;
-      osg::ref_ptr<osg::MatrixTransform> hudscale;
 
       HUDCallback* resizecallback;
 
@@ -106,12 +104,6 @@ class HUD:  public osg::Camera {
       double viewport_width, viewport_height;
 
       unsigned int cull_mask;
-      /**
-       * should not be used!
-       */
-      virtual bool addChild(osg::Node* node){fprintf(stderr,"please use addHudElement() instead od addChild\n");return false;}
-
-
 
     };
 
