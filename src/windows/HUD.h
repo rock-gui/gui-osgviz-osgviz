@@ -36,7 +36,6 @@
 #include <osgViewer/GraphicsWindow>
 
 #include "../graphics/interfaces/OsgVizDefs.h"
-//#include <osgViz/graphics/interfaces/GraphicsEventInterface.h>
 
 #include <osgViewer/ViewerEventHandlers>
 
@@ -57,14 +56,19 @@ class HUD:  public osg::Camera {
     public:
 
     struct HoverScaler: public osgviz::MouseMoveCallback, public osg::Referenced{
-        HoverScaler(osgviz::Object* obj, const osg::Vec3d& size, const osg::Vec3d &scale, HUD* hud);
+
+        enum HoverScalerType{ZOOM,NE,SE,SW,NW};
+
+        HoverScaler(osgviz::Object* obj, const osg::Vec3d& size, const osg::Vec3d &scale, HoverScalerType type, HUD* hud);
         virtual bool mouseMoved(const int& x, const int& y, const float& xNorm, const float& yNorm, const int& modifierMask);
 
     private:
         osgviz::Object* obj;
         osg::Vec3d initial_scale,scale,size;
+        osg::Vec3d position_unscaled;
         bool scaled;
         HUD* hud;
+        HoverScalerType type;
     };
 
       HUD(osg::ref_ptr<osgviz::Window> window, int width, int height);
@@ -78,7 +82,7 @@ class HUD:  public osg::Camera {
 
       void resize(double width, double height);
 
-      void createScalableObject(osgviz::Object* obj, const osg::Vec3d size, const osg::Vec3d &scale);
+      void createScalableObject(osgviz::Object* obj, const osg::Vec3d size, const osg::Vec3d &scale, HoverScaler::HoverScalerType type = HoverScaler::ZOOM);
 
 
       virtual bool addHudObject(osg::Node* node){
@@ -87,14 +91,10 @@ class HUD:  public osg::Camera {
 
 
     private:
-      //osg::ref_ptr<osg::Camera> hudCamera;
       osg::ref_ptr<osg::Group> hudTerminalList;
       osg::ref_ptr<osg::MatrixTransform> hudscale;
 
       HUDCallback* resizecallback;
-
-//    	osg::ref_ptr<osg::Image> hudImage;
-//    	osg::ref_ptr<osg::Texture2D> hudTexture;
 
       osg::ref_ptr<osgViewer::GraphicsWindow> gw;
       osg::ref_ptr<osgviz::Window> window;
@@ -114,28 +114,6 @@ class HUD:  public osg::Camera {
 
 
     };
-
-
-//class HUDCallback: public osg::GraphicsContext::ResizedCallback{
-//
-//public:
-//
-//    HUDCallback(HUD* hud):myhud(hud){};
-//
-//    /**
-//     * from osg::ResizedCallback
-//     */
-//    void resizedImplementation (osg::GraphicsContext *gc, int x, int y, int width, int height){
-//        myhud->resizedImplementation(gc,x,y,width,height);
-//    }
-//
-//
-//private:
-//    HUD* myhud;
-//
-//};
-
-
 
 } // end of namespace mars
 

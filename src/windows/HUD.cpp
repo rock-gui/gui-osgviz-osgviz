@@ -36,47 +36,56 @@
 namespace osgviz{
 
 
-HUD::HoverScaler::HoverScaler(osgviz::Object* obj, const osg::Vec3d &size, const osg::Vec3d &scale, HUD* hud):obj(obj),scale(scale),size(size),hud(hud){
-    scaled = false;
-    initial_scale = obj->getScale();
-}
-
-bool HUD::HoverScaler::mouseMoved(const int& x, const int& y, const float& xNorm, const float& yNorm, const int& modifierMask){
-
-    osg::Vec3 pos = obj->getPosition();
-
-    //Norm is from -1 to 1, but we want 0 to 1
-    int mousex = (xNorm+1.0)/2.0 * hud->getViewPortSizeX();
-    int mousey = (yNorm+1.0)/2.0 * hud->getViewPortSizeY();
-
-    printf("Mouse pos %i, %i (%.2f,%.2f)\n",mousex,mousey,xNorm,yNorm);
-    printf("Objec pos %.2f, %.2f, %.2f, %.2f\n",pos.x(),pos.y(),pos.x()+size.x(),pos.y()+size.y());
-
-    //if inside scale up
-    if (        pos.x()-(size.x()/2) < mousex
-            &&  pos.y()-(size.y()/2) < mousey
-            &&  pos.x()+(size.x()/2) > mousex
-            &&  pos.y()+(size.y()/2) > mousey
-            && !scaled
-        ){
-        printf("inside\n");
-        obj->setScale(scale);
-        scaled = true;
-    }
-
-    //if out (again) scale back
-    if ((       pos.x()-(size.x()*scale.x()/2) > mousex //left
-            ||  pos.y()-(size.y()*scale.x()/2) > mousey
-            ||  pos.x()+(size.x()*scale.x()/2) < mousex
-            ||  pos.y()+(size.y()*scale.x()/2) < mousey
-    ) && scaled){
-        printf("outside\n");
-        obj->setScale(initial_scale);
+    HUD::HoverScaler::HoverScaler(osgviz::Object* obj, const osg::Vec3d &size, const osg::Vec3d &scale, HoverScalerType type, HUD* hud):obj(obj),scale(scale),size(size),type(type),hud(hud){
         scaled = false;
+        initial_scale = obj->getScale();
     }
 
-    return false;
-}
+    bool HUD::HoverScaler::mouseMoved(const int& x, const int& y, const float& xNorm, const float& yNorm, const int& modifierMask){
+
+        osg::Vec3 pos = obj->getPosition();
+
+        //Norm is from -1 to 1, but we want 0 to 1
+        int mousex = (xNorm+1.0)/2.0 * hud->getViewPortSizeX();
+        int mousey = (yNorm+1.0)/2.0 * hud->getViewPortSizeY();
+
+        //if inside scale up
+
+        if (   !scaled
+                && pos.x()-(size.x()/2) < mousex
+                && pos.y()-(size.y()/2) < mousey
+                &&  pos.x()+(size.x()/2) > mousex
+                &&  pos.y()+(size.y()/2) > mousey
+            ){
+            obj->setScale(scale);
+
+            position_unscaled = obj->getPosition();
+            switch(type){
+            case NE: obj->setPosition(position_unscaled.x()+size.x()*scale.x()/4.0,position_unscaled.y()+size.y()*scale.y()/4.0,position_unscaled.z());break;
+            case SE: obj->setPosition(position_unscaled.x()+size.x()*scale.x()/4.0,position_unscaled.y()-size.y()*scale.y()/4.0,position_unscaled.z());break;
+            case SW: obj->setPosition(position_unscaled.x()-size.x()*scale.x()/4.0,position_unscaled.y()-size.y()*scale.y()/4.0,position_unscaled.z());break;
+            case NW: obj->setPosition(position_unscaled.x()-size.x()*scale.x()/4.0,position_unscaled.y()+size.y()*scale.y()/4.0,position_unscaled.z());break;
+            case ZOOM:break;
+            }
+
+            scaled = true;
+        }
+
+        //if out (again) scale back
+        if (scaled
+                && (pos.x()-(size.x()*scale.x()/2) > mousex //left
+                    ||  pos.y()-(size.y()*scale.y()/2) > mousey
+                    ||  pos.x()+(size.x()*scale.x()/2) < mousex
+                    ||  pos.y()+(size.y()*scale.y()/2) < mousey
+                    )
+            ){
+            obj->setScale(initial_scale);
+            obj->setPosition(position_unscaled);
+            scaled = false;
+        }
+
+        return false;
+    }
 
 
 
@@ -178,8 +187,8 @@ bool HUD::HoverScaler::mouseMoved(const int& x, const int& y, const float& xNorm
     }
 
 
-    void HUD::createScalableObject(osgviz::Object* obj, const osg::Vec3d size, const osg::Vec3d &scale){
-        window->addMouseMoveCallback(new HoverScaler(obj,size,scale,this));
+    void HUD::createScalableObject(osgviz::Object* obj, const osg::Vec3d size, const osg::Vec3d &scale, HoverScaler::HoverScalerType type){
+        window->addMouseMoveCallback(new HoverScaler(obj,size,scale,type,this));
     }
 
 } // end of namespace graphics
