@@ -25,6 +25,7 @@
 #include "../graphics/interfaces/data/GraphicData.h"
 #include "config/WindowConfig.h"
 #include "HUD.h"
+#include "EventHandlers/MouseMoveEvent.h"
 
 namespace osgviz {
 
@@ -88,6 +89,10 @@ public:
 		root->removeChild(0,root->getNumChildren());
 	}
 
+	inline void addMouseMoveCallback(MouseMoveCallback* cb){
+	    mouseMoveEvents->addCallback(cb);
+	}
+
 protected:
 	osg::ref_ptr<osg::Group> root;
 
@@ -97,6 +102,7 @@ private:
 	osg::ref_ptr<osg::GraphicsContext> graphicsContext;
 
 	osg::ref_ptr<osgViewer::GraphicsWindow> gw;
+	osg::ref_ptr<MouseMoveEvent> mouseMoveEvents;
 
 	osg::ref_ptr<osgParticle::PrecipitationEffect> snow, rain;
 

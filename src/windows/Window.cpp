@@ -57,9 +57,13 @@ osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* viewScene) {
     // so all views in the window share the same window scene
     view->addChild(root);
 
+    view->addEventHandler(new osgViewer::StatsHandler(),-100);
+
     view->addEventHandler(new ObjectSelector(view),0);
 
-    view->addEventHandler(new osgViewer::StatsHandler(),-100);
+    mouseMoveEvents = new MouseMoveEvent();
+    view->addEventHandler(mouseMoveEvents,0);
+
 
 
     views.push_back(view);

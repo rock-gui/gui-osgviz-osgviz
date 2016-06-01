@@ -2,6 +2,8 @@
 #include "OsgViz.hpp"
 #include "plugins/viz/Primitives/PrimitivesFactory.h"
 
+#include "interfaces/MouseMoveCallback.h"
+
 #ifndef WIN32
 #include <unistd.h>//sleep
 #else
@@ -10,6 +12,12 @@
 #endif
 #include <stdio.h>
 
+struct CallbackPrint: public osgviz::MouseMoveCallback{
+
+    virtual bool mouseMoved(const int& x, const int& y, const float& xNorm, const float& yNorm, const int& modifierMask){
+        printf("Mouse pos %i, %i (%.2f,%.2f)\n",x,y,xNorm,yNorm);
+    }
+};
 
 
 int main(int argc, char** argv)
@@ -41,8 +49,13 @@ int main(int argc, char** argv)
 
 	int winid = osgViz->createWindow();
 
+	osg::ref_ptr<osgviz::Window> window = osgViz->getWindowManager()->getWindowByID(winid);
 
-	osgviz::HUD* hud = osgViz->getWindowManager()->getWindowByID(winid)->addHUD(1920,1080);
+
+	CallbackPrint mousepositionPrinter;
+	window->addMouseMoveCallback(&mousepositionPrinter);
+
+	osgviz::HUD* hud = window->addHUD(1920,1080);
 
 //	osg::ref_ptr<osgviz::Object> hudarrow = primitivesfactory->createArrow();
 //	hudarrow->setPosition(100,100,0);
