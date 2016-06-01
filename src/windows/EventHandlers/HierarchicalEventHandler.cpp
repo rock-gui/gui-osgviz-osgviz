@@ -41,22 +41,9 @@ void HierarchicalEventHandler::removeEventHandler(osg::ref_ptr<osgGA::GUIEventHa
 
 
 bool HierarchicalEventHandler::handle(const osgGA::GUIEventAdapter& ea,	osgGA::GUIActionAdapter& aa) {
-
-
-
-
 	for (std::map<int, osg::ref_ptr<osgGA::GUIEventHandler> >::reverse_iterator handler = handlers.rbegin(); handler != handlers.rend();++handler){
-        //only evaluate following events
-        if (       ea.getEventType() == osgGA::GUIEventAdapter::PUSH
-                || ea.getEventType() == osgGA::GUIEventAdapter::RELEASE
-                || ea.getEventType() == osgGA::GUIEventAdapter::DRAG
-        ){
-            //printf("checking no: %i %s\n",handler->first,demangledTypeName(handler->second.get()).c_str());
-
-            if (handler->second->handle(ea,aa)){
-                //printf("%s handled event, stopping\n\n",demangledTypeName(handler->second.get()).c_str());
-                return true;
-            }
+        if (handler->second->handle(ea,aa)){
+            return true;
         }
 	}
 	return false;
