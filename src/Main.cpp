@@ -81,7 +81,7 @@ int main(int argc, char** argv)
 
     hud->addHudObject(shape);
 
-    hud->createScalableObject(shape.get(),osg::Vec3d(100,100,0),osg::Vec3d(2,2,1),osgviz::HUD::HoverScaler::NE);
+    hud->createScalableObject(shape.get(),osg::Vec3d(100,100,0),osg::Vec3d(2,2,1),osgviz::HUDHoverScaler::NE);
 
 
     osg::ref_ptr<osgviz::PrimitivesFactory::Shape> shape1 = primitivesfactory->createShape(osgviz::PrimitivesFactory::BOX,0.5,0.5,0.5);

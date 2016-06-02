@@ -35,16 +35,16 @@
 #include <osg/GraphicsContext>
 #include <osgViewer/GraphicsWindow>
 
-#include "../graphics/interfaces/OsgVizDefs.h"
+#include "../../graphics/interfaces/OsgVizDefs.h"
 
 #include <osgViewer/ViewerEventHandlers>
 
 
 #include <stdio.h>
 
-#include "SuperView.h"
-#include "../interfaces/MouseMoveCallback.h"
-#include "../plugins/Object.h"
+#include "../SuperView.h"
+#include "HUDHoverScaler.h"
+
 
 namespace osgviz{
 
@@ -54,22 +54,6 @@ class HUDCallback;
 
 class HUD:  public osg::Camera {
     public:
-
-    struct HoverScaler: public osgviz::MouseMoveCallback, public osg::Referenced{
-
-        enum HoverScalerType{ZOOM,NE,SE,SW,NW};
-
-        HoverScaler(osgviz::Object* obj, const osg::Vec3d& size, const osg::Vec3d &scale, HoverScalerType type, HUD* hud);
-        virtual bool mouseMoved(const int& x, const int& y, const float& xNorm, const float& yNorm, const int& modifierMask);
-
-    private:
-        osgviz::Object* obj;
-        osg::Vec3d initial_scale,scale,size, totalscale;
-        osg::Vec3d position_unscaled;
-        bool scaled;
-        HUD* hud;
-        HoverScalerType type;
-    };
 
       HUD(osg::ref_ptr<osgviz::Window> window, int width, int height);
       ~HUD(void);
@@ -82,7 +66,7 @@ class HUD:  public osg::Camera {
 
       void resize(double width, double height);
 
-      void createScalableObject(osgviz::Object* obj, const osg::Vec3d size, const osg::Vec3d &scale, HoverScaler::HoverScalerType type = HoverScaler::ZOOM);
+      void createScalableObject(osgviz::Object* obj, const osg::Vec3d size, const osg::Vec3d &scale, HUDHoverScaler::Type type = HUDHoverScaler::ZOOM);
 
 
       virtual bool addHudObject(osg::Node* node){

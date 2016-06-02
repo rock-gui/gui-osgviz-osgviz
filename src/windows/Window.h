@@ -24,7 +24,7 @@
 
 #include "../graphics/interfaces/data/GraphicData.h"
 #include "config/WindowConfig.h"
-#include "HUD.h"
+#include "HUD/HUD.h"
 #include "EventHandlers/MouseMoveEvent.h"
 
 namespace osgviz {

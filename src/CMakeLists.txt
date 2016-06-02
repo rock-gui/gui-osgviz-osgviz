@@ -56,7 +56,8 @@ rock_library(osgViz
            windows/Window.cpp
            windows/WindowManager.cpp
            windows/SuperView.cpp
-           windows/HUD.cpp
+           windows/HUD/HUD.cpp
+           windows/HUD/HUDHoverScaler.cpp
            windows/EventHandlers/HierarchicalEventHandler.cpp
            windows/EventHandlers/ObjectSelector.cpp
            windows/EventHandlers/MouseMoveEvent.cpp
@@ -66,7 +67,8 @@ rock_library(osgViz
            windows/Window.h
            windows/WindowManager.h
            windows/SuperView.h
-           windows/HUD.h
+           windows/HUD/HUD.h
+           windows/HUD/HUDHoverScaler.h
            windows/EventHandlers/HierarchicalEventHandler.h
            windows/EventHandlers/ObjectSelector.h
            windows/EventHandlers/NullClickObject.h
