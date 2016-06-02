@@ -123,7 +123,7 @@ namespace osgviz{
     }
 
 
-    void HUD::createScalableObject(osgviz::Object* obj, const osg::Vec3d size, const osg::Vec3d &scale, HUDHoverScaler::Type type, osg::Vec3d anchor_offset){
+    void HUD::makeObjectScaleOnHover(osgviz::Object* obj, const osg::Vec3d size, const osg::Vec3d &scale, HUDHoverScaler::Type type, osg::Vec3d anchor_offset){
         window->addMouseMoveCallback(new HUDHoverScaler(obj,size,scale,type,anchor_offset,this));
     }
 

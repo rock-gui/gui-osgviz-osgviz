@@ -66,7 +66,16 @@ class HUD:  public osg::Camera {
 
       void resize(double width, double height);
 
-      void createScalableObject(osgviz::Object* obj, const osg::Vec3d size, const osg::Vec3d &scale, HUDHoverScaler::Type type = HUDHoverScaler::ZOOM, osg::Vec3d anchor_offset = osg::Vec3d(0,0,0));
+      /**
+       * Created an interactive object that scales on Hovering the mouse over it
+       *
+       * @param obj the Object to scale
+       * @param size the size of the actual object obj->getPosition is the center, size is the area around it when the scale starts
+       * @param scale how bit the object grows
+       * @param type ZOOM,NE,SE,SW,NW, sets the fixed point when scaling
+       * @param anchor_offset in case obj->getPosition is not the center, give the offset to the center (normally size/2)
+       */
+      void makeObjectScaleOnHover(osgviz::Object* obj, const osg::Vec3d size, const osg::Vec3d &scale, HUDHoverScaler::Type type = HUDHoverScaler::ZOOM, osg::Vec3d anchor_offset = osg::Vec3d(0,0,0));
 
 
       virtual bool addHudObject(osg::Node* node){
