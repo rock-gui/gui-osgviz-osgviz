@@ -7,10 +7,10 @@
 
 #include "ObjectSelector.h"
 
-#include <osgViz/OsgViz.hpp>
-#include <osgViz/interfaces/Clickable.h>
-#include <osgViz/windows/SuperView.h>
-#include <osgViz/windows/HUD.h>
+#include "../../OsgViz.hpp"
+#include "../../interfaces/Clickable.h"
+#include "../SuperView.h>
+#include "../HUD/HUD.h"
 
 #include <osgUtil/LineSegmentIntersector>
 #include <iostream>
