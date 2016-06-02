@@ -35,8 +35,6 @@ bool HUDHoverScaler::mouseMoved(const int& x, const int& y, const float& xNorm, 
             &&  pos.y()+(size.y()/2) > mousey
     ){
 
-        printf("scale %i:%i\n",mousex,mousey);
-
         initial_scale = obj->getScale();
         totalscale = osg::Vec3d(scale.x()*initial_scale.x(),scale.y()*initial_scale.y(),scale.z()*initial_scale.z());
 
@@ -71,7 +69,6 @@ bool HUDHoverScaler::mouseMoved(const int& x, const int& y, const float& xNorm, 
             ||  position_scaled.x()+(size.x()*scale.x()/2) < mousex
             ||  position_scaled.y()+(size.y()*scale.y()/2) < mousey
         ){
-            printf("unscale %i:%i\n",mousex,mousey);
             obj->setScale(initial_scale);
             obj->setPosition(position_unscaled);
             scaled = false;
