@@ -20,7 +20,7 @@ public:
 
     enum Type{ZOOM,NE,SE,SW,NW};
 
-    HUDHoverScaler(osgviz::Object* obj, const osg::Vec3d& size, const osg::Vec3d &scale, Type type, HUD* hud);
+    HUDHoverScaler(osgviz::Object* obj, const osg::Vec3d& size, const osg::Vec3d &scale, Type type, osg::Vec3d anchor_offset, HUD* hud);
     virtual ~HUDHoverScaler(){};
 
     virtual bool mouseMoved(const int& x, const int& y, const float& xNorm, const float& yNorm, const int& modifierMask);
@@ -29,6 +29,7 @@ private:
     osgviz::Object* obj;
     osg::Vec3d initial_scale,scale,size, totalscale;
     osg::Vec3d position_unscaled;
+    osg::Vec3d anchor_offset;//offset to move anchor to center of HUD element
     bool scaled;
     Type type;
     HUD* hud;

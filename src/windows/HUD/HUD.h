@@ -66,7 +66,7 @@ class HUD:  public osg::Camera {
 
       void resize(double width, double height);
 
-      void createScalableObject(osgviz::Object* obj, const osg::Vec3d size, const osg::Vec3d &scale, HUDHoverScaler::Type type = HUDHoverScaler::ZOOM);
+      void createScalableObject(osgviz::Object* obj, const osg::Vec3d size, const osg::Vec3d &scale, HUDHoverScaler::Type type = HUDHoverScaler::ZOOM, osg::Vec3d anchor_offset = osg::Vec3d(0,0,0));
 
 
       virtual bool addHudObject(osg::Node* node){
