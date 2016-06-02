@@ -47,7 +47,7 @@ bool HUDHoverScaler::mouseMoved(const int& x, const int& y, const float& xNorm, 
         case SE: position_scaled = osg::Vec3d(position_unscaled.x()+size.x()*scale.x()/4.0,position_unscaled.y()-size.y()*scale.y()/4.0,position_unscaled.z());break;
         case SW: position_scaled = osg::Vec3d(position_unscaled.x()-size.x()*scale.x()/4.0,position_unscaled.y()-size.y()*scale.y()/4.0,position_unscaled.z());break;
         case NW: position_scaled = osg::Vec3d(position_unscaled.x()-size.x()*scale.x()/4.0,position_unscaled.y()+size.y()*scale.y()/4.0,position_unscaled.z());break;
-        case ZOOM: position_scaled = pos;
+        case ZOOM: position_scaled = pos-anchor_offset;
         }
         position_scaled -= anchor_offset;
         obj->setPosition(position_scaled);
