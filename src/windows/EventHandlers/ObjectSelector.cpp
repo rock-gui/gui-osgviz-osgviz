@@ -9,7 +9,7 @@
 
 #include "../../OsgViz.hpp"
 #include "../../interfaces/Clickable.h"
-#include "../SuperView.h>
+#include "../SuperView.h"
 #include "../HUD/HUD.h"
 
 #include <osgUtil/LineSegmentIntersector>
