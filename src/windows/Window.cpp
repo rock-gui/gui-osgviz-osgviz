@@ -62,7 +62,7 @@ osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* viewScene) {
     view->addEventHandler(new ObjectSelector(view),0);
 
     mouseMoveEvents = new MouseMoveEvent();
-    view->addEventHandler(mouseMoveEvents,0);
+    view->addEventHandler(mouseMoveEvents,-50);
 
 
 
