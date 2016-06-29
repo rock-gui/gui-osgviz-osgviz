@@ -52,18 +52,16 @@ void WindowManager::destroyWindow(unsigned int id){
 }
 
 void WindowManager::frame() {
-	windowsMutex.lock();
-	//printf("WindowManager::frame\n");fflush(stdout);
-	for(std::vector< osg::ref_ptr<Window> >::iterator witr = windows.begin();
-        witr != windows.end();
-        ++witr)
+    windowsMutex.lock();
+    for(std::vector< osg::ref_ptr<Window> >::iterator witr = windows.begin();
+        witr != windows.end(); ++witr)
     {
-		//printf("WindowManager::frame call\n");fflush(stdout);
-		witr->get()->frame();
-		//printf("WindowManager::frame call end\n");fflush(stdout);
+        //windows become invalid but are not removed from the window list
+        //thus we have to check if they are valid
+        if(witr->valid())
+            witr->get()->frame();
     }
-	//printf("WindowManager::frame end\n");fflush(stdout);
-	windowsMutex.unlock();
+    windowsMutex.unlock();
 }
 
 
