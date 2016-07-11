@@ -95,16 +95,18 @@ rock_library(osgVizPlugin
     DEPS_PKGCONFIG lib_manager openscenegraph
     LIBS ${ADDITIONAL_LIBS})
 
-
+ 
 rock_library(PrimitivesFactory
     SOURCES
     plugins/viz/Primitives/PrimitivesFactory.cpp
     plugins/viz/Primitives/Primitives/AxesNode.cpp
     plugins/viz/Primitives/Primitives/GridNode.cpp
     plugins/viz/Primitives/Primitives/ArrowNode.cpp
+    plugins/viz/Primitives/Primitives/WireframeBox.cpp
     HEADERS
     plugins/viz/Primitives/PrimitivesFactory.h
     plugins/viz/Primitives/Primitives/ArrowNode.h
+    plugins/viz/Primitives/Primitives/WireframeBox.hpp
     DEPS osgVizPlugin)
 
 rock_library(ManipulationClickHandler
