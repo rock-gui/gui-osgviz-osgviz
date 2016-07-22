@@ -35,6 +35,10 @@ public:
         Clickable* clickable;
     };
 
+    void setCamera(const osg::ref_ptr<osg::Camera>& cam){
+        camera = cam;
+    }
+
 private:
 
 
@@ -44,6 +48,7 @@ private:
     osgGA::GUIEventAdapter::EventType thisEvent,lastEvent;
     int pushedButtonsMask;
     int modKeyMask;
+    osg::ref_ptr<osg::Camera> camera;
     
     /** @return a queue containing all clickables that have been hit by the click
      *          sorted by distance to the camera.*/
