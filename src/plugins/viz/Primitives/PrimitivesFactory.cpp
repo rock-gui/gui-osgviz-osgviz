@@ -10,6 +10,7 @@
 #include "Primitives/ArrowNode.h"
 #include "Primitives/AxesNode.hpp"
 #include "Primitives/GridNode.hpp"
+#include "Primitives/WireframeBox.hpp"
 
 
 #include <osg/Geometry>
@@ -37,6 +38,17 @@ osg::ref_ptr<Object> PrimitivesFactory::createAxes(float scale,bool blabels){
 	obj->setName("Axes");
 	return obj;
 }
+
+osg::ref_ptr< Object > PrimitivesFactory::createWireframeBox(const double xSize, const double ySize, const double zSize) const
+{
+    osg::ref_ptr<Object> obj = new Object();
+    osg::ref_ptr<osg::Node> content = WireframeBox::create(xSize, ySize, zSize);
+    obj->addChild(content);
+    obj->setName("WireframeBox");
+    return obj;  
+}
+
+
 
 osg::ref_ptr<Object> PrimitivesFactory::createGrid(int rows,int cols,float dx, float dy, bool show_coordinates, const ::osg::Vec4 &color){
 	osg::ref_ptr<Object> obj = new Object();

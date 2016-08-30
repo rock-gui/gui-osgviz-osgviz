@@ -26,6 +26,7 @@
 #include "config/WindowConfig.h"
 #include "HUD/HUD.h"
 #include "EventHandlers/MouseMoveEvent.h"
+#include "EventHandlers/ObjectSelector.h"
 
 namespace osgviz {
 
@@ -93,6 +94,15 @@ public:
 	    mouseMoveEvents->addCallback(cb);
 	}
 
+	/**
+	 * in case you want to use a non-default camera for intersection calculation it can be set using this function
+	 * e.g. use the richt eye cam of the osgoculuswiewer instaed of the scene camera
+	 * @param cam
+	 */
+	inline void setObjectSelectorCamera(const osg::ref_ptr<osg::Camera>& cam){
+	    objectSelector->setCamera(cam);
+	}
+
 protected:
 	osg::ref_ptr<osg::Group> root;
 
@@ -103,6 +113,7 @@ private:
 
 	osg::ref_ptr<osgViewer::GraphicsWindow> gw;
 	osg::ref_ptr<MouseMoveEvent> mouseMoveEvents;
+	osg::ref_ptr<ObjectSelector> objectSelector;
 
 	osg::ref_ptr<osgParticle::PrecipitationEffect> snow, rain;
 
