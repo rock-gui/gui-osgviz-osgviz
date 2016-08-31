@@ -12,6 +12,7 @@
 #include <stdio.h>
 
 #include "Object.h"
+#include "Module.h"
 
 #ifndef _MSC_VER
 #define OSGVIZ_PLUGIN(NAME) \
@@ -27,7 +28,7 @@ namespace osgviz {
 
 class OsgViz;
 
-class OsgVizPlugin: public lib_manager::LibInterface  {
+class OsgVizPlugin: public lib_manager::LibInterface, public Module  {
 public:
 
 	OsgVizPlugin(lib_manager::LibManager *theManager):LibInterface(theManager){};

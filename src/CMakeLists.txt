@@ -61,7 +61,7 @@ rock_library(osgViz
            windows/EventHandlers/HierarchicalEventHandler.cpp
            windows/EventHandlers/ObjectSelector.cpp
            windows/EventHandlers/MouseMoveEvent.cpp
-           tools/UpdateThread.cpp    
+           tools/UpdateThread.cpp
            
     HEADERS OsgViz.hpp
            windows/Window.h
@@ -92,6 +92,7 @@ rock_library(osgVizPlugin
     HEADERS 
     plugins/Object.h
     plugins/OsgVizPlugin.h 
+    plugins/Module.h
     DEPS_PKGCONFIG lib_manager openscenegraph
     LIBS ${ADDITIONAL_LIBS})
 

@@ -8,16 +8,16 @@
 #ifndef GUI_OSGVIZ_SRC_PLUGINS_VIZ_PRIMITIVES_PRIMITIVESFACTORY_H_
 #define GUI_OSGVIZ_SRC_PLUGINS_VIZ_PRIMITIVES_PRIMITIVESFACTORY_H_
 
-#include "../../OsgVizPlugin.h"
+#include "../../Module.h"
 
 #include <osg/Shape>
 #include <osg/ShapeDrawable>
 
 namespace osgviz {
 
-class PrimitivesFactory: public OsgVizPlugin {
+class PrimitivesFactory: public Module {
 public:
-	PrimitivesFactory(lib_manager::LibManager *theManager);
+	PrimitivesFactory();
 	virtual ~PrimitivesFactory();
 
 	virtual int getLibVersion() const {return 0;};

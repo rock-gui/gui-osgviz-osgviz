@@ -8,8 +8,11 @@
 #ifndef TYPENAMEDEMANGLING_H_
 #define TYPENAMEDEMANGLING_H_
 
+#include <string>
+
 #ifdef __GNUC__
 	#include <cxxabi.h>
+	#include <typeinfo>
 #endif
 #include <string>
 #include <stdlib.h>
@@ -49,12 +52,12 @@ std::string demangledTypeName(const Type& p)
 }
 
 #if __cplusplus > 199711L
-std::string demangledTypeName(const std::type_index& type)
+static std::string demangledTypeName(const std::type_index& type)
 {
    char* p_nice_name = abi::__cxa_demangle(type.name(),NULL,NULL,NULL);
    std::string result(p_nice_name);
    free(p_nice_name);
-   return result;  
+   return result;
 }
 #endif
 

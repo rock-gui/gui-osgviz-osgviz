@@ -11,12 +11,13 @@
 #include <osgDB/Registry>
 
 #include "windows/WindowManager.h"
-
+#include "tools/TypeNameDemangling.h"
 
 namespace osgviz
 {
 
 osg::ref_ptr<OsgViz> instance = NULL;
+std::map<std::string, Module*> OsgViz::modules;
 
 osg::ref_ptr<OsgViz> OsgViz::getInstance(int argc,char** argv){
 	if (!instance.valid()){
@@ -211,6 +212,12 @@ int OsgViz::tryLockThread(){
 		return mutex->trylock();
 	}
 	return -1;
+}
+
+void OsgViz::printModules(){
+	for (std::map<std::string, Module*>::iterator it = modules.begin();it!=modules.end();it++){
+		printf("%s : %s\n",it->first.c_str(),demangledTypeName(*(it->second)).c_str());
+	}
 }
 
 }

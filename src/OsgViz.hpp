@@ -9,6 +9,7 @@
 
 //#include "graphics/interfaces/GraphicsManagerInterface.h"
 #include "plugins/OsgVizPlugin.h"
+#include "plugins/Module.h"
 #include "windows/WindowManager.h"
 
 #include "windows/config/WindowConfig.h"
@@ -147,6 +148,21 @@ namespace osgviz
 		virtual int addUpdateCallback(Updatable* callback, int priority = 0);
 
 
+		template <class MODULE> static MODULE* getModuleInstance(std::string moduleName,int argc = 0, char **argv = NULL){
+			Module* mod;
+			mod = modules[moduleName];
+			if (! mod){
+				mod = new MODULE();
+				modules[moduleName] = mod;
+				osg::ref_ptr<osgviz::OsgViz> osgviz = osgviz::OsgViz::getInstance(argc,argv);
+				mod->init(argc,argv);
+			}
+			return dynamic_cast<MODULE*>(mod);
+		}
+
+		static void printModules();
+
+
 		/**
 		 * Get a pointer to plugin, if the plugin is not already loaded, this function  also loads the plugin
 		 * @param classname the plugin name, which in case of osgviz is also the libraries filename
@@ -232,6 +248,7 @@ namespace osgviz
 		private:
 		bool initialized;
 		std::vector< OsgVizPlugin* >loadedPlugins;
+		static std::map<std::string, Module*> modules;
 
 		int m_argc;
 		char** m_argv;
