@@ -148,20 +148,29 @@ namespace osgviz
 		virtual int addUpdateCallback(Updatable* callback, int priority = 0);
 
 
-		template <class MODULE> static MODULE* getModuleInstance(std::string moduleName,int argc = 0, char **argv = NULL){
+		/**
+		 * loads an osgviz::Module class into the Inctance management of osgviz given a name
+		 * Applications using osgviz can use the same instance of a Module identified by its name
+		 * (same name/same instance)
+		 * @ param moduleName The name of the instance to obtain (either existing or not)
+		 * @ param argc The argument count passed to the Module (only for non-exixting instances)
+		 * @ param argv The arguments passed to the Module (only for non-exixting instances)
+		 */
+		template <class MODULE> static MODULE* getModuleInstance(std::string moduleName, int argc = 0, char **argv = NULL){
 			Module* mod;
 			mod = modules[moduleName];
 			if (! mod){
 				mod = new MODULE();
 				modules[moduleName] = mod;
-				osg::ref_ptr<osgviz::OsgViz> osgviz = osgviz::OsgViz::getInstance(argc,argv);
 				mod->init(argc,argv);
 			}
 			return dynamic_cast<MODULE*>(mod);
 		}
 
+		/**
+		 * print available module names and classes
+		 */
 		static void printModules();
-
 
 		/**
 		 * Get a pointer to plugin, if the plugin is not already loaded, this function  also loads the plugin
