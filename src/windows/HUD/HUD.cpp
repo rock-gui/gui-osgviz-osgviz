@@ -32,7 +32,7 @@
 #include <cstdio>
 
 #include "../SuperView.h"
-#include "../../plugins/Object.h"
+#include "../../Object.h"
 
 namespace osgviz{
 

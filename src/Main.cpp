@@ -1,6 +1,6 @@
 #include <iostream>
 #include "OsgViz.hpp"
-#include "plugins/viz/Primitives/PrimitivesFactory.h"
+#include "modules/viz/Primitives/PrimitivesFactory.h"
 
 
 #ifndef WIN32

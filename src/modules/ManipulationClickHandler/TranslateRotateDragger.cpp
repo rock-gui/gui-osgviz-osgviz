@@ -1,6 +1,6 @@
 #include "TranslateRotateDragger.h"
 
-#include <osgViz/plugins/viz/Primitives/Primitives/AxesNode.hpp>
+#include "../../modules/viz/Primitives/Primitives/AxesNode.hpp"
 
 #include <osg/ShapeDrawable>
 #include <osg/Geometry>

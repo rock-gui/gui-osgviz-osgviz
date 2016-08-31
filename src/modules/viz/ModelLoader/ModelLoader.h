@@ -8,7 +8,7 @@
 #ifndef GUI_OSGVIZ_SRC_PLUGINS_DATA_MODELLOADER_H_
 #define GUI_OSGVIZ_SRC_PLUGINS_DATA_MODELLOADER_H_
 
-#include "../../Module.h"
+#include "../../../Module.h"
 
 namespace osgviz {
 

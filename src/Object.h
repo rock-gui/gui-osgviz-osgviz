@@ -15,7 +15,7 @@
 
 #include <string>
 
-#include "../interfaces/Clickable.h"
+#include "interfaces/Clickable.h"
 
 #include <stdio.h>
 

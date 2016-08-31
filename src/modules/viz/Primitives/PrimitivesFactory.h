@@ -8,10 +8,9 @@
 #ifndef GUI_OSGVIZ_SRC_PLUGINS_VIZ_PRIMITIVES_PRIMITIVESFACTORY_H_
 #define GUI_OSGVIZ_SRC_PLUGINS_VIZ_PRIMITIVES_PRIMITIVESFACTORY_H_
 
-#include "../../Module.h"
-
 #include <osg/Shape>
 #include <osg/ShapeDrawable>
+#include "../../../Module.h"
 
 namespace osgviz {
 

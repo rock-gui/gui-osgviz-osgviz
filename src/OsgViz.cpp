@@ -26,33 +26,12 @@ osg::ref_ptr<OsgViz> OsgViz::getInstance(int argc,char** argv){
 	return instance;
 }
 
-osg::ref_ptr<OsgViz> OsgViz::getInstance(lib_manager::LibManager * manager){
-	if (!instance.valid()){
-		instance = new OsgViz(manager);
-	}
-	return instance;
-}
 
 osg::ref_ptr<OsgViz> OsgViz::getExistingInstance(){
 	return instance;
 }
 
-
-
-OsgViz::OsgViz(lib_manager::LibManager * manager)
-{
-    libManager = manager;
-	createdOwnManager = false;
-	instance = this;
-	init(0,NULL);
-
-}
-
 OsgViz::OsgViz(int argc, char** argv){
-	createdOwnManager = true;
-	libManager = new lib_manager::LibManager();
-	//not loaded by libmanager so we add ourselves
-	//libManager->addLibrary(this);
 	init(argc,argv);
 }
 
@@ -75,16 +54,8 @@ void OsgViz::init(int argc,char** argv){
 
 OsgViz::~OsgViz(){
 
-	for (std::vector< OsgVizPlugin* >::iterator it = loadedPlugins.begin();it!=loadedPlugins.end();it++){
-		libManager->releaseLibrary((*it)->getLibName());
-	}
-
 	for (std::map<std::string, Module*>::iterator it = modules.begin();it!=modules.end();it++){
 		delete it->second;
-	}
-
-	if (createdOwnManager){
-		delete libManager;
 	}
 
 	delete mutex;
@@ -109,43 +80,6 @@ unsigned int OsgViz::createWindow(WindowConfig windowConfig, osg::ref_ptr<osg::G
 
 void OsgViz::destroyWindow(unsigned int id){
     windowManager->destroyWindow(id);
-}
-
-
-OsgVizPlugin* OsgViz::getVizPlugin(std::string path, std::string name) {
-	OsgVizPlugin* viz = NULL;
-	viz = dynamic_cast<OsgVizPlugin*>(libManager->getLibrary(name));
-	if (viz){
-		return viz;
-	}else{
-		lib_manager::LibManager::ErrorNumber result = libManager->loadLibrary(path);
-		//if (result == lib_manager::LibManager::LIBMGR_NO_ERROR){
-			OsgVizPlugin* viz = dynamic_cast<OsgVizPlugin*>(libManager->acquireLibrary(name));
-			//fprintf(stderr,"trying to load 3%s\n",name.c_str());	fflush(stdout);
-			if (!viz){
-				fprintf(stderr,"unable to load lib %s\n",name.c_str());	fflush(stdout);
-				return NULL;
-			}
-			// init plugin data
-			//viz->setParent(this);
-            viz->setRootNode(root);
-            viz->init(m_argc,m_argv);
-
-			loadedPlugins.push_back(viz);
-			return viz;
-		//}else{
-		//	fprintf(stderr,"load failed %s\n",name.c_str());	fflush(stdout);
-		//}
-	}
-	return NULL;
-}
-
-OsgVizPlugin* OsgViz::loadPlugin(std::string classname){
-	OsgVizPlugin* data = getVizPlugin(classname,classname);
-	if (data){
-		data->init(m_argc,m_argv);
-	}
-	return data;
 }
 
 void OsgViz::update(){

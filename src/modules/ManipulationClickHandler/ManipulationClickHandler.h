@@ -2,10 +2,10 @@
 #define GUI_OSGVIZ_OSGVIZ_PLUGINS_MANIPULATION_CLICK_HANDLER_MANIPULATION_CLICK_HANDLER_H
 
 #include <boost/signals2.hpp>
-#include <osgViz/interfaces/Clickable.h>
-#include <osgViz/plugins/Object.h>
+#include "../../interfaces/Clickable.h"
+#include "../../Object.h"
 #include <osgManipulator/Dragger>
-#include <osgViz/windows/EventHandlers/NullClickObject.h>
+#include "../../windows/EventHandlers/NullClickObject.h"
 #include <osg/Referenced>
 
 namespace osgviz {

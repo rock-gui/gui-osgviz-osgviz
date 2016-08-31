@@ -15,5 +15,4 @@
   <depend package="dummy-dependency-n" />
   -->
   <depend package="osg" />
-  <depend package="simulation/lib_manager" />
 </package>

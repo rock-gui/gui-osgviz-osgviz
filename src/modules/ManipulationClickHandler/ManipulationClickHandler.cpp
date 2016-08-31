@@ -4,7 +4,7 @@
 #include <osg/io_utils>
 #include <osgManipulator/RotateSphereDragger>
 #include <osgManipulator/Dragger>
-#include <osgViz/plugins/Object.h>
+#include "../../Object.h"
 
 using namespace osgManipulator;
 using namespace osg;
