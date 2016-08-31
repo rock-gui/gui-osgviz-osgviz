@@ -79,6 +79,10 @@ OsgViz::~OsgViz(){
 		libManager->releaseLibrary((*it)->getLibName());
 	}
 
+	for (std::map<std::string, Module*>::iterator it = modules.begin();it!=modules.end();it++){
+		delete it->second;
+	}
+
 	if (createdOwnManager){
 		delete libManager;
 	}
