@@ -109,7 +109,7 @@ rock_library(ManipulationClickHandler
     HEADERS
     modules/ManipulationClickHandler/ManipulationClickHandler.h
     modules/ManipulationClickHandler/TranslateRotateDragger.h
-    DEPS osgViz)
+    DEPS osgViz PrimitivesFactory)
 
     
 
