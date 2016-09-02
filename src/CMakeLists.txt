@@ -62,7 +62,8 @@ rock_library(osgViz
            windows/EventHandlers/HierarchicalEventHandler.cpp
            windows/EventHandlers/ObjectSelector.cpp
            windows/EventHandlers/MouseMoveEvent.cpp
-           tools/UpdateThread.cpp
+           windows/CameraManipulator/TerrainZoomManipulator.cpp
+           tools/UpdateThread.cpp    
            
     HEADERS OsgViz.hpp
            Object.h
@@ -77,6 +78,7 @@ rock_library(osgViz
            windows/EventHandlers/NullClickObject.h
            windows/EventHandlers/MouseMoveEvent.h
            windows/config/WindowConfig.h
+           windows/CameraManipulator/TerrainZoomManipulator.hpp
            tools/UpdateThread.h
            tools/Timing.h
            tools/TypeNameDemangling.h

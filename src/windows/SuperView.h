@@ -17,11 +17,14 @@
 #include <osgGA/KeySwitchMatrixManipulator>
 #include <osgGA/TerrainManipulator>
 #include <osgGA/FlightManipulator>
+#include <osgGA/OrbitManipulator>
 
 #include <osgDB/WriteFile>
 
 #include "config/WindowConfig.h"
 #include "EventHandlers/HierarchicalEventHandler.h"
+
+#include "CameraManipulator/TerrainZoomManipulator.hpp"
 
 #include "../interfaces/WindowInterface.h"
 #include "../graphics/interfaces/data/GraphicData.h"
