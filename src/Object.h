@@ -100,6 +100,10 @@ public:
         setAttitude( getAttitude() * osg::Quat(angle, vec) );
     }
 
+    inline void rotate(const double &x,const double &y,const double &z,const double &w){
+        setAttitude( getAttitude() * osg::Quat (x,y,z,w) );
+    }
+
     virtual void setName(const std::string &name);
 
     void switchCullMask();
