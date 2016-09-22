@@ -75,7 +75,7 @@ osg::ref_ptr<osgviz::HUD> Window::addHUD(int width,int height, unsigned int wind
 
     osg::ref_ptr<osgviz::HUD> hud = new HUD(this,width,height);
 
-    root->addChild(hud);
+    this->addChild(hud);
 
     huds.push_back(hud);
 
