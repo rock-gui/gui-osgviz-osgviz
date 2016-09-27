@@ -5,12 +5,13 @@
  *      Author: planthaber
  */
 
-#ifndef GUI_OSGVIZ_OSGVIZ_SRC_PLUGINS_VIZ_PRIMITIVES_PRIMITIVES_ARROWNODE_H_
-#define GUI_OSGVIZ_OSGVIZ_SRC_PLUGINS_VIZ_PRIMITIVES_PRIMITIVES_ARROWNODE_H_
+#ifndef GUI_OSGVIZ_OSGVIZ_SRC_MODULES_VIZ_PRIMITIVES_PRIMITIVES_ARROWNODE_H_
+#define GUI_OSGVIZ_OSGVIZ_SRC_MODULES_VIZ_PRIMITIVES_PRIMITIVES_ARROWNODE_H_
 
-#include "../../../Object.h"
 #include <osg/Shape>
 #include <osg/ShapeDrawable>
+
+#include "../../../../Object.h"
 //#include <osg/Cylinder>
 
 namespace osgviz {
@@ -54,4 +55,4 @@ private:
 
 } /* namespace robot_manager */
 
-#endif /* GUI_OSGVIZ_OSGVIZ_SRC_PLUGINS_VIZ_PRIMITIVES_PRIMITIVES_ARROWNODE_H_ */
+#endif /* GUI_OSGVIZ_OSGVIZ_SRC_MODULES_VIZ_PRIMITIVES_PRIMITIVES_ARROWNODE_H_ */

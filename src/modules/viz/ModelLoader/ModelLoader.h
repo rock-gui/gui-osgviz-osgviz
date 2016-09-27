@@ -8,18 +8,14 @@
 #ifndef GUI_OSGVIZ_SRC_PLUGINS_DATA_MODELLOADER_H_
 #define GUI_OSGVIZ_SRC_PLUGINS_DATA_MODELLOADER_H_
 
-#include "../../OsgVizPlugin.h"
+#include "../../../Module.h"
 
 namespace osgviz {
 
-class ModelLoader : public OsgVizPlugin{
+class ModelLoader : public Module{
 public:
-	ModelLoader(lib_manager::LibManager *theManager);
+	ModelLoader();
 	virtual ~ModelLoader();
-
-	virtual int getLibVersion() const {return 1;};
-
-	virtual const std::string getLibName() const { return "ModelLoader"; };
 
 	virtual void init(int argc, char** argv);
 

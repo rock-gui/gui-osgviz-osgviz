@@ -1,7 +1,7 @@
 #ifndef GUI_OSGVIZ_OSGVIZ_SRC_WINDOWS_EVENTHANDLERS_NULL_CLICK_OBJECT_H_
 #define GUI_OSGVIZ_OSGVIZ_SRC_WINDOWS_EVENTHANDLERS_NULL_CLICK_OBJECT_H_
 
-#include <osgViz/plugins/Object.h>
+#include "../../Object.h"
 
 namespace osgviz {
 

@@ -24,9 +24,9 @@
 namespace osgviz {
 
 
-OSGVIZ_PLUGIN(PrimitivesFactory);
+//OSGVIZ_PLUGIN(PrimitivesFactory);
 
-PrimitivesFactory::PrimitivesFactory(lib_manager::LibManager *theManager):OsgVizPlugin(theManager) {}
+PrimitivesFactory::PrimitivesFactory():Module() {}
 
 PrimitivesFactory::~PrimitivesFactory() {}
 

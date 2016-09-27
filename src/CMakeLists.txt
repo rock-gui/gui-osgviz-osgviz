@@ -53,6 +53,7 @@ rock_library(osgVizGraphics
 
 rock_library(osgViz
     SOURCES OsgViz.cpp
+           Object.cpp
            windows/Window.cpp
            windows/WindowManager.cpp
            windows/SuperView.cpp
@@ -61,9 +62,12 @@ rock_library(osgViz
            windows/EventHandlers/HierarchicalEventHandler.cpp
            windows/EventHandlers/ObjectSelector.cpp
            windows/EventHandlers/MouseMoveEvent.cpp
+           windows/CameraManipulator/TerrainZoomManipulator.cpp
            tools/UpdateThread.cpp    
            
     HEADERS OsgViz.hpp
+           Object.h
+           Module.h
            windows/Window.h
            windows/WindowManager.h
            windows/SuperView.h
@@ -74,6 +78,7 @@ rock_library(osgViz
            windows/EventHandlers/NullClickObject.h
            windows/EventHandlers/MouseMoveEvent.h
            windows/config/WindowConfig.h
+           windows/CameraManipulator/TerrainZoomManipulator.hpp
            tools/UpdateThread.h
            tools/Timing.h
            tools/TypeNameDemangling.h
@@ -83,50 +88,40 @@ rock_library(osgViz
                
     LIBS ${ADDITIONAL_LIBS}
     DEPS osgVizGraphics 
-    DEPS_PKGCONFIG lib_manager openscenegraph
+    DEPS_PKGCONFIG openscenegraph
 )
 
-rock_library(osgVizPlugin
-    SOURCES
-    plugins/Object.cpp
-    HEADERS 
-    plugins/Object.h
-    plugins/OsgVizPlugin.h 
-    DEPS_PKGCONFIG lib_manager openscenegraph
-    LIBS ${ADDITIONAL_LIBS})
-
- 
 rock_library(PrimitivesFactory
     SOURCES
-    plugins/viz/Primitives/PrimitivesFactory.cpp
-    plugins/viz/Primitives/Primitives/AxesNode.cpp
-    plugins/viz/Primitives/Primitives/GridNode.cpp
-    plugins/viz/Primitives/Primitives/ArrowNode.cpp
-    plugins/viz/Primitives/Primitives/WireframeBox.cpp
+    modules/viz/Primitives/PrimitivesFactory.cpp
+    modules/viz/Primitives/Primitives/AxesNode.cpp
+    modules/viz/Primitives/Primitives/GridNode.cpp
+    modules/viz/Primitives/Primitives/ArrowNode.cpp
+    modules/viz/Primitives/Primitives/WireframeBox.cpp
     HEADERS
-    plugins/viz/Primitives/PrimitivesFactory.h
-    plugins/viz/Primitives/Primitives/ArrowNode.h
-    plugins/viz/Primitives/Primitives/WireframeBox.hpp
-    DEPS osgVizPlugin)
+    modules/viz/Primitives/PrimitivesFactory.h
+    modules/viz/Primitives/Primitives/ArrowNode.h
+    modules/viz/Primitives/Primitives/WireframeBox.hpp
+    DEPS osgViz)
 
 rock_library(ManipulationClickHandler
     SOURCES
-    plugins/ManipulationClickHandler/ManipulationClickHandler.cpp
-    plugins/ManipulationClickHandler/TranslateRotateDragger.cpp
+    modules/ManipulationClickHandler/ManipulationClickHandler.cpp
+    modules/ManipulationClickHandler/TranslateRotateDragger.cpp
     HEADERS
-    plugins/ManipulationClickHandler/ManipulationClickHandler.h
-    plugins/ManipulationClickHandler/TranslateRotateDragger.h
-    DEPS osgVizPlugin PrimitivesFactory)
+    modules/ManipulationClickHandler/ManipulationClickHandler.h
+    modules/ManipulationClickHandler/TranslateRotateDragger.h
+    DEPS osgViz PrimitivesFactory)
 
     
 
 rock_library(ModelLoader
-    SOURCES plugins/viz/ModelLoader/ModelLoader.cpp
-    HEADERS plugins/viz/ModelLoader/ModelLoader.h
-    DEPS osgVizPlugin)
+    SOURCES modules/viz/ModelLoader/ModelLoader.cpp
+    HEADERS modules/viz/ModelLoader/ModelLoader.h
+    DEPS osgViz)
     
 rock_executable(osgViz_bin Main.cpp
-    DEPS osgViz osgVizPlugin PrimitivesFactory
+    DEPS osgViz PrimitivesFactory
     LIBS ${ADDITIONAL_LIBS})
 
 

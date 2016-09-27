@@ -1,6 +1,6 @@
 #include <iostream>
 #include "OsgViz.hpp"
-#include "plugins/viz/Primitives/PrimitivesFactory.h"
+#include "modules/viz/Primitives/PrimitivesFactory.h"
 
 
 #ifndef WIN32
@@ -12,6 +12,21 @@
 #include <stdio.h>
 
 
+class Output : public osgviz::Clickable{
+	virtual bool clicked(const int &buttonMask, const osg::Vec2d &cursor,
+                       const osg::Vec3d &world, const osg::Vec3d &local,
+                       Clickable* object, const int modifierMask,
+                       osgviz::WindowInterface* window = NULL){
+		osgviz::Object* osgvizObject = dynamic_cast<osgviz::Object*> (object);
+		if (osgvizObject){
+			printf("clicked %s (%.2f %.2f %.2f)\n",osgvizObject->getName().c_str(),world.x(),world.y(),world.z());
+		}else{
+			printf("clicked (%.2f %.2f %.2f)\n",world.x(),world.y(),world.z());
+		}
+	}
+};
+
+
 int main(int argc, char** argv)
 {
 	printf("getting instance\n");
@@ -20,7 +35,16 @@ int main(int argc, char** argv)
 
 	//load lib with some helpful primitives
 	printf("load plugin\n");	fflush(stdout);
-	osgviz::PrimitivesFactory *primitivesfactory = new osgviz::PrimitivesFactory(NULL);
+	//osgviz::PrimitivesFactory *primitivesfactory = new osgviz::PrimitivesFactory(NULL);
+	osgviz::PrimitivesFactory *primitivesfactory = osgviz::OsgViz::getModuleInstance<osgviz::PrimitivesFactory>("PrimitivesFactory");
+
+	osgviz::PrimitivesFactory *primitivesfactory2 = osgviz::OsgViz::getModuleInstance<osgviz::PrimitivesFactory>("PrimitivesFactory");
+
+	osgviz::PrimitivesFactory *primitivesfactory3 = osgviz::OsgViz::getModuleInstance<osgviz::PrimitivesFactory>("PrimitivesFactory2");
+
+	osgviz::OsgViz::printModules();
+
+	printf("PF \n\t%p \n\t%p\n\t%p\n",primitivesfactory,primitivesfactory2,primitivesfactory3);
 
 	if (!primitivesfactory){
 		printf("plugin not found\n");	fflush(stdout);
@@ -61,8 +85,6 @@ int main(int argc, char** argv)
 
 
 
-
-
     osg::ref_ptr<osgviz::Object> axes2 = primitivesfactory->createArrow();
     axes2->setName("Head Up Displays are really simple :-)");
     //axes2->displayName(0.3);
@@ -78,6 +100,9 @@ int main(int argc, char** argv)
     shape->setName("BoxBoxBoxBox");
     shape->displayName(10);
     shape->setColor(1,0,0,0.5);
+
+    Output bouxout;
+    shape->addClickableCallback(&bouxout);
 
     hud->addHudObject(shape);
 

@@ -57,8 +57,9 @@ SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContex
     // set camera manipulator
 	keyswitchManipulator = new osgGA::KeySwitchMatrixManipulator;  
 	keyswitchManipulator->addMatrixManipulator( '0', "NONE", NULL );
-    keyswitchManipulator->addMatrixManipulator( '1', "Trackball", new osgGA::TerrainManipulator() );
+    keyswitchManipulator->addMatrixManipulator( '1', "Terrain", new osgGA::TerrainManipulator() );
     keyswitchManipulator->addMatrixManipulator( '2', "Flight", new osgGA::FlightManipulator() );
+    keyswitchManipulator->addMatrixManipulator( '3', "TerrainZoom", new TerrainZoomManipulator() );
 	keyswitchManipulator->selectMatrixManipulator('1');
 
     setCameraManipulator(keyswitchManipulator);

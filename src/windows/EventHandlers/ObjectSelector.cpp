@@ -19,6 +19,9 @@ namespace osgviz {
 
 ObjectSelector::ObjectSelector(osgviz::SuperView *view):osgGA::GUIEventHandler(),view(view) {
     draggedObject= NULL;
+
+    camera = view->getCamera();
+
 }
 
 ObjectSelector::~ObjectSelector() {}
@@ -39,7 +42,7 @@ std::deque<ObjectSelector::IntersectionResult> ObjectSelector::getIntersections(
     intersector->setIntersectionLimit(osgUtil::Intersector::LIMIT_ONE_PER_DRAWABLE);// a single drawable will appear at most once while calculating intersections.
 
     osgUtil::IntersectionVisitor iv(intersector);
-    view->getCamera()->accept(iv);
+    camera->accept(iv);
     
     std::deque<IntersectionResult> results;
     

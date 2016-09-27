@@ -9,7 +9,7 @@
 #define GUI_OSGVIZ_OSGVIZ_SRC_WINDOWS_HUD_HUDHOVERSCALER_H_
 
 #include "../../interfaces/MouseMoveCallback.h"
-#include "../../plugins/Object.h"
+#include "../../Object.h"
 
 namespace osgviz {
 

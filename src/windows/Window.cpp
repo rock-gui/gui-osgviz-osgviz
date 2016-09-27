@@ -11,7 +11,6 @@
 
 #include <osg/GraphicsContext>
 #include <osgViewer/ViewerEventHandlers>
-#include "EventHandlers/ObjectSelector.h"
 
 #include "SuperView.h"
 
@@ -59,7 +58,8 @@ osgViewer::View* Window::addView(ViewConfig viewConfig, osg::Group* viewScene) {
 
     view->addEventHandler(new osgViewer::StatsHandler(),-100);
 
-    view->addEventHandler(new ObjectSelector(view),0);
+    objectSelector = new ObjectSelector(view);
+    view->addEventHandler(objectSelector,0);
 
     mouseMoveEvents = new MouseMoveEvent();
     view->addEventHandler(mouseMoveEvents,-50);
@@ -75,7 +75,7 @@ osg::ref_ptr<osgviz::HUD> Window::addHUD(int width,int height, unsigned int wind
 
     osg::ref_ptr<osgviz::HUD> hud = new HUD(this,width,height);
 
-    root->addChild(hud);
+    this->addChild(hud);
 
     huds.push_back(hud);
 

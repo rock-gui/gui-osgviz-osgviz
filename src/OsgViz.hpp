@@ -2,13 +2,11 @@
 #define _OSGVIZ_HPP_
 
 #include <iostream>
-#include <lib_manager/LibManager.hpp>
 #include <osg/Group>
 #include <osgViewer/Viewer>
 #include <osgDB/WriteFile>
 
-//#include "graphics/interfaces/GraphicsManagerInterface.h"
-#include "plugins/OsgVizPlugin.h"
+#include "Module.h"
 #include "windows/WindowManager.h"
 
 #include "windows/config/WindowConfig.h"
@@ -48,14 +46,6 @@ namespace osgviz
 		static osg::ref_ptr<OsgViz> getInstance(int argc = 0,char** argv = NULL);
 
 		/**
-		 * In case the context where OsgViz is used is already using libmanager, it can be passed to
-		 * the constructor in order not to use an own instance
-		 * @param manager a LibManager instance
-		 * @return the osgviz instance
-		 */
-		static osg::ref_ptr<OsgViz> getInstance(lib_manager::LibManager * manager);
-
-		/**
 		 * This method is meant for plugins to obtain the instance which is already loaded
 		 * @return the OsgViz main
 		 */
@@ -68,11 +58,6 @@ namespace osgviz
 		 * @param argv
 		 */
 		OsgViz(int argc, char** argv);
-		/**
-		 * private constructor used by getInstance()
-		 * @param manager
-		 */
-		OsgViz(lib_manager::LibManager * manager);
 
 		/**
 		 * init function with shared code for both constructors
@@ -148,22 +133,28 @@ namespace osgviz
 
 
 		/**
-		 * Get a pointer to plugin, if the plugin is not already loaded, this function  also loads the plugin
-		 * @param classname the plugin name, which in case of osgviz is also the libraries filename
-		 * @return a plugin of the type of the class given by the templae or NULL, if the library does not exist.
+		 * loads an osgviz::Module class into the Inctance management of osgviz given a name
+		 * Applications using osgviz can use the same instance of a Module identified by its name
+		 * (same name/same instance)
+		 * @ param moduleName The name of the instance to obtain (either existing or not)
+		 * @ param argc The argument count passed to the Module (only for non-exixting instances)
+		 * @ param argv The arguments passed to the Module (only for non-exixting instances)
 		 */
-		template <class PLUGINTYPE> PLUGINTYPE* getPlugin(std::string classname){
-		    PLUGINTYPE* viz = (PLUGINTYPE*)getVizPlugin(classname,classname);
-			return viz;
+		template <class MODULE> static MODULE* getModuleInstance(std::string moduleName, int argc = 0, char **argv = NULL){
+			Module* mod;
+			mod = modules[moduleName];
+			if (! mod){
+				mod = new MODULE();
+				modules[moduleName] = mod;
+				mod->init(argc,argv);
+			}
+			return dynamic_cast<MODULE*>(mod);
 		}
 
 		/**
-		 * Generic plugin loader
-		 * @param classname the plugin name, which in case of osgviz is also the libraries filename
-		 * @return a valid OsgVizPlugin* id th plugin was found, NULL otherwise
+		 * print available module names and classes
 		 */
-		OsgVizPlugin* loadPlugin(std::string classname);
-
+		static void printModules();
 
 		/**
 		 * return the osgviz globally shared scene
@@ -222,16 +213,9 @@ namespace osgviz
 
 		private:
 
-		OsgVizPlugin* getVizPlugin(std::string path, std::string name);
-
-		bool createdOwnManager;
-
 		osg::ref_ptr<osg::Group> root;
-
-
-		private:
 		bool initialized;
-		std::vector< OsgVizPlugin* >loadedPlugins;
+		static std::map<std::string, Module*> modules;
 
 		int m_argc;
 		char** m_argv;
@@ -246,8 +230,6 @@ namespace osgviz
 		//std::vector<osgViewer::Viewer *> viewers;
 
 		osg::ref_ptr<WindowManager> windowManager;
-
-		lib_manager::LibManager * libManager;
 
 
 		std::map<int, Updatable*> updateCallbacks;
