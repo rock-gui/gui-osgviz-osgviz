@@ -101,8 +101,8 @@ int main(int argc, char** argv)
     shape->displayName(10);
     shape->setColor(1,0,0,0.5);
 
-    Output bouxout;
-    shape->addClickableCallback(&bouxout);
+    std::shared_ptr<Output> bouxout(new Output);
+    shape->addClickableCallback(bouxout);
 
     hud->addHudObject(shape);
 

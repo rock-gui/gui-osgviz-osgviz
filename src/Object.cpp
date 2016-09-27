@@ -94,8 +94,8 @@ bool Object::clicked(const int &buttonMask, const osg::Vec2d &cursor, const osg:
     //printf("%s click world: %.2f,%.2f,%.2f local: %.2f,%.2f,%.2f \n",this->getName().c_str(),world.x(),world.y(),world.z(),local.x(),local.y(),local.z());
     bool finish = false;
     if (!clickablecb.empty()){
-        for (std::vector< Clickable* >::iterator it = clickablecb.begin();it != clickablecb.end(); it++){
-            if ((*it)->clicked(buttonMask,cursor,world,local, this, modKeyMask, window)){
+        for(std::shared_ptr<Clickable>& clickable : clickablecb) {
+            if (clickable->clicked(buttonMask,cursor,world,local, this, modKeyMask, window)){
                 //printf("%s forwarded click\n",this->getName().c_str());
                 finish = true;
             }
@@ -111,8 +111,8 @@ bool Object::dragged(const int &buttonMask, const osg::Vec2d &cursor,
     //printf("%s dragged %.2f,%.2f,%.2f\n",this->getName().c_str(),world.x(),world.y(),world.z());
     bool finish = false;
     if (!clickablecb.empty()){
-        for (std::vector< Clickable* >::iterator it = clickablecb.begin();it != clickablecb.end(); it++){
-            if ((*it)->dragged(buttonMask,cursor,world,local, this, modKeyMask, window)){
+        for(std::shared_ptr<Clickable>& clickable : clickablecb) {
+            if (clickable->dragged(buttonMask,cursor,world,local, this, modKeyMask, window)){
                 //printf("%s forwarded dragged\n",this->getName().c_str());
                 finish = true;
             }
@@ -122,7 +122,7 @@ bool Object::dragged(const int &buttonMask, const osg::Vec2d &cursor,
     return finish;
 }
 
-void Object::addClickableCallback(Clickable* cb) {
+void Object::addClickableCallback(std::shared_ptr<Clickable> cb) {
     this->clickablecb.push_back(cb);
 }
 
@@ -137,7 +137,7 @@ void Object::setName(const std::string &name){
     }
 }
 
-bool Object::hasClickableCallback(Clickable* cb)
+bool Object::hasClickableCallback(std::shared_ptr<Clickable> cb)
 {
     return std::find(clickablecb.begin(), clickablecb.end(), cb) != clickablecb.end();
 }

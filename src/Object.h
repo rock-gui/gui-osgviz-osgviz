@@ -14,6 +14,7 @@
 #include <osg/AutoTransform>
 
 #include <string>
+#include <memory>
 
 #include "interfaces/Clickable.h"
 
@@ -50,15 +51,15 @@ public:
     //virtual bool keyEvent(int key, bool keyDown){return false;}
 
     /**
-      * Any Ckiclable object can be added which are called if the clicked() or dragged () functions are not overloaded
+      * Any Clickable object can be added which are called if the clicked() or dragged () functions are not overloaded
       * They are called on each clicked callback occurence on this object
       * @param cb
       */
-    void addClickableCallback(Clickable * cb);
+    void addClickableCallback(std::shared_ptr<Clickable> cb);
     
     /**returns true if @p cb is already registered as clickable callback for 
      * this object. False otherwise.*/
-    bool hasClickableCallback(Clickable * cb);
+    bool hasClickableCallback(std::shared_ptr<Clickable> cb);
 
     inline void setScale(const float &x, const float &y, const float &z){
         PositionAttitudeTransform::setScale(osg::Vec3d(x,y,z));
@@ -129,7 +130,7 @@ private:
     osg::ref_ptr< osg::Geode > textgeode;
     osg::ref_ptr< osgText::Text > text;
 
-    std::vector< Clickable* > clickablecb;
+    std::vector< std::shared_ptr<Clickable> > clickablecb;
 
 };
 
