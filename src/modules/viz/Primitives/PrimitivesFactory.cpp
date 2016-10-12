@@ -11,6 +11,7 @@
 #include "Primitives/AxesNode.hpp"
 #include "Primitives/GridNode.hpp"
 #include "Primitives/WireframeBox.hpp"
+#include "Primitives/LinesNode.h"
 
 
 #include <osg/Geometry>
@@ -32,11 +33,11 @@ PrimitivesFactory::~PrimitivesFactory() {}
 
 
 osg::ref_ptr<Object> PrimitivesFactory::createAxes(float scale,bool blabels){
-	osg::ref_ptr<Object> obj = new Object();
-	osg::ref_ptr<osg::Node> content = AxesNode::create(scale,blabels);
-	obj->addChild(content);
-	obj->setName("Axes");
-	return obj;
+    osg::ref_ptr<Object> obj = new Object();
+    osg::ref_ptr<osg::Node> content = AxesNode::create(scale,blabels);
+    obj->addChild(content);
+    obj->setName("Axes");
+    return obj;
 }
 
 osg::ref_ptr< Object > PrimitivesFactory::createWireframeBox(const double xSize, const double ySize, const double zSize) const
@@ -51,17 +52,24 @@ osg::ref_ptr< Object > PrimitivesFactory::createWireframeBox(const double xSize,
 
 
 osg::ref_ptr<Object> PrimitivesFactory::createGrid(int rows,int cols,float dx, float dy, bool show_coordinates, const ::osg::Vec4 &color){
-	osg::ref_ptr<Object> obj = new Object();
-	osg::ref_ptr<osg::Node> content = GridNode::create(rows,cols,dx, dy, show_coordinates, color);
-	obj->addChild(content);
-	obj->setName("Grid");
-	return obj;
+    osg::ref_ptr<Object> obj = new Object();
+    osg::ref_ptr<osg::Node> content = GridNode::create(rows,cols,dx, dy, show_coordinates, color);
+    obj->addChild(content);
+    obj->setName("Grid");
+    return obj;
 }
 
 osg::ref_ptr<Object> PrimitivesFactory::createArrow(){
-	osg::ref_ptr<Object> node = new ArrowNode();
-	node->setName("Arrow");
-	return node;
+    osg::ref_ptr<Object> node = new ArrowNode();
+    node->setName("Arrow");
+    return node;
+}
+
+osg::ref_ptr<Object> PrimitivesFactory::createLinesNode(osg::Vec4 color)
+{
+    osg::ref_ptr<Object> node = new LinesNode(color);
+    node->setName("Lines");
+    return node;
 }
 
 osg::ref_ptr<PrimitivesFactory::Shape> PrimitivesFactory::createShape(Shapes shape, const float &sizex,const float &sizey,const float &sizez){
@@ -84,26 +92,26 @@ osg::ref_ptr<PrimitivesFactory::Shape> PrimitivesFactory::createShape(Shapes sha
 
 osg::ref_ptr<PrimitivesFactory::BoundingBox> PrimitivesFactory::createBoundingBox(osg::Group* object){
 
-	osg::ref_ptr<BoundingBox> box = new BoundingBox();
+    osg::ref_ptr<BoundingBox> box = new BoundingBox();
 
 
 
-	//create bounding box
-	osg::ComputeBoundsVisitor  cbv;
+    //create bounding box
+    osg::ComputeBoundsVisitor  cbv;
 
-	//the object location might be at 0,0,0, so we traverse its children
-	for (size_t i=0; i< object->getNumChildren();++i){
-		object->getChild(i)->accept(cbv);
-	}
-	osg::BoundingBox &bb(cbv.getBoundingBox());
+    //the object location might be at 0,0,0, so we traverse its children
+    for (size_t i=0; i< object->getNumChildren();++i){
+        object->getChild(i)->accept(cbv);
+    }
+    osg::BoundingBox &bb(cbv.getBoundingBox());
 
-	box->selectionBoxGeode = new osg::Geode();
-	box->selectionBoxGeode->setName("Robot selection box");
-	box->selectionBox = new osg::Geometry();
+    box->selectionBoxGeode = new osg::Geode();
+    box->selectionBoxGeode->setName("Robot selection box");
+    box->selectionBox = new osg::Geometry();
 
-	box->points = new osg::Vec3Array;
-	box->colors = new osg::Vec4Array;
-	box->normals = new osg::Vec3Array;
+    box->points = new osg::Vec3Array;
+    box->colors = new osg::Vec4Array;
+    box->normals = new osg::Vec3Array;
 
 
 
@@ -117,14 +125,14 @@ osg::ref_ptr<PrimitivesFactory::BoundingBox> PrimitivesFactory::createBoundingBo
 //
 //	}
 
-	//Bottom
-	box->points->push_back(osg::Vec3(bb.xMin(),bb.yMin(),bb.zMin()));
-	box->points->push_back(osg::Vec3(bb.xMax(),bb.yMin(),bb.zMin()));
+    //Bottom
+    box->points->push_back(osg::Vec3(bb.xMin(),bb.yMin(),bb.zMin()));
+    box->points->push_back(osg::Vec3(bb.xMax(),bb.yMin(),bb.zMin()));
 
-	box->points->push_back(osg::Vec3(bb.xMin(),bb.yMin(),bb.zMin()));
-	box->points->push_back(osg::Vec3(bb.xMin(),bb.yMax(),bb.zMin()));
+    box->points->push_back(osg::Vec3(bb.xMin(),bb.yMin(),bb.zMin()));
+    box->points->push_back(osg::Vec3(bb.xMin(),bb.yMax(),bb.zMin()));
 
-	box->points->push_back(osg::Vec3(bb.xMax(),bb.yMax(),bb.zMin()));
+    box->points->push_back(osg::Vec3(bb.xMax(),bb.yMax(),bb.zMin()));
     box->points->push_back(osg::Vec3(bb.xMin(),bb.yMax(),bb.zMin()));
 
     box->points->push_back(osg::Vec3(bb.xMax(),bb.yMax(),bb.zMin()));
@@ -158,11 +166,11 @@ osg::ref_ptr<PrimitivesFactory::BoundingBox> PrimitivesFactory::createBoundingBo
     box->points->push_back(osg::Vec3(bb.xMax(),bb.yMax(),bb.zMax()));
 
 
-	box->colors->push_back(osg::Vec4(1.0,1.0,1.0,1));
+    box->colors->push_back(osg::Vec4(1.0,1.0,1.0,1));
 
-	box->normals->push_back(osg::Vec3(0.0f,-1.0f,0.0f));
+    box->normals->push_back(osg::Vec3(0.0f,-1.0f,0.0f));
 
-	box->selectionBox->setVertexArray(box->points.get());
+    box->selectionBox->setVertexArray(box->points.get());
 #if OSG_VERSION_LESS_OR_EQUAL(3,0,2)
     // needed for osg 3.0.2, present on ubuntu 12.04
     box->selectionBox->setColorArray(box->colors.get());
@@ -171,17 +179,17 @@ osg::ref_ptr<PrimitivesFactory::BoundingBox> PrimitivesFactory::createBoundingBo
     box->selectionBox->setColorArray(box->colors.get(),osg::Array::BIND_OVERALL);
     box->selectionBox->setNormalArray(box->normals, osg::Array::BIND_OVERALL);
 #endif
-	box->selectionBox->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINES,0,box->points->size()));
+    box->selectionBox->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINES,0,box->points->size()));
 
 
-	box->selectionBox->getOrCreateStateSet()->setAttribute( new osg::LineWidth(2.0f),osg::StateAttribute::ON );
-	box->selectionBoxGeode->getOrCreateStateSet()->setMode( GL_LIGHTING, ::osg::StateAttribute::OFF );
+    box->selectionBox->getOrCreateStateSet()->setAttribute( new osg::LineWidth(2.0f),osg::StateAttribute::ON );
+    box->selectionBoxGeode->getOrCreateStateSet()->setMode( GL_LIGHTING, ::osg::StateAttribute::OFF );
 
-	box->selectionBoxGeode->addDrawable(box->selectionBox);
+    box->selectionBoxGeode->addDrawable(box->selectionBox);
 
-	box->addChild(box->selectionBoxGeode);
+    box->addChild(box->selectionBoxGeode);
 
-	return box;
+    return box;
 }
 
 
