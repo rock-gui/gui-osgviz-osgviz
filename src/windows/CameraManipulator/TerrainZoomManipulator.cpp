@@ -33,7 +33,7 @@ bool TerrainZoomManipulator::handleMouseWheel( const osgGA::GUIEventAdapter& ea,
         case osgGA::GUIEventAdapter::SCROLL_UP:
         {
             // perform zoom
-            zoomModel( -_wheelZoomFactor, true );
+            zoomModel( _wheelZoomFactor, true );
             us.requestRedraw();
             us.requestContinuousUpdate( isAnimating() || _thrown );
             return true;
@@ -42,7 +42,7 @@ bool TerrainZoomManipulator::handleMouseWheel( const osgGA::GUIEventAdapter& ea,
         // mouse scroll down event
         case osgGA::GUIEventAdapter::SCROLL_DOWN:
 
-            zoomModel( _wheelZoomFactor, true );
+            zoomModel( -_wheelZoomFactor, true );
             us.requestRedraw();
             us.requestContinuousUpdate( false );
             return true;
@@ -87,15 +87,9 @@ bool TerrainZoomManipulator::setCenterByMousePointer( const osgGA::GUIEventAdapt
 
     switch( ea.getScrollingMotion() )
     {
-        // mouse scroll up event
-        case osgGA::GUIEventAdapter::SCROLL_UP:
-        {
-            panModel(x_new, y_new, 0);
-            return true;
-        }
         case osgGA::GUIEventAdapter::SCROLL_DOWN:
         {
-            panModel(-x_new, -y_new, 0);
+            panModel(x_new, y_new, 0);
             return true;
         }
         default:
