@@ -13,11 +13,11 @@ namespace osgviz {
 ManipulationClickHandler::ManipulationClickHandler() : clickedObject(NULL),
     translationDragger(new TranslateRotateDragger()), 
     draggerGroup(new osg::Group()), translationDraggerParent(new NullClickObject()),
-    enabled(true)
+    draggerCallback(new ManipulationDraggerCallback(*this)), enabled(true)
 {
     translationDragger->setupDefaultGeometry();
     translationDragger->setHandleEvents(true);//allow the dragger to move itself when dragged
-    translationDragger->addDraggerCallback(this);
+    translationDragger->addDraggerCallback(draggerCallback);
     translationDraggerParent->addChild(translationDragger);
     
     /**The group was added because some code in vizkit3d assumes that all custom
@@ -119,4 +119,16 @@ void ManipulationClickHandler::setEnabled(const bool value)
     if(!enabled)
         deselectCurrentObject();
 }
+
+
+ManipulationClickHandler::ManipulationDraggerCallback::ManipulationDraggerCallback(ManipulationClickHandler& handler) :
+    handler(handler){}
+
+bool ManipulationClickHandler::ManipulationDraggerCallback::receive(const osgManipulator::MotionCommand& command)
+{
+    return handler.receive(command);
+}
+
+
+
 }

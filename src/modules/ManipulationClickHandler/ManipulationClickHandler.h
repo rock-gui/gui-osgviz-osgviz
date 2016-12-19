@@ -10,13 +10,13 @@
 
 namespace osgviz {
 
+    
 /** A click handler that aggregates TranslateInPlaneCommands and Rotate3DCommands
  *  and forwards them once the user has finished dragging.
 
  *  
  * FIXME small usage example */
-class ManipulationClickHandler : public osgviz::Clickable,
-                                 public osgManipulator::DraggerCallback
+class ManipulationClickHandler : public osgviz::Clickable
 {
   //TODO verschiedene Dragger unterstüzen, user auswählen lassen
 public:
@@ -29,7 +29,7 @@ public:
                          Clickable* object, const int modKeyMask,
                          osgviz::WindowInterface* window = 0);
     
-    //is called whenever the user moves the dragger
+    /** is called whenever the user moves the dragger */
     virtual bool receive(const osgManipulator::MotionCommand& command);
     
     /** Select the specified object.  */
@@ -60,6 +60,22 @@ public:
     
 private:
   
+    /** A simple handler for drag events. It just forwards the events to the ManipulationClickHandler.
+     * 
+     *  @Note The ManipulationClickHandler does not inherit from DraggerCallback directly 
+     *        to avoid a bug in memory managemengt. The Dragger uses an osg::ref_ptr to manage 
+     *        pointers to the callbacks. Thus wenn calling addDraggerCallback(this), it creates a 
+     *        ref_ptr to this. When the callback is removed for whatever reason, the ref_ptr would
+     *        free this. If the ManipulationClickHandler is freed, this behavior leads to double free
+     *        and memory corruption. */
+    struct ManipulationDraggerCallback : public osgManipulator::DraggerCallback 
+    {
+        ManipulationDraggerCallback(ManipulationClickHandler& handler);
+        //is called whenever the user moves the dragger
+        virtual bool receive(const osgManipulator::MotionCommand& command);
+        ManipulationClickHandler& handler;
+    };
+    
 
     
     osgviz::Object* clickedObject;
@@ -68,6 +84,7 @@ private:
     /**NullClickObject is used a parent for the draggers to avoid propagating
      * click events from the dragger to the dragged node*/
     osg::ref_ptr<NullClickObject> translationDraggerParent;
+    osg::ref_ptr<ManipulationDraggerCallback> draggerCallback;
        
     osg::Matrix initialMotionMatrix;
     osg::Matrix worldToObject; //transformation from world to selected object
