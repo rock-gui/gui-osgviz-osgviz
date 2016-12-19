@@ -16,19 +16,24 @@
 namespace osgviz
 {
 
-osg::ref_ptr<OsgViz> instance = NULL;
 std::map<std::string, Module*> OsgViz::modules;
 
 osg::ref_ptr<OsgViz> OsgViz::getInstance(int argc,char** argv){
-	if (!instance.valid()){
-		instance = new OsgViz(argc,argv);
-	}
-	return instance;
+    //HACK to work around a static destruction order bug: default font needs to be initialized before
+    //     OsgViz. Calling getDefaultFont() here ensures that the font is instanciated before 
+    //     OsgViz and thus lives longer than OsgViz and can still be called during OsgViz destruction.
+    osgText::Font::getDefaultFont();
+    //NOTE it is important that instance is a local static variable because we need a way to 
+    //     control static initialization/destruction order.
+    //     If instance is global the static initialization order depends on the order in which 
+    //     libraries are loaded which leads to strange crashes in combination with osg's own singletons
+    static osg::ref_ptr<OsgViz> instance = new OsgViz(argc, argv);
+    return instance;
 }
 
 
 osg::ref_ptr<OsgViz> OsgViz::getExistingInstance(){
-	return instance;
+	return getInstance();
 }
 
 OsgViz::OsgViz(int argc, char** argv){
@@ -46,7 +51,6 @@ void OsgViz::init(int argc,char** argv){
 	m_argv = argv;
 	root = new osg::Group();
 	root->setName("OsgViz root");
-	instance = this;
 
 	windowManager = new WindowManager();
 
