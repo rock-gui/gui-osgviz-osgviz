@@ -29,6 +29,8 @@ public:
 	virtual osg::ref_ptr<Object> createArrow();
     virtual osg::ref_ptr<Object> createWireframeBox(const double xSize, const double ySize, const double zSize) const;
     virtual osg::ref_ptr<Object> createLinesNode(osg::Vec4 color);
+    virtual osg::ref_ptr<Object> createRingNode(const float radius, const float height, const float thickness);
+    
 
 	enum Shapes{BOX,CAPSULE,CONE,CYLINDER,SPHERE, WIREFRAME_BOX};
 

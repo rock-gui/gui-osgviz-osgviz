@@ -99,11 +99,13 @@ rock_library(PrimitivesFactory
     modules/viz/Primitives/Primitives/ArrowNode.cpp
     modules/viz/Primitives/Primitives/WireframeBox.cpp
     modules/viz/Primitives/Primitives/LinesNode.cpp
+    modules/viz/Primitives/Primitives/RingNode.cpp
     HEADERS
     modules/viz/Primitives/PrimitivesFactory.h
     modules/viz/Primitives/Primitives/ArrowNode.h
     modules/viz/Primitives/Primitives/WireframeBox.hpp
     modules/viz/Primitives/Primitives/LinesNode.h
+    modules/viz/Primitives/Primitives/RingNode.hpp
     DEPS osgViz)
 
 rock_library(ManipulationClickHandler
