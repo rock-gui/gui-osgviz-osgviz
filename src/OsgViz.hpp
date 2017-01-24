@@ -46,7 +46,8 @@ namespace osgviz
 		static osg::ref_ptr<OsgViz> getInstance(int argc = 0,char** argv = NULL);
 
 		/**
-		 * This method is meant for plugins to obtain the instance which is already loaded
+		 * This method is meant for plugins to obtain the instance which is already loaded.
+         * If no instance exists, a new instance with default parameters is created
 		 * @return the OsgViz main
 		 */
 		static osg::ref_ptr<OsgViz> getExistingInstance();
