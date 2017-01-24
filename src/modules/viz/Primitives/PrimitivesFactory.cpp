@@ -12,6 +12,7 @@
 #include "Primitives/GridNode.hpp"
 #include "Primitives/WireframeBox.hpp"
 #include "Primitives/LinesNode.h"
+#include "Primitives/RingNode.hpp"
 
 
 #include <osg/Geometry>
@@ -38,6 +39,11 @@ osg::ref_ptr<Object> PrimitivesFactory::createAxes(float scale,bool blabels){
     obj->addChild(content);
     obj->setName("Axes");
     return obj;
+}
+
+osg::ref_ptr<Object> PrimitivesFactory::createRingNode(const float radius, const float height, const float thickness)
+{
+    return new RingNode(radius, height, thickness);
 }
 
 osg::ref_ptr< Object > PrimitivesFactory::createWireframeBox(const double xSize, const double ySize, const double zSize) const
