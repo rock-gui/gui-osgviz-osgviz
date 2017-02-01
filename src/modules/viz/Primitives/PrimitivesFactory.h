@@ -11,6 +11,7 @@
 #include <osg/Shape>
 #include <osg/ShapeDrawable>
 #include "../../../Module.h"
+#include <vector>
 
 namespace osgviz {
 
@@ -29,6 +30,7 @@ public:
 	virtual osg::ref_ptr<Object> createArrow();
     virtual osg::ref_ptr<Object> createWireframeBox(const double xSize, const double ySize, const double zSize) const;
     virtual osg::ref_ptr<Object> createLinesNode(osg::Vec4 color);
+    virtual osg::ref_ptr<Object> createLinesNode(osg::Vec4 color, const std::vector<osg::Vec3>& points);
     virtual osg::ref_ptr<Object> createRingNode(const float radius, const float height, const float thickness);
     virtual osg::ref_ptr<Object> createSphereNode(double x, double y, double z, double radius);
     

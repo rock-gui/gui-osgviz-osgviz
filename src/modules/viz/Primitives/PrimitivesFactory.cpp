@@ -84,6 +84,17 @@ osg::ref_ptr<Object> PrimitivesFactory::createLinesNode(osg::Vec4 color)
     return node;
 }
 
+osg::ref_ptr<Object> PrimitivesFactory::createLinesNode(osg::Vec4 color, const std::vector<osg::Vec3>& points)
+{
+    LinesNode* node = new LinesNode(color);
+    node->setName("Lines");
+    for(int i = 0; i < points.size() - 1; ++i)
+    {
+        node->addLine(points[i], points[i + 1]);
+    }
+    return  osg::ref_ptr<Object>(node);    
+}
+
 osg::ref_ptr<PrimitivesFactory::Shape> PrimitivesFactory::createShape(Shapes shape, const float &sizex,const float &sizey,const float &sizez){
     osg::ref_ptr<Shape> obj = new Shape();
     obj->geode = new osg::Geode();
