@@ -1,5 +1,6 @@
 #include "RingNode.hpp"
 #include <osgManipulator/Projector>
+#include <osgManipulator/Dragger>
 
 
 namespace osgviz {
@@ -72,6 +73,11 @@ RingNode::RingNode(const float radius, const float height, const float thickness
     // bottom
     geode->addDrawable(createDiskGeometry(radius, thickness, -height/2, 100));    
     addChild(geode);
+}
+
+void RingNode::setColor(const osg::Vec4& color)
+{
+    osgManipulator::setMaterialColor(color, *geode);
 }
 
 } 

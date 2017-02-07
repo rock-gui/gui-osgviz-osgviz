@@ -22,6 +22,8 @@
 #include <osg/ComputeBoundsVisitor>
 #include <osg/Version>
 
+#include <osgManipulator/Dragger> //for setMaterialColor
+
 #include <osgDB/ReadFile>
 
 namespace osgviz {
@@ -42,20 +44,28 @@ osg::ref_ptr<Object> PrimitivesFactory::createAxes(float scale,bool blabels){
     return obj;
 }
 
-osg::ref_ptr<Object> PrimitivesFactory::createRingNode(const float radius, const float height, const float thickness)
+osg::ref_ptr<Object> PrimitivesFactory::createRingNode(const float radius, const float height, const float thickness,
+                                                       osg::Vec4 color)
 {
-    return new RingNode(radius, height, thickness);
+    RingNode* node = new RingNode(radius, height, thickness);
+    node->setColor(color);
+    return node;
 }
 
-osg::ref_ptr<Object> PrimitivesFactory::createSphereNode(double x, double y, double z, double radius)
+osg::ref_ptr<Object> PrimitivesFactory::createSphereNode(double x, double y, double z,
+                                                         double radius, osg::Vec4 color)
 {
-    return new SphereNode(x, y, z, radius);
+    SphereNode* node = new SphereNode(x, y, z, radius);
+    node->setColor(color);
+    return node; 
 }
 
-osg::ref_ptr< Object > PrimitivesFactory::createWireframeBox(const double xSize, const double ySize, const double zSize) const
+osg::ref_ptr< Object > PrimitivesFactory::createWireframeBox(const double xSize, const double ySize,
+                                                             const double zSize, osg::Vec4 color) const
 {
     osg::ref_ptr<Object> obj = new Object();
     osg::ref_ptr<osg::Node> content = WireframeBox::create(xSize, ySize, zSize);
+    osgManipulator::setMaterialColor(color, *content);
     obj->addChild(content);
     obj->setName("WireframeBox");
     return obj;  
@@ -71,9 +81,10 @@ osg::ref_ptr<Object> PrimitivesFactory::createGrid(int rows,int cols,float dx, f
     return obj;
 }
 
-osg::ref_ptr<Object> PrimitivesFactory::createArrow(){
-    osg::ref_ptr<Object> node = new ArrowNode();
+osg::ref_ptr<Object> PrimitivesFactory::createArrow(osg::Vec4 color){
+    ArrowNode* node = new ArrowNode();
     node->setName("Arrow");
+    node->setColor(color[0], color[1], color[2], color[3]);
     return node;
 }
 

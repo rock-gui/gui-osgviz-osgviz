@@ -14,6 +14,8 @@ namespace osgviz {
 class RingNode : public osgviz::Object{
 public:
     RingNode(const float radius, const float height, const float thickness);
+    
+    void setColor(const osg::Vec4& color);
 
 
 private:
