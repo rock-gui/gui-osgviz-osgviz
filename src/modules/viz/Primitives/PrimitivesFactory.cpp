@@ -14,6 +14,8 @@
 #include "Primitives/LinesNode.h"
 #include "Primitives/RingNode.hpp"
 #include "Primitives/SphereNode.hpp"
+#include "Primitives/TextNode.hpp"
+
 
 
 #include <osg/Geometry>
@@ -48,6 +50,15 @@ osg::ref_ptr<Object> PrimitivesFactory::createRingNode(const float radius, const
                                                        osg::Vec4 color)
 {
     RingNode* node = new RingNode(radius, height, thickness);
+    node->setColor(color);
+    return node;
+}
+
+osg::ref_ptr<Object> PrimitivesFactory::createTextNode(const std::string& text,
+                                                       double fontSize,
+                                                       osg::Vec4 color)
+{
+    TextNode* node = new TextNode(text, fontSize);
     node->setColor(color);
     return node;
 }
@@ -99,9 +110,12 @@ osg::ref_ptr<Object> PrimitivesFactory::createLinesNode(osg::Vec4 color, const s
 {
     LinesNode* node = new LinesNode(color);
     node->setName("Lines");
-    for(int i = 0; i < points.size() - 1; ++i)
+    if(points.size() > 1)
     {
-        node->addLine(points[i], points[i + 1]);
+        for(size_t i = 0; i < points.size() - 1; ++i)
+        {
+            node->addLine(points[i], points[i + 1]);
+        }
     }
     return  osg::ref_ptr<Object>(node);    
 }
