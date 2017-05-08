@@ -82,6 +82,19 @@ osg::ref_ptr< Object > PrimitivesFactory::createWireframeBox(const double xSize,
     return obj;  
 }
 
+osg::ref_ptr<Object> PrimitivesFactory::createWireframeBox(const double xSize, const double ySize, const double zSize,
+                                                    const double centerX, const double centerY, const double centerZ,
+                                                    osg::Vec4 color) const
+{
+    osg::ref_ptr<Object> obj = new Object();
+    osg::ref_ptr<osg::Node> content = WireframeBox::create(centerX, centerY, centerZ, xSize, ySize, zSize);
+    osgManipulator::setMaterialColor(color, *content);
+    obj->addChild(content);
+    obj->setName("WireframeBox");
+    return obj;  
+}
+
+
 
 
 osg::ref_ptr<Object> PrimitivesFactory::createGrid(int rows,int cols,float dx, float dy, bool show_coordinates, const ::osg::Vec4 &color){

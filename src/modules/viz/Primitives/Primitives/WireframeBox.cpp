@@ -7,9 +7,12 @@
 using namespace osg;
 using namespace osgviz;
 
-Node* WireframeBox::create(const double xSize, const double ySize, const double zSize)
+
+
+Node* WireframeBox::create(const double xPos, const double yPos, const double zPos,
+                           const double xSize, const double ySize, const double zSize)
 {
-    Box* boundingBox = new Box( Vec3(0,0,0), xSize, ySize, zSize);
+    Box* boundingBox = new Box( Vec3(xPos, yPos, zPos), xSize, ySize, zSize);
     ShapeDrawable* boxDrawable = new ShapeDrawable(boundingBox);
     Geode* geode = new Geode();
     geode->addDrawable(boxDrawable);
@@ -20,4 +23,9 @@ Node* WireframeBox::create(const double xSize, const double ySize, const double 
     boxDrawable->setStateSet(stateset);
     geode->setStateSet(stateset);
     return geode;
+}
+
+Node* WireframeBox::create(const double xSize, const double ySize, const double zSize)
+{
+    return WireframeBox::create(0.0, 0.0, 0.0, xSize, ySize, zSize);
 }
