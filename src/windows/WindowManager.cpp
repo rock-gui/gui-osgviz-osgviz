@@ -68,7 +68,7 @@ void WindowManager::frame() {
 osg::ref_ptr<osg::GraphicsContext::Traits> WindowManager::genetrateTraits(WindowConfig& windowConfig){
     osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
     traits->windowName = windowConfig.title;
-    traits->supportsResize = false;
+    traits->supportsResize = true;
     traits->doubleBuffer = true;
     traits->sharedContext = 0;
 
