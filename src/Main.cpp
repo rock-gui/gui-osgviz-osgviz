@@ -20,8 +20,10 @@ class Output : public osgviz::Clickable{
 		osgviz::Object* osgvizObject = dynamic_cast<osgviz::Object*> (object);
 		if (osgvizObject){
 			printf("clicked %s (%.2f %.2f %.2f)\n",osgvizObject->getName().c_str(),world.x(),world.y(),world.z());
+			return true;
 		}else{
 			printf("clicked (%.2f %.2f %.2f)\n",world.x(),world.y(),world.z());
+			return false;
 		}
 	}
 };
