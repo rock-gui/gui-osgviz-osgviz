@@ -35,6 +35,7 @@ rock_library(osgVizInterfaces
 			interfaces/WindowInterface.h
 			interfaces/Updatable.h
 			interfaces/MouseMoveCallback.h
+	SOURCES Main.cpp
 )
 
 
