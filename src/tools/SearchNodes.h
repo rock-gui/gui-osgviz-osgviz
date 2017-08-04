@@ -67,7 +67,9 @@ public:
 			osg::Node* node = nodes.front();
 
 			if (node->getName().size()>0){
-				printf("%s\n",node->getName().c_str());
+				printf("%s - %s\n",node->getName().c_str(), node->className());
+			} else {
+				printf("no name - %s\n", node->className());
 			}
 
 			expand(node,knownNodes,nodes,addParents);
