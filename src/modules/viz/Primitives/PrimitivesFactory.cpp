@@ -15,7 +15,7 @@
 #include "Primitives/RingNode.hpp"
 #include "Primitives/SphereNode.hpp"
 #include "Primitives/TextNode.hpp"
-
+#include "Primitives/Graph_2D.hpp"
 
 
 #include <osg/Geometry>
@@ -52,6 +52,10 @@ osg::ref_ptr<Object> PrimitivesFactory::createRingNode(const float radius, const
     RingNode* node = new RingNode(radius, height, thickness);
     node->setColor(color);
     return node;
+}
+osg::ref_ptr<Object> PrimitivesFactory::createGraph2D(double x, double y, double z,osg::Quat orient,double width, double height){
+    Graph_2D* graph= new Graph_2D(osg::Vec3(x,y,z),orient,width,height);
+    return graph;
 }
 
 osg::ref_ptr<Object> PrimitivesFactory::createTextNode(const std::string& text,
