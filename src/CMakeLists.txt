@@ -102,6 +102,8 @@ rock_library(PrimitivesFactory
     modules/viz/Primitives/Primitives/RingNode.cpp
     modules/viz/Primitives/Primitives/SphereNode.cpp
     modules/viz/Primitives/Primitives/TextNode.cpp
+    modules/viz/Primitives/Primitives/Graph_2D.cpp
+
     HEADERS
     modules/viz/Primitives/PrimitivesFactory.h
     modules/viz/Primitives/Primitives/ArrowNode.h
@@ -110,6 +112,7 @@ rock_library(PrimitivesFactory
     modules/viz/Primitives/Primitives/RingNode.hpp
     modules/viz/Primitives/Primitives/SphereNode.hpp
     modules/viz/Primitives/Primitives/TextNode.hpp
+    modules/viz/Primitives/Primitives/Graph_2D.hpp
     DEPS osgViz)
 
 rock_library(ManipulationClickHandler

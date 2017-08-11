@@ -34,7 +34,7 @@ public:
     virtual osg::ref_ptr<Object> createLinesNode(osg::Vec4 color, const std::vector<osg::Vec3>& points);
     virtual osg::ref_ptr<Object> createRingNode(const float radius, const float height, const float thickness, osg::Vec4 color = osg::Vec4(1, 1, 1, 1));
     virtual osg::ref_ptr<Object> createSphereNode(double x, double y, double z, double radius, osg::Vec4 color = osg::Vec4(1, 1, 1, 1));
-    
+    virtual osg::ref_ptr<Object> createGraph2D(double x, double y, double z,osg::Quat orient,double width, double height);
 
     enum Shapes{BOX,CAPSULE,CONE,CYLINDER,SPHERE, WIREFRAME_BOX};
 
