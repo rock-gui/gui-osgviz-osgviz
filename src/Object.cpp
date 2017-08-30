@@ -18,6 +18,11 @@
 namespace osgviz {
 
 Object::Object():cull_mask(0xffffffff),visible(true){
+    text_size = 0.1;
+    text_position = osg::Vec3(0,0,0);
+    text_color = osg::Vec4(0,0,0,1);
+    text = NULL;
+
     //scaleTransform->setMatrix(osg::Matrix::scale(1.0, 1.0, 1.0));
     //PositionAttitudeTransform::addChild(scaleTransform);
 }
@@ -52,11 +57,11 @@ void Object::displayName(float font_size){
 
         text = new osgText::Text();
 
-        text->setCharacterSize(font_size);
+        text->setCharacterSize(text_size);
         text->setAxisAlignment(osgText::Text::XY_PLANE);
         text->setAlignment(osgText::Text::LEFT_TOP);
-        text->setPosition(osg::Vec3(0.0f, 0.0f, 0.0f));
-        text->setColor(osg::Vec4(0,0,0,1));
+        text->setPosition(text_position);
+        text->setColor(text_color);
 
 
         texttransform->setAutoRotateMode(osg::AutoTransform::ROTATE_TO_SCREEN);
@@ -69,6 +74,24 @@ void Object::displayName(float font_size){
 
     this->addChild(texttransform);
 
+}
+
+void Object::setTextSize(float font_size) {
+    text_size = font_size;
+    if (text != NULL)
+        text->setCharacterSize(text_size);
+}
+
+void Object::setTextPosition(osg::Vec3 pos) {
+    text_position = pos;
+    if (text != NULL)
+        text->setPosition(text_position);
+}
+
+void Object::setTextColor(osg::Vec4 color) {
+    text_color = color;
+    if (text != NULL)
+        text->setColor(text_color);
 }
 
 void Object::xorCullMask(unsigned int mask) {
@@ -91,12 +114,12 @@ void Object::switchCullMask() {
 bool Object::clicked(const int &buttonMask, const osg::Vec2d &cursor, const osg::Vec3d &world,
                      const osg::Vec3d &local, Clickable *object, const int modKeyMask,
                      WindowInterface* window){
-    //printf("%s click world: %.2f,%.2f,%.2f local: %.2f,%.2f,%.2f \n",this->getName().c_str(),world.x(),world.y(),world.z(),local.x(),local.y(),local.z());
+    printf("%s click world: %.2f,%.2f,%.2f local: %.2f,%.2f,%.2f \n",this->getName().c_str(),world.x(),world.y(),world.z(),local.x(),local.y(),local.z());
     bool finish = false;
     if (!clickablecb.empty()){
         for(std::shared_ptr<Clickable>& clickable : clickablecb) {
             if (clickable->clicked(buttonMask,cursor,world,local, this, modKeyMask, window)){
-                //printf("%s forwarded click\n",this->getName().c_str());
+                printf("%s forwarded click\n",this->getName().c_str());
                 finish = true;
             }
         }

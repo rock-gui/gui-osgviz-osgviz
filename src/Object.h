@@ -112,12 +112,21 @@ public:
 
     void displayName(float font_size = 0.1f);
 
+    void setTextSize(float font_size);
+    void setTextPosition(osg::Vec3 pos);
+    void setTextColor(osg::Vec4 color);
+
     void setDirty();
 
 protected:
     friend class ModelViewFactory;
     unsigned int cull_mask;
     bool visible;
+
+    float text_size;
+    osg::Vec3 text_position;
+    osg::Vec4 text_color;
+
 
     //osg::ref_ptr<osg::Group> root;
     //osg::ref_ptr<osg::Node> object;
