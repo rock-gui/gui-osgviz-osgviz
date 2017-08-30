@@ -19,6 +19,7 @@ namespace osgviz {
 class ArrowNode : public osgviz::Object{
 public:
 	ArrowNode();
+	ArrowNode(bool invert);
 	virtual ~ArrowNode();
 
 
