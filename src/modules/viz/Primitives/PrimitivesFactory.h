@@ -28,7 +28,7 @@ public:
     virtual osg::ref_ptr<Object> createAxes(float scale=1.0,bool blabels=true);
     virtual osg::ref_ptr<Object> createTextNode(const std::string& text, double fontSize, osg::Vec4 color = osg::Vec4(1, 1, 1, 1));
     virtual osg::ref_ptr<Object> createGrid(int rows = 20,int cols = 20,float dx =1, float dy=1, bool show_coordinates=false, const ::osg::Vec4 &color = ::osg::Vec4(120,120,120,255));
-    virtual osg::ref_ptr<Object> createArrow(osg::Vec4 color = osg::Vec4(1, 1, 1, 1));
+    virtual osg::ref_ptr<Object> createArrow(osg::Vec4 color = osg::Vec4(1, 1, 1, 1), bool invert = false);
     virtual osg::ref_ptr<Object> createWireframeBox(const double xSize, const double ySize, const double zSize, osg::Vec4 color = osg::Vec4(1, 1, 1, 1)) const;
     virtual osg::ref_ptr<Object> createWireframeBox(const double xSize, const double ySize, const double zSize,
                                                     const double centerX, const double centerY, const double centerZ,

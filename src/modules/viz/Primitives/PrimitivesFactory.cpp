@@ -109,8 +109,8 @@ osg::ref_ptr<Object> PrimitivesFactory::createGrid(int rows,int cols,float dx, f
     return obj;
 }
 
-osg::ref_ptr<Object> PrimitivesFactory::createArrow(osg::Vec4 color){
-    ArrowNode* node = new ArrowNode();
+osg::ref_ptr<Object> PrimitivesFactory::createArrow(osg::Vec4 color, bool invert){
+    ArrowNode* node = new ArrowNode(invert);
     node->setName("Arrow");
     node->setColor(color[0], color[1], color[2], color[3]);
     return node;
