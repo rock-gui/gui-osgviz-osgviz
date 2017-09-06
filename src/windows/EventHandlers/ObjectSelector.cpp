@@ -119,13 +119,18 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
         if (thisEvent == osgGA::GUIEventAdapter::PUSH){
             pushedButtonsMask = ea.getButtonMask();
             modKeyMask = ea.getModKeyMask();
+            printf("push\n");
         }
 
         //normal click
         if(thisEvent & osgGA::GUIEventAdapter::RELEASE && lastEvent & osgGA::GUIEventAdapter::PUSH){
             lastEvent = thisEvent;
 
+            printf("got event\n");
+
             std::deque<IntersectionResult> intersections = getIntersections(ea);
+
+            printf("got intersection %i\n", intersections.size());
 
             if (!intersections.empty()){
                 std::deque<IntersectionResult>::reverse_iterator it;
@@ -133,6 +138,8 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
                         if (it->clickable->clicked(pushedButtonsMask, it->c, it->w,
                                                    it->p, it->clickable, modKeyMask,
                                                    view)){
+
+                            printf("obj clicked\n");
                             return true;
                         }
                 }
