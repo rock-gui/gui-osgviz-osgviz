@@ -28,34 +28,36 @@
 #ifndef OSGVIZ_WINDOWS_HUD_H
 #define OSGVIZ_WINDOWS_HUD_H
 
+#include <stdio.h>
+
 #include <osg/Texture2D>
 #include <osg/Camera>
 #include <osg/Group>
 #include <osg/MatrixTransform>
 #include <osg/GraphicsContext>
+
 #include <osgViewer/GraphicsWindow>
+#include <osgViewer/ViewerEventHandlers>
+
+#include "../../Object.h"
 
 #include "../../graphics/interfaces/OsgVizDefs.h"
 
-#include <osgViewer/ViewerEventHandlers>
+#include "../EventHandlers/MouseMoveEvent.h"
+#include "../EventHandlers/ObjectSelector.h"
+#include "../EventHandlers/WindowResizeEvent.h"
 
-
-#include <stdio.h>
-
-#include "../SuperView.h"
 #include "HUDHoverScaler.h"
 
+#include <iostream>
 
 namespace osgviz{
 
-class Window;
-
-class HUDCallback;
 
 class HUD:  public osg::Camera {
     public:
 
-      HUD(osg::ref_ptr<osgviz::Window> window, int width, int height);
+      HUD(osg::ref_ptr<osg::GraphicsContext> graphicsContext, int width, int height);
       ~HUD(void);
   
 
@@ -65,6 +67,8 @@ class HUD:  public osg::Camera {
 
 
       void resize(double width, double height);
+
+      void changeObjectPositionByResize(osgviz::Object *obj, const osg::Vec3d init_position);
 
       /**
        * Created an interactive object that scales on Hovering the mouse over it
@@ -82,13 +86,25 @@ class HUD:  public osg::Camera {
           return this->addChild(node);
       }
 
+      void setMouseMoveEvent(MouseMoveEvent *mouseMoveEvent)
+      {
+        std::cout << "setMouse" <<std::endl;
+        this->mouseMoveEvent = mouseMoveEvent;
+        std::cout << "setMouse: " << this->mouseMoveEvent.get() <<std::endl;
+      }
+
+      void setWindowResizeEvent(WindowResizeEvent *windowResizeEvent)
+      {
+        this->windowResizeEvent = windowResizeEvent;
+      }
+
 
     private:
 
-      HUDCallback* resizecallback;
+      //HUDCallback* resizecallback;
 
-      osg::ref_ptr<osgViewer::GraphicsWindow> gw;
-      osg::ref_ptr<osgviz::Window> window;
+      osg::ref_ptr<osg::GraphicsContext> gw;
+      //osg::ref_ptr<osgviz::Window> window;
 
       unsigned long id;
       Color myColor;
@@ -97,6 +113,9 @@ class HUD:  public osg::Camera {
       double viewport_width, viewport_height;
 
       unsigned int cull_mask;
+
+      osg::ref_ptr<WindowResizeEvent> windowResizeEvent;
+      osg::ref_ptr<MouseMoveEvent> mouseMoveEvent;
 
     };
 

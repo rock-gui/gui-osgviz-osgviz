@@ -35,6 +35,7 @@ rock_library(osgVizInterfaces
 			interfaces/WindowInterface.h
 			interfaces/Updatable.h
 			interfaces/MouseMoveCallback.h
+      interfaces/WindowResizeCallback.h
 	SOURCES Main.cpp
 )
 
@@ -60,9 +61,11 @@ rock_library(osgViz
            windows/SuperView.cpp
            windows/HUD/HUD.cpp
            windows/HUD/HUDHoverScaler.cpp
+           windows/HUD/HUDPositionChanger.cpp
            windows/EventHandlers/HierarchicalEventHandler.cpp
            windows/EventHandlers/ObjectSelector.cpp
            windows/EventHandlers/MouseMoveEvent.cpp
+           windows/EventHandlers/WindowResizeEvent.cpp
            windows/CameraManipulator/TerrainZoomManipulator.cpp
            tools/UpdateThread.cpp    
            
@@ -74,10 +77,12 @@ rock_library(osgViz
            windows/SuperView.h
            windows/HUD/HUD.h
            windows/HUD/HUDHoverScaler.h
+           windows/HUD/HUDPositionChanger.h
            windows/EventHandlers/HierarchicalEventHandler.h
            windows/EventHandlers/ObjectSelector.h
            windows/EventHandlers/NullClickObject.h
            windows/EventHandlers/MouseMoveEvent.h
+           windows/EventHandlers/WindowResizeEvent.h
            windows/config/WindowConfig.h
            windows/CameraManipulator/TerrainZoomManipulator.hpp
            tools/UpdateThread.h

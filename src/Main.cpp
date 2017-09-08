@@ -7,9 +7,13 @@
 #include <unistd.h>//sleep
 #else
 #include <Windows.h>
+
 #define sleep(S) Sleep(S*1000)
 #endif
 #include <stdio.h>
+
+#include <osgViz/windows/SuperView.h>
+#include <osgViz/windows/HUD/HUD.h>
 
 
 class Output : public osgviz::Clickable{
@@ -69,7 +73,7 @@ int main(int argc, char** argv)
 
 	osg::ref_ptr<osgviz::Window> window = osgViz->getWindowManager()->getWindowByID(winid);
 
-	osgviz::HUD* hud = window->addHUD(1920,1080);
+	osgviz::HUD* hud = window->getSuperView(0)->addHUD(1920,1080);
 
 //	osg::ref_ptr<osgviz::Object> hudarrow = primitivesfactory->createArrow();
 //	hudarrow->setPosition(100,100,0);
@@ -109,6 +113,7 @@ int main(int argc, char** argv)
     hud->addHudObject(shape);
 
     hud->makeObjectScaleOnHover(shape.get(),osg::Vec3d(100,100,0),osg::Vec3d(2,2,1),osgviz::HUDHoverScaler::NE);
+    hud->changeObjectPositionByResize(shape.get(), osg::Vec3d(10,10,0));
 
 
     osg::ref_ptr<osgviz::PrimitivesFactory::Shape> shape1 = primitivesfactory->createShape(osgviz::PrimitivesFactory::BOX,0.5,0.5,0.5);
@@ -119,7 +124,7 @@ int main(int argc, char** argv)
 
     //test 2nd HUD
 
-    osgviz::HUD* hud2 = osgViz->getWindowManager()->getWindowByID(winid)->addHUD(1920,1080);
+    osgviz::HUD* hud2 = osgViz->getWindowManager()->getWindowByID(winid)->getSuperView(0)->addHUD(1920,1080);
     osg::ref_ptr<osgviz::PrimitivesFactory::Shape> cone = primitivesfactory->createShape(osgviz::PrimitivesFactory::CONE,100,100,0);
     cone->setPosition(700,500,0);
     //shape->setScale(100,100,100);

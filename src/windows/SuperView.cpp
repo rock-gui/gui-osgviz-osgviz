@@ -4,6 +4,8 @@
 
 #include <osg/LightModel>
 
+#include <osgViewer/ViewerEventHandlers>
+
 #ifdef _MSC_VER
 #define __PRETTY_FUNCTION__  __FUNCTION__ __FUNCSIG__
 #endif
@@ -15,6 +17,7 @@ SuperView::SuperView() : osgViewer::View() {}
 SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContext, osg::Group* viewScene) 
   	  : osgViewer::View(), 
 		viewConfig(viewConfig),
+		graphicsContext(graphicsContext),
 		root(new osg::Group),
 		globalStateset(new osg::StateSet),
 		lightGroup(new osg::Group) {
@@ -116,9 +119,37 @@ SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContex
 	graphicData.fogEnd = 300.0;
 
 	setFogSettings(graphicData);    
+
+    // Event Handler Factory
+    addEventHandler(new osgViewer::StatsHandler(),-100);
+
+    objectSelectorEvent = new ObjectSelector(this);
+    addEventHandler(objectSelectorEvent,10);
+
+    mouseMoveEvent = new MouseMoveEvent();
+    addEventHandler(mouseMoveEvent,-50);
+
+    windowResizeEvent = new WindowResizeEvent();
+    addEventHandler(windowResizeEvent, 0);	
 }
 
 SuperView::~SuperView() {
+}
+
+osg::ref_ptr<osgviz::HUD> SuperView::addHUD(int width,int height, unsigned int window){
+
+    osg::ref_ptr<osgviz::HUD> hud = new HUD(graphicsContext,width,height);
+    hud->setViewport(getCamera()->getViewport());
+
+    this->addChild(hud);
+
+    // set events
+    hud->setMouseMoveEvent(mouseMoveEvent.get());
+    hud->setWindowResizeEvent(windowResizeEvent.get());
+
+    huds.push_back(hud);
+
+    return hud;
 }
 
 void SuperView::setFogSettings(const osgviz::interfaces::GraphicData &graphicOptions) {

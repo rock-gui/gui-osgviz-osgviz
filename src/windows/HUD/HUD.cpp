@@ -27,18 +27,19 @@
 
 #include "HUD.h"
 
-#include "../Window.h"
+
+#include "HUDPositionChanger.h"
+
 
 #include <cstdio>
 
-#include "../SuperView.h"
-#include "../../Object.h"
+
 
 namespace osgviz{
 
-    HUD::HUD(osg::ref_ptr<osgviz::Window> window, int width, int height):window(window) {
+    HUD::HUD(osg::ref_ptr<osg::GraphicsContext> graphicsContext, int width, int height) {
       //hudCamera = new osg::Camera();
-      gw=window->getGraphicsWindow();
+      gw = graphicsContext;
 
       cull_mask = 0;
       //x1 = x2 = y1 = y2 = 0.0;
@@ -47,18 +48,20 @@ namespace osgviz{
 
       //setViewSize(width,height);
 
-      int x,y,wwidth, wheight;
+      //int x,y,wwidth, wheight;
 
-      gw->getWindowRectangle (x,y,wwidth,wheight);
-      setViewPortSize(width,height);
-      resize(wwidth,wheight);
-      gw->resizedImplementation(x, y, wwidth, wheight);
+      //gw->getWindowRectangle (x,y,wwidth,wheight);
+      //setViewPortSize(width,height);
+      //resize(wwidth,wheight);
+      //gw->resizedImplementation(x, y, wwidth, wheight);
 
 
 //      resizecallback = new HUDCallback(this);
 //      gw->setResizedCallback(resizecallback);
 
-
+      // Keep the projection matrix fixed, despite window resizes.
+      // this will stretch or constrict the object drawn in hud
+      //this->setProjectionResizePolicy(osg::Camera::ProjectionResizePolicy::FIXED);
 
 
             this->setGraphicsContext(gw);
@@ -122,9 +125,20 @@ namespace osgviz{
 
     }
 
+    void HUD::changeObjectPositionByResize(osgviz::Object *obj, const osg::Vec3d init_position)
+    {
+      if (windowResizeEvent.get() != NULL)
+        windowResizeEvent->addCallback(new HUDPositionChanger(obj, init_position, this));
+      else
+        throw std::runtime_error("HUD: the WindowResizeEvent is underfined.");
+    }
+
 
     void HUD::makeObjectScaleOnHover(osgviz::Object* obj, const osg::Vec3d size, const osg::Vec3d &scale, HUDHoverScaler::Type type, osg::Vec3d anchor_offset){
-        window->addMouseMoveCallback(new HUDHoverScaler(obj,size,scale,type,anchor_offset,this));
+      if (mouseMoveEvent.get() != NULL)
+        mouseMoveEvent->addCallback(new HUDHoverScaler(obj,size,scale,type,anchor_offset,this));
+      else
+        throw std::runtime_error("HUD: the MouseMoveEvent is underfined.");
     }
 
 } // end of namespace graphics

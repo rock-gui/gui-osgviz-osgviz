@@ -32,6 +32,12 @@
 
 #include "../graphics/wrapper/OSGLightStruct.h"
 
+#include "EventHandlers/MouseMoveEvent.h"
+#include "EventHandlers/ObjectSelector.h"
+#include "EventHandlers/WindowResizeEvent.h"
+
+#include "HUD/HUD.h"
+
 namespace osgviz {
 
     /**
@@ -100,11 +106,28 @@ class SuperView : public osgViewer::View, public WindowInterface {
 	 		return myLights;
 	 	}
 
+	 	osg::ref_ptr<osgviz::HUD> addHUD(int width,int height, unsigned int window = 0);
+
+		inline void addMouseMoveCallback(MouseMoveCallback* cb){
+		    mouseMoveEvent->addCallback(cb);
+		}	 	
+
+		/**
+	 	* in case you want to use a non-default camera for intersection calculation it can be set using this function
+	 	* e.g. use the richt eye cam of the osgoculuswiewer instaed of the scene camera
+	 	* @param cam
+	 	*/
+		inline void setObjectSelectorCamera(const osg::ref_ptr<osg::Camera>& cam){
+	    	objectSelectorEvent->setCamera(cam);
+		}
+
 	private:
 		ViewConfig viewConfig;
 
 		osg::ref_ptr<HierarchicalEventHandler> hierarchicalEventHandler;
 		bool eventsEnabled;
+
+		osg::ref_ptr<osg::GraphicsContext> graphicsContext;
 
 		osg::ref_ptr<osgParticle::PrecipitationEffect> snow;
 		osg::ref_ptr<osgParticle::PrecipitationEffect> rain;
@@ -124,6 +147,14 @@ class SuperView : public osgViewer::View, public WindowInterface {
 		lightmanager defaultLight;	
 
 		osgviz::interfaces::GraphicData graphicData;
+
+		std::vector < osg::ref_ptr<osgviz::HUD> > huds;
+
+
+		osg::ref_ptr<MouseMoveEvent> mouseMoveEvent;
+		osg::ref_ptr<ObjectSelector> objectSelectorEvent;
+		osg::ref_ptr<WindowResizeEvent> windowResizeEvent;
+
 
 		void initDefaultLight();
 };
