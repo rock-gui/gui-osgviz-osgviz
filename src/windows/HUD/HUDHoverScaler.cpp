@@ -25,15 +25,29 @@ bool HUDHoverScaler::mouseMoved(const int& x, const int& y, const float& xNorm, 
     osg::Vec3 pos = obj->getPosition() + anchor_offset;
 
     //Norm is from -1 to 1, but we want 0 to 1
-    int mousex = (xNorm+1.0)/2.0 * hud->getHudSizeX();
-    int mousey = (yNorm+1.0)/2.0 * hud->getHudSizeY();
+//    int mousex = (xNorm+1.0)/2.0 * hud->getHudSizeX();
+//    int mousey = (yNorm+1.0)/2.0 * hud->getHudSizeY();
+
+    int mousex = (xNorm+1.0)/2.0 * hud->getViewportSizeX();
+    int mousey = (yNorm+1.0)/2.0 * hud->getViewportSizeY();
+
+
+    //convert mouse coords (screen pixels to orto2d martic in hud
+
+    osg::Vec3d mpos(mousex, mousey, 0);
+
+    osg::Matrixd world2screen = (hud->getViewMatrix() * hud->getProjectionMatrix() * hud->getViewport()->computeWindowMatrix());
+    osg::Matrixd screen2world =  osg::Matrixd::inverse(world2screen);
+
+    osg::Vec3d positionInWorld = mpos * screen2world;
+
 
     //if inside scale up
     if (!scaled
-            && pos.x()-(size.x()/2) < mousex
-            && pos.y()-(size.y()/2) < mousey
-            &&  pos.x()+(size.x()/2) > mousex
-            &&  pos.y()+(size.y()/2) > mousey
+            && pos.x()-(size.x()/2) < positionInWorld.x()
+            && pos.y()-(size.y()/2) < positionInWorld.y()
+            &&  pos.x()+(size.x()/2) > positionInWorld.x()
+            &&  pos.y()+(size.y()/2) > positionInWorld.y()
     ){
 
         initial_scale = obj->getScale();
@@ -65,10 +79,10 @@ bool HUDHoverScaler::mouseMoved(const int& x, const int& y, const float& xNorm, 
         //to calc outside from center, we add the offset
         osg::Vec3d position_scaled = pos + anchor_offset;
 
-        if (    position_scaled.x()-(size.x()*scale.x()/2) > mousex //left
-            ||  position_scaled.y()-(size.y()*scale.y()/2) > mousey
-            ||  position_scaled.x()+(size.x()*scale.x()/2) < mousex
-            ||  position_scaled.y()+(size.y()*scale.y()/2) < mousey
+        if (    position_scaled.x()-(size.x()*scale.x()/2) > positionInWorld.x() //left
+            ||  position_scaled.y()-(size.y()*scale.y()/2) > positionInWorld.y()
+            ||  position_scaled.x()+(size.x()*scale.x()/2) < positionInWorld.x()
+            ||  position_scaled.y()+(size.y()*scale.y()/2) < positionInWorld.y()
         ){
             obj->setScale(initial_scale);
             obj->setPosition(position_unscaled);

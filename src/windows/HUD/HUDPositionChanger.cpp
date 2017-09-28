@@ -34,7 +34,7 @@ bool HUDPositionChanger::windowResized(const int& windowHeight, const int& windo
 
     osg::Vec3d positionInWorld = pos * screen2world;
 
-    printf("move pos: %i,%i %.2f,%.2f to %.2f,%.2f\n",pos_x,pos_y,obj->getPosition().x(),obj->getPosition().y(),positionInWorld.x(), positionInWorld.y());
+   // printf("move pos: %i,%i %.2f,%.2f to %.2f,%.2f\n",pos_x,pos_y,obj->getPosition().x(),obj->getPosition().y(),positionInWorld.x(), positionInWorld.y());
 
     obj->setPosition(positionInWorld.x(), positionInWorld.y(), 0);
 
