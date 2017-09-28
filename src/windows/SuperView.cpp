@@ -136,9 +136,9 @@ SuperView::SuperView(ViewConfig viewConfig, osg::GraphicsContext* graphicsContex
 SuperView::~SuperView() {
 }
 
-osg::ref_ptr<osgviz::HUD> SuperView::addHUD(int width,int height, unsigned int window){
+osg::ref_ptr<osgviz::HUD> SuperView::addHUD(int width,int height, osg::Camera::ProjectionResizePolicy policy){
 
-    osg::ref_ptr<osgviz::HUD> hud = new HUD(graphicsContext,width,height);
+    osg::ref_ptr<osgviz::HUD> hud = new HUD(graphicsContext,width,height,policy);
     hud->setViewport(getCamera()->getViewport());
 
     this->addChild(hud);

@@ -73,7 +73,7 @@ int main(int argc, char** argv)
 
 	osg::ref_ptr<osgviz::Window> window = osgViz->getWindowManager()->getWindowByID(winid);
 
-	osgviz::HUD* hud = window->getSuperView(0)->addHUD(1920,1080);
+	osgviz::HUD* hud = window->addHUD(1920,1080,osg::Camera::ProjectionResizePolicy::FIXED);
 
 //	osg::ref_ptr<osgviz::Object> hudarrow = primitivesfactory->createArrow();
 //	hudarrow->setPosition(100,100,0);
@@ -113,7 +113,7 @@ int main(int argc, char** argv)
     hud->addHudObject(shape);
 
     hud->makeObjectScaleOnHover(shape.get(),osg::Vec3d(100,100,0),osg::Vec3d(2,2,1),osgviz::HUDHoverScaler::NE);
-    hud->changeObjectPositionByResize(shape.get(), osg::Vec3d(10,10,0));
+    //hud->changeObjectPositionByResize(shape.get(), osg::Vec3d(10,10,0));
 
 
     osg::ref_ptr<osgviz::PrimitivesFactory::Shape> shape1 = primitivesfactory->createShape(osgviz::PrimitivesFactory::BOX,0.5,0.5,0.5);
@@ -141,8 +141,13 @@ int main(int argc, char** argv)
 //    hud->addHudObject(image);
 
 	//sleep(1);
-	//you can create multiple ones:
-	//osgViz->createWindow();
+	//you can create multiple windows and views ones:
+//	int win2 = osgViz->createWindow();
+//	osg::ref_ptr<osgviz::Window> window2 = osgViz->getWindowManager()->getWindowByID(win2);
+//	osgviz::ViewConfig view(0,0,0.3,0.3);
+//	window2->addView(view);
+
+
 
 	//this starts a update thread for the visualisation, requires locking in the other threads:
 	//osgViz->lockThread();

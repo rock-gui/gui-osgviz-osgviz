@@ -21,7 +21,7 @@ public:
     HUDPositionChanger(osgviz::Object* obj, const osg::Vec3d& screenPosition, HUD *hud);
     virtual ~HUDPositionChanger(){};
 
-    virtual bool windowResized(const int& windowHeight, const int& windowWight);
+    virtual bool windowResized(const int& windowHeight, const int& windowWidth);
 
 private:
     osgviz::Object* obj;

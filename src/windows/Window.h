@@ -44,7 +44,7 @@ public:
 
 	osgViewer::View* addView(ViewConfig viewConfig, osg::Group* viewScene = NULL);
 
-
+	osg::ref_ptr<osgviz::HUD> addHUD(int width,int height, osg::Camera::ProjectionResizePolicy policy = osg::Camera::ProjectionResizePolicy::FIXED, int viewID = 0);
 
 
 	osg::ref_ptr<osgViewer::GraphicsWindow> getGraphicsWindow();

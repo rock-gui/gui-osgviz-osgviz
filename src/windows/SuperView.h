@@ -106,7 +106,7 @@ class SuperView : public osgViewer::View, public WindowInterface {
 	 		return myLights;
 	 	}
 
-	 	osg::ref_ptr<osgviz::HUD> addHUD(int width,int height, unsigned int window = 0);
+	 	osg::ref_ptr<osgviz::HUD> addHUD(int width,int height, osg::Camera::ProjectionResizePolicy policy = osg::Camera::ProjectionResizePolicy::FIXED);
 
 		inline void addMouseMoveCallback(MouseMoveCallback* cb){
 		    mouseMoveEvent->addCallback(cb);

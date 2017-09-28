@@ -57,7 +57,7 @@ namespace osgviz{
 class HUD:  public osg::Camera {
     public:
 
-      HUD(osg::ref_ptr<osg::GraphicsContext> graphicsContext, int width, int height);
+      HUD(osg::ref_ptr<osg::GraphicsContext> graphicsContext, int width, int height, osg::Camera::ProjectionResizePolicy policy = osg::Camera::ProjectionResizePolicy::FIXED);
       ~HUD(void);
   
 
@@ -99,20 +99,28 @@ class HUD:  public osg::Camera {
       }
 
 
+      inline int getHudSizeX() {
+          return hudSizeX;
+      }
+
+      inline int getHudSizeY() {
+          return hudSizeY;
+      }
+
+      int getViewportSizeX();
+
+      int getViewportSizeY();
+
     private:
 
-      //HUDCallback* resizecallback;
+//      unsigned long id;
+//      Color myColor;
+//      osg::Vec3f myoff;
 
-      osg::ref_ptr<osg::GraphicsContext> gw;
-      //osg::ref_ptr<osgviz::Window> window;
+      //double viewport_width, viewport_height;
 
-      unsigned long id;
-      Color myColor;
-      osg::Vec3f myoff;
+      int hudSizeX,hudSizeY;
 
-      double viewport_width, viewport_height;
-
-      unsigned int cull_mask;
 
       osg::ref_ptr<WindowResizeEvent> windowResizeEvent;
       osg::ref_ptr<MouseMoveEvent> mouseMoveEvent;

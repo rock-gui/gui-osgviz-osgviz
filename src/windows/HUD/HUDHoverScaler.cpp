@@ -25,8 +25,8 @@ bool HUDHoverScaler::mouseMoved(const int& x, const int& y, const float& xNorm, 
     osg::Vec3 pos = obj->getPosition() + anchor_offset;
 
     //Norm is from -1 to 1, but we want 0 to 1
-    int mousex = (xNorm+1.0)/2.0 * hud->getViewPortSizeX();
-    int mousey = (yNorm+1.0)/2.0 * hud->getViewPortSizeY();
+    int mousex = (xNorm+1.0)/2.0 * hud->getHudSizeX();
+    int mousey = (yNorm+1.0)/2.0 * hud->getHudSizeY();
 
     //if inside scale up
     if (!scaled

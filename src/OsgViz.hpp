@@ -135,7 +135,7 @@ namespace osgviz
 
 		/**
 		 * loads an osgviz::Module class into the Inctance management of osgviz given a name
-		 * Applications using osgviz can use the same instance of a Module identified by its name
+		 * Applications using osgviz or another module can use the same instance of a Module identified by its name
 		 * (same name/same instance)
 		 * @ param moduleName The name of the instance to obtain (either existing or not)
 		 * @ param argc The argument count passed to the Module (only for non-exixting instances)
