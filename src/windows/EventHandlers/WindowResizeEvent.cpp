@@ -24,7 +24,7 @@ bool WindowResizeEvent::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActio
     if (ea.getEventType() == osgGA::GUIEventAdapter::RESIZE){
 
         for (std::vector<WindowResizeCallback*>::iterator cb = callbacks.begin();cb != callbacks.end(); ++cb){
-            (*cb)->windowResized(ea.getWindowHeight(),ea.getWindowWidth());
+            (*cb)->windowResized(ea.getWindowWidth(), ea.getWindowHeight());
         }
 
     }

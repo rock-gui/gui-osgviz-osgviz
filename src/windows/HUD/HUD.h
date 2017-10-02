@@ -68,6 +68,12 @@ class HUD:  public osg::Camera {
 
       void resize(double width, double height);
 
+      /**
+       * @brief resize the hud to full viewport
+       * @details [long description]
+       */
+      void resize();
+
       void changeObjectPositionByResize(osgviz::Object *obj, const osg::Vec3d init_position);
 
       /**
@@ -83,7 +89,7 @@ class HUD:  public osg::Camera {
 
 
       virtual bool addHudObject(osg::Node* node){
-          return this->addChild(node);
+        return this->addChild(node);
       }
 
       void setMouseMoveEvent(MouseMoveEvent *mouseMoveEvent)
@@ -120,6 +126,8 @@ class HUD:  public osg::Camera {
       //double viewport_width, viewport_height;
 
       int hudSizeX,hudSizeY;
+
+      int confSizeX, confSizeY;
 
 
       osg::ref_ptr<WindowResizeEvent> windowResizeEvent;

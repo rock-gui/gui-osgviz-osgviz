@@ -16,9 +16,12 @@ namespace osgviz {
 HUDPositionChanger::HUDPositionChanger(osgviz::Object* obj, const osg::Vec3d &screenPosition, HUD *hud)
     :obj(obj), screenPosition(screenPosition), hud(hud) {
 
+
 }
 
-bool HUDPositionChanger::windowResized(const int& windowHeight, const int& windowWidth){
+bool HUDPositionChanger::windowResized(const int& windowWidth, const int& windowHeight){
+
+    hud->resize(windowWidth, windowHeight);
 
     //
     //osg::Matrixd world2screen = (obj->getWorldMatrices().at(0) * hud->getViewMatrix() * hud->getProjectionMatrix() * hud->getViewport()->computeWindowMatrix());

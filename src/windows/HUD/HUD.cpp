@@ -39,8 +39,13 @@ namespace osgviz{
 
     HUD::HUD(osg::ref_ptr<osg::GraphicsContext> graphicsContext, int width, int height, osg::Camera::ProjectionResizePolicy policy) {
 
+      // hud make resize to hud according to the viewport
+
     hudSizeX = width;
     hudSizeY = height;
+
+    confSizeX = width;
+    confSizeY = height;
 
     // Keep the projection matrix fixed, despite window resizes.
     // this will stretch or constrict the object drawn in hud
@@ -51,7 +56,7 @@ namespace osgviz{
     //hudCamera->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     this->setClearMask(GL_DEPTH_BUFFER_BIT);
     //hudCamera->setClearMask(0);
-    this->setClearColor(osg::Vec4(1.0f, 0.0f, 0.0f, 0.0f));
+    this->setClearColor(osg::Vec4(1.0f, 0.0f, 0.0f, 0.2f));
     //hudCamera->setComputeNearFarMode(osg::Camera::DO_NOT_COMPUTE_NEAR_FAR);
     //this->setViewport(0, 0, hud_width, hud_height);
     //hudCamera->setRenderOrder(osg::Camera::PRE_RENDER);
@@ -102,12 +107,30 @@ namespace osgviz{
         this->setProjectionMatrix(osg::Matrix::ortho2D(0, hudSizeX, 0, hudSizeY));
     }
 
+    void HUD::resize() {
+      resize(getViewportSizeX(), getViewportSizeY());
+    }
+
     void HUD::changeObjectPositionByResize(osgviz::Object *obj, const osg::Vec3d init_position)
     {
+      HUDPositionChanger *positionChanger = new HUDPositionChanger(obj, init_position, this);
+
       if (windowResizeEvent.get() != NULL)
-        windowResizeEvent->addCallback(new HUDPositionChanger(obj, init_position, this));
+        windowResizeEvent->addCallback(positionChanger);
       else
         throw std::runtime_error("HUD: the WindowResizeEvent is undefined.");
+
+      // set right position according to the size of window
+      positionChanger->windowResized(getViewportSizeX(), getViewportSizeY());
+
+      // rescale the object
+      // the object size is given relative to the hud size
+      // since the hud will be always resized to the window size
+      // we should rescale the object to keep the right proportion
+      float scaleFactor_x = getViewportSizeX() / (float)confSizeX;
+      float scaleFactor_y = getViewportSizeY() / (float)confSizeY;
+
+      obj->setScale(scaleFactor_x, scaleFactor_y, 1.0);      
     }
 
 
@@ -119,5 +142,3 @@ namespace osgviz{
     }
 
 } // end of namespace graphics
-
-

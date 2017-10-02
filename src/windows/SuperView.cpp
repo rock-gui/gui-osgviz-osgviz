@@ -140,6 +140,10 @@ osg::ref_ptr<osgviz::HUD> SuperView::addHUD(int width,int height, osg::Camera::P
 
     osg::ref_ptr<osgviz::HUD> hud = new HUD(graphicsContext,width,height,policy);
     hud->setViewport(getCamera()->getViewport());
+    
+    // set hud to the full viewport
+    // TODO: use additional attribute to specify the size of hud: full viewport size or user-defined size 
+    hud->resize();
 
     this->addChild(hud);
 
