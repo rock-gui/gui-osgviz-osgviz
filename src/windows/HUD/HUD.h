@@ -74,7 +74,7 @@ class HUD:  public osg::Camera {
        */
       void resize();
 
-      void changeObjectPositionByResize(osgviz::Object *obj, const osg::Vec3d init_position);
+      void changeObjectPositionByResize(osgviz::Object *obj, const osg::Vec3d init_position, const osg::Vec2d init_size);
 
       /**
        * Created an interactive object that scales on Hovering the mouse over it
@@ -116,6 +116,11 @@ class HUD:  public osg::Camera {
       int getViewportSizeX();
 
       int getViewportSizeY();
+
+      osg::Vec2d getConfigSize()
+      {
+        return osg::Vec2d(confSizeX, confSizeY);
+      }
 
     private:
 

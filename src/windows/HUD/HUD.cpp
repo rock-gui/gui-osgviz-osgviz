@@ -111,17 +111,17 @@ namespace osgviz{
       resize(getViewportSizeX(), getViewportSizeY());
     }
 
-    void HUD::changeObjectPositionByResize(osgviz::Object *obj, const osg::Vec3d init_position)
+    void HUD::changeObjectPositionByResize(osgviz::Object *obj, const osg::Vec3d init_position, const osg::Vec2d init_size)
     {
-      HUDPositionChanger *positionChanger = new HUDPositionChanger(obj, init_position, this);
-
-      if (windowResizeEvent.get() != NULL)
+  
+      if (windowResizeEvent.get() != NULL) {
+        HUDPositionChanger *positionChanger = new HUDPositionChanger(obj, init_position, init_size, this);
         windowResizeEvent->addCallback(positionChanger);
+        // set right position according to the size of window
+        positionChanger->windowResized(getViewportSizeX(), getViewportSizeY());
+      }
       else
         throw std::runtime_error("HUD: the WindowResizeEvent is undefined.");
-
-      // set right position according to the size of window
-      positionChanger->windowResized(getViewportSizeX(), getViewportSizeY());
 
       // rescale the object
       // the object size is given relative to the hud size
@@ -130,7 +130,11 @@ namespace osgviz{
       float scaleFactor_x = getViewportSizeX() / (float)confSizeX;
       float scaleFactor_y = getViewportSizeY() / (float)confSizeY;
 
+      //std::cout << "scale: " << scaleFactor_x << " " << scaleFactor_y << std::endl;
+
       obj->setScale(scaleFactor_x, scaleFactor_y, 1.0);      
+
+      //std::cout << "scale: " << obj->getScale().x() << " " <<  obj->getScale().y() << " " << obj->getScale().z()  << std::endl;
     }
 
 
