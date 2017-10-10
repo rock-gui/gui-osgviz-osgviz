@@ -57,7 +57,7 @@ namespace osgviz{
     this->setClearMask(GL_DEPTH_BUFFER_BIT);
     //hudCamera->setClearMask(0);
     this->setClearColor(osg::Vec4(1.0f, 0.0f, 0.0f, 0.2f));
-    //hudCamera->setComputeNearFarMode(osg::Camera::DO_NOT_COMPUTE_NEAR_FAR);
+    this->setComputeNearFarMode(osg::Camera::DO_NOT_COMPUTE_NEAR_FAR);
     //this->setViewport(0, 0, hud_width, hud_height);
     //hudCamera->setRenderOrder(osg::Camera::PRE_RENDER);
     this->setRenderOrder(osg::Camera::POST_RENDER);
