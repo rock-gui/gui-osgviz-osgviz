@@ -14,6 +14,7 @@
 #include <stdio.h>
 //#include "tools/Timing.h"
 #include "tools/UpdateThread.h"
+#include "tools/TypeNameDemangling.h"
 
 
 namespace osgDB{
@@ -147,20 +148,21 @@ namespace osgviz
                         static_assert(!std::is_volatile<MOD>::value, "using volatile types is not supported");
                     
                         auto it =  modules.find(moduleName);
-			if (it == modules.end()){
-                            modules[moduleName].reset(new Module<MOD>(argc,argv));
+			if (it == modules.end() || it->second.get() == nullptr ){
+                            modules[moduleName].reset(new Module<MOD>(std::shared_ptr<MOD>(new MOD(argc,argv))));
+                            it = modules.find(moduleName);
 			}
 			
+			std::unique_ptr< struct ModuleBase>& base = it->second;
 			try {
-                            Module<MOD>& mod = dynamic_cast< Module<MOD>& > (*(it->second));
+                            Module<MOD>& mod = dynamic_cast< Module<MOD>& > (*base);
                             return mod.module;
                         } catch (std::bad_cast e) {
-                            
-                            std::string message = " there is nothing in the db to get or set '";/* +
-                name + "' as type '" +
-                std::string(abi::__cxa_demangle(typeid(T).name(),0,0,0)) + "'" +
-                " the property type is: " +
-                std::string(abi::__cxa_demangle(typeid((base)).name(),0,0,0)) + "'";*/
+                            std::string message = " there is no module '" +
+                                moduleName + "' of type '" +
+                                std::string(abi::__cxa_demangle(typeid(Module<MOD>).name(),0,0,0)) + 
+                                "' the module type is: " +
+                                demangledTypeName(*base) + "'";
                             
                             throw std::runtime_error(message);
                         }

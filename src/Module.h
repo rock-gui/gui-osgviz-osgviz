@@ -36,9 +36,12 @@ public:
 
 protected:
     friend class OsgViz;
-    Module(int argc,char** argv){};
-    Module(){};
     std::shared_ptr<T> module;
+
+private:
+    //Module(int argc,char** argv){};
+    Module(){};
+    
 
 };
 

@@ -138,7 +138,7 @@ rock_library(ModelLoader
     DEPS osgViz)
     
 rock_executable(osgViz_bin Main.cpp
-    DEPS osgViz PrimitivesFactory
+    DEPS osgViz PrimitivesFactory ModelLoader
     LIBS ${ADDITIONAL_LIBS})
 
 
