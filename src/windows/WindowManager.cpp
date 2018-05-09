@@ -23,6 +23,7 @@ unsigned int WindowManager::createWindow(WindowConfig& windowConfig, osg::ref_pt
     if (!graphicsContext){
 
         osg::ref_ptr<osg::GraphicsContext::Traits> traits = genetrateTraits(windowConfig);
+        traits->readDISPLAY();
         graphicsContext = osg::GraphicsContext::createGraphicsContext( traits );
     }
 
