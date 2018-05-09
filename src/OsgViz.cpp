@@ -154,9 +154,9 @@ int OsgViz::tryLockThread(){
 }
 
 void OsgViz::printModules(){
-// 	for (std::map<std::string, Module*>::iterator it = modules.begin();it!=modules.end();it++){
-// 		printf("%s : %s\n",it->first.c_str(),demangledTypeName(*(it->second)).c_str());
-// 	}
+ 	for (std::map<std::string, std::unique_ptr< struct ModuleBase > >::iterator it = modules.begin();it!=modules.end();it++){
+ 		printf("%s\t : %s\n",it->first.c_str(),demangledTypeName(*(it->second)).c_str());
+ 	}
 }
 
 }
