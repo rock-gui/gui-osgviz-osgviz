@@ -15,22 +15,30 @@
 
 namespace osgviz{
 
-class Module{
+struct ModuleBase{
+    ModuleBase(){};
+    virtual ~ModuleBase(){};
+};
+
+template <class T> class Module: public ModuleBase{
 
 public:
 
-	virtual ~Module(){};
+    Module(const std::shared_ptr<T>& module):module(module){};
+    virtual ~Module(){};
 
     /**
      * init is called after loading the plugin using
      * osgviz::getPlugin
      */
-    virtual void init(int argc,char** argv){};
+    //virtual void init(int argc,char** argv){};
 
 
 protected:
     friend class OsgViz;
+    Module(int argc,char** argv){};
     Module(){};
+    std::shared_ptr<T> module;
 
 };
 

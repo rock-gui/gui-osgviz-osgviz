@@ -16,7 +16,7 @@
 namespace osgviz
 {
 
-std::map<std::string, Module*> OsgViz::modules;
+std::map<std::string, std::unique_ptr< struct ModuleBase> > OsgViz::modules;
 
 osg::ref_ptr<OsgViz> OsgViz::getInstance(int argc,char** argv){
     //HACK to work around a static destruction order bug: default font needs to be initialized before
@@ -58,9 +58,6 @@ void OsgViz::init(int argc,char** argv){
 
 OsgViz::~OsgViz(){
 
-	for (std::map<std::string, Module*>::iterator it = modules.begin();it!=modules.end();it++){
-		delete it->second;
-	}
 
 	delete mutex;
 
@@ -157,9 +154,9 @@ int OsgViz::tryLockThread(){
 }
 
 void OsgViz::printModules(){
-	for (std::map<std::string, Module*>::iterator it = modules.begin();it!=modules.end();it++){
-		printf("%s : %s\n",it->first.c_str(),demangledTypeName(*(it->second)).c_str());
-	}
+// 	for (std::map<std::string, Module*>::iterator it = modules.begin();it!=modules.end();it++){
+// 		printf("%s : %s\n",it->first.c_str(),demangledTypeName(*(it->second)).c_str());
+// 	}
 }
 
 }

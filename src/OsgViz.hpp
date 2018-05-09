@@ -130,7 +130,7 @@ namespace osgviz
          * @param priority higher numbers are called first, if the priority is taken, the new one is placed after the existing
          * @return the actual priority number the Updatable aquired
          */
-		virtual int addUpdateCallback(Updatable* callback, int priority = 0);
+         virtual int addUpdateCallback(Updatable* callback, int priority = 0);
 
 
 		/**
@@ -141,17 +141,33 @@ namespace osgviz
 		 * @ param argc The argument count passed to the Module (only for non-exixting instances)
 		 * @ param argv The arguments passed to the Module (only for non-exixting instances)
 		 */
-		template <class MODULE> static MODULE* getModuleInstance(std::string moduleName, int argc = 0, char **argv = NULL){
-			Module* mod;
-			mod = modules[moduleName];
-			if (! mod){
-				mod = new MODULE();
-				modules[moduleName] = mod;
-				mod->init(argc,argv);
+		template <class MOD> static std::shared_ptr<MOD> getModuleInstance(std::string moduleName, int argc = 0, char **argv = NULL){
+                    
+                        static_assert(!std::is_const<MOD>::value, "using const types is not supported");
+                        static_assert(!std::is_volatile<MOD>::value, "using volatile types is not supported");
+                    
+                        auto it =  modules.find(moduleName);
+			if (it == modules.end()){
+                            modules[moduleName].reset(new Module<MOD>(argc,argv));
 			}
-			return dynamic_cast<MODULE*>(mod);
+			
+			try {
+                            Module<MOD>& mod = dynamic_cast< Module<MOD>& > (*(it->second));
+                            return mod.module;
+                        } catch (std::bad_cast e) {
+                            
+                            std::string message = " there is nothing in the db to get or set '";/* +
+                name + "' as type '" +
+                std::string(abi::__cxa_demangle(typeid(T).name(),0,0,0)) + "'" +
+                " the property type is: " +
+                std::string(abi::__cxa_demangle(typeid((base)).name(),0,0,0)) + "'";*/
+                            
+                            throw std::runtime_error(message);
+                        }
 		}
 
+		
+		
 		/**
 		 * print available module names and classes
 		 */
@@ -216,7 +232,8 @@ namespace osgviz
 
 		osg::ref_ptr<osg::Group> root;
 		bool initialized;
-		static std::map<std::string, Module*> modules;
+                
+                static std::map< std::string, std::unique_ptr< struct ModuleBase> > modules;
 
 		int m_argc;
 		char** m_argv;

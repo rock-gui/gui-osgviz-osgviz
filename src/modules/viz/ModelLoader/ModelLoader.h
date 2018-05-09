@@ -8,16 +8,14 @@
 #ifndef GUI_OSGVIZ_SRC_PLUGINS_DATA_MODELLOADER_H_
 #define GUI_OSGVIZ_SRC_PLUGINS_DATA_MODELLOADER_H_
 
-#include "../../../Module.h"
+#include "../../../Object.h"
 
 namespace osgviz {
 
-class ModelLoader : public Module{
+class ModelLoader{
 public:
-	ModelLoader();
+	ModelLoader(int argc = 0, char** argv = nullptr);
 	virtual ~ModelLoader();
-
-	virtual void init(int argc, char** argv);
 
 	virtual osg::ref_ptr<Object> loadModel(std::string path);
 

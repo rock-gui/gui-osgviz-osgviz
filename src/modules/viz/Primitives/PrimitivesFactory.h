@@ -10,14 +10,14 @@
 
 #include <osg/Shape>
 #include <osg/ShapeDrawable>
-#include "../../../Module.h"
+#include "../../../Object.h"
 #include <vector>
 
 namespace osgviz {
 
-class PrimitivesFactory: public Module {
+class PrimitivesFactory {
 public:
-    PrimitivesFactory();
+    PrimitivesFactory(int argc = 0, char** argv = nullptr);
     virtual ~PrimitivesFactory();
 
     virtual int getLibVersion() const {return 0;};

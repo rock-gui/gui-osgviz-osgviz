@@ -33,7 +33,7 @@ namespace osgviz {
 
 //OSGVIZ_PLUGIN(PrimitivesFactory);
 
-PrimitivesFactory::PrimitivesFactory():Module() {}
+PrimitivesFactory::PrimitivesFactory(int argc, char** argv) {}
 
 PrimitivesFactory::~PrimitivesFactory() {}
 
