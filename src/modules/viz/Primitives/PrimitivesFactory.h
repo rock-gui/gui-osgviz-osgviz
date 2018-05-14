@@ -60,7 +60,7 @@ public:
     };
 
     /**
-     * These Spabes cannot receive click events
+     * These Shapes cannot receive click events
      * @param shape
      * @param sizex aka radius for non-boxes
      * @param sizey only for boxes
