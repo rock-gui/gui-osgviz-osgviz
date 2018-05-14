@@ -140,11 +140,12 @@ osg::ref_ptr<PrimitivesFactory::Shape> PrimitivesFactory::createShape(Shapes sha
     obj->geode = new osg::Geode();
 
     switch(shape){
-    case BOX: obj->shape = new osg::Box(osg::Vec3(0,0,0),sizex,sizey,sizez); break;
-    case CAPSULE: obj->shape = new osg::Capsule(osg::Vec3(0,0,0),sizex,sizez); break;break;
-    case CONE: obj->shape = new osg::Cone(osg::Vec3(0,0,0),sizex,sizez); break;break;
-    case CYLINDER: obj->shape = new osg::Cylinder(osg::Vec3(0,0,0),sizex,sizez); break;break;
-    case SPHERE: obj->shape = new osg::Sphere(osg::Vec3(0,0,0),sizex); break;break;
+        case BOX: obj->shape = new osg::Box(osg::Vec3(0,0,0),sizex,sizey,sizez); break;
+        case CAPSULE: obj->shape = new osg::Capsule(osg::Vec3(0,0,0),sizex,sizez); break;
+        case CONE: obj->shape = new osg::Cone(osg::Vec3(0,0,0),sizex,sizez); break;
+        case CYLINDER: obj->shape = new osg::Cylinder(osg::Vec3(0,0,0),sizex,sizez); break;
+        case SPHERE: obj->shape = new osg::Sphere(osg::Vec3(0,0,0),sizex); break;
+        case WIREFRAME_BOX: break;
     }
     obj->drawable = new osg::ShapeDrawable(obj->shape);
     obj->geode->addDrawable(obj->drawable);
