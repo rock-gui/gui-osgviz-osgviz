@@ -1,6 +1,7 @@
 #include <iostream>
 #include "OsgViz.hpp"
 #include "modules/viz/Primitives/PrimitivesFactory.h"
+#include "modules/viz/ModelLoader/ModelLoader.h"
 
 
 #ifndef WIN32
@@ -42,12 +43,20 @@ int main(int argc, char** argv)
 	//load lib with some helpful primitives
 	printf("load plugin\n");	fflush(stdout);
 	//osgviz::PrimitivesFactory *primitivesfactory = new osgviz::PrimitivesFactory(NULL);
-	osgviz::PrimitivesFactory *primitivesfactory = osgviz::OsgViz::getModuleInstance<osgviz::PrimitivesFactory>("PrimitivesFactory");
+	std::shared_ptr<osgviz::PrimitivesFactory> primitivesfactory = osgviz::OsgViz::getModuleInstance<osgviz::PrimitivesFactory>("PrimitivesFactory");
 
-	osgviz::PrimitivesFactory *primitivesfactory2 = osgviz::OsgViz::getModuleInstance<osgviz::PrimitivesFactory>("PrimitivesFactory");
+	std::shared_ptr<osgviz::PrimitivesFactory> primitivesfactory2 = osgviz::OsgViz::getModuleInstance<osgviz::PrimitivesFactory>("PrimitivesFactory");
 
-	osgviz::PrimitivesFactory *primitivesfactory3 = osgviz::OsgViz::getModuleInstance<osgviz::PrimitivesFactory>("PrimitivesFactory2");
+	std::shared_ptr<osgviz::PrimitivesFactory> primitivesfactory3 = osgviz::OsgViz::getModuleInstance<osgviz::PrimitivesFactory>("PrimitivesFactory2");
 
+        try {
+            std::shared_ptr<osgviz::ModelLoader> primitivesfactory3 = osgviz::OsgViz::getModuleInstance<osgviz::ModelLoader>("PrimitivesFactory2");
+        
+        } catch (std::runtime_error e){
+            printf("%s\n", e.what());
+        }
+                        
+        
 	osgviz::OsgViz::printModules();
 
 	printf("PF \n\t%p \n\t%p\n\t%p\n",primitivesfactory,primitivesfactory2,primitivesfactory3);
