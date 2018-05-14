@@ -64,35 +64,33 @@ bool TerrainZoomManipulator::setCenterByMousePointer( const osgGA::GUIEventAdapt
     if( !camera )
         return false;
 
-    // prepare variables
-    float x = ( ea.getX() - ea.getXmin() ) / ( ea.getXmax() - ea.getXmin() );
-    float y = ( ea.getY() - ea.getYmin() ) / ( ea.getYmax() - ea.getYmin() );
-
     osg::Matrix VPW = camera->getProjectionMatrix()
             * camera->getViewport()->computeWindowMatrix();
 
     osg::Matrix invVPW;
     bool success = invVPW.invert(VPW);
 
-    osg::Vec3f nearPoint = osg::Vec3f(ea.getX(), ea.getY(), 0.f) * invVPW;
-    osg::Vec3f farPoint = osg::Vec3f(ea.getX(), ea.getY(), 1.f) * invVPW;
+    if (success){
+        //osg::Vec3f nearPoint = osg::Vec3f(ea.getX(), ea.getY(), 0.f) * invVPW;
+        osg::Vec3f farPoint = osg::Vec3f(ea.getX(), ea.getY(), 1.f) * invVPW;
 
-    // scale
-    float scale = 1.0f -_wheelZoomFactor;
-    float distance = _distance * scale;
+        // scale
+        float scale = 1.0f -_wheelZoomFactor;
+        float distance = _distance * scale;
 
-    float x_new = ((_distance - distance) * farPoint.x()) / _distance;
-    float y_new = ((_distance - distance) * farPoint.y()) / _distance;
+        float x_new = ((_distance - distance) * farPoint.x()) / _distance;
+        float y_new = ((_distance - distance) * farPoint.y()) / _distance;
 
-
-    switch( ea.getScrollingMotion() )
-    {
-        case osgGA::GUIEventAdapter::SCROLL_DOWN:
+        switch( ea.getScrollingMotion() )
         {
-            panModel(x_new, y_new, 0);
-            return true;
+            case osgGA::GUIEventAdapter::SCROLL_DOWN:
+            {
+                panModel(x_new, y_new, 0);
+                return true;
+            }
+            default:
+                return false;
         }
-        default:
-            return false;
-    }    
+    }
+    return false;
 }
