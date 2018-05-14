@@ -17,9 +17,9 @@ namespace osgviz {
 
 Window::Window(WindowConfig windowConfig, osg::ref_ptr<osg::Node> windowScene, osg::ref_ptr<osg::GraphicsContext> graphicsContext)
        : osgViewer::CompositeViewer(),
+         root(new osg::Group),
          windowConfig(windowConfig),
-         graphicsContext(graphicsContext),
-         root(new osg::Group){
+         graphicsContext(graphicsContext){
 
     root->setName("Window root");
     addChild(windowScene);
