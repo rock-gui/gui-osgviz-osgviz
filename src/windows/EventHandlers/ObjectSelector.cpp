@@ -119,7 +119,6 @@ bool ObjectSelector::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAd
         if (thisEvent == osgGA::GUIEventAdapter::PUSH){
             pushedButtonsMask = ea.getButtonMask();
             modKeyMask = ea.getModKeyMask();
-            printf("push\n");
         }
 
         //normal click
