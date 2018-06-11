@@ -1,10 +1,11 @@
-#rock_find_cmake(Boost REQUIRED system)
 
 
 find_package(OpenSceneGraph REQUIRED osgManipulator osgViewer osgFX osgShadow osgParticle osgTerrain osgDB osgGA osgWidget osgText osgUtil)
 include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS})
 link_directories(${OPENSCENEGRAPH_LIBRARY_DIRS})
 
+find_package(Boost REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
 
 include(CheckIncludeFileCXX)
 
