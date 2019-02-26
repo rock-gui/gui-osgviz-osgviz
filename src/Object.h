@@ -110,7 +110,7 @@ public:
     void switchCullMask();
     void xorCullMask(unsigned int mask);
 
-    void displayName(float font_size = 0.1f);
+    void displayName(const float &font_size = 0.1f, const osg::Vec3 &pos = osg::Vec3(0,0,0), const osg::Vec4 &color = osg::Vec4(0,0,0,1));
 
     void setTextSize(float font_size);
     void setTextPosition(osg::Vec3 pos);
@@ -122,11 +122,6 @@ protected:
     friend class ModelViewFactory;
     unsigned int cull_mask;
     bool visible;
-
-    float text_size;
-    osg::Vec3 text_position;
-    osg::Vec4 text_color;
-
 
     //osg::ref_ptr<osg::Group> root;
     //osg::ref_ptr<osg::Node> object;

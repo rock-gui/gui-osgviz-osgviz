@@ -18,9 +18,7 @@
 namespace osgviz {
 
 Object::Object():cull_mask(0xffffffff),visible(true){
-    text_size = 0.1;
-    text_position = osg::Vec3(0,0,0);
-    text_color = osg::Vec4(0,0,0,1);
+
     text = NULL;
 
     //scaleTransform->setMatrix(osg::Matrix::scale(1.0, 1.0, 1.0));
@@ -43,7 +41,7 @@ Object::~Object() {
 //}
 
 
-void Object::displayName(float font_size){
+void Object::displayName(const float &font_size, const osg::Vec3 &pos, const osg::Vec4 &color){
 
     if (!texttransform.valid()){
         texttransform = new osg::AutoTransform();
@@ -57,11 +55,11 @@ void Object::displayName(float font_size){
 
         text = new osgText::Text();
 
-        text->setCharacterSize(text_size);
+        text->setCharacterSize(font_size);
         text->setAxisAlignment(osgText::Text::XY_PLANE);
         text->setAlignment(osgText::Text::LEFT_TOP);
-        text->setPosition(text_position);
-        text->setColor(text_color);
+        text->setPosition(pos);
+        text->setColor(color);
 
 
         texttransform->setAutoRotateMode(osg::AutoTransform::ROTATE_TO_SCREEN);
@@ -77,21 +75,18 @@ void Object::displayName(float font_size){
 }
 
 void Object::setTextSize(float font_size) {
-    text_size = font_size;
     if (text != NULL)
-        text->setCharacterSize(text_size);
+        text->setCharacterSize(font_size);
 }
 
 void Object::setTextPosition(osg::Vec3 pos) {
-    text_position = pos;
     if (text != NULL)
-        text->setPosition(text_position);
+        text->setPosition(pos);
 }
 
 void Object::setTextColor(osg::Vec4 color) {
-    text_color = color;
     if (text != NULL)
-        text->setColor(text_color);
+        text->setColor(color);
 }
 
 void Object::xorCullMask(unsigned int mask) {
