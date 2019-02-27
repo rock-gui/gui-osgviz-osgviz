@@ -34,8 +34,6 @@ public:
 
     virtual ~Object();
 
-    //virtual void setContent(osg::ref_ptr<osg::Node> object);
-
     virtual bool clicked(const int &buttonMask, const osg::Vec2d &cursor,
                          const osg::Vec3d &world, const osg::Vec3d &local,
                          osgviz::Clickable* object, const int modKeyMask,
@@ -46,10 +44,6 @@ public:
                          osgviz::Clickable* object, const int modKeyMask,
                          WindowInterface* window = NULL);
 
-    //virtual bool pointerEvent(int buttonMask, const osg::Vec3d &world, const osg::Vec3d &local){return false;}
-    //
-    //virtual bool keyEvent(int key, bool keyDown){return false;}
-
     /**
       * Any Clickable object can be added which are called if the clicked() or dragged () functions are not overloaded
       * They are called on each clicked callback occurence on this object
@@ -58,7 +52,8 @@ public:
     void addClickableCallback(std::shared_ptr<Clickable> cb);
     
     /**returns true if @p cb is already registered as clickable callback for 
-     * this object. False otherwise.*/
+     * this object. False otherwise.
+     */
     bool hasClickableCallback(std::shared_ptr<Clickable> cb);
 
     inline void setScale(const float &x, const float &y, const float &z){
@@ -122,11 +117,6 @@ protected:
     friend class ModelViewFactory;
     unsigned int cull_mask;
     bool visible;
-
-    //osg::ref_ptr<osg::Group> root;
-    //osg::ref_ptr<osg::Node> object;
-
-    //osg::ref_ptr<osg::MatrixTransform> scaleTransform;
 
 private:
 

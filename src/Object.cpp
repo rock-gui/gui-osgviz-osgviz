@@ -19,26 +19,11 @@ namespace osgviz {
 
 Object::Object():cull_mask(0xffffffff),visible(true){
 
-
-    //scaleTransform->setMatrix(osg::Matrix::scale(1.0, 1.0, 1.0));
-    //PositionAttitudeTransform::addChild(scaleTransform);
 }
 
 Object::~Object() {
 
 }
-
-//void Object::setContent(osg::ref_ptr<osg::Node> object) {
-    //this->object = object;
-    //scaleTransform->addChild(object);
-    ////root->addChild(this);
-//}
-
-//void Object::setRootNode(osg::Group* node){
-    //root = node;
-    //root->addChild(this);
-//}
-
 
 void Object::displayName(const float &font_size, const osg::Vec3 &pos, const osg::Vec4 &color){
 
@@ -126,12 +111,10 @@ bool Object::clicked(const int &buttonMask, const osg::Vec2d &cursor, const osg:
 bool Object::dragged(const int &buttonMask, const osg::Vec2d &cursor,
                      const osg::Vec3d &world, const osg::Vec3d &local,
                      Clickable *object, const int modKeyMask, WindowInterface* window){
-    //printf("%s dragged %.2f,%.2f,%.2f\n",this->getName().c_str(),world.x(),world.y(),world.z());
     bool finish = false;
     if (!clickablecb.empty()){
         for(std::shared_ptr<Clickable>& clickable : clickablecb) {
             if (clickable->dragged(buttonMask,cursor,world,local, this, modKeyMask, window)){
-                //printf("%s forwarded dragged\n",this->getName().c_str());
                 finish = true;
             }
         }
