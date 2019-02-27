@@ -65,11 +65,12 @@ void Object::displayName(const float &font_size, const osg::Vec3 &pos, const osg
 
         textgeode->addDrawable(text);
         texttransform->addChild(textgeode);
+        this->addChild(texttransform);
     }
 
     text->setText(this->getName());
 
-    this->addChild(texttransform);
+    
 
 }
 
