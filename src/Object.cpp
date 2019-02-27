@@ -19,7 +19,6 @@ namespace osgviz {
 
 Object::Object():cull_mask(0xffffffff),visible(true){
 
-    text = NULL;
 
     //scaleTransform->setMatrix(osg::Matrix::scale(1.0, 1.0, 1.0));
     //PositionAttitudeTransform::addChild(scaleTransform);
