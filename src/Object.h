@@ -34,8 +34,6 @@ public:
 
     virtual ~Object();
 
-    //virtual void setContent(osg::ref_ptr<osg::Node> object);
-
     virtual bool clicked(const int &buttonMask, const osg::Vec2d &cursor,
                          const osg::Vec3d &world, const osg::Vec3d &local,
                          osgviz::Clickable* object, const int modKeyMask,
@@ -46,10 +44,6 @@ public:
                          osgviz::Clickable* object, const int modKeyMask,
                          WindowInterface* window = NULL);
 
-    //virtual bool pointerEvent(int buttonMask, const osg::Vec3d &world, const osg::Vec3d &local){return false;}
-    //
-    //virtual bool keyEvent(int key, bool keyDown){return false;}
-
     /**
       * Any Clickable object can be added which are called if the clicked() or dragged () functions are not overloaded
       * They are called on each clicked callback occurence on this object
@@ -58,7 +52,8 @@ public:
     void addClickableCallback(std::shared_ptr<Clickable> cb);
     
     /**returns true if @p cb is already registered as clickable callback for 
-     * this object. False otherwise.*/
+     * this object. False otherwise.
+     */
     bool hasClickableCallback(std::shared_ptr<Clickable> cb);
 
     inline void setScale(const float &x, const float &y, const float &z){
@@ -110,7 +105,7 @@ public:
     void switchCullMask();
     void xorCullMask(unsigned int mask);
 
-    void displayName(float font_size = 0.1f);
+    void displayName(const float &font_size = 0.1f, const osg::Vec3 &pos = osg::Vec3(0,0,0), const osg::Vec4 &color = osg::Vec4(0,0,0,1));
 
     void setTextSize(float font_size);
     void setTextPosition(osg::Vec3 pos);
@@ -122,16 +117,6 @@ protected:
     friend class ModelViewFactory;
     unsigned int cull_mask;
     bool visible;
-
-    float text_size;
-    osg::Vec3 text_position;
-    osg::Vec4 text_color;
-
-
-    //osg::ref_ptr<osg::Group> root;
-    //osg::ref_ptr<osg::Node> object;
-
-    //osg::ref_ptr<osg::MatrixTransform> scaleTransform;
 
 private:
 

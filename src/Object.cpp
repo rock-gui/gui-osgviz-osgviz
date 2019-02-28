@@ -18,32 +18,14 @@
 namespace osgviz {
 
 Object::Object():cull_mask(0xffffffff),visible(true){
-    text_size = 0.1;
-    text_position = osg::Vec3(0,0,0);
-    text_color = osg::Vec4(0,0,0,1);
-    text = NULL;
 
-    //scaleTransform->setMatrix(osg::Matrix::scale(1.0, 1.0, 1.0));
-    //PositionAttitudeTransform::addChild(scaleTransform);
 }
 
 Object::~Object() {
 
 }
 
-//void Object::setContent(osg::ref_ptr<osg::Node> object) {
-    //this->object = object;
-    //scaleTransform->addChild(object);
-    ////root->addChild(this);
-//}
-
-//void Object::setRootNode(osg::Group* node){
-    //root = node;
-    //root->addChild(this);
-//}
-
-
-void Object::displayName(float font_size){
+void Object::displayName(const float &font_size, const osg::Vec3 &pos, const osg::Vec4 &color){
 
     if (!texttransform.valid()){
         texttransform = new osg::AutoTransform();
@@ -57,41 +39,39 @@ void Object::displayName(float font_size){
 
         text = new osgText::Text();
 
-        text->setCharacterSize(text_size);
+        text->setCharacterSize(font_size);
         text->setAxisAlignment(osgText::Text::XY_PLANE);
         text->setAlignment(osgText::Text::LEFT_TOP);
-        text->setPosition(text_position);
-        text->setColor(text_color);
+        text->setPosition(pos);
+        text->setColor(color);
 
 
         texttransform->setAutoRotateMode(osg::AutoTransform::ROTATE_TO_SCREEN);
 
         textgeode->addDrawable(text);
         texttransform->addChild(textgeode);
+        this->addChild(texttransform);
     }
 
     text->setText(this->getName());
 
-    this->addChild(texttransform);
+    
 
 }
 
 void Object::setTextSize(float font_size) {
-    text_size = font_size;
     if (text != NULL)
-        text->setCharacterSize(text_size);
+        text->setCharacterSize(font_size);
 }
 
 void Object::setTextPosition(osg::Vec3 pos) {
-    text_position = pos;
     if (text != NULL)
-        text->setPosition(text_position);
+        text->setPosition(pos);
 }
 
 void Object::setTextColor(osg::Vec4 color) {
-    text_color = color;
     if (text != NULL)
-        text->setColor(text_color);
+        text->setColor(color);
 }
 
 void Object::xorCullMask(unsigned int mask) {
@@ -131,12 +111,10 @@ bool Object::clicked(const int &buttonMask, const osg::Vec2d &cursor, const osg:
 bool Object::dragged(const int &buttonMask, const osg::Vec2d &cursor,
                      const osg::Vec3d &world, const osg::Vec3d &local,
                      Clickable *object, const int modKeyMask, WindowInterface* window){
-    //printf("%s dragged %.2f,%.2f,%.2f\n",this->getName().c_str(),world.x(),world.y(),world.z());
     bool finish = false;
     if (!clickablecb.empty()){
         for(std::shared_ptr<Clickable>& clickable : clickablecb) {
             if (clickable->dragged(buttonMask,cursor,world,local, this, modKeyMask, window)){
-                //printf("%s forwarded dragged\n",this->getName().c_str());
                 finish = true;
             }
         }
