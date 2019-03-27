@@ -18,76 +18,76 @@
 
 
 class Output : public osgviz::Clickable{
-	virtual bool clicked(const int &buttonMask, const osg::Vec2d &cursor,
-                       const osg::Vec3d &world, const osg::Vec3d &local,
-                       Clickable* object, const int modifierMask,
-                       osgviz::WindowInterface* window = NULL){
-		osgviz::Object* osgvizObject = dynamic_cast<osgviz::Object*> (object);
-		if (osgvizObject){
-			printf("clicked %s (%.2f %.2f %.2f)\n",osgvizObject->getName().c_str(),world.x(),world.y(),world.z());
-			return true;
-		}else{
-			printf("clicked (%.2f %.2f %.2f)\n",world.x(),world.y(),world.z());
-			return false;
-		}
-	}
+    virtual bool clicked(const int &buttonMask, const osg::Vec2d &cursor,
+        const osg::Vec3d &world, const osg::Vec3d &local,
+        Clickable* object, const int modifierMask,
+        osgviz::WindowInterface* window = NULL){
+            osgviz::Object* osgvizObject = dynamic_cast<osgviz::Object*> (object);
+            if (osgvizObject){
+                printf("clicked %s (%.2f %.2f %.2f)\n",osgvizObject->getName().c_str(),world.x(),world.y(),world.z());
+                return true;
+            }else{
+                printf("clicked (%.2f %.2f %.2f)\n",world.x(),world.y(),world.z());
+                return false;
+            }
+    }
 };
 
 
 int main(int argc, char** argv)
 {
-	printf("getting instance\n");
-	fflush(stdout);
-	osgviz::OsgViz *osgViz = osgviz::OsgViz::getInstance();
+    printf("getting instance\n");
+    fflush(stdout);
+    osgviz::OsgViz *osgViz = osgviz::OsgViz::getInstance();
 
-	//load lib with some helpful primitives
-	printf("load plugin\n");	fflush(stdout);
-	//osgviz::PrimitivesFactory *primitivesfactory = new osgviz::PrimitivesFactory(NULL);
-	std::shared_ptr<osgviz::PrimitivesFactory> primitivesfactory = osgviz::OsgViz::getModuleInstance<osgviz::PrimitivesFactory>("PrimitivesFactory");
+    //load lib with some helpful primitives
+    printf("load plugin\n");	fflush(stdout);
+    //osgviz::PrimitivesFactory *primitivesfactory = new osgviz::PrimitivesFactory(NULL);
+    std::shared_ptr<osgviz::PrimitivesFactory> primitivesfactory = osgviz::OsgViz::getModuleInstance<osgviz::PrimitivesFactory>("PrimitivesFactory");
 
-	std::shared_ptr<osgviz::PrimitivesFactory> primitivesfactory2 = osgviz::OsgViz::getModuleInstance<osgviz::PrimitivesFactory>("PrimitivesFactory");
+    std::shared_ptr<osgviz::PrimitivesFactory> primitivesfactory2 = osgviz::OsgViz::getModuleInstance<osgviz::PrimitivesFactory>("PrimitivesFactory");
 
-	std::shared_ptr<osgviz::PrimitivesFactory> primitivesfactory3 = osgviz::OsgViz::getModuleInstance<osgviz::PrimitivesFactory>("PrimitivesFactory2");
+    std::shared_ptr<osgviz::PrimitivesFactory> primitivesfactory3 = osgviz::OsgViz::getModuleInstance<osgviz::PrimitivesFactory>("PrimitivesFactory2");
 
-  try {
-      std::shared_ptr<osgviz::ModelLoader> primitivesfactory3 = osgviz::OsgViz::getModuleInstance<osgviz::ModelLoader>("PrimitivesFactory2");
-        
-  } catch (std::exception& e){
-      printf("ERROR: %s\n", e.what());
-  }
-                        
-        
-	osgviz::OsgViz::printModules();
+    try {
+        std::shared_ptr<osgviz::ModelLoader> primitivesfactory3 = osgviz::OsgViz::getModuleInstance<osgviz::ModelLoader>("PrimitivesFactory2");
 
-	printf("PF \n\t%p \n\t%p\n\t%p\n",primitivesfactory,primitivesfactory2,primitivesfactory3);
+    } catch (std::exception& e){
+        printf("ERROR: %s\n", e.what());
+    }
 
-	if (!primitivesfactory){
-		printf("plugin not found\n");	fflush(stdout);
-	}
-	
-	osg::ref_ptr<osgviz::Object> grid = primitivesfactory->createGrid();
-	osgViz->addChild(grid);
 
-	osg::ref_ptr<osgviz::Object> arrow = primitivesfactory->createArrow();
-	arrow->rotate(M_PI/2.0,osg::Vec3d(0,1,0));
-	arrow->setName("Arrow");
-	osgViz->addChild(arrow);
+    osgviz::OsgViz::printModules();
 
-	osg::ref_ptr<osgviz::Object> axes = primitivesfactory->createAxes();
-	osgViz->addChild(axes);
-	
-	printf("creating window\n");fflush(stdout);
+    printf("PF \n\t%p \n\t%p\n\t%p\n",primitivesfactory,primitivesfactory2,primitivesfactory3);
 
-	int winid = osgViz->createWindow();
+    if (!primitivesfactory){
+        printf("plugin not found\n");	fflush(stdout);
+    }
 
-	osg::ref_ptr<osgviz::Window> window = osgViz->getWindowManager()->getWindowByID(winid);
+    osg::ref_ptr<osgviz::Object> grid = primitivesfactory->createGrid();
+    osgViz->addChild(grid);
 
-	osgviz::HUD* hud = window->addHUD(1920,1080,osg::Camera::ProjectionResizePolicy::FIXED);
+    osg::ref_ptr<osgviz::Object> arrow = primitivesfactory->createArrow();
+    arrow->rotate(M_PI/2.0,osg::Vec3d(0,1,0));
+    arrow->setName("Arrow");
+    osgViz->addChild(arrow);
 
-//	osg::ref_ptr<osgviz::Object> hudarrow = primitivesfactory->createArrow();
-//	hudarrow->setPosition(100,100,0);
-//	hudarrow->setScale(200,200,200);
-//	hud->addHudObject(hudarrow);
+    osg::ref_ptr<osgviz::Object> axes = primitivesfactory->createAxes();
+    osgViz->addChild(axes);
+
+    printf("creating window\n");fflush(stdout);
+
+    int winid = osgViz->createWindow();
+
+    osg::ref_ptr<osgviz::Window> window = osgViz->getWindowManager()->getWindowByID(winid);
+
+    osgviz::HUD* hud = window->addHUD(1920,1080,osg::Camera::ProjectionResizePolicy::FIXED);
+
+    //osg::ref_ptr<osgviz::Object> hudarrow = primitivesfactory->createArrow();
+    //hudarrow->setPosition(100,100,0);
+    //hudarrow->setScale(200,200,200);
+    //hud->addHudObject(hudarrow);
 
 
     osg::Geode* geode = new osg::Geode();
@@ -144,45 +144,42 @@ int main(int argc, char** argv)
     hud2->addHudObject(cone);
 
 
-//    osg::ref_ptr<osgviz::Object> image = primitivesfactory->loadImage("test.png");
-//    //shape1->setPosition(0.5,0.5,0.5);
-//    image->setPosition(1000,500,0);
-//    hud->addHudObject(image);
+    //osg::ref_ptr<osgviz::Object> image = primitivesfactory->loadImage("test.png");
+    ////shape1->setPosition(0.5,0.5,0.5);
+    //image->setPosition(1000,500,0);
+    //hud->addHudObject(image);
 
-	//sleep(1);
-	//you can create multiple windows and views ones:
-//	int win2 = osgViz->createWindow();
-//	osg::ref_ptr<osgviz::Window> window2 = osgViz->getWindowManager()->getWindowByID(win2);
-//	osgviz::ViewConfig view(0,0,0.3,0.3);
-//	window2->addView(view);
+    //sleep(1);
+    //you can create multiple windows and views ones:
+    //	int win2 = osgViz->createWindow();
+    //	osg::ref_ptr<osgviz::Window> window2 = osgViz->getWindowManager()->getWindowByID(win2);
+    //	osgviz::ViewConfig view(0,0,0.3,0.3);
+    //	window2->addView(view);
+    
+    //this starts a update thread for the visualisation, requires locking in the other threads:
+    //osgViz->lockThread();
+    //do updates
+    //osgViz->unlockThread();
+    //printf("startThread\n");fflush(stdout);
+    //osgViz->startThread();
 
+    //or don't start the thread and update manually using osgViz->update();
 
+    while (!osgViz->done()){
+        //osgViz->lockThread();
+        //do updates
+        //osgViz->unlockThread();
+        osgViz->update();
+        //printf("sleep\n");fflush(stdout);
 
-	//this starts a update thread for the visualisation, requires locking in the other threads:
-	//osgViz->lockThread();
-	//do updates
-	//osgViz->unlockThread();
-	//printf("startThread\n");fflush(stdout);
-	//osgViz->startThread();
+        //sleep(5);
+        //osgViz->getWindowManager()->getWindowByID(0)->setFullscreen(true);
+        //sleep(5);
+        //osgViz->getWindowManager()->getWindowByID(0)->setFullscreen(false);
+        //sleep(5);
+        //osgViz->getWindowManager()->getWindowByID(0)->setWindowGeometry(150,150,1240,768);
+        //sleep(5);
+    }
 
-	//or don't start the thread and update manually using osgViz->update();
-
-
-	while (true){
-		//osgViz->lockThread();
-		//do updates
-		//osgViz->unlockThread();
-		osgViz->update();
-		//printf("sleep\n");fflush(stdout);
-
-		//sleep(5);
-//		osgViz->getWindowManager()->getWindowByID(0)->setFullscreen(true);
-//		sleep(5);
-//		osgViz->getWindowManager()->getWindowByID(0)->setFullscreen(false);
-//		sleep(5);
-//		osgViz->getWindowManager()->getWindowByID(0)->setWindowGeometry(150,150,1240,768);
-//		sleep(5);
-	}
-
-	return 0;
+    return 0;
 }

@@ -1,9 +1,9 @@
 /*
- * Window.h
- *
- *  Created on: 17.02.2015
- *      Author: planthaber
- */
+* Window.h
+*
+*  Created on: 17.02.2015
+*      Author: planthaber
+*/
 
 #ifndef OSGVIZ_OSGVIZ_SRC_WINDOWS_WINDOW_H_
 #define OSGVIZ_OSGVIZ_SRC_WINDOWS_WINDOW_H_
@@ -29,91 +29,91 @@
 
 namespace osgviz {
 
-class Window : public osgViewer::CompositeViewer {
+    class Window : public osgViewer::CompositeViewer {
 
-public:
-	
-	Window(WindowConfig windowConfig, osg::ref_ptr<osg::Node> windowScene, osg::ref_ptr<osg::GraphicsContext> graphicsContext = NULL);
-	virtual ~Window();
+    public:
 
-//	void setScene(osg::Group *scene);
+        Window(WindowConfig windowConfig, osg::ref_ptr<osg::Node> windowScene, osg::ref_ptr<osg::GraphicsContext> graphicsContext = NULL);
+        virtual ~Window();
 
-//	osg::Group* getScene();
+        //	void setScene(osg::Group *scene);
 
-	//void setName(const std::string& name);
+        //	osg::Group* getScene();
 
-	osgViewer::View* addView(ViewConfig viewConfig, osg::Group* viewScene = NULL);
+        //void setName(const std::string& name);
 
-	osg::ref_ptr<osgviz::HUD> addHUD(int width,int height, osg::Camera::ProjectionResizePolicy policy = osg::Camera::ProjectionResizePolicy::FIXED, int viewID = 0);
+        osgViewer::View* addView(ViewConfig viewConfig, osg::Group* viewScene = NULL);
 
-
-	osg::ref_ptr<osgViewer::GraphicsWindow> getGraphicsWindow();
-
-    void addChild(osg::ref_ptr<osg::Node> scene) {
-    	root->addChild(scene);
-    }    
-
-	void setWindowGeometry(int posX, int posY, int width, int height, int window=0);
-
-	void setFullscreen(bool state = true, int window=0, int screen = 0);
-
-	void showRain(const bool &val = true);
-	void showSnow(const bool &val = true);
-	//void showFog(const bool &val = true);    
-
-/*	void frame();
-
-	void enableCameraControl();
-	void disableCameraControl();
+        osg::ref_ptr<osgviz::HUD> addHUD(int width,int height, osg::Camera::ProjectionResizePolicy policy = osg::Camera::ProjectionResizePolicy::FIXED, int viewID = 0);
 
 
+        osg::ref_ptr<osgViewer::GraphicsWindow> getGraphicsWindow();
+
+        void addChild(osg::ref_ptr<osg::Node> scene) {
+            root->addChild(scene);
+        }    
+
+        void setWindowGeometry(int posX, int posY, int width, int height, int window=0);
+
+        void setFullscreen(bool state = true, int window=0, int screen = 0);
+
+        void showRain(const bool &val = true);
+        void showSnow(const bool &val = true);
+        //void showFog(const bool &val = true);    
+
+        /*	void frame();
+
+        void enableCameraControl();
+        void disableCameraControl();
 
 
 
-	inline osg::ref_ptr<osgViewer::CompositeViewer> getViewer(){
-		return viewer;
-	}*/
 
-    inline osgViewer::View* getView(unsigned int index = 0){
-        if (index < views.size()){
-            return (osgViewer::View*)views.at(index).get();
+
+        inline osg::ref_ptr<osgViewer::CompositeViewer> getViewer(){
+        return viewer;
+        }*/
+
+        inline osgViewer::View* getView(unsigned int index = 0){
+            if (index < views.size()){
+                return (osgViewer::View*)views.at(index).get();
+            }
+            return NULL;
         }
-        return NULL;
-    }
 
-    inline osgviz::SuperView* getSuperView(unsigned int index = 0){
-        if (index < views.size()){
-            return views.at(index).get();
+        inline osgviz::SuperView* getSuperView(unsigned int index = 0){
+            if (index < views.size()){
+                return views.at(index).get();
+            }
+            return NULL;
+        }    
+
+        inline osg::ref_ptr<osg::Group> getRootNode(){
+            return root;
         }
-        return NULL;
-    }    
 
-	inline osg::ref_ptr<osg::Group> getRootNode(){
-		return root;
-	}
-
-	inline void clear(){
-		root->removeChild(0,root->getNumChildren());
-	}
+        inline void clear(){
+            root->removeChild(0,root->getNumChildren());
+        }
 
 
 
-protected:
-	osg::ref_ptr<osg::Group> root;
+    protected:
+        osg::ref_ptr<osg::Group> root;
 
-private:
-	WindowConfig windowConfig;
+    private:
+        WindowConfig windowConfig;
 
-	osg::ref_ptr<osg::GraphicsContext> graphicsContext;
+        osg::ref_ptr<osg::GraphicsContext> graphicsContext;
 
-	osg::ref_ptr<osgViewer::GraphicsWindow> gw;
+        osg::ref_ptr<osgViewer::GraphicsWindow> gw;
 
-	osg::ref_ptr<osgParticle::PrecipitationEffect> snow, rain;
+        osg::ref_ptr<osgParticle::PrecipitationEffect> snow, rain;
 
-	std::vector < osg::ref_ptr<osgviz::SuperView> > views;
-	
+        std::vector < osg::ref_ptr<osgviz::SuperView> > views;
 
-};
+
+    };
 
 } /* namespace osgviz */
 

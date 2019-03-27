@@ -59,7 +59,7 @@ namespace osgviz
                     osg::Geode *text_geode = new osg::Geode;
                     osgText::Text *text= new osgText::Text;
                     std::stringstream label;
-					label << "(" << x << "," << y << ")";
+                    label << "(" << x << "," << y << ")";
                     text->setText(label.str());
                     text->setCharacterSize(interval * 0.1);
                     text->setPosition(osg::Vec3d(x+0.02, y+0.05, FLT_MIN ));

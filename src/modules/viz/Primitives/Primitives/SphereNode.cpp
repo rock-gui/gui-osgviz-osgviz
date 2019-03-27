@@ -11,10 +11,10 @@ namespace osgviz
         geode->addDrawable(drawable);
         addChild(geode);
     }
-    
-        void SphereNode::setColor(const osg::Vec4& color)
+
+    void SphereNode::setColor(const osg::Vec4& color)
     {
         osgManipulator::setMaterialColor(color, *geode);
     }
-    
+
 }

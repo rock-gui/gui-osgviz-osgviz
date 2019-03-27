@@ -17,5 +17,5 @@ namespace osgviz
         osg::ref_ptr<osg::Geometry> geom;
         osg::ref_ptr<osg::Geode> geode;
     };
-    
+
 }
