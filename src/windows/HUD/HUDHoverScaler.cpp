@@ -16,7 +16,7 @@ HUDHoverScaler::HUDHoverScaler(osgviz::Object* obj, const osg::Vec3d &size, cons
     scaled = false;
     initial_scale = obj->getScale();
     if (scale.x() == 0 || scale.y() == 0 || scale.z() == 0){
-        printf("%s scale cannot be 0\n",__PRETTY_FUNCTION__);
+        //printf("%s scale cannot be 0\n",__PRETTY_FUNCTION__);
     }
 }
 

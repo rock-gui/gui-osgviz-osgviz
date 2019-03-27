@@ -49,12 +49,12 @@ int main(int argc, char** argv)
 
 	std::shared_ptr<osgviz::PrimitivesFactory> primitivesfactory3 = osgviz::OsgViz::getModuleInstance<osgviz::PrimitivesFactory>("PrimitivesFactory2");
 
-        try {
-            std::shared_ptr<osgviz::ModelLoader> primitivesfactory3 = osgviz::OsgViz::getModuleInstance<osgviz::ModelLoader>("PrimitivesFactory2");
+  try {
+      std::shared_ptr<osgviz::ModelLoader> primitivesfactory3 = osgviz::OsgViz::getModuleInstance<osgviz::ModelLoader>("PrimitivesFactory2");
         
-        } catch (std::runtime_error e){
-            printf("%s\n", e.what());
-        }
+  } catch (std::exception& e){
+      printf("ERROR: %s\n", e.what());
+  }
                         
         
 	osgviz::OsgViz::printModules();
@@ -182,7 +182,6 @@ int main(int argc, char** argv)
 //		sleep(5);
 //		osgViz->getWindowManager()->getWindowByID(0)->setWindowGeometry(150,150,1240,768);
 //		sleep(5);
-
 	}
 
 	return 0;
