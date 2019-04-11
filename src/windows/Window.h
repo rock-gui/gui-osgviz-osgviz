@@ -74,16 +74,16 @@ public:
 		return viewer;
 	}*/
 
-    inline osgViewer::View* getView(unsigned int index = 0){
+    inline osg::ref_ptr<osgViewer::View> getView(unsigned int index = 0){
         if (index < views.size()){
-            return (osgViewer::View*)views.at(index).get();
+            return (osgViewer::View*)views.at(index);
         }
         return NULL;
     }
 
-    inline osgviz::SuperView* getSuperView(unsigned int index = 0){
+    inline osg::ref_ptr<osgviz::SuperView> getSuperView(unsigned int index = 0){
         if (index < views.size()){
-            return views.at(index).get();
+            return views.at(index);
         }
         return NULL;
     }    
