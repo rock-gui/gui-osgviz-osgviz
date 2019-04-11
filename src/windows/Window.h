@@ -68,27 +68,21 @@ namespace osgviz {
         void enableCameraControl();
         void disableCameraControl();
 
-
-
-
-
         inline osg::ref_ptr<osgViewer::CompositeViewer> getViewer(){
         return viewer;
         }*/
 
-        inline osgViewer::View* getView(unsigned int index = 0){
-            if (index < views.size()){
-                return (osgViewer::View*)views.at(index).get();
-            }
-            return NULL;
-        }
+    	inline osg::ref_ptr<osgViewer::View> getView(unsigned int index = 0){
+			if (index < views.size()){
+				return (osgViewer::View*)views.at(index);
+			}
+		}
 
-        inline osgviz::SuperView* getSuperView(unsigned int index = 0){
-            if (index < views.size()){
-                return views.at(index).get();
-            }
-            return NULL;
-        }    
+  		inline osg::ref_ptr<osgviz::SuperView> getSuperView(unsigned int index = 0){
+			if (index < views.size()){
+				return views.at(index);
+			}
+		}
 
         inline osg::ref_ptr<osg::Group> getRootNode(){
             return root;
