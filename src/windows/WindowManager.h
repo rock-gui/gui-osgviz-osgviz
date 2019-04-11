@@ -26,6 +26,8 @@ namespace osgviz {
 
         unsigned int createWindow(WindowConfig& windowConfig, osg::ref_ptr<osg::Node> windowScene = NULL, osg::ref_ptr<osg::GraphicsContext> graphicsContext = NULL);
 
+        unsigned int addWindow(osg::ref_ptr<Window> window);
+
         inline osg::ref_ptr<Window> getWindowByID(const unsigned int& id){
             if (id < windows.size()){
                 return windows.at(id);
@@ -47,7 +49,7 @@ namespace osgviz {
         */
         void destroyWindow(unsigned int id);
 
-        osg::ref_ptr<osg::GraphicsContext::Traits> genetrateTraits(WindowConfig& windowConfig);
+        //osg::ref_ptr<osg::GraphicsContext::Traits> genetrateTraits(WindowConfig& windowConfig);
 
 
     private:

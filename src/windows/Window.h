@@ -31,6 +31,8 @@ namespace osgviz {
 
     class Window : public osgViewer::CompositeViewer {
 
+    friend class WindowManager;
+
     public:
 
         Window(WindowConfig windowConfig, osg::ref_ptr<osg::Node> windowScene, osg::ref_ptr<osg::GraphicsContext> graphicsContext = NULL);

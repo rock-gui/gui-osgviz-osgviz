@@ -22,7 +22,7 @@ namespace osgviz {
 
         if (!graphicsContext){
 
-            osg::ref_ptr<osg::GraphicsContext::Traits> traits = genetrateTraits(windowConfig);
+            osg::ref_ptr<osg::GraphicsContext::Traits> traits = WindowConfig::generateTraits(windowConfig);
             traits->readDISPLAY();
             graphicsContext = osg::GraphicsContext::createGraphicsContext( traits );
         }
@@ -30,20 +30,26 @@ namespace osgviz {
         osg::ref_ptr<Window> wnd = new Window(windowConfig, windowScene, graphicsContext);
         wnd->setName(windowConfig.title);
 
+        return addWindow(wnd);
+    }
+
+    unsigned int WindowManager::addWindow(osg::ref_ptr<Window> window) {
         windowsMutex.lock();
         unsigned int wndId = windows.size();
-        windows.push_back(wnd);
+        windows.push_back(window);
+
+        const osgviz::WindowConfig& config = window->windowConfig;
 
         // if no view config is given, take the default configs
-        if (windowConfig.viewsConfig.size() == 0) {
-            wnd->addView(ViewConfig());
+        if (config.viewsConfig.size() == 0) {
+            window->addView(ViewConfig());
         } else {
-            for (unsigned int i = 0; i < windowConfig.viewsConfig.size(); ++i) {
-                wnd->addView(windowConfig.viewsConfig.at(i));
+            for (unsigned int i = 0; i < config.viewsConfig.size(); ++i) {
+                window->addView(config.viewsConfig.at(i));
             }
         }
         windowsMutex.unlock();
-        return wndId;		
+        return wndId;
     }
 
     void WindowManager::destroyWindow(unsigned int id){
@@ -67,7 +73,6 @@ namespace osgviz {
 
     bool WindowManager::done() const {
         bool d = true;
-        std::cout << "WindowManager::done() | " << windows.size() << " windows to check..." << std::endl;
         for (std::vector< osg::ref_ptr<Window> >::const_iterator witr = windows.begin();
             witr != windows.end(); ++witr)
         {
@@ -79,43 +84,5 @@ namespace osgviz {
         }
         return d;
     }
-
-    osg::ref_ptr<osg::GraphicsContext::Traits> WindowManager::genetrateTraits(WindowConfig& windowConfig){
-        osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
-        traits->windowName = windowConfig.title;
-        traits->supportsResize = true;
-        traits->doubleBuffer = true;
-        traits->sharedContext = 0;
-
-        // full screen: the rendering window attributes according to current screen settings
-        if (windowConfig.fullScreen == true) {
-            // TODO: allow to choose the screen
-            int screenNum = 0;
-            unsigned int width = windowConfig.width;
-            unsigned int height = windowConfig.height;
-
-            osg::GraphicsContext::WindowingSystemInterface* wsi = osg::GraphicsContext::getWindowingSystemInterface();
-            if (wsi)
-                wsi->getScreenResolution( osg::GraphicsContext::ScreenIdentifier(screenNum), width, height );
-
-            traits->x = 0;
-            traits->y = 0;
-            traits->width = width;
-            traits->height = height;
-            traits->windowDecoration = false;
-        }
-        // user defined window: the size and position of the window are defined in graphicData
-        else {
-            traits->x = windowConfig.posX;
-            traits->y = windowConfig.posY;
-            traits->width = windowConfig.width;
-            traits->height = windowConfig.height;
-            traits->windowDecoration = true;
-        }
-
-        return traits;
-
-    }
-
 
 } /* namespace osgviz */

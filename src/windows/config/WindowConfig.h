@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <osg/GraphicsContext>
 
 namespace osgviz {
 
@@ -55,6 +56,44 @@ namespace osgviz {
       int screenNumber;
 
       std::vector<ViewConfig> viewsConfig;
+
+      static osg::ref_ptr<osg::GraphicsContext::Traits> generateTraits(const WindowConfig& windowConfig){
+        osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
+        traits->windowName = windowConfig.title;
+        traits->supportsResize = true;
+        traits->doubleBuffer = true;
+        traits->sharedContext = 0;
+
+        // full screen: the rendering window attributes according to current screen settings
+        if (windowConfig.fullScreen == true) {
+            // TODO: allow to choose the screen
+            int screenNum = 0;
+            unsigned int width = windowConfig.width;
+            unsigned int height = windowConfig.height;
+
+            osg::GraphicsContext::WindowingSystemInterface* wsi = osg::GraphicsContext::getWindowingSystemInterface();
+            if (wsi)
+                wsi->getScreenResolution( osg::GraphicsContext::ScreenIdentifier(screenNum), width, height );
+
+            traits->x = 0;
+            traits->y = 0;
+            traits->width = width;
+            traits->height = height;
+            traits->windowDecoration = false;
+        }
+        // user defined window: the size and position of the window are defined in graphicData
+        else {
+            traits->x = windowConfig.posX;
+            traits->y = windowConfig.posY;
+            traits->width = windowConfig.width;
+            traits->height = windowConfig.height;
+            traits->windowDecoration = true;
+        }
+
+        return traits;
+
+    }
+
     };
 
 
