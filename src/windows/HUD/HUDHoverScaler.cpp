@@ -11,7 +11,7 @@
 
 namespace osgviz {
 
-    HUDHoverScaler::HUDHoverScaler(osgviz::Object* obj, const osg::Vec3d &size, const osg::Vec3d &scale, Type type, osg::Vec3d anchor_offset, HUD* hud)
+    HUDHoverScaler::HUDHoverScaler(osg::ref_ptr<osgviz::Object> obj, const osg::Vec3d &size, const osg::Vec3d &scale, Type type, osg::Vec3d anchor_offset, HUD* hud)
         :obj(obj), scale(scale), size(size), anchor_offset(anchor_offset), type(type), hud(hud){
             scaled = false;
             initial_scale = obj->getScale();

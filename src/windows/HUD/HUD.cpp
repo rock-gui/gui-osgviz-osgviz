@@ -111,7 +111,7 @@ namespace osgviz{
         resize(getViewportSizeX(), getViewportSizeY());
     }
 
-    void HUD::changeObjectPositionByResize(osgviz::Object *obj, const osg::Vec3d init_position, const osg::Vec2d init_size)
+    void HUD::changeObjectPositionByResize(osg::ref_ptr<osgviz::Object> obj, const osg::Vec3d init_position, const osg::Vec2d init_size)
     {
 
         if (windowResizeEvent.get() != NULL) {
@@ -138,7 +138,7 @@ namespace osgviz{
     }
 
 
-    void HUD::makeObjectScaleOnHover(osgviz::Object* obj, const osg::Vec3d size, const osg::Vec3d &scale, HUDHoverScaler::Type type, osg::Vec3d anchor_offset){
+    void HUD::makeObjectScaleOnHover(osg::ref_ptr<osgviz::Object> obj, const osg::Vec3d size, const osg::Vec3d &scale, HUDHoverScaler::Type type, osg::Vec3d anchor_offset){
         if (mouseMoveEvent.get() != NULL)
             mouseMoveEvent->addCallback(new HUDHoverScaler(obj,size,scale,type,anchor_offset,this));
         else

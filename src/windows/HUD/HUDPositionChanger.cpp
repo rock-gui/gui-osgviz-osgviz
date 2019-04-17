@@ -14,13 +14,13 @@
 #include <cmath>
 #if(WIN32)
 inline double round(double value) { return value < 0 ? -std::floor(0.5 - value) : std::floor(0.5 + value); }
-#else
-inline double round(double value) { return std::round(value); }
+//#else
+//inline double round(double value) { return std::round(value); }
 #endif
 
 namespace osgviz {
 
-    HUDPositionChanger::HUDPositionChanger(osgviz::Object* obj, const osg::Vec3d &init_pos, const osg::Vec2d init_size, HUD *hud)
+    HUDPositionChanger::HUDPositionChanger(osg::ref_ptr<osgviz::Object> obj, const osg::Vec3d &init_pos, const osg::Vec2d init_size, HUD *hud)
         :obj(obj), init_pos(init_pos), init_size(init_size), hud(hud) {
 
 

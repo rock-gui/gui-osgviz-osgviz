@@ -18,13 +18,13 @@ namespace osgviz {
     class HUDPositionChanger: public osgviz::WindowResizeCallback, public osg::Referenced{
     public:
 
-        HUDPositionChanger(osgviz::Object* obj, const osg::Vec3d& init_pos, const osg::Vec2d init_size, HUD *hud);
+        HUDPositionChanger(osg::ref_ptr<osgviz::Object> obj, const osg::Vec3d& init_pos, const osg::Vec2d init_size, HUD *hud);
         virtual ~HUDPositionChanger(){};
 
         virtual bool windowResized(const int& windowHeight, const int& windowWidth);
 
     private:
-        osgviz::Object* obj;
+        osg::ref_ptr<osgviz::Object> obj;
         osg::Vec3d init_pos;//offset to move anchor to center of HUD element
         osg::Vec2d init_size;
         osg::ref_ptr<HUD> hud;

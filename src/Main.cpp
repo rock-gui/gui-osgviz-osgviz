@@ -38,7 +38,7 @@ int main(int argc, char** argv)
 {
     printf("getting instance\n");
     fflush(stdout);
-    osgviz::OsgViz *osgViz = osgviz::OsgViz::getInstance();
+    osg::ref_ptr<osgviz::OsgViz> osgViz = osgviz::OsgViz::getInstance();
 
     //load lib with some helpful primitives
     printf("load plugin\n");	fflush(stdout);
@@ -82,7 +82,7 @@ int main(int argc, char** argv)
 
     osg::ref_ptr<osgviz::Window> window = osgViz->getWindowManager()->getWindowByID(winid);
 
-    osgviz::HUD* hud = window->addHUD(1920,1080,osg::Camera::ProjectionResizePolicy::FIXED);
+    osg::ref_ptr<osgviz::HUD> hud = window->addHUD(1920,1080,osg::Camera::ProjectionResizePolicy::FIXED);
 
     //osg::ref_ptr<osgviz::Object> hudarrow = primitivesfactory->createArrow();
     //hudarrow->setPosition(100,100,0);
@@ -90,8 +90,8 @@ int main(int argc, char** argv)
     //hud->addHudObject(hudarrow);
 
 
-    osg::Geode* geode = new osg::Geode();
-    osgText::Text* text = new  osgText::Text;
+    osg::ref_ptr<osg::Geode> geode = new osg::Geode();
+    osg::ref_ptr<osgText::Text> text = new  osgText::Text;
     geode->addDrawable( text );
     osg::Vec3 position(150.0f,800.0f,0.0f);
     text->setPosition(position);
@@ -133,7 +133,7 @@ int main(int argc, char** argv)
 
     //test 2nd HUD
 
-    osgviz::HUD* hud2 = osgViz->getWindowManager()->getWindowByID(winid)->getSuperView(0)->addHUD(1920,1080);
+    osg::ref_ptr<osgviz::HUD> hud2 = osgViz->getWindowManager()->getWindowByID(winid)->getSuperView(0)->addHUD(1920,1080);
     osg::ref_ptr<osgviz::PrimitivesFactory::Shape> cone = primitivesfactory->createShape(osgviz::PrimitivesFactory::CONE,100,100,0);
     cone->setPosition(700,500,0);
     //shape->setScale(100,100,100);
