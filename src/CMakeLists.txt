@@ -3,9 +3,6 @@ if(MSVC)
 	#set(BUILD_SHARED_LIBS OFF)
 	
 endif(MSVC)	
-find_package(OpenSceneGraph REQUIRED osgManipulator osgViewer osgFX osgShadow osgParticle osgTerrain osgDB osgGA osgWidget osgText osgUtil)
-include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS})
-link_directories(${OPENSCENEGRAPH_LIBRARY_DIRS})
 
 if(MSVC)
   set(Boost_DIR "$ENV{Boost_DIR}")
@@ -61,7 +58,6 @@ rock_library(osgVizGraphics
             graphics/interfaces/data/GraphicData.h
             graphics/interfaces/data/LightData.h
             graphics/wrapper/OSGLightStruct.h
-
     DEPS_PKGCONFIG openscenegraph)
 
 
