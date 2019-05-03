@@ -76,12 +76,14 @@ namespace osgviz {
 			if (index < views.size()){
 				return (osgViewer::View*)views.at(index);
 			}
+            return osg::ref_ptr<osgViewer::View>();
 		}
 
   		inline osg::ref_ptr<osgviz::SuperView> getSuperView(unsigned int index = 0){
 			if (index < views.size()){
 				return views.at(index);
 			}
+            return osg::ref_ptr<osgviz::SuperView>();
 		}
 
         inline osg::ref_ptr<osg::Group> getRootNode(){

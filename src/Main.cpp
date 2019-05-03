@@ -78,7 +78,18 @@ int main(int argc, char** argv)
 
     printf("creating window\n");fflush(stdout);
 
-    int winid = osgViz->createWindow();
+    int winid = 0;
+	if (argc >= 2){
+		if (strcmp(argv[1],"fullscreen")==0){
+            osgviz::WindowConfig windowConf;
+            windowConf.fullScreen = true;
+
+
+            winid = osgViz->createWindow(windowConf);
+		}
+	}else{
+        winid = osgViz->createWindow();
+    }
 
     osg::ref_ptr<osgviz::Window> window = osgViz->getWindowManager()->getWindowByID(winid);
 

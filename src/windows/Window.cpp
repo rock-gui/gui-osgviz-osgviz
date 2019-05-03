@@ -19,11 +19,11 @@ namespace osgviz {
         : osgViewer::CompositeViewer(),
         root(new osg::Group),
         windowConfig(windowConfig),
-        graphicsContext(graphicsContext){
+        graphicsContext(graphicsContext)
+    {
 
             root->setName("Window root");
             addChild(windowScene);
-
             gw = dynamic_cast<osgViewer::GraphicsWindow*> (graphicsContext.get());
 
     }
@@ -111,11 +111,21 @@ namespace osgviz {
             if (state){
                 unsigned int width = 0;
                 unsigned int height = 0;
+                
                 osg::GraphicsContext::WindowingSystemInterface* wsi = osg::GraphicsContext::getWindowingSystemInterface();
+                
                 if (wsi) {
-                    wsi->getScreenResolution( osg::GraphicsContext::ScreenIdentifier(screen), width, height );
+                    osg::GraphicsContext::ScreenIdentifier screenIdentifier = osg::GraphicsContext::ScreenIdentifier();
+                    screenIdentifier.readDISPLAY();
+                    //readDisplay seems to overwrite screenNum
+                    screenIdentifier.screenNum = screen;
+                    wsi->getScreenResolution( screenIdentifier, width, height );
+                }else{
+                    printf("cannot get screen resolution\n");
+                    width=1920;
+                    height=1080;
                 }
-                printf("set fullscreen %ix%x\n", width, height);
+                printf("set fullscreen %ix%i\n", width, height);
                 gw->setWindowDecoration(false);
                 gw->setWindowRectangle(0,0,width,height);
                 //gw->useCursor(false);

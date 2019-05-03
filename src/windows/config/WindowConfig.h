@@ -59,21 +59,26 @@ namespace osgviz {
 
       static osg::ref_ptr<osg::GraphicsContext::Traits> generateTraits(const WindowConfig& windowConfig){
         osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
+        traits->readDISPLAY();
         traits->windowName = windowConfig.title;
         traits->supportsResize = true;
         traits->doubleBuffer = true;
         traits->sharedContext = 0;
+        traits->screenNum = windowConfig.screenNumber;
 
         // full screen: the rendering window attributes according to current screen settings
         if (windowConfig.fullScreen == true) {
-            // TODO: allow to choose the screen
-            int screenNum = 0;
             unsigned int width = windowConfig.width;
             unsigned int height = windowConfig.height;
 
             osg::GraphicsContext::WindowingSystemInterface* wsi = osg::GraphicsContext::getWindowingSystemInterface();
-            if (wsi)
-                wsi->getScreenResolution( osg::GraphicsContext::ScreenIdentifier(screenNum), width, height );
+            if (wsi){
+                osg::GraphicsContext::ScreenIdentifier screenIdentifier = osg::GraphicsContext::ScreenIdentifier();
+			    screenIdentifier.readDISPLAY();
+                //readDisplay seems to overwrite screenNum
+                screenIdentifier.screenNum = windowConfig.screenNumber;
+                wsi->getScreenResolution( screenIdentifier, width, height );
+            }
 
             traits->x = 0;
             traits->y = 0;
@@ -88,6 +93,7 @@ namespace osgviz {
             traits->width = windowConfig.width;
             traits->height = windowConfig.height;
             traits->windowDecoration = true;
+            traits->screenNum = windowConfig.screenNumber;
         }
 
         return traits;

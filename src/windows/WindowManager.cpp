@@ -23,7 +23,6 @@ namespace osgviz {
         if (!graphicsContext){
 
             osg::ref_ptr<osg::GraphicsContext::Traits> traits = WindowConfig::generateTraits(windowConfig);
-            traits->readDISPLAY();
             graphicsContext = osg::GraphicsContext::createGraphicsContext( traits );
         }
 
