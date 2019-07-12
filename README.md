@@ -47,7 +47,8 @@ For usage examples have a look into the Main.cpp and start the demo program (osg
 ### Extension Modules
 
 Modules are extensions to osgviz that are hold by the main class as singleton.
-These modules do not need to have any dependency to osgviz.
+
+These modules do not need to have any dependency to osgviz itself.
 
 To create a custom module, you just have to write a c++ class, that has a constructor similar to a main function:
 
