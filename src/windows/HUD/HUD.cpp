@@ -1,29 +1,29 @@
 /*
- *  Copyright 2011, 2012, DFKI GmbH Robotics Innovation Center
- *
- *  This file is part of the MARS simulation framework.
- *
- *  MARS is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Lesser General Public License
- *  as published by the Free Software Foundation, either version 3
- *  of the License, or (at your option) any later version.
- *
- *  MARS is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU Lesser General Public License for more details.
- *
- *   You should have received a copy of the GNU Lesser General Public License
- *   along with MARS.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+*  Copyright 2011, 2012, DFKI GmbH Robotics Innovation Center
+*
+*  This file is part of the MARS simulation framework.
+*
+*  MARS is free software: you can redistribute it and/or modify
+*  it under the terms of the GNU Lesser General Public License
+*  as published by the Free Software Foundation, either version 3
+*  of the License, or (at your option) any later version.
+*
+*  MARS is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU Lesser General Public License for more details.
+*
+*   You should have received a copy of the GNU Lesser General Public License
+*   along with MARS.  If not, see <http://www.gnu.org/licenses/>.
+*
+*/
 
- /**
- * \file HUD.cpp
- * \author Malte Roemmermann
- * \brief The "HUD" class contains all necessary methods for rendering
- * data into a texture.
- */
+/**
+* \file HUD.cpp
+* \author Malte Roemmermann
+* \brief The "HUD" class contains all necessary methods for rendering
+* data into a texture.
+*/
 
 #include "HUD.h"
 
@@ -39,53 +39,53 @@ namespace osgviz{
 
     HUD::HUD(osg::ref_ptr<osg::GraphicsContext> graphicsContext, int width, int height, osg::Camera::ProjectionResizePolicy policy) {
 
-      // hud make resize to hud according to the viewport
+        // hud make resize to hud according to the viewport
 
-    hudSizeX = width;
-    hudSizeY = height;
+        hudSizeX = width;
+        hudSizeY = height;
 
-    confSizeX = width;
-    confSizeY = height;
+        confSizeX = width;
+        confSizeY = height;
 
-    // Keep the projection matrix fixed, despite window resizes.
-    // this will stretch or constrict the object drawn in hud
-    this->setProjectionResizePolicy(policy);
+        // Keep the projection matrix fixed, despite window resizes.
+        // this will stretch or constrict the object drawn in hud
+        this->setProjectionResizePolicy(policy);
 
-    this->setGraphicsContext(graphicsContext);
-    //hudCamera->setInheritanceMask(0x0); // <-- this seems to be bad
-    //hudCamera->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    this->setClearMask(GL_DEPTH_BUFFER_BIT);
-    //hudCamera->setClearMask(0);
-    this->setClearColor(osg::Vec4(1.0f, 0.0f, 0.0f, 0.2f));
-    this->setComputeNearFarMode(osg::Camera::DO_NOT_COMPUTE_NEAR_FAR);
-    //this->setViewport(0, 0, hud_width, hud_height);
-    //hudCamera->setRenderOrder(osg::Camera::PRE_RENDER);
-    this->setRenderOrder(osg::Camera::POST_RENDER);
-    //hudCamera->setRenderOrder(osg::Camera::NESTED_RENDER, 10);
-    #ifdef WIN32
+        this->setGraphicsContext(graphicsContext);
+        //hudCamera->setInheritanceMask(0x0); // <-- this seems to be bad
+        //hudCamera->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        this->setClearMask(GL_DEPTH_BUFFER_BIT);
+        //hudCamera->setClearMask(0);
+        this->setClearColor(osg::Vec4(1.0f, 0.0f, 0.0f, 0.2f));
+        this->setComputeNearFarMode(osg::Camera::DO_NOT_COMPUTE_NEAR_FAR);
+        //this->setViewport(0, 0, hud_width, hud_height);
+        //hudCamera->setRenderOrder(osg::Camera::PRE_RENDER);
+        this->setRenderOrder(osg::Camera::POST_RENDER);
+        //hudCamera->setRenderOrder(osg::Camera::NESTED_RENDER, 10);
+#ifdef WIN32
         //hudCamera->setRenderTargetImplementation(osg::Camera::PIXEL_BUFFER);
-    #else
+#else
         //hudCamera->setRenderTargetImplementation(osg::Camera::FRAME_BUFFER_OBJECT);
-    #endif
-    this->setProjectionMatrix(osg::Matrix::ortho2D(0,hudSizeX,0,hudSizeY));
-    this->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
-    this->setViewMatrix(osg::Matrix::identity());
+#endif
+        this->setProjectionMatrix(osg::Matrix::ortho2D(0,hudSizeX,0,hudSizeY));
+        this->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
+        this->setViewMatrix(osg::Matrix::identity());
 
-    this->getOrCreateStateSet()->setMode(GL_LIGHTING,
-                                              osg::StateAttribute::OFF |
-                                              osg::StateAttribute::OVERRIDE |
-                                              osg::StateAttribute::PROTECTED);
-    this->getOrCreateStateSet()->setMode(GL_DEPTH_TEST,
-                                              osg::StateAttribute::OFF |
-                                              osg::StateAttribute::OVERRIDE |
-                                              osg::StateAttribute::PROTECTED);
-    this->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN |
-                                                       osg::StateAttribute::OVERRIDE |
-                                                       osg::StateAttribute::PROTECTED);
-    this->getOrCreateStateSet()->setMode(GL_BLEND,osg::StateAttribute::ON |
-                                              osg::StateAttribute::OVERRIDE |
-                                              osg::StateAttribute::PROTECTED);
-    this->setAllowEventFocus(true);
+        this->getOrCreateStateSet()->setMode(GL_LIGHTING,
+            osg::StateAttribute::OFF |
+            osg::StateAttribute::OVERRIDE |
+            osg::StateAttribute::PROTECTED);
+        this->getOrCreateStateSet()->setMode(GL_DEPTH_TEST,
+            osg::StateAttribute::OFF |
+            osg::StateAttribute::OVERRIDE |
+            osg::StateAttribute::PROTECTED);
+        this->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN |
+            osg::StateAttribute::OVERRIDE |
+            osg::StateAttribute::PROTECTED);
+        this->getOrCreateStateSet()->setMode(GL_BLEND,osg::StateAttribute::ON |
+            osg::StateAttribute::OVERRIDE |
+            osg::StateAttribute::PROTECTED);
+        this->setAllowEventFocus(true);
 
     }
 
@@ -108,41 +108,41 @@ namespace osgviz{
     }
 
     void HUD::resize() {
-      resize(getViewportSizeX(), getViewportSizeY());
+        resize(getViewportSizeX(), getViewportSizeY());
     }
 
-    void HUD::changeObjectPositionByResize(osgviz::Object *obj, const osg::Vec3d init_position, const osg::Vec2d init_size)
+    void HUD::changeObjectPositionByResize(osg::ref_ptr<osgviz::Object> obj, const osg::Vec3d init_position, const osg::Vec2d init_size)
     {
-  
-      if (windowResizeEvent.get() != NULL) {
-        HUDPositionChanger *positionChanger = new HUDPositionChanger(obj, init_position, init_size, this);
-        windowResizeEvent->addCallback(positionChanger);
-        // set right position according to the size of window
-        positionChanger->windowResized(getViewportSizeX(), getViewportSizeY());
-      }
-      else
-        throw std::runtime_error("HUD: the WindowResizeEvent is undefined.");
 
-      // rescale the object
-      // the object size is given relative to the hud size
-      // since the hud will be always resized to the window size
-      // we should rescale the object to keep the right proportion
-      float scaleFactor_x = getViewportSizeX() / (float)confSizeX;
-      float scaleFactor_y = getViewportSizeY() / (float)confSizeY;
+        if (windowResizeEvent.get() != NULL) {
+            HUDPositionChanger *positionChanger = new HUDPositionChanger(obj, init_position, init_size, this);
+            windowResizeEvent->addCallback(positionChanger);
+            // set right position according to the size of window
+            positionChanger->windowResized(getViewportSizeX(), getViewportSizeY());
+        }
+        else
+            throw std::runtime_error("HUD: the WindowResizeEvent is undefined.");
 
-      //std::cout << "scale: " << scaleFactor_x << " " << scaleFactor_y << std::endl;
+        // rescale the object
+        // the object size is given relative to the hud size
+        // since the hud will be always resized to the window size
+        // we should rescale the object to keep the right proportion
+        float scaleFactor_x = getViewportSizeX() / (float)confSizeX;
+        float scaleFactor_y = getViewportSizeY() / (float)confSizeY;
 
-      obj->setScale(scaleFactor_x, scaleFactor_y, 1.0);      
+        //std::cout << "scale: " << scaleFactor_x << " " << scaleFactor_y << std::endl;
 
-      //std::cout << "scale: " << obj->getScale().x() << " " <<  obj->getScale().y() << " " << obj->getScale().z()  << std::endl;
+        obj->setScale(scaleFactor_x, scaleFactor_y, 1.0);      
+
+        //std::cout << "scale: " << obj->getScale().x() << " " <<  obj->getScale().y() << " " << obj->getScale().z()  << std::endl;
     }
 
 
-    void HUD::makeObjectScaleOnHover(osgviz::Object* obj, const osg::Vec3d size, const osg::Vec3d &scale, HUDHoverScaler::Type type, osg::Vec3d anchor_offset){
-      if (mouseMoveEvent.get() != NULL)
-        mouseMoveEvent->addCallback(new HUDHoverScaler(obj,size,scale,type,anchor_offset,this));
-      else
-        throw std::runtime_error("HUD: the MouseMoveEvent is undefined.");
+    void HUD::makeObjectScaleOnHover(osg::ref_ptr<osgviz::Object> obj, const osg::Vec3d size, const osg::Vec3d &scale, HUDHoverScaler::Type type, osg::Vec3d anchor_offset){
+        if (mouseMoveEvent.get() != NULL)
+            mouseMoveEvent->addCallback(new HUDHoverScaler(obj,size,scale,type,anchor_offset,this));
+        else
+            throw std::runtime_error("HUD: the MouseMoveEvent is undefined.");
     }
 
 } // end of namespace graphics

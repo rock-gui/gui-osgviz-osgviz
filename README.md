@@ -2,9 +2,9 @@
 
 Osgviz aims to provide an easily accessible visualization using OpenSceneGraph (http://www.openscenegraph.org/).
 
-##Compiling
+## Compiling
 
-###Installation
+### Installation
 
 The easiest way to build and install this package is to use Rock's build system.
 See [this page](http://rock-robotics.org/stable/documentation/installation.html)
@@ -15,7 +15,7 @@ most of its "library" packages (such as this one) to follow best practices. See
 [this page](http://rock-robotics.org/stable/documentation/packages/outside_of_rock.html)
 for installation instructions outside of Rock.
 
-###Rock CMake Macros
+### Rock CMake Macros
 
 This package uses a set of CMake helper shipped as the Rock CMake macros.
 Documentations is available on [this page](http://rock-robotics.org/stable/documentation/packages/cmake_macros.html).
@@ -44,6 +44,16 @@ share a single Instance of another module
 For usage examples have a look into the Main.cpp and start the demo program (osgViz_bin) 
 
 
+### Extension Modules
 
+Modules are extensions to osgviz that are hold by the main class as singleton.
 
+These modules do not need to have any dependency to osgviz itself.
+
+To create a custom module, you just have to write a c++ class, that has a constructor similar to a main function:
+
+`MyModule(int argc = 0, char** argv = nullptr);` 
+
+To instanciate it as a singleton module, you can use the static function `osgviz::OsgViz::getModuleInstance(std::string moduleName, int argc = 0, char **argv = NULL)`.
+The name is the identifier of the singleton. This way, Modules may interact with each other without any dependency to the OsgViz library
 

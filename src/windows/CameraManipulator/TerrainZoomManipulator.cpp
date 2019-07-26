@@ -30,7 +30,7 @@ bool TerrainZoomManipulator::handleMouseWheel( const osgGA::GUIEventAdapter& ea,
     switch( ea.getScrollingMotion() )
     {
         // mouse scroll up event
-        case osgGA::GUIEventAdapter::SCROLL_UP:
+    case osgGA::GUIEventAdapter::SCROLL_UP:
         {
             // perform zoom
             zoomModel( _wheelZoomFactor, true );
@@ -40,18 +40,18 @@ bool TerrainZoomManipulator::handleMouseWheel( const osgGA::GUIEventAdapter& ea,
         }
 
         // mouse scroll down event
-        case osgGA::GUIEventAdapter::SCROLL_DOWN:
+    case osgGA::GUIEventAdapter::SCROLL_DOWN:
 
-            zoomModel( -_wheelZoomFactor, true );
-            us.requestRedraw();
-            us.requestContinuousUpdate( false );
-            return true;
+        zoomModel( -_wheelZoomFactor, true );
+        us.requestRedraw();
+        us.requestContinuousUpdate( false );
+        return true;
 
         // unhandled mouse scrolling motion
-        default:
-            return false;
-   }
-   
+    default:
+        return false;
+    }
+
 }
 
 bool TerrainZoomManipulator::setCenterByMousePointer( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us )
@@ -65,7 +65,7 @@ bool TerrainZoomManipulator::setCenterByMousePointer( const osgGA::GUIEventAdapt
         return false;
 
     osg::Matrix VPW = camera->getProjectionMatrix()
-            * camera->getViewport()->computeWindowMatrix();
+        * camera->getViewport()->computeWindowMatrix();
 
     osg::Matrix invVPW;
     bool success = invVPW.invert(VPW);
@@ -83,13 +83,13 @@ bool TerrainZoomManipulator::setCenterByMousePointer( const osgGA::GUIEventAdapt
 
         switch( ea.getScrollingMotion() )
         {
-            case osgGA::GUIEventAdapter::SCROLL_DOWN:
+        case osgGA::GUIEventAdapter::SCROLL_DOWN:
             {
                 panModel(x_new, y_new, 0);
                 return true;
             }
-            default:
-                return false;
+        default:
+            return false;
         }
     }
     return false;

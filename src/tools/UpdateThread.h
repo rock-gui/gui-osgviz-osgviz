@@ -1,9 +1,9 @@
 /*
- * UpdateThread.h
- *
- *  Created on: 09.07.2015
- *      Author: planthaber
- */
+* UpdateThread.h
+*
+*  Created on: 09.07.2015
+*      Author: planthaber
+*/
 
 #ifndef GUI_OSGVIZ_OSGVIZ_SRC_TOOLS_UPDATETHREAD_H_
 #define GUI_OSGVIZ_OSGVIZ_SRC_TOOLS_UPDATETHREAD_H_
@@ -14,33 +14,33 @@
 
 namespace osgviz {
 
-class UpdateThread : public OpenThreads::Thread{
-public:
+    class UpdateThread : public OpenThreads::Thread{
+    public:
 
-	UpdateThread(Updatable* updatable, unsigned int intervalUsec);
-	virtual ~UpdateThread();
+        UpdateThread(Updatable* updatable, unsigned int intervalUsec);
+        virtual ~UpdateThread();
 
-	/**
-	 * Triggers update manually (thread save)
-	 */
-	void trigger();
+        /**
+        * Triggers update manually (thread save)
+        */
+        void trigger();
 
-	int cancel();
-	void lock();
-	void unlock();
-	int trylock();
+        int cancel();
+        void lock();
+        void unlock();
+        int trylock();
 
-	private:
-		void run();
-
-
-		bool running;
-		unsigned int halfInterval;
-		Updatable* updatable;
-		OpenThreads::Mutex* mutex;
+    private:
+        void run();
 
 
-};
+        bool running;
+        unsigned int halfInterval;
+        Updatable* updatable;
+        OpenThreads::Mutex* mutex;
+
+
+    };
 
 } /* namespace osgviz */
 

@@ -1,11 +1,19 @@
+if(MSVC)
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS 1)
+	#set(BUILD_SHARED_LIBS OFF)
+	
+endif(MSVC)	
 
-
-find_package(OpenSceneGraph REQUIRED osgManipulator osgViewer osgFX osgShadow osgParticle osgTerrain osgDB osgGA osgWidget osgText osgUtil)
-include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS})
-link_directories(${OPENSCENEGRAPH_LIBRARY_DIRS})
-
-find_package(Boost REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
+if(MSVC)
+  set(Boost_DIR "$ENV{Boost_DIR}")
+  set(Boost_INCLUDE_DIRS "${Boost_DIR}/include")
+  include_directories(${Boost_INCLUDE_DIRS})
+else(MSVC)
+#  set(Boost_NO_BOOST_CMAKE ON)
+  find_package(Boost REQUIRED)
+  include_directories(${Boost_INCLUDE_DIRS})
+  
+endif(MSVC)
 
 include(CheckIncludeFileCXX)
 
@@ -50,7 +58,6 @@ rock_library(osgVizGraphics
             graphics/interfaces/data/GraphicData.h
             graphics/interfaces/data/LightData.h
             graphics/wrapper/OSGLightStruct.h
-
     DEPS_PKGCONFIG openscenegraph)
 
 

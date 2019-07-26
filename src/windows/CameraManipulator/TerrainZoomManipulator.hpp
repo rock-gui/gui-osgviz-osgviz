@@ -8,23 +8,23 @@
 namespace osgviz {
 
 
-class TerrainZoomManipulator : public osgGA::TerrainManipulator
-{
-   typedef osgGA::TerrainManipulator inherited;
+    class TerrainZoomManipulator : public osgGA::TerrainManipulator
+    {
+        typedef osgGA::TerrainManipulator inherited;
 
-public:
+    public:
 
-   TerrainZoomManipulator( int flags = DEFAULT_SETTINGS );
-   TerrainZoomManipulator( const TerrainZoomManipulator& tm,
-                       const osg::CopyOp& copyOp = osg::CopyOp::SHALLOW_COPY );
+        TerrainZoomManipulator( int flags = DEFAULT_SETTINGS );
+        TerrainZoomManipulator( const TerrainZoomManipulator& tm,
+            const osg::CopyOp& copyOp = osg::CopyOp::SHALLOW_COPY );
 
-protected:
+    protected:
 
-    virtual bool handleMouseWheel( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
-    virtual bool setCenterByMousePointer( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us);
+        virtual bool handleMouseWheel( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
+        virtual bool setCenterByMousePointer( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us);
 
-private:
-};
+    private:
+    };
 
 
 }

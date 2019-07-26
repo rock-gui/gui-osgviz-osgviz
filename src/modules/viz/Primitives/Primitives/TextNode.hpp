@@ -11,7 +11,7 @@ namespace osgText
 }
 
 namespace osgviz {
-    
+
     class TextNode : public osgviz::Object{
     public:
         TextNode(const std::string& text, double fontSize);
@@ -20,6 +20,6 @@ namespace osgviz {
         osg::ref_ptr<osg::Geode> geode;
         osgText::Text* text;
     };
-    
+
 }
 

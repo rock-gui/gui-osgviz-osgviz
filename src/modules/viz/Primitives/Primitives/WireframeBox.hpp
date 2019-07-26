@@ -8,21 +8,21 @@ namespace osgviz
 {
     class WireframeBox: public osgviz::Object
     {
-        public:
+    public:
 
-        	WireframeBox(const double xPos, const double yPos, const double zPos,
-                           const double xSize, const double ySize, const double zSize);
+        WireframeBox(const double xPos, const double yPos, const double zPos,
+            const double xSize, const double ySize, const double zSize);
 
-        	WireframeBox(const double xSize, const double ySize, const double zSize);  
+        WireframeBox(const double xSize, const double ySize, const double zSize);  
 
-        	virtual ~WireframeBox();      	
+        virtual ~WireframeBox();      	
 
-        	void setDimensions(double xSize, double ySize, double zSize);
+        void setDimensions(double xSize, double ySize, double zSize);
 
 
-        private:
-        	osg::ref_ptr<osg::Geode> geode;
+    private:
+        osg::ref_ptr<osg::Geode> geode;
 
-        	osg::ref_ptr<osg::Box> boundingBox;
+        osg::ref_ptr<osg::Box> boundingBox;
     };
 }
