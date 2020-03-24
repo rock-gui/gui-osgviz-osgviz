@@ -79,7 +79,7 @@ public:
 
 	}
 
-	static osg::Node* searchByName(std::string name, osg::Node* start, bool addParents = false){
+	static osg::Node* searchByName(const std::string& name, osg::Node* start, bool addParents = false){
 		std::deque< osg::Node* > nodes;
 		std::map< osg::Node*, bool > knownNodes;
 		nodes.push_back(start);
