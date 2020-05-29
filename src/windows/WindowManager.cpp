@@ -64,7 +64,7 @@ namespace osgviz {
         {
             //windows become invalid but are not removed from the window list
             //thus we have to check if they are valid
-            if(witr->valid() && witr->get()->isRealized())
+            if(witr->valid())
                 witr->get()->frame();
         }
         windowsMutex.unlock();
