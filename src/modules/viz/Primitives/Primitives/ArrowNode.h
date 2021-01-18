@@ -12,6 +12,7 @@
 #include <osg/ShapeDrawable>
 
 #include "../../../../Object.h"
+#include <iostream>
 //#include <osg/Cylinder>
 
 namespace osgviz {
@@ -22,13 +23,53 @@ namespace osgviz {
         ArrowNode(bool invert);
         virtual ~ArrowNode();
 
-
         osg::ref_ptr<osg::Cone> Cone(){
             return cone;
         }
 
         osg::ref_ptr<osg::Cylinder> Cylinder(){
             return cylinder;
+        }
+
+        /**
+         * @brief Set the Length of the arrow.
+         * Works like scaling but with fixed arrow head length
+         * 
+         * @param length 
+         */
+        inline void setLength(float length) {
+
+            // TODO: what if length < coneheight?
+
+
+            //coneTransform->setScale(scale);
+            osg::Vec3d offset(0,0,0);
+
+            float coneheight = 0.3;
+            if (length <= 2*coneheight) {
+                coneheight = length * coneheight;
+            }
+            float coneoffset = -0.25*coneheight; // center of cone is center of mass, not center of base! 0.25 is the baseOffsetFactor of an osg::Cone
+            float coneposz =  -(coneheight/2.0)+coneoffset;
+    
+            float arrowheight = length;
+            float cylinderheight = arrowheight - coneheight;
+            float cylinderposz = -0.5*cylinderheight;
+
+            if (inverted == true)
+            {
+                coneposz = cylinderheight - coneoffset;
+
+                cylinderposz = 0.5*cylinderheight;
+            }
+
+            offset.z() = coneposz - coneposz_default;
+            coneTransform->setPosition(offset);
+
+            osg::Vec3 S = {1,1,1};
+            S.z() = ((length - coneheight) / 0.7);
+            cylinderTransform->setScale(S);
+
         }
 
         virtual void setColor(const float &r,const float &g,const float &b,const float &a = 1){
@@ -44,14 +85,18 @@ namespace osgviz {
         }
 
     private:
-        osg::ref_ptr<osg::Geode> geode;
+        osg::ref_ptr<osg::Geode> coneGeode, cylinderGeode;
 
         osg::ref_ptr<osg::Cone> cone;
         osg::ref_ptr<osg::ShapeDrawable> coneDrawable;
+        osg::ref_ptr<osg::PositionAttitudeTransform> coneTransform;
 
         osg::ref_ptr<osg::Cylinder> cylinder;
         osg::ref_ptr<osg::ShapeDrawable> cylinderDrawable;
+        osg::ref_ptr<osg::PositionAttitudeTransform> cylinderTransform;
 
+        bool inverted;
+        float coneposz_default;
     };
 
 } /* namespace robot_manager */
