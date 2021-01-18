@@ -10,6 +10,7 @@
 
 #include <osg/Shape>
 #include <osg/ShapeDrawable>
+#include <osg/Switch>
 
 #include "../../../../Object.h"
 #include <iostream>
@@ -47,20 +48,19 @@ namespace osgviz {
 
             float coneheight = 0.3;
             if (length <= 2*coneheight) {
-                coneheight = length * coneheight;
+                head_switch->setChildValue(coneTransform, false);
+                coneheight = 0.0;
+            } else {
+                head_switch->setChildValue(coneTransform, true);
             }
             float coneoffset = -0.25*coneheight; // center of cone is center of mass, not center of base! 0.25 is the baseOffsetFactor of an osg::Cone
             float coneposz =  -(coneheight/2.0)+coneoffset;
     
             float arrowheight = length;
             float cylinderheight = arrowheight - coneheight;
-            float cylinderposz = -0.5*cylinderheight;
 
-            if (inverted == true)
-            {
+            if (inverted == true) {
                 coneposz = cylinderheight - coneoffset;
-
-                cylinderposz = 0.5*cylinderheight;
             }
 
             offset.z() = coneposz - coneposz_default;
@@ -76,7 +76,7 @@ namespace osgviz {
             coneDrawable->setColor(osg::Vec4(r,g,b,a));
             cylinderDrawable->setColor(osg::Vec4(r,g,b,a));
 
-            if (a<1){
+            if (a<1) {
                 this->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN |
                     osg::StateAttribute::OVERRIDE |
                     osg::StateAttribute::PROTECTED);
@@ -94,6 +94,8 @@ namespace osgviz {
         osg::ref_ptr<osg::Cylinder> cylinder;
         osg::ref_ptr<osg::ShapeDrawable> cylinderDrawable;
         osg::ref_ptr<osg::PositionAttitudeTransform> cylinderTransform;
+
+        osg::ref_ptr<osg::Switch> head_switch;
 
         bool inverted;
         float coneposz_default;

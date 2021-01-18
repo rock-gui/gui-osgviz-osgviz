@@ -45,7 +45,9 @@ namespace osgviz {
 
         coneTransform = new osg::PositionAttitudeTransform;
         coneTransform->addChild(coneGeode);
-        addChild(coneTransform);		
+        head_switch = new osg::Switch;
+        head_switch->addChild(coneTransform, true);
+        addChild(head_switch);
 
         cylinderTransform = new osg::PositionAttitudeTransform;
         cylinderTransform->addChild(cylinderGeode);
