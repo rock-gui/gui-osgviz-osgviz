@@ -8,6 +8,7 @@
 #include "PrimitivesFactory.h"
 
 #include "Primitives/ArrowNode.h"
+#include "Primitives/CircularArrowNode.h"
 #include "Primitives/AxesNode.hpp"
 #include "Primitives/GridNode.hpp"
 #include "Primitives/WireframeBox.hpp"
@@ -96,9 +97,6 @@ namespace osgviz {
         return box;  
     }
 
-
-
-
     osg::ref_ptr<Object> PrimitivesFactory::createGrid(int rows,int cols,float dx, float dy, bool show_coordinates, const ::osg::Vec4 &color){
         osg::ref_ptr<Object> obj = new Object();
         osg::ref_ptr<osg::Node> content = GridNode::create(rows,cols,dx, dy, show_coordinates, color);
@@ -111,6 +109,13 @@ namespace osgviz {
         ArrowNode* node = new ArrowNode(invert);
         node->setName("Arrow");
         node->setColor(color[0], color[1], color[2], color[3]);
+        return node;
+    }
+
+    osg::ref_ptr<Object> PrimitivesFactory::createCircularArrow(float radius, float tube, unsigned int radialSegments, unsigned int tubularSegments, float arc, float animationTimeSec, const osg::Vec4& color) {
+        osg::ref_ptr<CircularArrowNode> node = new CircularArrowNode(radius, tube, radialSegments, tubularSegments, arc, animationTimeSec);
+        node->setName("CircularArrow");
+        node->setColor(color);
         return node;
     }
 
